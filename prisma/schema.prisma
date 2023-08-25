@@ -16,10 +16,51 @@ enum UserRole {
 }
 
 model User {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  email          String   @unique
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  email          String     @unique
   hashedPassword String?
-  role           UserRole @default(USER)
+  role           UserRole   @default(USER)
+  Employee       Employee[]
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+model Employee {
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  name                  String
+  workEmail             String   @unique
+  position              String
+  department            String
+  workMobile            String
+  personalMobile        String
+  jobPosition           String
+  manager               String
+  profile_photo         String
+  workAddress           String?
+  workLocation          String?
+  workingHours          String?
+  startDate             String?
+  timeZone              String?
+  privateAddress        String?
+  personalEmail         String? @unique
+  phone                 String?
+  bankAccountNumber     String?
+  bankName              String?
+  maritalStatus         String?
+  numberOfDependents    Int?     @default(0)
+  emergencyContactName  String?
+  emergencyContactPhone String?
+  nationality           String?
+  idNumber              String?
+  gender                String?
+  dateOfBirth           String?
+  employeeType          String?
+  idCopy                String?
+  resumeCopy            String?
+  passbookCopy          String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  relatedUser User?   @relation(fields: [userId], references: [id])
+  userId      String? @db.ObjectId
 }

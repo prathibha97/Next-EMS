@@ -1,4 +1,5 @@
 'use client';
+import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import EmployeeCard from './components/employee-card';
 
@@ -38,14 +39,21 @@ const EmployeesPage = () => {
   };
 
   return (
-    <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-      {employees.map((employee) => (
-        <EmployeeCard
-          key={employee.id}
-          employee={employee}
-          onClick={() => handleClick(employee.id.toString())}
-        />
-      ))}
+    <div>
+      <div className='flex justify-end mb-5'>
+        <Button onClick={() => router.push(`employees/new`)}>
+          Add Employee
+        </Button>
+      </div>
+      <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+        {employees.map((employee) => (
+          <EmployeeCard
+            key={employee.id}
+            employee={employee}
+            onClick={() => handleClick(employee.id.toString())}
+          />
+        ))}
+      </div>
     </div>
   );
 };

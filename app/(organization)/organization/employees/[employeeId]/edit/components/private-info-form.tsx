@@ -5,6 +5,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -15,31 +16,41 @@ import {
   PrivateInfoFormValues,
 } from '@/lib/validation/private-info-forn-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Employee } from '@prisma/client';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface PrivateInfoFormProps {
   employeeId: string;
+  employee: Employee | undefined;
 }
 
-const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employeeId }) => {
+const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
+  employeeId,
+  employee,
+}) => {
   const form = useForm<PrivateInfoFormValues>({
     resolver: zodResolver(PrivateInfoFormSchema),
     defaultValues: {
       privateAddress:
-        '147/6 Pallewatte, Uduwawala, Katugastota, Kandy, Central, 20800, Sri Lanka',
-      personalEmail: 'prathibha@gmail.com',
-      phone: '0772940655',
-      bankAccountNumber: '123456789',
-      bankName: 'Commercial Bank',
+        employee?.privateAddress ?? 'Private address not specified',
+      personalEmail: employee?.personalEmail ?? 'Personal email not specified',
+      phone: employee?.phone ?? 'Phone number not specified',
+      bankAccountNumber:
+        employee?.bankAccountNumber ?? 'Bank account number not specified',
+      bankName: employee?.bankName ?? 'Bank name not specified',
       maritalStatus: 'Single',
       numberOfDependents: 0,
-      emergencyContactName: 'Jane Doe',
-      emergencyContactPhone: '0771234567',
-      nationality: 'Sri Lankan',
-      idNumber: '972678580V',
-      gender: 'Male',
-      dateOfBirth: '1997-09-20',
+      emergencyContactName:
+        employee?.emergencyContactName ??
+        'Emergency contact name not specified',
+      emergencyContactPhone:
+        employee?.emergencyContactPhone ??
+        'Emergency contact phone not specified',
+      nationality: employee?.nationality ?? 'Nationality not specified',
+      idNumber: employee?.idNumber ?? 'ID Number not specified',
+      gender: employee?.gender ?? 'Gender not specified',
+      dateOfBirth: employee?.dateOfBirth ?? 'Date of Birth not specified',
     },
   });
 
@@ -89,12 +100,12 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employeeId }) => {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='flex justify-between'>
             {/* Private Contact */}
-            <div>
+            <div className='w-1/2'>
               <h2 className='text-lg font-semibold'>Private Contact</h2>
               <Separator className='mt-1 mb-3' />
               <div className='flex flex-col gap-y-4'>
-                <div className='flex gap-x-2'>
-                  <span>Private Address: </span>
+                <div className='flex flex-col gap-x-2'>
+                  <FormLabel>Private Address</FormLabel>
                   <FormField
                     name='privateAddress'
                     render={({ field }) => (
@@ -107,62 +118,54 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employeeId }) => {
                     )}
                   />
                 </div>
-                <span>
-                  Personal Email :{' '}
-                  <FormField
-                    name='personalEmail'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input {...field} className='text-sm text-gray-600' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
-                <span>
-                  Phone :{' '}
-                  <FormField
-                    name='phone'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input {...field} className='text-sm text-gray-600' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
-                <span>
-                  Bank Name :{' '}
-                  <FormField
-                    name='bankName'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input {...field} className='text-sm text-gray-600' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
-                <span>
-                  Bank Account Number :{' '}
-                  <FormField
-                    name='bankAccountNumber'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input {...field} className='text-sm text-gray-600' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
+                <FormLabel>Personal Email</FormLabel>
+                <FormField
+                  name='personalEmail'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className='text-sm text-gray-600' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormLabel>Phone</FormLabel>
+                <FormField
+                  name='phone'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className='text-sm text-gray-600' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormLabel>Bank Name</FormLabel>
+                <FormField
+                  name='bankName'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className='text-sm text-gray-600' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormLabel>Bank Account Number</FormLabel>
+                <FormField
+                  name='bankAccountNumber'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className='text-sm text-gray-600' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
 
@@ -171,72 +174,65 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employeeId }) => {
               <h2 className='text-lg font-semibold'>Family Status</h2>
               <Separator className='mt-1 mb-3' />
               <div className='flex flex-col gap-y-4'>
-                <span>
-                  Marital Status :{' '}
-                  <FormField
-                    name='maritalStatus'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input {...field} className='text-sm text-gray-600' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
-                <span>
-                  Number of dependent children :{' '}
-                  <FormField
-                    name='numberOfDependents'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input {...field} className='text-sm text-gray-600' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
+                <FormLabel>Marital Status</FormLabel>
+                <FormField
+                  name='maritalStatus'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className='text-sm text-gray-600' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormLabel>Number of dependent children</FormLabel>
+                <FormField
+                  name='numberOfDependents'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className='text-sm text-gray-600' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
           </div>
 
           {/* Emergency contacts */}
           <div className='flex justify-between mt-5'>
-            <div>
+            <div className='w-1/2'>
               <h2 className='text-lg font-semibold'>Emergency Contact</h2>
               <Separator className='mt-1 mb-3' />
               <div className='flex flex-col gap-y-4'>
-                <span>
-                  Contact Name :{' '}
-                  <FormField
-                    name='emergencyContactName'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input {...field} className='text-sm text-gray-600' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
-                <span>
-                  Contact Number :{' '}
-                  <FormField
-                    name='emergencyContactPhone'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input {...field} className='text-sm text-gray-600' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
+                <FormLabel>Contact Name</FormLabel>
+                <FormField
+                  name='emergencyContactName'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className='text-sm text-gray-600' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormLabel>Contact Number</FormLabel>
+                <FormField
+                  name='emergencyContactPhone'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className='text-sm text-gray-600' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
 
@@ -246,62 +242,54 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employeeId }) => {
               <h2 className='text-lg font-semibold'>Citizenship</h2>
               <Separator className='mt-1 mb-3' />
               <div className='flex flex-col gap-y-4'>
-                <span>
-                  Nationality :{' '}
-                  <FormField
-                    name='nationality'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input {...field} className='text-sm text-gray-600' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
-                <span>
-                  Identification Number :{' '}
-                  <FormField
-                    name='idNumber'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input {...field} className='text-sm text-gray-600' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
-                <span>
-                  Gender :{' '}
-                  <FormField
-                    name='gender'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input {...field} className='text-sm text-gray-600' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
-                <span>
-                  date of Birth :{' '}
-                  <FormField
-                    name='dateOfBirth'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input {...field} className='text-sm text-gray-600' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
+                <FormLabel>Nationality</FormLabel>
+                <FormField
+                  name='nationality'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className='text-sm text-gray-600' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormLabel>ID Number</FormLabel>
+                <FormField
+                  name='idNumber'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className='text-sm text-gray-600' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormLabel>Gender</FormLabel>
+                <FormField
+                  name='gender'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className='text-sm text-gray-600' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormLabel>Date of Birth</FormLabel>
+                <FormField
+                  name='dateOfBirth'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className='text-sm text-gray-600' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
           </div>

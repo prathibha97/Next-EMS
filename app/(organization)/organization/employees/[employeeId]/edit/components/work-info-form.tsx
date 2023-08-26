@@ -6,6 +6,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -16,22 +17,24 @@ import {
   WorkInfoFormValues,
 } from '@/lib/validation/work-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Employee } from '@prisma/client';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface WorkInfoFormProps {
   employeeId: string;
+  employee: Employee | undefined;
 }
 
-const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId }) => {
+const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee }) => {
   const form = useForm<WorkInfoFormValues>({
     resolver: zodResolver(WorkInfoFormSchema),
     defaultValues: {
-      workAddress: 'No 123, Galle Road, Colombo 03',
-      workLocation: 'Remote',
-      workingHours: 'Standard 40 hours/week',
-      startDate: '2021-09-01',
-      timeZone: 'Asia/Colombo',
+      workAddress: employee?.workAddress ?? 'Work address not specified',
+      workLocation: employee?.workLocation ?? 'Work location not specified',
+      workingHours: employee?.workingHours ?? 'Working hours not specified',
+      startDate: employee?.startDate ?? 'Starting date not specified',
+      timeZone: employee?.timeZone ?? 'Time Zone is not specified',
     },
   });
 
@@ -75,70 +78,61 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId }) => {
           <Separator className='mt-1 mb-3' />
 
           <div className='flex flex-col gap-y-3'>
-            <span>
-              Work Address :{' '}
-              <FormField
-                name='workAddress'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </span>
-            <span>
-              Work Location :{' '}
-              <FormField
-                name='workLocation'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </span>
+            <FormLabel>Work Address</FormLabel>
+            <FormField
+              name='workAddress'
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input {...field} className='text-sm text-gray-600' />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormLabel>Work Location</FormLabel>
+            <FormField
+              name='workLocation'
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input {...field} className='text-sm text-gray-600' />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
         </div>
         <div className='mt-5'>
           <h2 className='text-lg font-semibold'>Schedule</h2>
           <Separator className='mt-1 mb-3' />
           <div className='flex flex-col gap-y-3'>
-            <span>
-              Start Date :{' '}
-              <FormField
-                name='startDate'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </span>
-            <span>
-              Working hours :{' '}
-              <FormField
-                name='workingHours'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </span>
-            <span>
-              TimeZone :{' '}
+            <FormLabel>Start Date</FormLabel>
+            <FormField
+              name='startDate'
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input {...field} className='text-sm text-gray-600' />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormLabel>Working Hours</FormLabel>
+            <FormField
+              name='workingHours'
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input {...field} className='text-sm text-gray-600' />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormLabel>Time Zone</FormLabel>
               <FormField
                 name='timeZone'
                 render={({ field }) => (
@@ -150,7 +144,6 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId }) => {
                   </FormItem>
                 )}
               />
-            </span>
           </div>
         </div>
         <div className='mt-4'>

@@ -1,12 +1,13 @@
 'use client';
+import { setEmployee } from '@/app/redux/features/employeeSlice';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { useGetEmployeesQuery } from '@/app/redux/services/employeeApi';
 import { Button } from '@/components/ui/button';
+import { Employee } from '@prisma/client';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import EmployeeCard from './components/employee-card';
-import { useGetEmployeesQuery } from '@/app/redux/services/employeeApi';
-import { Employee } from '@prisma/client';
 import { SkeletonCard } from './components/loading-employee-card';
-import { useAppDispatch } from '@/app/redux/hooks';
-import { setEmployee } from '@/app/redux/features/employeeSlice';
 
 // const employees = [
 //   {
@@ -38,9 +39,15 @@ import { setEmployee } from '@/app/redux/features/employeeSlice';
 
 const EmployeesPage = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const { status, data } = useSession();
+  if (status === 'unauthenticated') {
+    router.push('/');
+  }else if (data?.user?.role !== 'ADMIN'){
+    router.push('/denied');
+  }
+   const dispatch = useAppDispatch();
 
-  const {data:employees, isLoading} = useGetEmployeesQuery(null);
+  const { data: employees, isLoading } = useGetEmployeesQuery();
 
   const handleClick = (id: string) => {
     router.push(`/organization/employees/${id}`);
@@ -65,8 +72,8 @@ const EmployeesPage = () => {
                 key={employee.id}
                 employee={employee}
                 onClick={() => {
-                  handleClick(employee.id.toString())
-                  dispatch(setEmployee(employee))
+                  handleClick(employee.id.toString());
+                  dispatch(setEmployee(employee));
                 }}
               />
             ))}

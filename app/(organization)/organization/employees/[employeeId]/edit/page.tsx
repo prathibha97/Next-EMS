@@ -21,10 +21,12 @@ import Image from 'next/image';
 import { ChangeEvent, FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { useGetEmployeeByIdQuery } from '@/app/redux/services/employeeApi';
 import { useUploadThing } from '@/lib/uploadthing';
 import { isBase64Image } from '@/lib/utils';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import LoadingState from '../components/loading-state';
 import HRSettingsForm from './components/hr-settings-form';
 import PrivateInfoForm from './components/private-info-form';
 import WorkInfoForm from './components/work-info-form';
@@ -44,18 +46,28 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
   const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing('imageUploader');
 
+  const {
+    data: employee,
+    isLoading,
+    isFetching,
+  } = useGetEmployeeByIdQuery({ employeeId: params.employeeId });
+
+  console.log(employee);
+
+  if (isLoading || isFetching) return <LoadingState />;
+
   const form = useForm<EmployeeFormValues>({
     resolver: zodResolver(EmployeeFormSchema),
     defaultValues: {
-      name: 'Prathibha Ratnayake',
-      position: 'Software Engineer',
-      workMobile: '0771234567',
-      personalMobile: '0771234567',
-      workEmail: 'prathibha@sphiriaDigital.com',
-      department: 'Software Engineering',
-      jobPosition: 'Software Engineer',
-      manager: 'Prathibha Ratnayake',
-      profile_photo: '',
+      name: employee?.name,
+      position: employee?.position,
+      workMobile: employee?.workMobile,
+      personalMobile: employee?.personalMobile,
+      workEmail: employee?.workEmail,
+      department: employee?.department,
+      jobPosition: employee?.jobPosition,
+      manager: employee?.manager,
+      profile_photo: employee?.profile_photo,
     },
   });
 
@@ -216,8 +228,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
               />
             </div>
             <div className='flex flex-col gap-y-2 w-1/3'>
-              <span>
-                Department:{' '}
+              <FormLabel>Department</FormLabel>
                 <FormField
                   name='department'
                   render={({ field }) => (
@@ -229,9 +240,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                     </FormItem>
                   )}
                 />
-              </span>
-              <span>
-                Job Position:{' '}
+              <FormLabel>Job Position</FormLabel>
                 <FormField
                   name='jobPosition'
                   render={({ field }) => (
@@ -243,9 +252,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                     </FormItem>
                   )}
                 />
-              </span>
-              <span>
-                Manager:
+              <FormLabel>Manager</FormLabel>
                 <FormField
                   name='manager'
                   render={({ field }) => (
@@ -257,7 +264,6 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                     </FormItem>
                   )}
                 />
-              </span>
             </div>
           </div>
           <div className='mt-4'>
@@ -278,13 +284,19 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
             <TabsTrigger value='HR'>HR Settings</TabsTrigger>
           </TabsList>
           <TabsContent value='work'>
-            <WorkInfoForm employeeId={params.employeeId} />
+            <WorkInfoForm employeeId={params.employeeId} employee={employee} />
           </TabsContent>
           <TabsContent value='private'>
-            <PrivateInfoForm employeeId={params.employeeId} />
+            <PrivateInfoForm
+              employeeId={params.employeeId}
+              employee={employee}
+            />
           </TabsContent>
           <TabsContent value='HR'>
-            <HRSettingsForm employeeId={params.employeeId} />
+            <HRSettingsForm
+              employeeId={params.employeeId}
+              employee={employee}
+            />
           </TabsContent>
         </Tabs>
       </div>

@@ -1,4 +1,5 @@
-import { Button } from '@/components/ui/button';
+import { useUpdateEmployeeMutation } from '@/app/redux/services/employeeApi';
+import ActionButton from '@/components/buttons/action-button';
 import {
   Form,
   FormControl,
@@ -8,6 +9,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { toast } from '@/hooks/use-toast';
 import {
   PrivateInfoFormSchema,
   PrivateInfoFormValues,
@@ -16,9 +18,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
-interface PrivateInfoFormProps {}
+interface PrivateInfoFormProps {
+  employeeId: string;
+}
 
-const PrivateInfoForm: FC<PrivateInfoFormProps> = ({}) => {
+const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employeeId }) => {
   const form = useForm<PrivateInfoFormValues>({
     resolver: zodResolver(PrivateInfoFormSchema),
     defaultValues: {
@@ -39,9 +43,45 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({}) => {
     },
   });
 
+  const [updateEmployee, { isLoading }] = useUpdateEmployeeMutation();
+
   const onSubmit = (data: PrivateInfoFormValues) => {
-    // Perform save action here using data
-    console.log(data);
+    try {
+      const response = updateEmployee({
+        employeeId, // Pass the employeeId to the mutation
+        body: {
+          privateAddress: data.privateAddress,
+          personalEmail: data.personalEmail,
+          phone: data.phone,
+          bankAccountNumber: data.bankAccountNumber,
+          bankName: data.bankName,
+          maritalStatus: data.maritalStatus,
+          numberOfDependents: data.numberOfDependents,
+          emergencyContactName: data.emergencyContactName,
+          emergencyContactPhone: data.emergencyContactPhone,
+          nationality: data.nationality,
+          idNumber: data.idNumber,
+          gender: data.gender,
+          dateOfBirth: data.dateOfBirth,
+        },
+      });
+      const updatedEmployee = response; // Access the nested data
+      console.log(updatedEmployee);
+      // dispatch(updateEmployeeData(updatedEmployee));
+
+      toast({
+        title: 'Employee updated successfully',
+        description: 'Please update the rest of the employee information',
+      });
+      form.reset();
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong, Please try again',
+        variant: 'destructive',
+      });
+      console.log(error);
+    }
   };
   return (
     <>
@@ -266,9 +306,12 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({}) => {
             </div>
           </div>
           <div className='mt-4'>
-            <Button type='submit' onClick={() => onSubmit}>
-              Save
-            </Button>
+            <ActionButton
+              type='submit'
+              onClick={() => onSubmit}
+              isLoading={isLoading}
+              label='Save'
+            />
           </div>
         </form>
       </Form>

@@ -1,11 +1,12 @@
 import { Separator } from '@/components/ui/separator';
-import { FC } from 'react'
+import { Employee } from '@prisma/client';
+import { FC } from 'react';
 
 interface PrivateInfoProps {
-  
+  employee: Employee | undefined;
 }
 
-const PrivateInfo: FC<PrivateInfoProps> = ({}) => {
+const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {
   return (
     <>
       <div className='flex justify-between'>
@@ -16,7 +17,7 @@ const PrivateInfo: FC<PrivateInfoProps> = ({}) => {
           <div className='flex flex-col gap-y-4'>
             <div className='flex gap-x-2'>
               <span>Private Address: </span>
-              <div className='flex flex-col'>
+              {/* <div className='flex flex-col'>
                 <span className='text-sm text-gray-600'>147/6 Pallewatte,</span>
                 <span className='text-sm text-gray-600'>
                   Uduwawala, Katugastota,
@@ -27,18 +28,27 @@ const PrivateInfo: FC<PrivateInfoProps> = ({}) => {
                   <span>20800</span>
                   <span>Sri Lanka</span>
                 </div>
-              </div>
+              </div> */}
+              <span className='text-sm text-gray-600'>
+                {employee?.privateAddress}
+              </span>
             </div>
             <span>
               Personal Email :{' '}
-              <span className='text-sm text-gray-600'>prsthibha@gmail.com</span>
+              <span className='text-sm text-gray-600'>
+                {employee?.personalEmail}
+              </span>
             </span>
             <span>
-              Phone : <span className='text-sm text-gray-600'>0772940633</span>
+              Phone : <span className='text-sm text-gray-600'>
+                {employee?.phone}
+              </span>
             </span>
             <span>
               Bank Account Number :{' '}
-              <span className='text-sm text-gray-600'>123456789</span>
+              <span className='text-sm text-gray-600'>
+                {employee?.bankAccountNumber}
+              </span>
             </span>
           </div>
         </div>
@@ -50,11 +60,15 @@ const PrivateInfo: FC<PrivateInfoProps> = ({}) => {
           <div className='flex flex-col gap-y-4'>
             <span>
               Marital Status :{' '}
-              <span className='text-sm text-gray-600'>Single</span>
+              <span className='text-sm text-gray-600'>
+                {employee?.maritalStatus}
+              </span>
             </span>
             <span>
               Number of dependent children :{' '}
-              <span className='text-sm text-gray-600'>0</span>
+              <span className='text-sm text-gray-600'>
+                {employee?.numberOfDependents}
+              </span>
             </span>
           </div>
         </div>
@@ -68,11 +82,15 @@ const PrivateInfo: FC<PrivateInfoProps> = ({}) => {
           <div className='flex flex-col gap-y-4'>
             <span>
               Contact Name :{' '}
-              <span className='text-sm text-gray-600'>Devika Ratnayake</span>
+              <span className='text-sm text-gray-600'>
+                {employee?.emergencyContactName}
+              </span>
             </span>
             <span>
               Contact Number :{' '}
-              <span className='text-sm text-gray-600'>07712345678</span>
+              <span className='text-sm text-gray-600'>
+                {employee?.emergencyContactPhone}
+              </span>
             </span>
           </div>
         </div>
@@ -85,24 +103,32 @@ const PrivateInfo: FC<PrivateInfoProps> = ({}) => {
           <div className='flex flex-col gap-y-4'>
             <span>
               Nationality :{' '}
-              <span className='text-sm text-gray-600'>Sri Lankan</span>
+              <span className='text-sm text-gray-600'>
+                {employee?.nationality}
+              </span>
             </span>
             <span>
               Identification Number :{' '}
-              <span className='text-sm text-gray-600'>972643580V</span>
+              <span className='text-sm text-gray-600'>
+                {employee?.idNumber}
+              </span>
             </span>
             <span>
-              Gender : <span className='text-sm text-gray-600'>Male</span>
+              Gender : <span className='text-sm text-gray-600'>
+                {employee?.gender}
+              </span>
             </span>
             <span>
               date of Birth :{' '}
-              <span className='text-sm text-gray-600'>09/20/1997</span>
+              <span className='text-sm text-gray-600'>
+                {employee?.dateOfBirth}
+              </span>
             </span>
           </div>
         </div>
       </div>
     </>
   );
-}
+};
 
-export default PrivateInfo
+export default PrivateInfo;

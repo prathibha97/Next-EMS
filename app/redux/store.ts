@@ -1,16 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import employeeReducer from './features/employeeSlice';
-import { employeeApi } from './services/employeeApi';
+import { apiSlice } from './services/api';
 
 export const store = configureStore({
   reducer: {
+    [apiSlice.reducerPath]: apiSlice.reducer,
     employeeReducer,
-    [employeeApi.reducerPath]: employeeApi.reducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({}).concat([employeeApi.middleware]),
+    getDefaultMiddleware({}).concat([apiSlice.middleware]),
 });
 
 setupListeners(store.dispatch);

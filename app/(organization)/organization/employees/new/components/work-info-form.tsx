@@ -23,11 +23,11 @@ import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface WorkInfoFormProps {
-  employee: Employee;
+  employee: Employee | null;
 }
 
 const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
-  const employeeId = '64e8c258664a84d2d663da2a' || employee?.id ;
+  const employeeId =  employee?.id ;
   console.log(employeeId);
   const dispatch = useAppDispatch();
   const [updateEmployee, { isLoading }] = useUpdateEmployeeMutation();
@@ -43,7 +43,6 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
   });
 
   const onSubmit = (data: WorkInfoFormValues) => {
-    console.log(data);
     try {
       const response = updateEmployee({
         employeeId, // Pass the employeeId to the mutation
@@ -55,23 +54,14 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
           timeZone: data.timeZone,
         },
       });
-      console.log(response);
-      if ('data' in response) {
-        const updatedEmployee = response.data; // Access the nested data
+        const updatedEmployee = response;
+        console.log(updatedEmployee);
         // dispatch(updateEmployeeData(updatedEmployee));
-
         toast({
           title: 'Employee updated successfully',
           description: 'Please update the rest of the employee information',
         });
         form.reset();
-      } else if ('error' in response) {
-        toast({
-          title: 'Error',
-          description: 'Something went wrong, Please try again',
-          variant: 'destructive',
-        });
-      }
     } catch (error) {
       toast({
         title: 'Error',

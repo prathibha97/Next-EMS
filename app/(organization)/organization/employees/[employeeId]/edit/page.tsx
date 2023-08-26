@@ -23,6 +23,8 @@ import { useForm } from 'react-hook-form';
 
 import { useUploadThing } from '@/lib/uploadthing';
 import { isBase64Image } from '@/lib/utils';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import HRSettingsForm from './components/hr-settings-form';
 import PrivateInfoForm from './components/private-info-form';
 import WorkInfoForm from './components/work-info-form';
@@ -34,6 +36,11 @@ interface EmployeeEditPageProps {
 }
 
 const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
+  const router = useRouter();
+  const { status } = useSession();
+  if (status === 'unauthenticated') {
+    router.push('/');
+  }
   const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing('imageUploader');
 
@@ -129,13 +136,6 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                 </h2>
               </div>
               <div>
-                {/* <Image
-                  src='/prathibha.jpg'
-                  alt='Image'
-                  width={80}
-                  height={80}
-                  className='rounded-lg'
-                /> */}
                 <FormField
                   control={form.control}
                   name='profile_photo'
@@ -177,51 +177,45 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
             </div>
           </div>
           <div className='mt-5 flex justify-between'>
-            <div className='flex flex-col'>
-              <span>
-                Work Mobile:{' '}
-                <FormField
-                  name='workMobile'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input {...field} className='text-sm text-gray-600' />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </span>
-              <span>
-                Personal Mobile:{' '}
-                <FormField
-                  name='personalMobile'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input {...field} className='text-sm text-gray-600' />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </span>
-              <span>
-                Work Email:{' '}
-                <FormField
-                  name='workEmail'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input {...field} className='text-sm text-gray-600' />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </span>
+            <div className='flex flex-col gap-y-2 w-1/2'>
+              <FormLabel>Work Mobile</FormLabel>
+              <FormField
+                name='workMobile'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} className='text-sm text-gray-600' />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormLabel>Personal Mobile</FormLabel>
+              <FormField
+                name='personalMobile'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} className='text-sm text-gray-600' />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormLabel>Work Email</FormLabel>
+              <FormField
+                name='workEmail'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} className='text-sm text-gray-600' />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <div className='flex flex-col'>
+            <div className='flex flex-col gap-y-2 w-1/3'>
               <span>
                 Department:{' '}
                 <FormField
@@ -284,13 +278,13 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
             <TabsTrigger value='HR'>HR Settings</TabsTrigger>
           </TabsList>
           <TabsContent value='work'>
-            <WorkInfoForm />
+            <WorkInfoForm employeeId={params.employeeId} />
           </TabsContent>
           <TabsContent value='private'>
-            <PrivateInfoForm />
+            <PrivateInfoForm employeeId={params.employeeId} />
           </TabsContent>
           <TabsContent value='HR'>
-            <HRSettingsForm />
+            <HRSettingsForm employeeId={params.employeeId} />
           </TabsContent>
         </Tabs>
       </div>

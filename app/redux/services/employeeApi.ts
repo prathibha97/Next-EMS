@@ -1,12 +1,7 @@
 import { Employee } from '@prisma/client';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { apiSlice } from './api';
 
-export const employeeApi = createApi({
-  reducerPath: 'employeeApi',
-  refetchOnFocus: true,
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000/api',
-  }),
+export const employeeApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getEmployees: builder.query<Employee[], void>({
       query: () => '/employees',
@@ -23,7 +18,7 @@ export const employeeApi = createApi({
     }),
     updateEmployee: builder.mutation<
       Employee,
-      { employeeId: string; body: Partial<Employee> }
+      { employeeId: string | undefined; body: Partial<Employee> }
     >({
       query: ({ employeeId, body }) => ({
         url: `/employees/${employeeId}`,

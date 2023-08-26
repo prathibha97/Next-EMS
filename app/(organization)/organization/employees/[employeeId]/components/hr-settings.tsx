@@ -1,11 +1,12 @@
 import { Separator } from '@/components/ui/separator';
+import { Employee } from '@prisma/client';
 import { FC } from 'react'
 
 interface HRSettingsProps {
-  
+  employee: Employee | undefined;
 }
 
-const HRSettings: FC<HRSettingsProps> = ({}) => {
+const HRSettings: FC<HRSettingsProps> = ({employee}) => {
   return (
     <>
       <div className='flex justify-between'>
@@ -16,12 +17,16 @@ const HRSettings: FC<HRSettingsProps> = ({}) => {
           <div className='flex flex-col gap-y-4'>
             <span>
               Employee Type :{' '}
-              <span className='text-sm text-gray-600'>Employee</span>
+              <span className='text-sm text-gray-600'>
+                {employee?.employeeType}
+              </span>
             </span>
 
             <span>
               Related User:{' '}
-              <span className='text-sm text-gray-600'>Prathibha Ratnayake</span>
+              <span className='text-sm text-gray-600'>
+                {employee?.userId}
+              </span>
             </span>
           </div>
         </div>

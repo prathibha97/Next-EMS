@@ -27,15 +27,19 @@ import ActionButton from '@/components/buttons/action-button';
 import { toast } from '@/hooks/use-toast';
 import { useUploadThing } from '@/lib/uploadthing';
 import { isBase64Image } from '@/lib/utils';
+import { Employee } from '@prisma/client';
 import HRSettingsForm from './components/hr-settings-form';
 import PrivateInfoForm from './components/private-info-form';
 import WorkInfoForm from './components/work-info-form';
 
 const NewEmployeePage = () => {
   const [files, setFiles] = useState<File[]>([]);
+  const [loading, setLoading] = useState(false);
   const { startUpload } = useUploadThing('imageUploader');
 
-  const employee = useAppSelector((state) => state.employeeReducer.employee);
+  const employee: Employee | null = useAppSelector(
+    (state) => state.employeeReducer.employee
+  );
   const dispatch = useAppDispatch();
 
   const [addEmployee, { isLoading }] = useAddEmployeeMutation();
@@ -79,6 +83,7 @@ const NewEmployeePage = () => {
   };
 
   const onSubmit = async (values: EmployeeFormValues) => {
+    setLoading(true);
     try {
       const blob = values.profile_photo;
 
@@ -91,6 +96,7 @@ const NewEmployeePage = () => {
           values.profile_photo = imgRes[0].fileUrl;
         }
       }
+      setLoading(false);
 
       const response = await addEmployee({
         department: values.department,
@@ -126,6 +132,7 @@ const NewEmployeePage = () => {
         variant: 'destructive',
       });
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -213,7 +220,7 @@ const NewEmployeePage = () => {
             </div>
           </div>
           <div className='mt-5 flex justify-between'>
-            <div className='flex flex-col'>
+            <div className='flex flex-col w-1/3'>
               <span>
                 Work Mobile:{' '}
                 <FormField
@@ -257,7 +264,7 @@ const NewEmployeePage = () => {
                 />
               </span>
             </div>
-            <div className='flex flex-col'>
+            <div className='flex flex-col w-1/2'>
               <span>
                 Department:{' '}
                 <FormField
@@ -306,7 +313,7 @@ const NewEmployeePage = () => {
             <ActionButton
               type='submit'
               label='Create Employee'
-              isLoading={isLoading}
+              isLoading={isLoading || loading}
             />
           </div>
         </form>
@@ -322,13 +329,13 @@ const NewEmployeePage = () => {
             <TabsTrigger value='HR'>HR Settings</TabsTrigger>
           </TabsList>
           <TabsContent value='work'>
-            <WorkInfoForm employee={employee}/>
+            <WorkInfoForm employee={employee} />
           </TabsContent>
           <TabsContent value='private'>
-            <PrivateInfoForm />
+            <PrivateInfoForm employee={employee} />
           </TabsContent>
           <TabsContent value='HR'>
-            <HRSettingsForm />
+            <HRSettingsForm employee={employee} />
           </TabsContent>
         </Tabs>
       </div>

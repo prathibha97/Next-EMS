@@ -25,13 +25,13 @@ const Employee: FC<EmployeeProps> = ({ params }) => {
   const {
     data: employee,
     isLoading,
-    isFetching,
+    isFetching
   } = useGetEmployeeByIdQuery({ employeeId });
   console.log(employee);
 
   if (isLoading || isFetching) {
     // Display loading skeleton while data is being fetched
-    <LoadingState />;
+    return <LoadingState />;
   }
   return (
     <div className='bg-slate-50 w-[850px] xl:[3000px] p-3'>
@@ -112,13 +112,13 @@ const Employee: FC<EmployeeProps> = ({ params }) => {
             <TabsTrigger value='HR'>HR Settings</TabsTrigger>
           </TabsList>
           <TabsContent value='work'>
-            <WorkInfo employee={employee}/>
+            <WorkInfo employee={employee} />
           </TabsContent>
           <TabsContent value='private'>
-            <PrivateInfo />
+            <PrivateInfo employee={employee} />
           </TabsContent>
           <TabsContent value='HR'>
-            <HRSettings />
+            <HRSettings employee={employee} />
           </TabsContent>
         </Tabs>
       </div>

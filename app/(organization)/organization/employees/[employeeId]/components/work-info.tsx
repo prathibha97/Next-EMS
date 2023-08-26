@@ -3,10 +3,10 @@ import { Employee } from '@prisma/client';
 import { FC } from 'react';
 
 interface WorkInfoProps {
-  employee: Employee
+  employee: Employee | undefined;
 }
 
-const WorkInfo: FC<WorkInfoProps> = ({employee}) => {
+const WorkInfo: FC<WorkInfoProps> = ({ employee }) => {
   return (
     <>
       <div className='mt-5'>
@@ -16,12 +16,14 @@ const WorkInfo: FC<WorkInfoProps> = ({employee}) => {
           <span>
             Work Address :{' '}
             <span className='text-sm text-gray-600'>
-              Sphiria Digital Studio, Kandy
+              {employee?.workAddress || 'No work address'}
             </span>
           </span>
           <span>
             Work Location :{' '}
-            <span className='text-sm text-gray-600'>Remote</span>
+            <span className='text-sm text-gray-600'>
+              {employee?.workLocation || 'No work location'}
+            </span>
           </span>
         </div>
       </div>
@@ -32,12 +34,14 @@ const WorkInfo: FC<WorkInfoProps> = ({employee}) => {
           <span>
             Working hours :{' '}
             <span className='text-sm text-gray-600'>
-              Standard 40 hours/week
+              {employee?.workingHours || 'No working hours'}
             </span>
           </span>
           <span>
             Timezone :{' '}
-            <span className='text-sm text-gray-600'>Asia/Colombo</span>
+            <span className='text-sm text-gray-600'>
+              {employee?.timeZone || 'No timezone'}
+            </span>
           </span>
         </div>
       </div>

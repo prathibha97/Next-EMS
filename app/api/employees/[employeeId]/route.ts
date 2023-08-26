@@ -24,7 +24,31 @@ export async function GET(req: Request, { params }: { params: IParams }) {
 export async function PUT(req: Request, { params }: { params: IParams }) {
   const { employeeId } = params;
   const body = await req.json();
-  const { workAddress, workLocation, workingHours, startDate, timeZone } = body;
+  const {
+    workAddress,
+    workLocation,
+    workingHours,
+    startDate,
+    timeZone,
+    privateAddress,
+    personalEmail,
+    phone,
+    bankAccountNumber,
+    bankName,
+    maritalStatus,
+    numberOfDependents,
+    emergencyContactName,
+    emergencyContactPhone,
+    nationality,
+    idNumber,
+    gender,
+    dateOfBirth,
+    employeeType,
+    relatedUser,
+    idCopy,
+    resumeCopy,
+    passbookCopy,
+  } = body;
   try {
     const employee = await prisma.employee.update({
       where: {
@@ -36,6 +60,24 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
         workingHours,
         startDate,
         timeZone,
+        privateAddress,
+        personalEmail,
+        phone,
+        bankAccountNumber,
+        bankName,
+        maritalStatus,
+        numberOfDependents,
+        emergencyContactName,
+        emergencyContactPhone,
+        nationality,
+        idNumber,
+        gender,
+        dateOfBirth,
+        employeeType,
+        relatedUser,
+        idCopy,
+        resumeCopy,
+        passbookCopy,
       },
     });
     return NextResponse.json(employee);

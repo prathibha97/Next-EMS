@@ -26,7 +26,8 @@ export const employeeSlice = createSlice({
     getEmployee: (state, action: PayloadAction<Employee>) => {
       state.employee = action.payload;
     },
-    updateEmployeeData: (state, action: PayloadAction<Employee>) => {
+    updateEmployeeData: (state, action: PayloadAction<Employee | null>) => {
+      if (!action.payload) return;
       if (state.employee) {
         state.employee = { ...state.employee, ...action.payload };
       }

@@ -18,9 +18,8 @@ import { RecentProjects } from './components/recent-projects';
 import TeamSwitcher from './components/team-switcher';
 
 export default function DashboardPage() {
-  const session = useSession();
+  const session = useSession()
   const router = useRouter();
-
   if (session.status === 'unauthenticated') {
     router.push('/');
   }

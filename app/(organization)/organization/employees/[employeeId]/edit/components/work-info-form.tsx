@@ -1,5 +1,6 @@
 'use client';
-import { Button } from '@/components/ui/button';
+import { useUpdateEmployeeMutation } from '@/app/redux/services/employeeApi';
+import ActionButton from '@/components/buttons/action-button';
 import {
   Form,
   FormControl,
@@ -9,6 +10,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { toast } from '@/hooks/use-toast';
 import {
   WorkInfoFormSchema,
   WorkInfoFormValues,
@@ -17,9 +19,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
-interface WorkInfoFormProps {}
+interface WorkInfoFormProps {
+  employeeId: string;
+}
 
-const WorkInfoForm: FC<WorkInfoFormProps> = ({}) => {
+const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId }) => {
   const form = useForm<WorkInfoFormValues>({
     resolver: zodResolver(WorkInfoFormSchema),
     defaultValues: {
@@ -31,9 +35,36 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({}) => {
     },
   });
 
+  const [updateEmployee, { isLoading }] = useUpdateEmployeeMutation();
+
   const onSubmit = (data: WorkInfoFormValues) => {
-    // Perform save action here using data
-    console.log(data);
+    try {
+      const response = updateEmployee({
+        employeeId, // Pass the employeeId to the mutation
+        body: {
+          workAddress: data.workAddress,
+          workLocation: data.workLocation,
+          workingHours: data.workingHours,
+          startDate: data.startDate,
+          timeZone: data.timeZone,
+        },
+      });
+      const updatedEmployee = response;
+      console.log(updatedEmployee);
+      // dispatch(updateEmployeeData(updatedEmployee));
+      toast({
+        title: 'Employee updated successfully',
+        description: 'Please update the rest of the employee information',
+      });
+      form.reset();
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong, Please try again',
+        variant: 'destructive',
+      });
+      console.log(error);
+    }
   };
 
   return (
@@ -123,9 +154,12 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({}) => {
           </div>
         </div>
         <div className='mt-4'>
-          <Button type='submit' onClick={() => onSubmit}>
-            Save
-          </Button>
+          <ActionButton
+            type='submit'
+            onClick={() => onSubmit}
+            isLoading={isLoading}
+            label='Save'
+          />
         </div>
       </form>
     </Form>

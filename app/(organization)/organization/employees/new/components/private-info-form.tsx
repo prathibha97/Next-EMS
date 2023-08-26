@@ -1,4 +1,7 @@
-import { Button } from '@/components/ui/button';
+import { updateEmployeeData } from '@/app/redux/features/employeeSlice';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { useUpdateEmployeeMutation } from '@/app/redux/services/employeeApi';
+import ActionButton from '@/components/buttons/action-button';
 import {
   Form,
   FormControl,
@@ -8,22 +11,31 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { toast } from '@/hooks/use-toast';
 import {
   PrivateInfoFormSchema,
   PrivateInfoFormValues,
 } from '@/lib/validation/private-info-forn-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Employee } from '@prisma/client';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
-interface PrivateInfoFormProps {}
+interface PrivateInfoFormProps {
+  employee: Employee | null;
+}
 
-const PrivateInfoForm: FC<PrivateInfoFormProps> = ({}) => {
+const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
+  const dispatch = useAppDispatch();
+
+  const employeeId = employee?.id;
+
+  const [updateEmployee, { isLoading }] = useUpdateEmployeeMutation();
+
   const form = useForm<PrivateInfoFormValues>({
     resolver: zodResolver(PrivateInfoFormSchema),
     defaultValues: {
-      privateAddress:
-        '',
+      privateAddress: '',
       personalEmail: '',
       phone: '',
       bankAccountNumber: '',
@@ -40,8 +52,43 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({}) => {
   });
 
   const onSubmit = (data: PrivateInfoFormValues) => {
-    // Perform save action here using data
-    console.log(data);
+    try {
+      const response = updateEmployee({
+        employeeId, // Pass the employeeId to the mutation
+        body: {
+          privateAddress: data.privateAddress,
+          personalEmail: data.personalEmail,
+          phone: data.phone,
+          bankAccountNumber: data.bankAccountNumber,
+          bankName: data.bankName,
+          maritalStatus: data.maritalStatus,
+          numberOfDependents: data.numberOfDependents,
+          emergencyContactName: data.emergencyContactName,
+          emergencyContactPhone: data.emergencyContactPhone,
+          nationality:data.nationality,
+          idNumber:data.idNumber,
+          gender:data.gender,
+          dateOfBirth:data.dateOfBirth,
+        },
+      });
+        const updatedEmployee = response; // Access the nested data
+        console.log(updatedEmployee);
+        // dispatch(updateEmployeeData(updatedEmployee));
+
+        toast({
+          title: 'Employee updated successfully',
+          description: 'Please update the rest of the employee information',
+        });
+        form.reset();
+
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong, Please try again',
+        variant: 'destructive',
+      });
+      console.log(error);
+    }
   };
   return (
     <>
@@ -49,11 +96,11 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({}) => {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='flex justify-between'>
             {/* Private Contact */}
-            <div>
+            <div className='w-1/2'>
               <h2 className='text-lg font-semibold'>Private Contact</h2>
               <Separator className='mt-1 mb-3' />
               <div className='flex flex-col gap-y-4'>
-                <div className='flex gap-x-2'>
+                <div className='flex flex-col gap-x-2'>
                   <span>Private Address: </span>
                   <FormField
                     name='privateAddress'
@@ -127,7 +174,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({}) => {
             </div>
 
             {/* Family Status */}
-            <div>
+            <div className='w-1/3'>
               <h2 className='text-lg font-semibold'>Family Status</h2>
               <Separator className='mt-1 mb-3' />
               <div className='flex flex-col gap-y-4'>
@@ -165,7 +212,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({}) => {
 
           {/* Emergency contacts */}
           <div className='flex justify-between mt-5'>
-            <div>
+            <div className='w-1/2'>
               <h2 className='text-lg font-semibold'>Emergency Contact</h2>
               <Separator className='mt-1 mb-3' />
               <div className='flex flex-col gap-y-4'>
@@ -266,9 +313,12 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({}) => {
             </div>
           </div>
           <div className='mt-4'>
-            <Button type='submit' onClick={() => onSubmit}>
-              Save
-            </Button>
+            <ActionButton
+              type='submit'
+              onClick={() => onSubmit}
+              isLoading={isLoading}
+              label='Save'
+            />
           </div>
         </form>
       </Form>

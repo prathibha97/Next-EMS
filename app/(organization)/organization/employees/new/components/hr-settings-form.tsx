@@ -1,14 +1,25 @@
 'use client';
+import { useUpdateEmployeeMutation } from '@/app/redux/services/employeeApi';
+import { useGetUsersQuery } from '@/app/redux/services/userApi';
 import ActionButton from '@/components/buttons/action-button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { employeeTypeOptions } from '@/constants/employees';
 import { toast } from '@/hooks/use-toast';
 import { useUploadThing } from '@/lib/uploadthing';
 import {
@@ -16,12 +27,17 @@ import {
   HRSettingsFormValues,
 } from '@/lib/validation/hr-settings-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Employee } from '@prisma/client';
 import { ChangeEvent, FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-interface HRSettingsFormProps {}
+interface HRSettingsFormProps {
+  employee: Employee | null;
+}
 
-const HRSettingsForm: FC<HRSettingsFormProps> = ({}) => {
+const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
+  const employeeId = employee?.id;
+  console.log(employeeId);
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { startUpload } = useUploadThing('pdfUploader');
@@ -36,38 +52,40 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({}) => {
     },
   });
 
- const handleFileUpload = (
-   e: ChangeEvent<HTMLInputElement>,
-   fieldChange: (value: string) => void
- ) => {
-   e.preventDefault();
+  const { data: users, isLoading: isUsersLoading } = useGetUsersQuery();
+  const [updateEmployee, { isLoading: loading }] = useUpdateEmployeeMutation();
 
-   if (e.target.files && e.target.files.length > 0) {
-     const newFiles = Array.from(e.target.files);
+  const handleFileUpload = (
+    e: ChangeEvent<HTMLInputElement>,
+    fieldChange: (value: string) => void
+  ) => {
+    e.preventDefault();
 
-     const validFiles = newFiles.filter((file) => file.type.includes('pdf'));
+    if (e.target.files && e.target.files.length > 0) {
+      const newFiles = Array.from(e.target.files);
 
-     if (validFiles.length === 0) return; // No valid PDF files
+      const validFiles = newFiles.filter((file) => file.type.includes('pdf'));
 
-     setFiles((prevFiles) => [...prevFiles, ...validFiles]);
+      if (validFiles.length === 0) return; // No valid PDF files
 
-     const fileDataUrls: string[] = [];
+      setFiles((prevFiles) => [...prevFiles, ...validFiles]);
 
-     validFiles.forEach((file) => {
-       const fileReader = new FileReader();
-       fileReader.onload = (event) => {
-         const fileDataUrl = event.target?.result?.toString() || '';
-         fileDataUrls.push(fileDataUrl);
+      const fileDataUrls: string[] = [];
 
-         if (fileDataUrls.length === validFiles.length) {
-           fieldChange(fileDataUrls.join(','));
-         }
-       };
-       fileReader.readAsDataURL(file);
-     });
-   }
- };
+      validFiles.forEach((file) => {
+        const fileReader = new FileReader();
+        fileReader.onload = (event) => {
+          const fileDataUrl = event.target?.result?.toString() || '';
+          fileDataUrls.push(fileDataUrl);
 
+          if (fileDataUrls.length === validFiles.length) {
+            fieldChange(fileDataUrls.join(','));
+          }
+        };
+        fileReader.readAsDataURL(file);
+      });
+    }
+  };
 
   const onSubmit = async (values: HRSettingsFormValues) => {
     // Perform save action here using data
@@ -89,18 +107,29 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({}) => {
         }
       }
       setIsLoading(false);
+      const response = updateEmployee({
+        employeeId, // Pass the employeeId to the mutation
+        body: {
+          employeeType: values.employeeType,
+          userId: values.relatedUser,
+          idCopy: values.idCopy,
+          resumeCopy: values.resumeCopy,
+          passbookCopy: values.passbookCopy,
+        },
+      });
+      const updatedEmployee = response; // Access the nested data
+      console.log(updatedEmployee);
       toast({
         title: 'Success',
         description: 'Employee details updated successfully',
       });
-      // TODO: Perform save action here using data
-
+      form.reset();
     } catch (error) {
       setIsLoading(false);
       toast({
         title: 'Error',
         description: 'Something went wrong. Please try again later.',
-        variant:'destructive'
+        variant: 'destructive',
       });
     }
   };
@@ -110,39 +139,64 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({}) => {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='flex justify-between'>
             {/* Status */}
-            <div>
+            <div className='w-1/2'>
               <h2 className='text-lg font-semibold'>Status</h2>
               <Separator className='mt-1 mb-3' />
               <div className='flex flex-col gap-y-4'>
-                <span>
-                  Employee Type :{' '}
-                  <FormField
-                    name='employeeType'
-                    render={({ field }) => (
-                      <FormItem>
+                <FormField
+                  control={form.control}
+                  name='employeeType'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Employee Type</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
-                          <Input {...field} className='text-sm text-gray-600' />
+                          <SelectTrigger>
+                            <SelectValue placeholder='Select an employee type to display' />
+                          </SelectTrigger>
                         </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
-
-                <span>
-                  Related User:{' '}
-                  <FormField
-                    name='relatedUser'
-                    render={({ field }) => (
-                      <FormItem>
+                        <SelectContent>
+                          {employeeTypeOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='relatedUser'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Related User</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
-                          <Input {...field} className='text-sm text-gray-600' />
+                          <SelectTrigger>
+                            <SelectValue placeholder='Select an user email to display' />
+                          </SelectTrigger>
                         </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
+                        <SelectContent>
+                          {users?.map((user) => (
+                            <SelectItem key={user.id} value={user.id}>
+                              {user.email}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
             <div className='flex flex-col gap-y-3'>
@@ -204,7 +258,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({}) => {
           </div>
           <div className='mt-4'>
             <ActionButton
-              isLoading={isLoading}
+              isLoading={isLoading || loading}
               type='submit'
               onClick={() => onSubmit}
               label='Save'

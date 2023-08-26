@@ -1,9 +1,12 @@
 import { Separator } from '@/components/ui/separator';
+import { Employee } from '@prisma/client';
 import { FC } from 'react';
 
-interface WorkInfoProps {}
+interface WorkInfoProps {
+  employee: Employee
+}
 
-const WorkInfo: FC<WorkInfoProps> = ({}) => {
+const WorkInfo: FC<WorkInfoProps> = ({employee}) => {
   return (
     <>
       <div className='mt-5'>

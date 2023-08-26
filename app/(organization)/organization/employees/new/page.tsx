@@ -20,19 +20,25 @@ import Image from 'next/image';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { setEmployee } from '@/app/redux/features/employeeSlice';
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
+import { useAddEmployeeMutation } from '@/app/redux/services/employeeApi';
 import ActionButton from '@/components/buttons/action-button';
 import { toast } from '@/hooks/use-toast';
 import { useUploadThing } from '@/lib/uploadthing';
 import { isBase64Image } from '@/lib/utils';
-import axios from 'axios';
 import HRSettingsForm from './components/hr-settings-form';
 import PrivateInfoForm from './components/private-info-form';
 import WorkInfoForm from './components/work-info-form';
 
 const NewEmployeePage = () => {
   const [files, setFiles] = useState<File[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const { startUpload } = useUploadThing('imageUploader');
+
+  const employee = useAppSelector((state) => state.employeeReducer.employee);
+  const dispatch = useAppDispatch();
+
+  const [addEmployee, { isLoading }] = useAddEmployeeMutation();
 
   const form = useForm<EmployeeFormValues>({
     resolver: zodResolver(EmployeeFormSchema),
@@ -73,7 +79,6 @@ const NewEmployeePage = () => {
   };
 
   const onSubmit = async (values: EmployeeFormValues) => {
-    setIsLoading(true);
     try {
       const blob = values.profile_photo;
 
@@ -86,38 +91,35 @@ const NewEmployeePage = () => {
           values.profile_photo = imgRes[0].fileUrl;
         }
       }
-      const {
-        department,
-        jobPosition,
-        manager,
-        name,
-        personalMobile,
-        position,
-        profile_photo,
-        workEmail,
-        workMobile,
-      } = values;
-      // Perform save action here using data
-      await axios.post('/api/employees', {
-        department,
-        jobPosition,
-        manager,
-        name,
-        personalMobile,
-        position,
-        profile_photo,
-        workEmail,
-        workMobile,
+
+      const response = await addEmployee({
+        department: values.department,
+        jobPosition: values.jobPosition,
+        manager: values.manager,
+        name: values.name,
+        personalMobile: values.personalMobile,
+        position: values.position,
+        profile_photo: values.profile_photo,
+        workEmail: values.workEmail,
+        workMobile: values.workMobile,
       });
-      setIsLoading(false);
-      toast({
-        title: 'Employee created successfully',
-        description:
-          'Please update the rest of the employee information',
-      });
-      form.reset();
+      if ('data' in response) {
+        const newEmployee = response.data; // Access the nested data
+        dispatch(setEmployee(newEmployee));
+
+        toast({
+          title: 'Employee created successfully',
+          description: 'Please update the rest of the employee information',
+        });
+        form.reset();
+      } else if ('error' in response) {
+        toast({
+          title: 'Error',
+          description: 'Something went wrong, Please try again',
+          variant: 'destructive',
+        });
+      }
     } catch (error) {
-      setIsLoading(false);
       toast({
         title: 'Error',
         description: 'Something went wrong, Please try again',
@@ -320,7 +322,7 @@ const NewEmployeePage = () => {
             <TabsTrigger value='HR'>HR Settings</TabsTrigger>
           </TabsList>
           <TabsContent value='work'>
-            <WorkInfoForm />
+            <WorkInfoForm employee={employee}/>
           </TabsContent>
           <TabsContent value='private'>
             <PrivateInfoForm />

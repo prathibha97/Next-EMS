@@ -35,3 +35,14 @@ export async function POST(req: Request) {
     });
   }
 }
+
+export async function GET(req: Request) {
+  try {
+    const employees = await prisma.employee.findMany();
+    return NextResponse.json(employees);
+  } catch (error: any) {
+    return new Response(`Could not fetch employees - ${error.message}`, {
+      status: 500,
+    });
+  }
+}

@@ -42,7 +42,7 @@ model Employee {
   startDate             String?
   timeZone              String?
   privateAddress        String?
-  personalEmail         String? @unique
+  personalEmail         String? 
   phone                 String?
   bankAccountNumber     String?
   bankName              String?

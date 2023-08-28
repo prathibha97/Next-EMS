@@ -15,7 +15,7 @@ interface OrganizationSidebarNavProps extends React.HTMLAttributes<HTMLElement> 
 
 export function OrganizationSidebarNav({ className, items, ...props }: OrganizationSidebarNavProps) {
   const pathname = usePathname();
-
+console.log(pathname);
   return (
     <nav
       className={cn(
@@ -30,7 +30,7 @@ export function OrganizationSidebarNav({ className, items, ...props }: Organizat
           href={item.href}
           className={cn(
             buttonVariants({ variant: 'ghost' }),
-            pathname === item.href
+            pathname.startsWith(item.href)
               ? 'bg-slate-100 hover:bg-slate-200'
               : 'hover:bg-transparent hover:underline',
             'justify-start'

@@ -43,16 +43,19 @@ interface EmployeeEditPageProps {
 
 const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
   const router = useRouter();
-  const { status } = useSession();
-
-  const employeeId = params.employeeId;
-
-  useEffect(() => {
-    if (status === 'unauthenticated') {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
       router.push('/');
+    },
+  });
+  useEffect(() => {
+    if (session && session?.user?.role !== 'ADMIN') {
+      router.push('/denied');
     }
-  }, [status]);
-
+  }, [session]);
+  
+  const employeeId = params.employeeId;
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 

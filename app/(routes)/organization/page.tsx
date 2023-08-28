@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 
 const OrganizationPage = () => {
   const router = useRouter();
-  const { status, data } = useSession();
 
   const [isMounted, setIsMounted] = useState(false);
 
@@ -15,13 +14,18 @@ const OrganizationPage = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (status === 'unauthenticated') {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
       router.push('/');
-    } else if (data?.user?.role !== 'ADMIN') {
+    },
+  });
+  useEffect(() => {
+    if (session && session?.user?.role !== 'ADMIN') {
       router.push('/denied');
     }
-  }, [router, status, data]);
+  }, [session]);
+
 
     if (!isMounted) {
       return null;

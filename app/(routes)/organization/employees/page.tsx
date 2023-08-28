@@ -11,38 +11,28 @@ import EmployeeCard from './components/employee-card';
 import { SkeletonCard } from './components/loading-employee-card';
 
 const EmployeesPage = () => {
-  const { status, data } = useSession();
-  console.log(data);
   const router = useRouter();
-  // const [isMounted, setIsMounted] = useState(false)
-
-  // useEffect(()=>{
-  //   if(!isMounted){
-  //     setIsMounted(true)
-  //   }
-  // },[])
-
-  // if (!isMounted) {
-  //   return null;
-  // }
-
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/');
-    } 
-  }, [router, status]);
-
-  //  if (data?.user?.role !== 'ADMIN') {
-  //    router.push('/denied');
-  //  }
-
   const dispatch = useAppDispatch();
+
+  const { data:session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push('/');
+    }
+  });
+  useEffect(() => {
+    if (session && session?.user?.role !== 'ADMIN') {
+      router.push('/denied');
+    }
+  }, [session]);
 
   const { data: employees, isLoading } = useGetEmployeesQuery();
 
   const handleClick = (id: string) => {
     router.push(`/organization/employees/${id}`);
   };
+
+
 
   return (
     <div>

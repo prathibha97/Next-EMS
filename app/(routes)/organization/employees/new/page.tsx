@@ -17,7 +17,7 @@ import {
 } from '@/lib/validation/employee-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { setEmployee } from '@/app/redux/features/employeeSlice';
@@ -31,8 +31,24 @@ import { Employee } from '@prisma/client';
 import HRSettingsForm from './components/hr-settings-form';
 import PrivateInfoForm from './components/private-info-form';
 import WorkInfoForm from './components/work-info-form';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const NewEmployeePage = () => {
+
+  const router = useRouter();
+    const { data: session } = useSession({
+      required: true,
+      onUnauthenticated() {
+        router.push('/');
+      },
+    });
+    useEffect(() => {
+      if (session && session?.user?.role !== 'ADMIN') {
+        router.push('/denied');
+      }
+    }, [session]);
+
   const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
   const { startUpload } = useUploadThing('imageUploader');

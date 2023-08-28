@@ -1,6 +1,23 @@
+'use client';
 import { UserAuthForm } from '@/app/(root)/components/user-auth-form';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function AuthenticationPage() {
+  const router = useRouter();
+  const { status } = useSession();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+    }
+  }, []);
+
+  if (status === 'authenticated') {
+    router.push('/dashboard');
+  }
   return (
     <>
       <div className='container relative hidden h-full flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0'>

@@ -9,6 +9,9 @@ export const employeeApi = apiSlice.injectEndpoints({
     getEmployeeById: builder.query<Employee, { employeeId: string }>({
       query: ({ employeeId }) => `/employees/${employeeId}`,
     }),
+    getEmployeeByEmail: builder.query<Employee, { email: string }>({
+      query: ({ email }) => `/employees/${email}`,
+    }),
     addEmployee: builder.mutation<Employee, Partial<Employee>>({
       query: (body) => ({
         url: '/employees',
@@ -34,4 +37,5 @@ export const {
   useGetEmployeeByIdQuery,
   useAddEmployeeMutation,
   useUpdateEmployeeMutation,
+  
 } = employeeApi;

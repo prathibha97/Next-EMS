@@ -16,13 +16,23 @@ import { CalendarDateRangePicker } from './components/date-range-picker';
 import { Overview } from './components/overview';
 import { RecentProjects } from './components/recent-projects';
 import TeamSwitcher from './components/team-switcher';
+import { useEffect, useState } from 'react';
 
 export default function DashboardPage() {
   const session = useSession()
   const router = useRouter();
-  if (session.status === 'unauthenticated') {
-    router.push('/');
+
+  const [isMounted, setIsMounted] = useState(false)
+
+useEffect(()=>{
+  if(!isMounted){
+    setIsMounted(true)
   }
+},[])
+
+if (session.status === 'unauthenticated') {
+  router.push('/');
+}
   return (
     <>
       <div className='container flex-col md:flex'>

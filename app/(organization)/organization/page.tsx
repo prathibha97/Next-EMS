@@ -1,18 +1,26 @@
-'use client'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import React from 'react'
+'use client';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const OrganizationPage = () => {
-  const session = useSession()
-  const router = useRouter()
+  const { status, data } = useSession();
+  const router = useRouter();
 
-  // if(session.status === 'unauthenticated') {
-  //   router.push('/')
-  // }
-  return (
-    <div>OrganizationPage</div>
-  )
-}
+  const [isMounted, setIsMounted] = useState(false);
 
-export default OrganizationPage
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+    }
+  }, []);
+
+  if (status === 'unauthenticated') {
+    router.push('/');
+  } else if (data?.user?.role !== 'ADMIN') {
+    router.push('/denied');
+  }
+  return <div>OrganizationPage</div>;
+};
+
+export default OrganizationPage;

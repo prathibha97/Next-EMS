@@ -40,13 +40,13 @@ const DepartmentsPage = () => {
   const { data: employees, isLoading } = useGetEmployeesQuery();
 
   const handleClick = (id: string) => {
-    router.push(`/organization/employees/${id}`);
+    router.push(`/organization/departments/${id}`);
   };
 
   return (
     <div className='min-w-max lg:w-[850px]'>
       <div className='flex justify-end mb-5'>
-        <Button onClick={() => router.push(`employees/new`)}>
+        <Button onClick={() => router.push(`departments/new`)}>
           Add Department
         </Button>
       </div>

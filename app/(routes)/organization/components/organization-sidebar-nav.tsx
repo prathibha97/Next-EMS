@@ -15,7 +15,6 @@ interface OrganizationSidebarNavProps extends React.HTMLAttributes<HTMLElement> 
 
 export function OrganizationSidebarNav({ className, items, ...props }: OrganizationSidebarNavProps) {
   const pathname = usePathname();
-console.log(pathname);
   return (
     <nav
       className={cn(

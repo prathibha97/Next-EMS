@@ -1,3 +1,4 @@
+'use client'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Employee } from '@prisma/client';

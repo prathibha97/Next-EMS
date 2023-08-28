@@ -6,46 +6,23 @@ import { Button } from '@/components/ui/button';
 import { Employee } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import EmployeeCard from './components/employee-card';
 import { SkeletonCard } from './components/loading-employee-card';
 
-// const employees = [
-//   {
-//     id: 1,
-//     avatarSrc: 'url-to-avatar1.png',
-//     name: 'John Doe',
-//     email: 'john@example.com',
-//   },
-//   {
-//     id: 2,
-//     avatarSrc: 'url-to-avatar2.png',
-//     name: 'Jane Smith',
-//     email: 'jane@example.com',
-//   },
-//   {
-//     id: 3,
-//     avatarSrc: 'url-to-avatar3.png',
-//     name: 'Sam Doe',
-//     email: 'sam@example.com',
-//   },
-//   {
-//     id: 4,
-//     avatarSrc: 'url-to-avatar4.png',
-//     name: 'Mary Smith',
-//     email: 'mary@example.com',
-//   },
-//   // Add more employees
-// ];
-
 const EmployeesPage = () => {
-  const router = useRouter();
   const { status, data } = useSession();
-  if (status === 'unauthenticated') {
-    router.push('/');
-  }else if (data?.user?.role !== 'ADMIN'){
-    router.push('/denied');
-  }
-   const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/');
+    } else if (data?.user?.role !== 'ADMIN') {
+      router.push('/denied');
+    }
+  }, [router, status, data]);
+
+  const dispatch = useAppDispatch();
 
   const { data: employees, isLoading } = useGetEmployeesQuery();
 

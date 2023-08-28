@@ -1,4 +1,6 @@
 'use client';
+import { setAuthenticated } from '@/app/redux/features/authSlice';
+import { useAppDispatch } from '@/app/redux/hooks';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import axios from 'axios';
@@ -7,12 +9,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { Icons } from '../../../components/icons';
-import { Button } from '../../../components/ui/button';
-import { FormInput } from '../../../components/ui/formInput';
-import { Label } from '../../../components/ui/label';
-import { useAppDispatch } from '@/app/redux/hooks';
-import { setAuthenticated, setUser } from '@/app/redux/features/authSlice';
+import { Icons } from '../../../../components/icons';
+import { Button } from '../../../../components/ui/button';
+import { FormInput } from '../../../../components/ui/formInput';
+import { Label } from '../../../../components/ui/label';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 type Variant = 'LOGIN' | 'REGISTER';

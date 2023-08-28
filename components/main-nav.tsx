@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { NotificationButton } from '@/components/buttons/notification-button';
 import { cn } from '@/lib/utils';
-import { UserNav } from '../app/dashboard/components/user-nav';
+import { UserNav } from '../app/(routes)/dashboard/components/user-nav';
 
 export function MainNav({
   className,

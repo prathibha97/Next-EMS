@@ -11,31 +11,31 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { MainNav } from '../../components/main-nav';
+import { useEffect, useState } from 'react';
+import { MainNav } from '../../../components/main-nav';
 import { CalendarDateRangePicker } from './components/date-range-picker';
 import { Overview } from './components/overview';
 import { RecentProjects } from './components/recent-projects';
 import TeamSwitcher from './components/team-switcher';
-import { useEffect, useState } from 'react';
 
 export default function DashboardPage() {
-  const session = useSession()
+  const session = useSession();
   const router = useRouter();
 
-  const [isMounted, setIsMounted] = useState(false)
+  const [isMounted, setIsMounted] = useState(false);
 
-useEffect(() => {
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+    }
+    if (session && session.status === 'unauthenticated') {
+      router.push('/');
+    }
+  }, [isMounted, session, router]);
+
   if (!isMounted) {
-    setIsMounted(true);
+    return null;
   }
-  if (session && session.status === 'unauthenticated') {
-    router.push('/');
-  }
-}, [isMounted, session, router]);
-
-if (!isMounted) {
-  return null;
-}
 
   return (
     <div>

@@ -20,12 +20,12 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={`${inter.className} flex`}>
-        <Providers>
-          <AuthProvider>
+        <AuthProvider>
+          <Providers>
             {children}
             <Toaster />
-          </AuthProvider>
-        </Providers>
+          </Providers>
+        </AuthProvider>
       </body>
     </html>
   );

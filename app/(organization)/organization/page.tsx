@@ -1,11 +1,19 @@
 'use client';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const OrganizationPage = () => {
   const router = useRouter();
   const { status, data } = useSession();
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -14,6 +22,10 @@ const OrganizationPage = () => {
       router.push('/denied');
     }
   }, [router, status, data]);
+
+    if (!isMounted) {
+      return null;
+    }
 
   return <div>OrganizationPage</div>;
 };

@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -18,10 +17,15 @@ import {
 } from '@/lib/validation/employee-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useGetEmployeeByIdQuery } from '@/app/redux/services/employeeApi';
+import {
+  useGetEmployeeByIdQuery,
+  useUpdateEmployeeMutation,
+} from '@/app/redux/services/employeeApi';
+import ActionButton from '@/components/buttons/action-button';
+import { toast } from '@/hooks/use-toast';
 import { useUploadThing } from '@/lib/uploadthing';
 import { isBase64Image } from '@/lib/utils';
 import { useSession } from 'next-auth/react';
@@ -40,21 +44,30 @@ interface EmployeeEditPageProps {
 const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
   const router = useRouter();
   const { status } = useSession();
-  if (status === 'unauthenticated') {
-    router.push('/');
-  }
+
+  const employeeId = params.employeeId;
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/');
+    }
+  }, [status]);
+
   const [files, setFiles] = useState<File[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const { startUpload } = useUploadThing('imageUploader');
 
   const {
     data: employee,
-    isLoading,
+    isLoading: isLoadingEmployee,
     isFetching,
+    refetch: refetchEmployee,
   } = useGetEmployeeByIdQuery({ employeeId: params.employeeId });
 
-  console.log(employee);
+  const [updateEmployee, { isLoading: loading }] = useUpdateEmployeeMutation();
 
-  if (isLoading || isFetching) return <LoadingState />;
+  if (isLoadingEmployee || isFetching) return <LoadingState />;
 
   const form = useForm<EmployeeFormValues>({
     resolver: zodResolver(EmployeeFormSchema),
@@ -95,19 +108,51 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
   };
 
   const onSubmit = async (values: EmployeeFormValues) => {
-    const blob = values.profile_photo;
+    setIsLoading(true);
+    try {
+      const blob = values.profile_photo;
 
-    const hasImageChanged = isBase64Image(blob);
+      const hasImageChanged = isBase64Image(blob);
 
-    if (hasImageChanged) {
-      const imgRes = await startUpload(files);
+      if (hasImageChanged) {
+        const imgRes = await startUpload(files);
 
-      if (imgRes && imgRes[0].fileUrl) {
-        values.profile_photo = imgRes[0].fileUrl;
+        if (imgRes && imgRes[0].fileUrl) {
+          values.profile_photo = imgRes[0].fileUrl;
+        }
       }
+      setIsLoading(false);
+
+      const response = await updateEmployee({
+        employeeId, // Pass the employeeId to the mutation
+        body: {
+          name: values.name,
+          position: values.position,
+          workMobile: values.workMobile,
+          personalMobile: values.personalMobile,
+          workEmail: values.workEmail,
+          department: values.department,
+          jobPosition: values.jobPosition,
+          manager: values.manager,
+          profile_photo: values.profile_photo,
+        },
+      });
+      // const updatedEmployee = response?.data;
+      // console.log(updatedEmployee);
+      // dispatch(updateEmployeeData(updatedEmployee));
+      toast({
+        title: 'Employee updated successfully',
+        description: 'Please update the rest of the employee information',
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong, Please try again',
+        variant: 'destructive',
+      });
+      console.log(error);
+      setIsLoading(false);
     }
-    // Perform save action here using data
-    console.log(values);
   };
 
   return (
@@ -229,47 +274,49 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
             </div>
             <div className='flex flex-col gap-y-2 w-1/3'>
               <FormLabel>Department</FormLabel>
-                <FormField
-                  name='department'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input {...field} className='text-sm text-gray-600' />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                name='department'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} className='text-sm text-gray-600' />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormLabel>Job Position</FormLabel>
-                <FormField
-                  name='jobPosition'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input {...field} className='text-sm text-gray-600' />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                name='jobPosition'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} className='text-sm text-gray-600' />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormLabel>Manager</FormLabel>
-                <FormField
-                  name='manager'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input {...field} className='text-sm text-gray-600' />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                name='manager'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} className='text-sm text-gray-600' />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
           </div>
           <div className='mt-4'>
-            <Button type='submit' onClick={() => onSubmit}>
-              Save
-            </Button>
+            <ActionButton
+              isLoading={isLoading || loading}
+              type='submit'
+              label='Save'
+            />
           </div>
         </form>
       </Form>

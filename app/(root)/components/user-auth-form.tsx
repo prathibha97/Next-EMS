@@ -11,6 +11,8 @@ import { Icons } from '../../../components/icons';
 import { Button } from '../../../components/ui/button';
 import { FormInput } from '../../../components/ui/formInput';
 import { Label } from '../../../components/ui/label';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { setAuthenticated, setUser } from '@/app/redux/features/authSlice';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 type Variant = 'LOGIN' | 'REGISTER';
@@ -18,6 +20,7 @@ type Variant = 'LOGIN' | 'REGISTER';
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const session = useSession();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [variant, setVariant] = useState<Variant>('LOGIN');
@@ -80,6 +83,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           }
 
           if (callback?.ok && !callback?.error) {
+            // Dispatch actions to update authentication state and user data
+            dispatch(setAuthenticated(true));
+            // dispatch(setUser(session.data?.user));
             return toast({
               title: 'Logged in successfully',
             });

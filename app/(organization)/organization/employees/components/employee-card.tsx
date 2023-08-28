@@ -12,6 +12,7 @@ interface EmployeeCardProps {
 
 const EmployeeCard: FC<EmployeeCardProps> = ({ employee, onClick }) => {
   return (
+    <div>
     <Card
       className='flex items-center justify-center bg-white rounded-md shadow-md min-w-[100px] hover:cursor-pointer'
       onClick={() => onClick()}
@@ -30,6 +31,7 @@ const EmployeeCard: FC<EmployeeCardProps> = ({ employee, onClick }) => {
         </div>
       </CardContent>
     </Card>
+    </div>
   );
 };
 

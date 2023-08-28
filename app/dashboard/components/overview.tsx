@@ -55,6 +55,7 @@ const data = [
 
 export function Overview() {
   return (
+    <div>
     <ResponsiveContainer width='100%' height={350}>
       <BarChart data={data}>
         <XAxis
@@ -74,5 +75,6 @@ export function Overview() {
         <Bar dataKey='total' fill='#adfa1d' radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
+    </div>
   );
 }

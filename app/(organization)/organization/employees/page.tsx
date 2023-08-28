@@ -12,15 +12,29 @@ import { SkeletonCard } from './components/loading-employee-card';
 
 const EmployeesPage = () => {
   const { status, data } = useSession();
+  console.log(data);
   const router = useRouter();
+  // const [isMounted, setIsMounted] = useState(false)
+
+  // useEffect(()=>{
+  //   if(!isMounted){
+  //     setIsMounted(true)
+  //   }
+  // },[])
+
+  // if (!isMounted) {
+  //   return null;
+  // }
 
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/');
-    } else if (data?.user?.role !== 'ADMIN') {
-      router.push('/denied');
-    }
-  }, [router, status, data]);
+    } 
+  }, [router, status]);
+
+  //  if (data?.user?.role !== 'ADMIN') {
+  //    router.push('/denied');
+  //  }
 
   const dispatch = useAppDispatch();
 

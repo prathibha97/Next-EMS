@@ -25,9 +25,8 @@ const Employee: FC<EmployeeProps> = ({ params }) => {
   const {
     data: employee,
     isLoading,
-    isFetching
+    isFetching,
   } = useGetEmployeeByIdQuery({ employeeId });
-  console.log(employee);
 
   if (isLoading || isFetching) {
     // Display loading skeleton while data is being fetched

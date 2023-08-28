@@ -24,17 +24,21 @@ export default function DashboardPage() {
 
   const [isMounted, setIsMounted] = useState(false)
 
-useEffect(()=>{
-  if(!isMounted){
-    setIsMounted(true)
+useEffect(() => {
+  if (!isMounted) {
+    setIsMounted(true);
   }
-},[])
+  if (session && session.status === 'unauthenticated') {
+    router.push('/');
+  }
+}, [isMounted, session, router]);
 
-if (session.status === 'unauthenticated') {
-  router.push('/');
+if (!isMounted) {
+  return null;
 }
+
   return (
-    <>
+    <div>
       <div className='container flex-col md:flex'>
         <div className='border-b'>
           <div className='flex h-16 items-center px-4'>
@@ -192,6 +196,6 @@ if (session.status === 'unauthenticated') {
           </Tabs>
         </div>
       </div>
-    </>
+    </div>
   );
 }

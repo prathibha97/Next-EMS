@@ -30,6 +30,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Employee } from '@prisma/client';
 import { ChangeEvent, FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import LoadingState from './loading-state';
 
 interface HRSettingsFormProps {
   employee: Employee | null;
@@ -45,7 +46,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
     resolver: zodResolver(HRSettingsFormSchema),
     defaultValues: {
       employeeType: '',
-      relatedUser: '',
+      userId: '',
       idCopy: '',
       resumeCopy: '',
       passbookCopy: '',
@@ -111,7 +112,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
         employeeId, // Pass the employeeId to the mutation
         body: {
           employeeType: values.employeeType,
-          userId: values.relatedUser,
+          userId: values.userId,
           idCopy: values.idCopy,
           resumeCopy: values.resumeCopy,
           passbookCopy: values.passbookCopy,
@@ -133,6 +134,8 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
       });
     }
   };
+
+  if (isUsersLoading) return <LoadingState/>;
   return (
     <>
       <Form {...form}>
@@ -172,7 +175,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                 />
                 <FormField
                   control={form.control}
-                  name='relatedUser'
+                  name='userId'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Related User</FormLabel>

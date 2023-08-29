@@ -6,7 +6,7 @@ export const HRSettingsFormSchema = z.object({
       required_error: 'Please select an employee type.',
     })
     .nonempty({ message: 'Employee type is required' }),
-  relatedUser: z
+  userId: z
     .string({
       required_error: 'Please select an email to display.',
     })

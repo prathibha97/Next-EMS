@@ -49,7 +49,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
     resolver: zodResolver(HRSettingsFormSchema),
     defaultValues: {
       employeeType: employee?.employeeType ?? 'Employee type is not specified',
-      relatedUser:
+      userId:
         employee?.userId ?? 'No user account associated with the employee',
       idCopy: employee?.idCopy ?? 'ID copy not uploaded',
       resumeCopy: employee?.resumeCopy ?? 'Resume not uploaded',
@@ -113,7 +113,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
         employeeId, // Pass the employeeId to the mutation
         body: {
           employeeType: values.employeeType,
-          userId: values.relatedUser,
+          userId: values.userId,
           idCopy: values.idCopy,
           resumeCopy: values.resumeCopy,
           passbookCopy: values.passbookCopy,
@@ -176,7 +176,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
                 />
                 <FormField
                   control={form.control}
-                  name='relatedUser'
+                  name='userId'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Related User</FormLabel>

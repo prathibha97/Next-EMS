@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import employeeReducer from './features/employeeSlice';
+import departmentReducer from './features/departmentSlice';
 import authReducer from './features/authSlice';
 import { apiSlice } from './services/api';
 
@@ -9,6 +10,7 @@ export const store = configureStore({
     [apiSlice.reducerPath]: apiSlice.reducer,
     authReducer,
     employeeReducer,
+    departmentReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) =>

@@ -1,4 +1,8 @@
 'use client';
+import { setDepartments } from '@/app/redux/features/departmentSlice';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { useAddDepartmentMutation } from '@/app/redux/services/departmentApi';
+import { useGetEmployeesQuery } from '@/app/redux/services/employeeApi';
 import ActionButton from '@/components/buttons/action-button';
 import {
   Form,
@@ -9,6 +13,13 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast';
 import {
@@ -18,37 +29,46 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import LoadingState from '../components/loading-state';
 
 const NewDepartment = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const form = useForm<DepartmentFormValues>({
     resolver: zodResolver(DepartmentFormSchema),
     defaultValues: {
       name: '',
       description: '',
       manager: '',
-      parentDepartment: '',
     },
   });
 
-  const onSubmit = (data: DepartmentFormValues) => {
-    console.log(data);
+  const { data: employees, isLoading: isEmployeesLoading } =
+    useGetEmployeesQuery();
+  const [addDepartment] = useAddDepartmentMutation();
+
+  const onSubmit = async (data: DepartmentFormValues) => {
     try {
+      const response = await addDepartment(data);
+      console.log(response);
+      // dispatch(setDepartments(response.data));
       toast({
         title: 'Department Created',
         description: 'Department has been created successfully',
-      })
-      form.reset();
-      router.push('/organization/departments');
+      });
+      // form.reset();
+      // router.push('/organization/departments');
     } catch (error) {
       console.log(error);
       toast({
         title: 'Error',
         description: 'An error occurred while creating the department',
-        variant: 'destructive'
-      })
+        variant: 'destructive',
+      });
     }
   };
+
+  if (isEmployeesLoading) return <LoadingState />;
   return (
     <div className='bg-gray-50 p-5 mt-5 lg:w-[850px] rounded-lg'>
       <Form {...form}>
@@ -66,26 +86,29 @@ const NewDepartment = () => {
                 </FormItem>
               )}
             />
-            <FormLabel>Department Manager</FormLabel>
             <FormField
+              control={form.control}
               name='manager'
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Input {...field} className='text-sm text-gray-600' />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormLabel>Parent Department</FormLabel>
-            <FormField
-              name='parentDepartment'
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input {...field} className='text-sm text-gray-600' />
-                  </FormControl>
+                  <FormLabel>Department Manager</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Select an user email to display' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {employees?.map((employee) => (
+                        <SelectItem key={employee.id} value={employee.id}>
+                          {employee.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

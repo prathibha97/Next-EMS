@@ -1,25 +1,13 @@
-// import React from 'react'
-
-// const DepartmentsPage = () => {
-//   return (
-//     <div>DepartmentsPage</div>
-//   )
-// }
-
-// export default DepartmentsPage
-
 'use client';
-import { setEmployee } from '@/app/redux/features/employeeSlice';
+import { selectDepartment } from '@/app/redux/features/departmentSlice';
 import { useAppDispatch } from '@/app/redux/hooks';
-import { useGetEmployeesQuery } from '@/app/redux/services/employeeApi';
+import { useGetDepartmentsQuery } from '@/app/redux/services/departmentApi';
 import { Button } from '@/components/ui/button';
-import { Employee } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { SkeletonCard } from './components/loading-employee-card';
 import DepartmentCard from './components/department-card';
-
+import { SkeletonCard } from './components/loading-employee-card';
 
 const DepartmentsPage = () => {
   const router = useRouter();
@@ -37,7 +25,7 @@ const DepartmentsPage = () => {
     }
   }, [session]);
 
-  const { data: employees, isLoading } = useGetEmployeesQuery();
+  const { data: departments, isLoading } = useGetDepartmentsQuery();
 
   const handleClick = (id: string) => {
     router.push(`/organization/departments/${id}`);
@@ -57,13 +45,14 @@ const DepartmentsPage = () => {
               <SkeletonCard key={index} />
             ))
           : // Render the actual employee cards
-            employees?.map((employee: Employee) => (
+            departments?.map((department) => (
               <DepartmentCard
-                key={employee.id}
-                employee={employee}
+                key={department.id}
+                // @ts-ignore
+                department={department}
                 onClick={() => {
-                  handleClick(employee.id.toString());
-                  dispatch(setEmployee(employee));
+                  handleClick(department.id.toString());
+                  dispatch(selectDepartment(department));
                 }}
               />
             ))}

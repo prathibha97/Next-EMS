@@ -37,3 +37,29 @@ export async function POST(req: Request) {
     });
   }
 }
+
+export async function GET(req: Request) {
+  const session = getServerSession();
+  if (!session) {
+    throw new NextResponse('Unauthorized', { status: 401 });
+  }
+  try {
+    const departments = await prisma.department.findMany({
+      include: {
+        employees: true,
+        manager: true,
+      },
+    });
+    if (!departments) {
+      return new Response(`Could not find departments`, {
+        status: 404,
+      });
+    }
+
+    return NextResponse.json(departments);
+  } catch (error: any) {
+    return new Response(`Could not fetch departments - ${error.message}`, {
+      status: 500,
+    });
+  }
+}

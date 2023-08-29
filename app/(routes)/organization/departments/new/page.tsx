@@ -51,18 +51,26 @@ const NewDepartment = () => {
     try {
       const response = await addDepartment(data);
       console.log(response);
-      // dispatch(setDepartments(response.data));
-      toast({
-        title: 'Department Created',
-        description: 'Department has been created successfully',
-      });
-      // form.reset();
-      // router.push('/organization/departments');
+      if ('data' in response) {
+        dispatch(setDepartments(response.data));
+        toast({
+          title: 'Department Created',
+          description: 'Department has been created successfully',
+        });
+        form.reset();
+        router.push('/organization/departments');
+      } else if ('error' in response) {
+        toast({
+          title: 'Error',
+          description: 'An error occurred while creating the department',
+          variant: 'destructive',
+        });
+      }
     } catch (error) {
       console.log(error);
       toast({
         title: 'Error',
-        description: 'An error occurred while creating the department',
+        description: 'Something went wrong while creating the department',
         variant: 'destructive',
       });
     }

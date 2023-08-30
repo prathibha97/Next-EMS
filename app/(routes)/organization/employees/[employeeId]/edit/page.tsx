@@ -146,6 +146,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
           profile_photo: values.profile_photo,
         },
       });
+      console.log(response);
       // const updatedEmployee = response?.data;
       // console.log(updatedEmployee);
       // dispatch(updateEmployeeData(updatedEmployee));
@@ -324,18 +325,6 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                   </FormItem>
                 )}
               />
-              {/* <FormLabel>Manager</FormLabel>
-              <FormField
-                name='manager'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
             </div>
           </div>
           <div className='mt-4'>

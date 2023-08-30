@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 
 interface IParams {
   departmentId: string;
+  employeeId: string;
 }
 
 export async function GET(req: Request, { params }: { params: IParams }) {
@@ -34,3 +35,5 @@ export async function GET(req: Request, { params }: { params: IParams }) {
     });
   }
 }
+
+

@@ -5,8 +5,8 @@ import { Metadata } from 'next';
 import { OrganizationSidebarNav } from './components/organization-sidebar-nav';
 
 export const metadata: Metadata = {
-  title: 'Leave Management',
-  description: 'Advanced form example using react-hook-form and Zod.',
+  title: 'Sphiria Digital Studio | Organization Management',
+  description: 'Manage your organization departments and employees here',
 };
 
 interface OrganizationLayoutProps {

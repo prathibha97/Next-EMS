@@ -3,6 +3,8 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 
+import { useRemoveEmployeeFromDepartmentMutation } from '@/app/redux/services/departmentApi';
+import { EmployeeHoverCard } from '@/components/cards/employee-hover-card';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -13,15 +15,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Employee } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: 'pending' | 'processing' | 'success' | 'failed';
-  email: string;
-};
-
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Employee>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -42,14 +39,20 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
-    cell: ({ row }) => (
-      <div className='capitalize'>{row.getValue('status')}</div>
-    ),
+    accessorKey: 'name',
+    header: 'Name',
+    cell: ({ row }) => {
+      // <div className='capitalize'>{row.getValue('name')}</div>;
+      const employee = row.original;
+      return (
+        <div className='w-full'>
+          <EmployeeHoverCard employee={employee} />
+        </div>
+      );
+    },
   },
   {
-    accessorKey: 'email',
+    accessorKey: 'workEmail',
     header: ({ column }) => {
       return (
         <Button
@@ -61,28 +64,49 @@ export const columns: ColumnDef<Payment>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className='lowercase'>{row.getValue('email')}</div>,
+    cell: ({ row }) => (
+      <div className='lowercase'>{row.getValue('workEmail')}</div>
+    ),
   },
   {
-    accessorKey: 'amount',
-    header: () => <div className='text-right'>Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue('amount'));
+    accessorKey: 'jobPosition',
+    header: () => <div className='text-right'>Designation</div>,
+    // cell: ({ row }) => {
+    // const amount = parseFloat(row.getValue('amount'));
 
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }).format(amount);
+    // Format the amount as a dollar amount
+    // const formatted = new Intl.NumberFormat('en-US', {
+    //   style: 'currency',
+    //   currency: 'USD',
+    // }).format(amount);
 
-      return <div className='text-right font-medium'>{formatted}</div>;
-    },
+    // return <div className='text-right font-medium'>{formatted}</div>;
+    // },
+    cell: ({ row }) => (
+      <div className='capitalize'>{row.getValue('jobPosition')}</div>
+    ),
+  },
+  {
+    accessorKey: 'workMobile',
+    header: () => <div className='text-right'>Contact Number</div>,
+    cell: ({ row }) => <div>{row.getValue('workMobile')}</div>,
   },
   {
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const router = useRouter();
+      const [removeEmployeeFromDepartment] =
+        useRemoveEmployeeFromDepartmentMutation();
+      const employee = row.original;
+      console.log(employee);
+      const handleDelete = async () => {
+        removeEmployeeFromDepartment({
+          employeeId: employee.id,
+          departmentId: employee.departmentId as string,
+        });
+        router.refresh();
+      };
 
       return (
         <DropdownMenu>
@@ -95,13 +119,21 @@ export const columns: ColumnDef<Payment>[] = [
           <DropdownMenuContent align='end'>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(employee.id)}
             >
-              Copy payment ID
+              Copy employee ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() =>
+                router.push(`/organization/employees/${employee.id}`)
+              }
+            >
+              View employee
+            </DropdownMenuItem>
+            <DropdownMenuItem className='text-red-500' onClick={handleDelete}>
+              Remove from department
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

@@ -1,8 +1,21 @@
-'use client'
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -15,25 +28,19 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronDown } from "lucide-react";
-import { useState } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { ChevronDown } from 'lucide-react';
+import { useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  searchFilter?: string | undefined;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  searchFilter,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -64,9 +71,15 @@ export function DataTable<TData, TValue>({
       <div className='flex items-center py-4'>
         <Input
           placeholder='Filter emails...'
-          value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+          value={
+            (table
+              .getColumn(searchFilter || 'emails')
+              ?.getFilterValue() as string) ?? ''
+          }
           onChange={(event) =>
-            table.getColumn('email')?.setFilterValue(event.target.value)
+            table
+              .getColumn(searchFilter || 'emails')
+              ?.setFilterValue(event.target.value)
           }
           className='max-w-sm'
         />

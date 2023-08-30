@@ -8,7 +8,6 @@ const EmployeeSidebar = () => {
   const shouldDisplaySidebar = pathname === '/organization/employees';
 
   const {data:departments, isLoading} = useGetDepartmentsQuery()
-  console.log(departments);
 
   // Calculate the total employee count across all departments
   const totalEmployees = departments?.reduce(

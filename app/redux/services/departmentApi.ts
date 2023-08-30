@@ -26,6 +26,15 @@ export const departmentApi = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    removeEmployeeFromDepartment: builder.mutation<
+      void,
+      { departmentId: string; employeeId: string }
+    >({
+      query: ({ departmentId, employeeId }) => ({
+        url: `/departments/${departmentId}/employees/${employeeId}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -34,4 +43,5 @@ export const {
   useGetDepartmentByIdQuery,
   useAddDepartmentMutation,
   useUpdateDepartmentMutation,
+  useRemoveEmployeeFromDepartmentMutation,
 } = departmentApi;

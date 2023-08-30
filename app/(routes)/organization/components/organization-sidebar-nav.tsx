@@ -30,7 +30,7 @@ export function OrganizationSidebarNav({ className, items, ...props }: Organizat
           className={cn(
             buttonVariants({ variant: 'ghost' }),
             pathname.startsWith(item.href)
-              ? 'bg-slate-100 hover:bg-slate-200'
+              ? 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200'
               : 'hover:bg-transparent hover:underline',
             'justify-start'
           )}

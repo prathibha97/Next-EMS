@@ -35,14 +35,14 @@ console.log(employee);
     return <LoadingState />;
   }
   return (
-    <div className='bg-slate-50 w-[850px] xl:[3000px] p-3'>
+    <div className='bg-slate-50 w-[850px] xl:[3000px] p-5 rounded-lg dark:bg-gray-800/40'>
       <div>
         <div className='flex justify-between'>
           <div className='flex flex-col'>
             <h1 className='text-3xl font-semibold'>
               {employee?.name || 'Employee Name'}
             </h1>
-            <h2 className='mt-3 text-xl text-gray-600'>
+            <h2 className='mt-3 text-xl text-gray-600 dark:text-gray-300'>
               {employee?.position || 'Position'}
             </h2>
           </div>
@@ -61,20 +61,20 @@ console.log(employee);
         <div className='flex flex-col'>
           <span>
             Work Mobile:{' '}
-            <span className='text-sm text-gray-600'>
+            <span className='text-sm text-gray-600 dark:text-gray-300'>
               {employee?.workMobile || 'Work Mobile not specified'}
             </span>
           </span>
           <span>
             Personal Mobile:{' '}
-            <span className='text-sm text-gray-600'>
+            <span className='text-sm text-gray-600 dark:text-gray-300'>
               {' '}
               {employee?.personalMobile || 'Personal Mobile not specified'}
             </span>
           </span>
           <span>
             Work Email:{' '}
-            <span className='text-sm text-gray-600'>
+            <span className='text-sm text-gray-600 dark:text-gray-300'>
               {employee?.workEmail || 'prathibha@sphiriadigital.com'}
             </span>
           </span>
@@ -82,15 +82,19 @@ console.log(employee);
         <div className='flex flex-col'>
           <span>
             Department:{' '}
-            <span className='text-sm text-gray-600'>
+            <span className='text-sm text-gray-600 dark:text-gray-300'>
               {/* @ts-ignore */}
-              {employee && employee.departments.map((department:Department)=>department.name) || `Department not specified`}
+              {(employee &&
+                employee.departments.map(
+                  (department: Department) => department.name
+                )) ||
+                `Department not specified`}
             </span>
           </span>
           <span>
             Job Position:{' '}
-            <span className='text-sm text-gray-600'>
-              <span className='text-sm text-gray-600'>
+            <span className='text-sm text-gray-600 dark:text-gray-300'>
+              <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {employee?.jobPosition || `Job Position not specified`}
               </span>
             </span>

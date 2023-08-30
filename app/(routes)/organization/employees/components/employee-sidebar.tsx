@@ -19,7 +19,7 @@ const EmployeeSidebar = () => {
 
   return (
     <div className={`flex ${shouldDisplaySidebar ? 'block' : 'hidden'}`}>
-      <div className='flex flex-col h-full p-3 bg-gray-50 shadow w-60'>
+      <div className='flex flex-col h-full p-3 bg-gray-50 dark:bg-gray-900 rounded-md shadow w-60'>
         <div className='flex items-center'>
           <h2 className='text-md font-bold'>Departments</h2>
         </div>

@@ -12,7 +12,7 @@ const Sidebar = () => {
   const homepage = pathname === '/';
   return (
     <div className={`flex ${homepage && 'hidden'}`}>
-      <div className='flex flex-col h-screen p-3 bg-gray-50 shadow w-60'>
+      <div className='flex flex-col h-screen p-3 bg-gray-50 shadow w-60 dark:bg-gray-900 dark:text-gray-50'>
         <div className='flex items-center'>
           <h2 className='text-xl font-bold'>Dashboard</h2>
         </div>
@@ -21,7 +21,7 @@ const Sidebar = () => {
             {sidebarItems.map((item) => (
               <li
                 className={`rounded-sm ${
-                  pathname === item.link ? 'bg-muted' : ''
+                  pathname === item.link ? 'bg-muted dark:text-black' : ''
                 }`}
                 key={item.name}
               >
@@ -30,7 +30,7 @@ const Sidebar = () => {
                   className={`flex items-center p-2 space-x-3 rounded-md ${
                     pathname === item.link
                       ? 'bg-gray-300 font-semibold'
-                      : 'hover:bg-gray-200'
+                      : 'hover:bg-gray-200 hover:dark:bg-gray-700'
                   }`}
                 >
                   {item.icon}

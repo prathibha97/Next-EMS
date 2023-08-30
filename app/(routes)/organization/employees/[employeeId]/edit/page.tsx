@@ -168,7 +168,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
     return <LoadingState />;
   }
   return (
-    <div className='bg-slate-50 w-[850px] xl:[3000px] p-3'>
+    <div className='bg-slate-50 w-[850px] xl:[3000px] p-5 rounded-lg dark:bg-gray-800/40'>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div>
@@ -180,7 +180,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} className='text-3xl text-gray-600' />
+                        <Input {...field} className='text-3xl text-gray-600 dark:text-gray-300' />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -193,7 +193,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} className='text-xl text-gray-600' />
+                        <Input {...field} className='text-xl text-gray-600 dark:text-gray-300' />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -249,7 +249,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
+                      <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -261,7 +261,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
+                      <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -273,7 +273,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
+                      <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -318,7 +318,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
+                      <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -15,13 +15,13 @@ const WorkInfo: FC<WorkInfoProps> = ({ employee }) => {
         <div className='flex flex-col gap-y-3'>
           <span>
             Work Address :{' '}
-            <span className='text-sm text-gray-600'>
+            <span className='text-sm text-gray-600 dark:text-gray-300'>
               {employee?.workAddress || 'No work address'}
             </span>
           </span>
           <span>
             Work Location :{' '}
-            <span className='text-sm text-gray-600'>
+            <span className='text-sm text-gray-600 dark:text-gray-300'>
               {employee?.workLocation || 'No work location'}
             </span>
           </span>
@@ -33,13 +33,13 @@ const WorkInfo: FC<WorkInfoProps> = ({ employee }) => {
         <div className='flex flex-col gap-y-3'>
           <span>
             Working hours :{' '}
-            <span className='text-sm text-gray-600'>
+            <span className='text-sm text-gray-600 dark:text-gray-300'>
               {employee?.workingHours || 'No working hours'}
             </span>
           </span>
           <span>
             Timezone :{' '}
-            <span className='text-sm text-gray-600'>
+            <span className='text-sm text-gray-600 dark:text-gray-300'>
               {employee?.timeZone || 'No timezone'}
             </span>
           </span>

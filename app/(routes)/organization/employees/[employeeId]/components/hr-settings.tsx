@@ -18,14 +18,14 @@ const HRSettings: FC<HRSettingsProps> = ({employee}) => {
           <div className='flex flex-col gap-y-4'>
             <span>
               Employee Type :{' '}
-              <span className='text-sm text-gray-600'>
+              <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {employee?.employeeType}
               </span>
             </span>
 
             <span>
               Related User:{' '}
-              <span className='text-sm text-gray-600'>
+              <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {/* @ts-ignore */}
                 {employee?.user?.email || 'No user related'}
               </span>

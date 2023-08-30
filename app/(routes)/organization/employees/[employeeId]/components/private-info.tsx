@@ -29,24 +29,24 @@ const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {
                   <span>Sri Lanka</span>
                 </div>
               </div> */}
-              <span className='text-sm text-gray-600'>
+              <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {employee?.privateAddress}
               </span>
             </div>
             <span>
               Personal Email :{' '}
-              <span className='text-sm text-gray-600'>
+              <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {employee?.personalEmail}
               </span>
             </span>
             <span>
-              Phone : <span className='text-sm text-gray-600'>
+              Phone : <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {employee?.phone}
               </span>
             </span>
             <span>
               Bank Account Number :{' '}
-              <span className='text-sm text-gray-600'>
+              <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {employee?.bankAccountNumber}
               </span>
             </span>
@@ -60,13 +60,13 @@ const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {
           <div className='flex flex-col gap-y-4'>
             <span>
               Marital Status :{' '}
-              <span className='text-sm text-gray-600'>
+              <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {employee?.maritalStatus}
               </span>
             </span>
             <span>
               Number of dependent children :{' '}
-              <span className='text-sm text-gray-600'>
+              <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {employee?.numberOfDependents}
               </span>
             </span>
@@ -82,13 +82,13 @@ const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {
           <div className='flex flex-col gap-y-4'>
             <span>
               Contact Name :{' '}
-              <span className='text-sm text-gray-600'>
+              <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {employee?.emergencyContactName}
               </span>
             </span>
             <span>
               Contact Number :{' '}
-              <span className='text-sm text-gray-600'>
+              <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {employee?.emergencyContactPhone}
               </span>
             </span>
@@ -103,24 +103,24 @@ const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {
           <div className='flex flex-col gap-y-4'>
             <span>
               Nationality :{' '}
-              <span className='text-sm text-gray-600'>
+              <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {employee?.nationality}
               </span>
             </span>
             <span>
               Identification Number :{' '}
-              <span className='text-sm text-gray-600'>
+              <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {employee?.idNumber}
               </span>
             </span>
             <span>
-              Gender : <span className='text-sm text-gray-600'>
+              Gender : <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {employee?.gender}
               </span>
             </span>
             <span>
               date of Birth :{' '}
-              <span className='text-sm text-gray-600'>
+              <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {employee?.dateOfBirth}
               </span>
             </span>

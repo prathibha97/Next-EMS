@@ -84,7 +84,7 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee }) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} className='text-sm text-gray-600' />
+                    <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -96,7 +96,7 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee }) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} className='text-sm text-gray-600' />
+                    <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -114,7 +114,7 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee }) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} className='text-sm text-gray-600' />
+                    <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -126,7 +126,7 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee }) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} className='text-sm text-gray-600' />
+                    <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -138,7 +138,7 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
+                      <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -1,9 +1,7 @@
-'use client';
-
-import Link from 'next/link';
 import * as React from 'react';
+import Link from 'next/link';
 
-import { UserNav } from '@/app/(routes)/dashboard/components/user-nav';
+import { cn } from '@/lib/utils';
 import { Icons } from '@/components/icons';
 import {
   NavigationMenu,
@@ -14,20 +12,14 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
-import { cn } from '@/lib/utils';
+import { UserNav } from '@/app/(routes)/dashboard/components/user-nav';
 import { usePathname } from 'next/navigation';
-import { NotificationButton } from './buttons/notification-button';
+import { NotificationButton } from '@/components/buttons/notification-button';
 
-export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
-  const pathname = usePathname();
-  const homepage = pathname === '/';
-  const dashboard = pathname === '/dashboard';
+export function DashboardNav({ className }: React.HTMLAttributes<HTMLElement>) {
+
   return (
-    <div
-      className={`flex justify-between w-full ${dashboard && 'hidden'} ${
-        homepage && 'hidden'
-      }`}
-    >
+    <div className={`flex justify-between w-full`}>
       <NavigationMenu className={className}>
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -146,7 +138,7 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-      <div className='flex items-center space-x-4'>
+      <div className='flex items-center space-x-2'>
         {/* <Search /> */}
         <NotificationButton />
         <UserNav />{' '}

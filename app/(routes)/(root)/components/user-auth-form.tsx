@@ -97,8 +97,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   };
 
   return (
-    <div className={cn('grid gap-6', className)} {...props}>
-      <div className='flex flex-col space-y-2 text-center'>
+    <div className={cn('grid gap-6 mx-auto w-full', className)} {...props}>
+      <div className='flex flex-col space-y-2 text-center mt-10 sm:mt-0'>
         <h1 className='text-2xl font-semibold tracking-tight'>
           {variant === 'LOGIN' ? 'Login to your account' : 'Create an account'}
         </h1>

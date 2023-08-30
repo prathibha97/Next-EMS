@@ -9,8 +9,9 @@ import { Button } from './ui/button';
 const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const homepage = pathname === '/';
   return (
-    <div className='flex'>
+    <div className={`flex ${homepage && 'hidden'}`}>
       <div className='flex flex-col h-screen p-3 bg-gray-50 shadow w-60'>
         <div className='flex items-center'>
           <h2 className='text-xl font-bold'>Dashboard</h2>

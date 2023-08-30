@@ -17,6 +17,7 @@ import { CalendarDateRangePicker } from './components/date-range-picker';
 import { Overview } from './components/overview';
 import { RecentProjects } from './components/recent-projects';
 import TeamSwitcher from './components/team-switcher';
+import { DashboardNav } from './components/dashboard-nav';
 
 export default function DashboardPage() {
   const session = useSession();
@@ -43,7 +44,7 @@ export default function DashboardPage() {
         <div className='border-b'>
           <div className='flex h-16 items-center px-4'>
             <TeamSwitcher />
-            <MainNav className='mx-6' />
+            <DashboardNav className='mx-6' />
           </div>
         </div>
         <div className='flex-1 space-y-4 p-8 pt-6'>

@@ -26,8 +26,8 @@ export default function AuthenticationPage() {
   }
 
   return (
-    <div>
-      <div className='container relative hidden h-full flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0'>
+    <div className='h-screen'>
+      <div className='container relative h-full flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0'>
         <div className='relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex'>
           <div className='absolute inset-0 bg-zinc-900' />
           <div className='relative z-20 flex items-center text-lg font-medium'>
@@ -45,7 +45,7 @@ export default function AuthenticationPage() {
             </svg>
             Sphiria Digital Studio
           </div>
-          <div className='relative z-20 mt-auto'>
+          <div className='relative z-20 mt-auto lg:w-[1224px]'>
             <blockquote className='space-y-2'>
               <p className='text-lg'>
                 &ldquo;Success is not final, failure is not fatal: It is the

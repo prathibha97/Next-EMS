@@ -15,6 +15,7 @@ import {
 import { UserNav } from '@/app/(routes)/dashboard/components/user-nav';
 import { usePathname } from 'next/navigation';
 import { NotificationButton } from '@/components/buttons/notification-button';
+import { ModeToggle } from '@/components/buttons/theme-toggle-button';
 
 export function DashboardNav({ className }: React.HTMLAttributes<HTMLElement>) {
 
@@ -141,6 +142,7 @@ export function DashboardNav({ className }: React.HTMLAttributes<HTMLElement>) {
       <div className='flex items-center space-x-2'>
         {/* <Search /> */}
         <NotificationButton />
+        <ModeToggle/>
         <UserNav />{' '}
       </div>
     </div>

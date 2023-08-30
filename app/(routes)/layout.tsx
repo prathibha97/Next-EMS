@@ -6,6 +6,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Providers } from '../redux/provider';
 import './globals.css';
+import { ThemeProvider } from '@/providers/themeProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,20 +21,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en'>
+    <html lang='en' suppressHydrationWarning>
       <body className={`${inter.className}`}>
-        <AuthProvider>
-          <Providers>
-            <div className='flex'>
-              <Sidebar />
-              <div>
-                <MainNav />
-                {children}
+        <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+          <AuthProvider>
+            <Providers>
+              <div className='flex'>
+                <Sidebar />
+                <div>
+                  <MainNav />
+                  {children}
+                </div>
               </div>
-            </div>
-            <Toaster />
-          </Providers>
-        </AuthProvider>
+              <Toaster />
+            </Providers>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

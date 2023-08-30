@@ -17,6 +17,7 @@ import {
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 import { NotificationButton } from './buttons/notification-button';
+import { ModeToggle } from './buttons/theme-toggle-button';
 
 export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
@@ -24,7 +25,7 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
   const dashboard = pathname === '/dashboard';
   return (
     <div
-      className={`flex justify-between w-full ${dashboard && 'hidden'} ${
+      className={`flex justify-between w-full mt-3 ${dashboard && 'hidden'} ${
         homepage && 'hidden'
       }`}
     >
@@ -146,9 +147,10 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-      <div className='flex items-center space-x-4'>
+      <div className='flex items-center space-x-4 pr-5'>
         {/* <Search /> */}
         <NotificationButton />
+        <ModeToggle/>
         <UserNav />{' '}
       </div>
     </div>

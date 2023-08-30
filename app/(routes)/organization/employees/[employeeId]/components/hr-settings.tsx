@@ -7,6 +7,7 @@ interface HRSettingsProps {
 }
 
 const HRSettings: FC<HRSettingsProps> = ({employee}) => {
+
   return (
     <>
       <div className='flex justify-between'>
@@ -25,7 +26,8 @@ const HRSettings: FC<HRSettingsProps> = ({employee}) => {
             <span>
               Related User:{' '}
               <span className='text-sm text-gray-600'>
-                {employee?.userId}
+                {/* @ts-ignore */}
+                {employee?.user?.email || 'No user related'}
               </span>
             </span>
           </div>

@@ -11,6 +11,7 @@ import HRSettings from './components/hr-settings';
 import LoadingState from './components/loading-state';
 import PrivateInfo from './components/private-info';
 import WorkInfo from './components/work-info';
+import { Department } from '@prisma/client';
 
 interface EmployeeProps {
   params: {
@@ -27,6 +28,7 @@ const Employee: FC<EmployeeProps> = ({ params }) => {
     isLoading,
     isFetching,
   } = useGetEmployeeByIdQuery({ employeeId });
+console.log(employee);
 
   if (isLoading || isFetching) {
     // Display loading skeleton while data is being fetched
@@ -60,14 +62,14 @@ const Employee: FC<EmployeeProps> = ({ params }) => {
           <span>
             Work Mobile:{' '}
             <span className='text-sm text-gray-600'>
-              {employee?.workMobile || '0774567895'}
+              {employee?.workMobile || 'Work Mobile not specified'}
             </span>
           </span>
           <span>
             Personal Mobile:{' '}
             <span className='text-sm text-gray-600'>
               {' '}
-              {employee?.personalMobile || '0774567895'}
+              {employee?.personalMobile || 'Personal Mobile not specified'}
             </span>
           </span>
           <span>
@@ -81,23 +83,24 @@ const Employee: FC<EmployeeProps> = ({ params }) => {
           <span>
             Department:{' '}
             <span className='text-sm text-gray-600'>
-              {employee?.department || `Software & Web Development`}
+              {/* @ts-ignore */}
+              {employee && employee.departments.map((department:Department)=>department.name) || `Department not specified`}
             </span>
           </span>
           <span>
             Job Position:{' '}
             <span className='text-sm text-gray-600'>
               <span className='text-sm text-gray-600'>
-                {employee?.jobPosition || `Software Engineer`}
+                {employee?.jobPosition || `Job Position not specified`}
               </span>
             </span>
           </span>
-          <span>
+          {/* <span>
             Manager:{' '}
             <span className='text-sm text-gray-600'>
               {employee?.manager || `Prathibha Ratnayake`}
             </span>
-          </span>
+          </span> */}
         </div>
       </div>
 

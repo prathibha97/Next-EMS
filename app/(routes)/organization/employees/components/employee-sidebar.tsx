@@ -1,15 +1,19 @@
 'use client'
 import React from 'react';
-import { departments } from '@/constants/departments';
 import { usePathname } from 'next/navigation';
+import { useGetDepartmentsQuery } from '@/app/redux/services/departmentApi';
 
 const EmployeeSidebar = () => {
   const pathname = usePathname();
   const shouldDisplaySidebar = pathname === '/organization/employees';
 
+  const {data:departments, isLoading} = useGetDepartmentsQuery()
+  console.log(departments);
+
   // Calculate the total employee count across all departments
-  const totalEmployees = departments.reduce(
-    (total, department) => total + department.employeeCount,
+  const totalEmployees = departments?.reduce(
+    // @ts-ignore
+    (total, department) => total + department?.employees?.length,
     0
   );
 
@@ -28,10 +32,11 @@ const EmployeeSidebar = () => {
             </li>
 
             {/* Display individual departments */}
-            {departments.map((item) => (
+            {departments?.map((item) => (
               <li key={item.name} className='flex justify-between'>
                 <span>{item.name}</span>
-                <span>{item.employeeCount}</span>
+                {/* @ts-ignore */}
+                <span>{item.employees.length}</span>
               </li>
             ))}
           </ul>

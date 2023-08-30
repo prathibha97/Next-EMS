@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma';
+import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
 
 interface IParams {
@@ -6,12 +7,20 @@ interface IParams {
 }
 
 export async function GET(req: Request, { params }: { params: IParams }) {
+  const session = getServerSession();
+  if (!session) {
+    throw new NextResponse('Unauthorized', { status: 401 });
+  }
   const { employeeId } = params;
   try {
     const employee = await prisma.employee.findUnique({
       where: {
         id: employeeId,
       },
+      include: {
+        departments: true,
+        user: true,
+      }
     });
     return NextResponse.json(employee);
   } catch (error: any) {
@@ -22,6 +31,10 @@ export async function GET(req: Request, { params }: { params: IParams }) {
 }
 
 export async function PUT(req: Request, { params }: { params: IParams }) {
+  const session = getServerSession();
+  if (!session) {
+    throw new NextResponse('Unauthorized', { status: 401 });
+  }
   const { employeeId } = params;
   const body = await req.json();
   const {

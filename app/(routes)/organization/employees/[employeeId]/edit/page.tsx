@@ -20,11 +20,19 @@ import Image from 'next/image';
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { useGetDepartmentsQuery } from '@/app/redux/services/departmentApi';
 import {
   useGetEmployeeByIdQuery,
   useUpdateEmployeeMutation,
 } from '@/app/redux/services/employeeApi';
 import ActionButton from '@/components/buttons/action-button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
 import { useUploadThing } from '@/lib/uploadthing';
 import { isBase64Image } from '@/lib/utils';
@@ -54,7 +62,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
       router.push('/denied');
     }
   }, [session]);
-  
+
   const employeeId = params.employeeId;
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -65,12 +73,12 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
     data: employee,
     isLoading: isLoadingEmployee,
     isFetching,
-    refetch: refetchEmployee,
   } = useGetEmployeeByIdQuery({ employeeId: params.employeeId });
 
-  const [updateEmployee, { isLoading: loading }] = useUpdateEmployeeMutation();
+  const { data: departments, isLoading: isDepartmentsLoading } =
+    useGetDepartmentsQuery();
 
-  if (isLoadingEmployee || isFetching) return <LoadingState />;
+  const [updateEmployee, { isLoading: loading }] = useUpdateEmployeeMutation();
 
   const form = useForm<EmployeeFormValues>({
     resolver: zodResolver(EmployeeFormSchema),
@@ -80,9 +88,8 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
       workMobile: employee?.workMobile,
       personalMobile: employee?.personalMobile,
       workEmail: employee?.workEmail,
-      department: employee?.department,
+      department: employee?.departmentId || '',
       jobPosition: employee?.jobPosition,
-      manager: employee?.manager,
       profile_photo: employee?.profile_photo,
     },
   });
@@ -134,9 +141,8 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
           workMobile: values.workMobile,
           personalMobile: values.personalMobile,
           workEmail: values.workEmail,
-          department: values.department,
+          departmentId: values.department,
           jobPosition: values.jobPosition,
-          manager: values.manager,
           profile_photo: values.profile_photo,
         },
       });
@@ -158,42 +164,41 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
     }
   };
 
+  if (isLoadingEmployee || isFetching || isDepartmentsLoading) {
+    return <LoadingState />;
+  }
   return (
     <div className='bg-slate-50 w-[850px] xl:[3000px] p-3'>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div>
             <div className='flex justify-between'>
-              <div className='flex flex-col'>
-                <h1 className='text-3xl font-semibold'>
-                  <FormField
-                    name='name'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            className='text-3xl text-gray-600'
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </h1>
-                <h2 className='mt-3 text-xl text-gray-600'>
-                  <FormField
-                    name='position'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input {...field} className='text-xl text-gray-600' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </h2>
+              <div className='flex flex-col gap-y-3'>
+                <FormLabel>Employee Name</FormLabel>
+                <FormField
+                  name='name'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className='text-3xl text-gray-600' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormLabel>Employee Position</FormLabel>
+                <FormField
+                  name='position'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className='text-xl text-gray-600' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
               <div>
                 <FormField
@@ -276,14 +281,33 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
               />
             </div>
             <div className='flex flex-col gap-y-2 w-1/3'>
-              <FormLabel>Department</FormLabel>
               <FormField
+                control={form.control}
                 name='department'
                 render={({ field }) => (
                   <FormItem>
-                    <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
-                    </FormControl>
+                    <FormLabel>Department</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder='Select a department type to display' />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {departments &&
+                          departments.map((department) => (
+                            <SelectItem
+                              key={department.id}
+                              value={department.id}
+                            >
+                              {department.name}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -300,7 +324,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                   </FormItem>
                 )}
               />
-              <FormLabel>Manager</FormLabel>
+              {/* <FormLabel>Manager</FormLabel>
               <FormField
                 name='manager'
                 render={({ field }) => (
@@ -311,7 +335,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
             </div>
           </div>
           <div className='mt-4'>

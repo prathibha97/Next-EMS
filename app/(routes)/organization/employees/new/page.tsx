@@ -27,12 +27,15 @@ import ActionButton from '@/components/buttons/action-button';
 import { toast } from '@/hooks/use-toast';
 import { useUploadThing } from '@/lib/uploadthing';
 import { isBase64Image } from '@/lib/utils';
-import { Employee } from '@prisma/client';
+import { Department, Employee } from '@prisma/client';
 import HRSettingsForm from './components/hr-settings-form';
 import PrivateInfoForm from './components/private-info-form';
 import WorkInfoForm from './components/work-info-form';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useGetDepartmentsQuery } from '@/app/redux/services/departmentApi';
+import LoadingState from './components/loading-state';
 
 const NewEmployeePage = () => {
 
@@ -59,6 +62,7 @@ const NewEmployeePage = () => {
   const dispatch = useAppDispatch();
 
   const [addEmployee, { isLoading }] = useAddEmployeeMutation();
+  const { data: departments, isLoading:isDepartmentsLoading } = useGetDepartmentsQuery();
 
   const form = useForm<EmployeeFormValues>({
     resolver: zodResolver(EmployeeFormSchema),
@@ -113,11 +117,9 @@ const NewEmployeePage = () => {
         }
       }
       setLoading(false);
-
       const response = await addEmployee({
-        department: values.department,
+        departmentId: values.department,
         jobPosition: values.jobPosition,
-        manager: values.manager,
         name: values.name,
         personalMobile: values.personalMobile,
         position: values.position,
@@ -151,6 +153,8 @@ const NewEmployeePage = () => {
       setLoading(false);
     }
   };
+
+  if(isDepartmentsLoading) return <LoadingState/>
 
   return (
     <div className='bg-slate-50 w-[850px] xl:[3000px] p-3'>
@@ -238,7 +242,8 @@ const NewEmployeePage = () => {
           <div className='mt-5 flex justify-between'>
             <div className='flex flex-col w-1/3'>
               <span>
-                Work Mobile:{' '}
+                <FormLabel>Work Mobile</FormLabel>
+
                 <FormField
                   name='workMobile'
                   render={({ field }) => (
@@ -252,7 +257,8 @@ const NewEmployeePage = () => {
                 />
               </span>
               <span>
-                Personal Mobile:{' '}
+                <FormLabel>Personal Mobile</FormLabel>
+
                 <FormField
                   name='personalMobile'
                   render={({ field }) => (
@@ -266,7 +272,8 @@ const NewEmployeePage = () => {
                 />
               </span>
               <span>
-                Work Email:{' '}
+                <FormLabel>Work Email</FormLabel>
+
                 <FormField
                   name='workEmail'
                   render={({ field }) => (
@@ -281,22 +288,39 @@ const NewEmployeePage = () => {
               </span>
             </div>
             <div className='flex flex-col w-1/2'>
-              <span>
-                Department:{' '}
-                <FormField
-                  name='department'
-                  render={({ field }) => (
-                    <FormItem>
+              <FormField
+                control={form.control}
+                name='department'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Department</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
-                        <Input {...field} className='text-sm text-gray-600' />
+                        <SelectTrigger>
+                          <SelectValue placeholder='Select a department type to display' />
+                        </SelectTrigger>
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </span>
+                      <SelectContent>
+                        {departments &&
+                          departments.map((department:Department) => (
+                            <SelectItem
+                              key={department.id}
+                              value={department.id}
+                            >
+                              {department.name}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <span>
-                Job Position:{' '}
+                <FormLabel>Job Position</FormLabel>
                 <FormField
                   name='jobPosition'
                   render={({ field }) => (
@@ -309,7 +333,7 @@ const NewEmployeePage = () => {
                   )}
                 />
               </span>
-              <span>
+              {/* <span>
                 Manager:
                 <FormField
                   name='manager'
@@ -322,7 +346,7 @@ const NewEmployeePage = () => {
                     </FormItem>
                   )}
                 />
-              </span>
+              </span> */}
             </div>
           </div>
           <div className='mt-4'>

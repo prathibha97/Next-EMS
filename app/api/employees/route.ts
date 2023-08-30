@@ -14,29 +14,56 @@ export async function POST(req: Request) {
     name,
     workEmail,
     position,
-    department,
+    departmentId,
     workMobile,
     personalMobile,
     jobPosition,
-    manager,
     profile_photo,
   } = body;
-  try {
-    const employee = await prisma.employee.create({
-      data: {
-        name,
-        workEmail,
-        position,
-        department,
-        workMobile,
-        personalMobile,
-        jobPosition,
-        manager,
-        profile_photo,
-      },
-    });
-    return NextResponse.json(employee);
-  } catch (error: any) {
+  console.log(body);
+
+    try {
+      // First, check if the department exists
+      const existingDepartment = await prisma.department.findUnique({
+        where: { id: departmentId },
+      });
+
+      if (!existingDepartment) {
+        return new Response(`Department with ID ${departmentId} not found`, {
+          status: 404,
+        });
+      }
+
+      // Create the employee and associate it with the department
+      const employee = await prisma.employee.create({
+        data: {
+          name,
+          workEmail,
+          position,
+          workMobile,
+          personalMobile,
+          jobPosition,
+          profile_photo,
+          departments: {
+            connect:{
+              id: departmentId
+            }
+          }
+        },
+      });
+
+      // Update the department's employees list
+      await prisma.department.update({
+        where: { id: departmentId },
+        data: {
+          employees: {
+            connect: { id: employee.id },
+          },
+        },
+      });
+
+      return NextResponse.json(employee);
+    } catch (error: any) {
     return new Response(`Could not create employee - ${error.message}`, {
       status: 500,
     });

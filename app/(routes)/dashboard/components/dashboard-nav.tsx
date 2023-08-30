@@ -20,7 +20,7 @@ import { ModeToggle } from '@/components/buttons/theme-toggle-button';
 export function DashboardNav({ className }: React.HTMLAttributes<HTMLElement>) {
 
   return (
-    <div className={`flex justify-between w-full`}>
+    <div className={`flex justify-between`}>
       <NavigationMenu className={className}>
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -46,21 +46,21 @@ export function DashboardNav({ className }: React.HTMLAttributes<HTMLElement>) {
                 <ListItem
                   href='/organization/employees'
                   title='Employees'
-                  className='hover:bg-slate-50'
+                  className='hover:bg-slate-50 dark:hover:bg-gray-700'
                 >
                   Add, View and Manage Organization Employees.
                 </ListItem>
                 <ListItem
                   href='/organization/departments'
                   title='Departments'
-                  className='hover:bg-slate-50'
+                  className='hover:bg-slate-50 dark:hover:bg-gray-700'
                 >
                   Add, View and Manage Organization Departments.
                 </ListItem>
                 <ListItem
                   href='/organization/configuration'
                   title='Configuration'
-                  className='hover:bg-slate-50'
+                  className='hover:bg-slate-50 dark:hover:bg-gray-700'
                 >
                   Configure Organization Settings.
                 </ListItem>
@@ -74,14 +74,14 @@ export function DashboardNav({ className }: React.HTMLAttributes<HTMLElement>) {
                 <ListItem
                   href='/projects/new'
                   title='Create New Project'
-                  className='hover:bg-slate-50'
+                  className='hover:bg-slate-50 dark:hover:bg-gray-700'
                 >
                   Create a new project and add employees, departments and tasks.
                 </ListItem>
                 <ListItem
                   href='/projects'
                   title='View Projects'
-                  className='hover:bg-slate-50'
+                  className='hover:bg-slate-50 dark:hover:bg-gray-700'
                 >
                   View all projects that are currently active and in progress.
                 </ListItem>
@@ -95,14 +95,14 @@ export function DashboardNav({ className }: React.HTMLAttributes<HTMLElement>) {
                 <ListItem
                   href='/clients/new'
                   title='Add New Client'
-                  className='hover:bg-slate-50'
+                  className='hover:bg-slate-50 dark:hover:bg-gray-700'
                 >
                   Add a new client to the organization.
                 </ListItem>
                 <ListItem
                   href='/clients'
                   title='View Clients'
-                  className='hover:bg-slate-50'
+                  className='hover:bg-slate-50 dark:hover:bg-gray-700'
                 >
                   View all clients and manage their details.
                 </ListItem>
@@ -116,14 +116,14 @@ export function DashboardNav({ className }: React.HTMLAttributes<HTMLElement>) {
                 <ListItem
                   href='/accounts/payroll'
                   title='Manage Payroll'
-                  className='hover:bg-slate-50'
+                  className='hover:bg-slate-50 dark:hover:bg-gray-700'
                 >
                   Manage Payroll and salary information for all employees.
                 </ListItem>
                 <ListItem
                   href='/accounts/invoices'
                   title='Manage Invoices'
-                  className='hover:bg-slate-50'
+                  className='hover:bg-slate-50 dark:hover:bg-gray-700'
                 >
                   Manage Invoices and billing information for all clients.
                 </ListItem>
@@ -142,7 +142,7 @@ export function DashboardNav({ className }: React.HTMLAttributes<HTMLElement>) {
       <div className='flex items-center space-x-2'>
         {/* <Search /> */}
         <NotificationButton />
-        <ModeToggle/>
+        <ModeToggle />
         <UserNav />{' '}
       </div>
     </div>

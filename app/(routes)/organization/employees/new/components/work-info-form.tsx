@@ -3,6 +3,7 @@ import { updateEmployeeData } from '@/app/redux/features/employeeSlice';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { useUpdateEmployeeMutation } from '@/app/redux/services/employeeApi';
 import ActionButton from '@/components/buttons/action-button';
+import { DatePicker } from '@/components/inputs/date-picker';
 import {
   Form,
   FormControl,
@@ -20,7 +21,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Employee } from '@prisma/client';
 import { FC } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 interface WorkInfoFormProps {
   employee: Employee | null;
@@ -37,7 +38,7 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
       workAddress: '123, Main Street, Colombo 01',
       workLocation: 'Remote',
       workingHours: 'Standard 40 hours/week',
-      startDate: '',
+      startDate: new Date(),
       timeZone: 'Asia/Colombo',
     },
   });
@@ -116,15 +117,14 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
           <div className='flex flex-col gap-y-3'>
             <span>
               Start Date :{' '}
-              <FormField
+              <Controller
                 name='startDate'
+                control={form.control}
                 render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <DatePicker
+                    value={field.value}
+                    onChange={(date) => field.onChange(date)}
+                  />
                 )}
               />
             </span>

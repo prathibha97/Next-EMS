@@ -4,7 +4,7 @@ export const WorkInfoFormSchema = z.object({
   workAddress: z.string().max(50),
   workLocation: z.string().max(50),
   workingHours: z.string().max(50),
-  startDate: z.string().max(20),
+  startDate: z.date(),
   timeZone: z.string().max(20),
 });
 

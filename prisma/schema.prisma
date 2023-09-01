@@ -25,14 +25,15 @@ model User {
 }
 
 model Department {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  manager     Employee   @relation(fields: [managerId], references: [id])
-  managerId   String     @db.ObjectId
+  manager     Employee?      @relation(fields: [managerId], references: [id])
+  managerId   String        @db.ObjectId
   description String?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  employees   Employee[] @relation("DepartmentEmployees")
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  employees   Employee[]    @relation("DepartmentEmployees")
+  jobPosition jobPosition[]
 }
 
 model Employee {
@@ -47,7 +48,7 @@ model Employee {
   workAddress           String?
   workLocation          String?
   workingHours          String?
-  startDate             String?
+  startDate             DateTime?
   timeZone              String?
   privateAddress        String?
   personalEmail         String?
@@ -61,7 +62,7 @@ model Employee {
   nationality           String?
   idNumber              String?
   gender                String?
-  dateOfBirth           String?
+  dateOfBirth           DateTime?
   employeeType          String?
   idCopy                String?
   resumeCopy            String?
@@ -88,4 +89,13 @@ model Attendance {
 
   employee   Employee? @relation(fields: [employeeId], references: [id])
   employeeId String?   @db.ObjectId
+}
+
+model jobPosition {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  departmentId String?     @db.ObjectId
+  department   Department? @relation(fields: [departmentId], references: [id])
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }

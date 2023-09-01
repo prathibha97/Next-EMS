@@ -2,6 +2,7 @@ import { updateEmployeeData } from '@/app/redux/features/employeeSlice';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { useUpdateEmployeeMutation } from '@/app/redux/services/employeeApi';
 import ActionButton from '@/components/buttons/action-button';
+import { DatePicker } from '@/components/inputs/date-picker';
 import {
   Form,
   FormControl,
@@ -19,7 +20,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Employee } from '@prisma/client';
 import { FC } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 interface PrivateInfoFormProps {
   employee: Employee | null;
@@ -47,7 +48,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
       nationality: '',
       idNumber: '',
       gender: '',
-      dateOfBirth: '',
+      dateOfBirth: new Date(),
     },
   });
 
@@ -296,16 +297,15 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
                   />
                 </span>
                 <span>
-                  date of Birth :{' '}
-                  <FormField
+                  Date of Birth :{' '}
+                  <Controller
                     name='dateOfBirth'
+                    control={form.control}
                     render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input {...field} className='text-sm text-gray-600' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                      <DatePicker
+                        value={field.value}
+                        onChange={(date) => field.onChange(date)}
+                      />
                     )}
                   />
                 </span>

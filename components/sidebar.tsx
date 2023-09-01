@@ -10,8 +10,12 @@ const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const homepage = pathname === '/';
+
+  // Determine whether to apply the md:flex class based on homepage
+  const sidebarClass = homepage ? 'hidden' : 'md:flex';
+
   return (
-    <div className={`hidden md:flex ${homepage && 'hidden'}`}>
+    <div className={`${sidebarClass}`}>
       <div className='flex flex-col h-screen p-3 bg-gray-50 shadow w-60 dark:bg-gray-900 dark:text-gray-50'>
         <div className='flex items-center'>
           <h2 className='text-xl font-bold'>Dashboard</h2>

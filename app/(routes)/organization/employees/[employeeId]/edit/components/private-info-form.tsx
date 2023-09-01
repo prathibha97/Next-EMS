@@ -1,5 +1,6 @@
 import { useUpdateEmployeeMutation } from '@/app/redux/services/employeeApi';
 import ActionButton from '@/components/buttons/action-button';
+import { DatePicker } from '@/components/inputs/date-picker';
 import {
   Form,
   FormControl,
@@ -18,7 +19,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Employee } from '@prisma/client';
 import { FC } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 interface PrivateInfoFormProps {
   employeeId: string;
@@ -50,7 +51,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
       nationality: employee?.nationality ?? 'Nationality not specified',
       idNumber: employee?.idNumber ?? 'ID Number not specified',
       gender: employee?.gender ?? 'Gender not specified',
-      dateOfBirth: employee?.dateOfBirth ?? 'Date of Birth not specified',
+      dateOfBirth: employee?.dateOfBirth ?? new Date(),
     },
   });
 
@@ -111,7 +112,10 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                          <Input
+                            {...field}
+                            className='text-sm text-gray-600 dark:text-gray-300'
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -124,7 +128,10 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                        <Input
+                          {...field}
+                          className='text-sm text-gray-600 dark:text-gray-300'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -136,7 +143,10 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                        <Input
+                          {...field}
+                          className='text-sm text-gray-600 dark:text-gray-300'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -148,7 +158,10 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                        <Input
+                          {...field}
+                          className='text-sm text-gray-600 dark:text-gray-300'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -160,7 +173,10 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                        <Input
+                          {...field}
+                          className='text-sm text-gray-600 dark:text-gray-300'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -180,7 +196,10 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                        <Input
+                          {...field}
+                          className='text-sm text-gray-600 dark:text-gray-300'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -193,7 +212,10 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                        <Input
+                          {...field}
+                          className='text-sm text-gray-600 dark:text-gray-300'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -215,7 +237,10 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                        <Input
+                          {...field}
+                          className='text-sm text-gray-600 dark:text-gray-300'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -227,7 +252,10 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                        <Input
+                          {...field}
+                          className='text-sm text-gray-600 dark:text-gray-300'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -248,7 +276,10 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                        <Input
+                          {...field}
+                          className='text-sm text-gray-600 dark:text-gray-300'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -260,7 +291,10 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                        <Input
+                          {...field}
+                          className='text-sm text-gray-600 dark:text-gray-300'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -272,22 +306,24 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                        <Input
+                          {...field}
+                          className='text-sm text-gray-600 dark:text-gray-300'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 <FormLabel>Date of Birth</FormLabel>
-                <FormField
+                <Controller
                   name='dateOfBirth'
+                  control={form.control}
                   render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                    <DatePicker
+                      value={field.value}
+                      onChange={(date) => field.onChange(date)}
+                    />
                   )}
                 />
               </div>

@@ -1,6 +1,17 @@
 'use client';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Department, Employee } from '@prisma/client';
+import { MoreVertical } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { FC } from 'react';
 
 interface DepartmentCardProps {
@@ -12,6 +23,7 @@ interface DepartmentCardProps {
 }
 
 const DepartmentCard: FC<DepartmentCardProps> = ({ department, onClick }) => {
+  const router = useRouter();
   return (
     <div>
       <Card
@@ -20,7 +32,38 @@ const DepartmentCard: FC<DepartmentCardProps> = ({ department, onClick }) => {
       >
         <CardContent className='flex mt-2 space-x-4'>
           <div className='flex flex-col'>
-            <h1 className='text-lg font-semibold'>{department.name}</h1>
+            <div className='flex justify-between lg:w-[390px]'>
+              <h1 className='text-lg font-semibold'>{department.name}</h1>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant='ghost' className='h-8 w-8 p-0'>
+                    <span className='sr-only'>Open menu</span>
+                    <MoreVertical className='h-4 w-4' />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align='end'>
+                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      navigator.clipboard.writeText(department.id);
+                    }}
+                  >
+                    Copy department ID
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => {
+                      router.push(`/organization/departments/${department.id}`);
+                    }}
+                  >
+                    View department
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className='text-red-500' onClick={() => {}}>
+                    Remove department
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
             <h3 className='text-xs text-gray-500'>{department.description}</h3>
             <div className='flex flex-col mt-1'>
               <span className='text-sm font-semibold'>

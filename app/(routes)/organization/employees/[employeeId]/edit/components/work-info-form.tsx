@@ -1,6 +1,7 @@
 'use client';
 import { useUpdateEmployeeMutation } from '@/app/redux/services/employeeApi';
 import ActionButton from '@/components/buttons/action-button';
+import { DatePicker } from '@/components/inputs/date-picker';
 import {
   Form,
   FormControl,
@@ -19,7 +20,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Employee } from '@prisma/client';
 import { FC } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 interface WorkInfoFormProps {
   employeeId: string;
@@ -33,7 +34,7 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee }) => {
       workAddress: employee?.workAddress ?? 'Work address not specified',
       workLocation: employee?.workLocation ?? 'Work location not specified',
       workingHours: employee?.workingHours ?? 'Working hours not specified',
-      startDate: employee?.startDate ?? 'Starting date not specified',
+      startDate: employee?.startDate ?? new Date(),
       timeZone: employee?.timeZone ?? 'Time Zone is not specified',
     },
   });
@@ -84,7 +85,10 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee }) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                    <Input
+                      {...field}
+                      className='text-sm text-gray-600 dark:text-gray-300'
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -96,7 +100,10 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee }) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                    <Input
+                      {...field}
+                      className='text-sm text-gray-600 dark:text-gray-300'
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -109,15 +116,14 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee }) => {
           <Separator className='mt-1 mb-3' />
           <div className='flex flex-col gap-y-3'>
             <FormLabel>Start Date</FormLabel>
-            <FormField
+            <Controller
               name='startDate'
+              control={form.control}
               render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+                <DatePicker
+                  value={field.value}
+                  onChange={(date) => field.onChange(date)}
+                />
               )}
             />
             <FormLabel>Working Hours</FormLabel>
@@ -126,24 +132,30 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee }) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                    <Input
+                      {...field}
+                      className='text-sm text-gray-600 dark:text-gray-300'
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <FormLabel>Time Zone</FormLabel>
-              <FormField
-                name='timeZone'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <FormField
+              name='timeZone'
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className='text-sm text-gray-600 dark:text-gray-300'
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
         </div>
         <div className='mt-4'>

@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   const body = await req.json();
   const { name, description, manager } = body;
 
-  if (!name || !description || !manager) {
+  if (!name || !description || !manager ) {
     return new Response(`All fields are required`, {
       status: 400,
     });

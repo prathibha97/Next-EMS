@@ -44,7 +44,7 @@ export const PrivateInfoFormSchema = z.object({
     .max(15, 'ID number is too long')
     .optional(),
   gender: z.string().optional(),
-  dateOfBirth: z.string(),
+  dateOfBirth: z.date(),
 });
 
 export type PrivateInfoFormValues = z.infer<typeof PrivateInfoFormSchema>;

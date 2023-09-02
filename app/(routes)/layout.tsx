@@ -48,7 +48,7 @@ import { Toaster } from '@/components/ui/toaster';
 import AuthProvider from '@/providers/authProvider';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Providers } from '../redux/provider';
+import  ReduxProvider  from '../redux/provider';
 import './globals.css';
 import { ThemeProvider } from '@/providers/themeProvider';
 
@@ -69,7 +69,7 @@ export default function RootLayout({
       <body className={`${inter.className} overflow-hidden`}>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <AuthProvider>
-            <Providers>
+            <ReduxProvider>
               <div className='flex h-screen overflow-hidden'>
                 <Sidebar />
                 <div className='flex flex-col w-full overflow-x-hidden'>
@@ -78,7 +78,7 @@ export default function RootLayout({
                 </div>
               </div>
               <Toaster />
-            </Providers>
+            </ReduxProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

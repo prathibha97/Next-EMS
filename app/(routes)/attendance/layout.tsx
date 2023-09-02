@@ -20,7 +20,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
             Attendance Sheet
           </h2>
           <p className='text-muted-foreground'>
-            You can check your daily attendance here.
+            You can check and mark your daily attendance here.
           </p>
         </div>
         <Separator className='my-6' />

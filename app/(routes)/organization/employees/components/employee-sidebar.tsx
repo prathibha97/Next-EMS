@@ -2,6 +2,7 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { useGetDepartmentsQuery } from '@/app/redux/services/departmentApi';
+import { SkeletonCard } from './loading-employee-card';
 
 const EmployeeSidebar = () => {
   const pathname = usePathname();
@@ -15,6 +16,8 @@ const EmployeeSidebar = () => {
     (total, department) => total + department?.employees?.length,
     0
   );
+
+  if (isLoading) return <SkeletonCard/>;
 
   return (
     <div className={`flex ${shouldDisplaySidebar ? 'block' : 'hidden'}`}>

@@ -35,12 +35,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchFilter?: string | undefined;
+  placeholder?: string | undefined;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   searchFilter,
+  placeholder,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -70,7 +72,7 @@ export function DataTable<TData, TValue>({
     <div className='w-full'>
       <div className='flex items-center py-4'>
         <Input
-          placeholder='Filter emails...'
+          placeholder={`Filter ${placeholder}...`}
           value={
             (table
               .getColumn(searchFilter || 'emails')

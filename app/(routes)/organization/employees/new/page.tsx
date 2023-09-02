@@ -57,7 +57,7 @@ const NewEmployeePage = () => {
   const { startUpload } = useUploadThing('imageUploader');
 
   const employee: Employee | null = useAppSelector(
-    (state) => state.employeeReducer.employee
+    (state) => state.employee.employee
   );
   const dispatch = useAppDispatch();
 

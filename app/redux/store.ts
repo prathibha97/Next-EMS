@@ -1,20 +1,33 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
-import employeeReducer from './features/employeeSlice';
-import departmentReducer from './features/departmentSlice';
+import { persistReducer } from 'redux-persist';
 import authReducer from './features/authSlice';
+import departmentReducer from './features/departmentSlice';
+import employeeReducer from './features/employeeSlice';
 import { apiSlice } from './services/api';
+import storage from './customStorage';
+
+const persistConfig = {
+  key: 'root',
+  storage: storage,
+};
+
+const rootReducer = combineReducers({
+  [apiSlice.reducerPath]: apiSlice.reducer,
+  auth: authReducer,
+  employee: employeeReducer,
+  department: departmentReducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    [apiSlice.reducerPath]: apiSlice.reducer,
-    authReducer,
-    employeeReducer,
-    departmentReducer,
-  },
+  reducer: persistedReducer,
   devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({}).concat([apiSlice.middleware]),
+    getDefaultMiddleware({ serializableCheck: false }).concat([
+      apiSlice.middleware,
+    ]),
 });
 
 setupListeners(store.dispatch);

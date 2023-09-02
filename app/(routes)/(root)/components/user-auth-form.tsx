@@ -1,5 +1,5 @@
 'use client';
-import { setAuthenticated } from '@/app/redux/features/authSlice';
+import { setAuthenticated, setUser } from '@/app/redux/features/authSlice';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -85,7 +85,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           if (callback?.ok && !callback?.error) {
             // Dispatch actions to update authentication state and user data
             dispatch(setAuthenticated(true));
-            // dispatch(setUser(session.data?.user));
+            dispatch(setUser(session.data?.user));
             return toast({
               title: 'Logged in successfully',
             });

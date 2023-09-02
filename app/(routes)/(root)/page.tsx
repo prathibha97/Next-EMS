@@ -1,5 +1,6 @@
 'use client';
 import { UserAuthForm } from '@/app/(routes)/(root)/components/user-auth-form';
+import { useAppSelector } from '@/app/redux/hooks';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -7,6 +8,7 @@ import { useEffect, useState } from 'react';
 export default function AuthenticationPage() {
   const router = useRouter();
   const { status } = useSession();
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -16,7 +18,7 @@ export default function AuthenticationPage() {
   }, []);
 
   useEffect(() => {
-    if (status === 'authenticated') {
+    if (!isAuthenticated && status === 'authenticated') {
       router.push('/dashboard');
     }
   }, [status, router]);

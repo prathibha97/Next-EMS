@@ -5,10 +5,13 @@ import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from './ui/button';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { setLogout } from '@/app/redux/features/authSlice';
 
 const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const dispatch = useAppDispatch()
   const homepage = pathname === '/';
 
   // Determine whether to apply the md:flex class based on homepage
@@ -49,6 +52,7 @@ const Sidebar = () => {
             className='flex items-center p-2 space-x-3 rounded-md w-full'
             onClick={() => {
               signOut();
+              dispatch(setLogout())
               router.push('/');
             }}
           >

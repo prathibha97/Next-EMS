@@ -73,7 +73,7 @@ const AttendancePage = () => {
         columns={columns}
         data={attendanceList?.attendance || []}
         searchFilter='date'
-        placeholder='date'
+        placeholder='Date'
       />
     </div>
   );

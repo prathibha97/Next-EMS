@@ -23,7 +23,7 @@ export default function OrganizationLayout({ children }: OrganizationLayoutProps
             Organization Management
           </h2>
           <p className='text-muted-foreground'>
-            You can manage your organization departments and employees here.
+            You can manage your organization departments, employees and leaves here.
           </p>
         </div>
         <Separator className='my-6' />

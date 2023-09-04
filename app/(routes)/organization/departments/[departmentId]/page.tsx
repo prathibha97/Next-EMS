@@ -40,7 +40,7 @@ const DepartmentPage: FC<DepartmentPageProps> = ({ params }) => {
         </div>
       </div>
       <div className='container mx-auto py-10'>
-        <DataTable columns={columns} data={data} searchFilter='name' />
+        <DataTable columns={columns} data={data} searchFilter='name' placeholder='Name'/>
       </div>
     </div>
   );

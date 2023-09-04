@@ -1,89 +1,77 @@
 'use client';
+import {
+  useGetAttendanceByIdQuery,
+  useMarkAttendanceMutation,
+} from '@/app/redux/services/attendanceApi';
+import { useGetLoggedInEmployeeQuery } from '@/app/redux/services/employeeApi';
 import ActionButton from '@/components/buttons/action-button';
 import { DataTable } from '@/components/data-table';
 import { toast } from '@/hooks/use-toast';
-import { Attendance } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { columns } from './components/columns';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const AttendancePage = () => {
-  const session = useSession();
   const router = useRouter();
 
-  if (session.status === 'unauthenticated') {
-    router.push('/');
-  }
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push('/');
+    },
+  });
 
-  const data: Attendance = [
-    {
-      id: '1',
-      date: '2023-08-15T09:00:00Z',
-      timeIn: '2023-08-15T09:00:00Z',
-      timeOut: '2023-08-15T17:00:00Z',
-      employeeId: '1001',
-    },
-    {
-      id: '2',
-      date: '2023-08-15T09:30:00Z',
-      timeIn: '2023-08-15T09:30:00Z',
-      timeOut: '2023-08-15T17:30:00Z',
-      employeeId: '1002',
-    },
-    {
-      id: '3',
-      date: '2023-08-16T08:45:00Z',
-      timeIn: '2023-08-16T08:45:00Z',
-      timeOut: '2023-08-16T16:45:00Z',
-      employeeId: '1001',
-    },
-    {
-      id: '4',
-      date: '2023-08-16T09:15:00Z',
-      timeIn: '2023-08-16T09:15:00Z',
-      timeOut: '2023-08-16T17:15:00Z',
-      employeeId: '1002',
-    },
-    {
-      id: '5',
-      date: '2023-08-17T09:00:00Z',
-      timeIn: '2023-08-17T09:00:00Z',
-      timeOut: null,
-      employeeId: '1001',
-    },
-    {
-      id: '6',
-      date: '2023-08-17T09:30:00Z',
-      timeIn: '2023-08-17T09:30:00Z',
-      timeOut: null,
-      employeeId: '1002',
-    },
-  ];
+  const { data: loggedInEmployee } = useGetLoggedInEmployeeQuery();
+  const employeeId = loggedInEmployee?.id;
 
-  const handleMarkAttendance = () => {
-    console.log('Mark attendance');
+  const [markAttendance, { isLoading }] = useMarkAttendanceMutation();
+
+  const { data: attendanceList , isLoading:isAttendanceDataLoading} = useGetAttendanceByIdQuery(employeeId as string);
+
+  const handleMarkAttendance = async () => {
     try {
-      fetch('/api/attendance')
+      const attendanceData = {
+        date: new Date(),
+        timeIn: new Date(),
+        timeOut: new Date(),
+        employeeId,
+      };
+      const response = await markAttendance(attendanceData).unwrap();
+
+      if (response.error) {
+        toast({
+          title: response.error,
+          variant: 'destructive',
+        });
+        return;
+      }
       toast({
-        title: 'Attendance marked',
+        title: response.message,
       });
-    } catch (error: any) {
+    } catch (err) {
       toast({
         title: 'Error marking attendance',
-        description: error.message,
+        description: 'Please try again later',
         variant: 'destructive',
       });
     }
   };
 
+  if(isAttendanceDataLoading) return <Skeleton/>
+
   return (
     <div className='w-[850px]'>
       <div className='flex justify-end'>
-        <ActionButton onClick={handleMarkAttendance} label='Mark Attendance' />
+        <ActionButton
+          onClick={handleMarkAttendance}
+          label='Mark Attendance'
+          isLoading={isLoading}
+        />
       </div>
       <DataTable
         columns={columns}
-        data={data}
+        data={attendanceList?.attendance || []}
         searchFilter='date'
         placeholder='date'
       />

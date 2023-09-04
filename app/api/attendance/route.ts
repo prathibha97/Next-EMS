@@ -1,59 +1,82 @@
 import prisma from '@/lib/prisma';
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
 
-export async function GET(req: Request) {
-  const session = await getSession();
-
+export async function POST(req: Request) {
+  const session = await getServerSession();
   if (!session) {
     throw new NextResponse('Unauthorized', { status: 401 });
   }
-console.log(session.user.id);
-     try {
-       const { id } = session.user; 
-       const date = new Date(); 
-       const timeIn = date.toISOString();
 
-       // Check if an attendance record already exists for the given employee and date
-       const existingAttendance = await prisma.attendance.findFirst({
-         where: {
-           AND: [
-             { userId: id },
-             { date: { gte: new Date(date.toDateString()) } }, // Check if date is today or later
-           ],
-         },
-       });
+  try {
+    const body = await req.json();
+    const { employeeId, date, timeIn, timeOut } = body;
 
-       if (existingAttendance) {
-         if (!existingAttendance.timeOut) {
-           // If timeOut is not marked, mark it as the current time
-           existingAttendance.timeOut = date;
-           await prisma.attendance.update({
-             where: { id: existingAttendance.id },
-             data: { timeOut: existingAttendance.timeOut },
-           });
-           return NextResponse.json(existingAttendance);  
-         } else {
-           // Attendance has already been marked for the day
-             throw new NextResponse('Attendance already marked for the day', { status: 400 });
-         }
-       }
+    const recordDate = new Date(date);
+    console.log('employeeId:', employeeId);
+    console.log('date:', recordDate);
 
-       // Create a new attendance record in the database with timeIn
-       const attendance = await prisma.attendance.create({
-         data: {
-           date,
-           timeIn,
-           employee: {
-             connect: { userId: id },
-           },
-         },
-       });
 
-       return NextResponse.json(attendance);
-     } catch (error) {
-       console.error('Error creating attendance:', error);
-       throw new NextResponse('Internal Server Error', { status: 500 });
-     }
+    // Check if an attendance record already exists for the given employee and date
+    const existingAttendance = await prisma.attendance.findFirst({
+      where: {
+        employeeId,
+      },
+    });
+    console.log('existing attendance',existingAttendance);
 
+    if (!existingAttendance) {
+      // Create a new attendance record with timeIn and other relevant details
+      const timeInDate = new Date(timeIn);
+
+      const newAttendance = await prisma.attendance.create({
+        data: {
+          employee: {
+            connect: { id: employeeId },
+          },
+          date,
+          timeIn: timeInDate,
+          timeOut: null, // Initialize timeOut to null
+          totalHours: '0.00', // Initialize total hours
+        },
+      });
+
+      return NextResponse.json({
+        message: 'Attendance marked successfully',
+        attendance: newAttendance,
+      });
+    } else if (!existingAttendance.timeOut) {
+      // Update the existing attendance record's timeOut and recalculate totalHours
+      const timeOutDate = new Date(timeOut);
+      const hoursDifference =
+      // @ts-ignore
+        Math.abs(timeOutDate - existingAttendance.timeIn) / 36e5; // Calculate hours difference
+
+      const updatedAttendance = await prisma.attendance.update({
+        where: { id: existingAttendance.id },
+        data: {
+          timeOut: timeOutDate,
+          totalHours: hoursDifference.toFixed(2), // Convert hours to a fixed decimal format
+        },
+      });
+
+      return NextResponse.json({
+        message: 'Attendance updated successfully',
+        attendance: updatedAttendance,
+      });
+    } else {
+      // Attendance already marked for the day
+      return NextResponse.json({
+        error: 'Attendance already marked for the day',
+      });
+      
+    }
+  } catch (error: any) {
+    return new Response(
+      `Could not create/update attendance - ${error.message}`,
+      {
+        status: 500,
+      }
+    );
+  }
 }

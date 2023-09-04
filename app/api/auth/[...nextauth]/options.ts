@@ -72,3 +72,5 @@ export const authOptions: AuthOptions = {
     },
   },
 };
+
+export const getAuthSession = () => getServerSession(authOptions);

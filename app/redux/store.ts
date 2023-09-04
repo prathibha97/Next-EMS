@@ -4,6 +4,7 @@ import { persistReducer } from 'redux-persist';
 import authReducer from './features/authSlice';
 import departmentReducer from './features/departmentSlice';
 import employeeReducer from './features/employeeSlice';
+import attendanceReducer from './features/attendanceSlice';
 import { apiSlice } from './services/api';
 import storage from './customStorage';
 
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   employee: employeeReducer,
   department: departmentReducer,
+  attendance: attendanceReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

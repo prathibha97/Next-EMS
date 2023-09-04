@@ -1,4 +1,3 @@
-import Sidebar from '@/components/sidebar';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -6,11 +5,11 @@ export const metadata: Metadata = {
   description: 'Advanced form example using react-hook-form and Zod.',
 };
 
-interface SettingsLayoutProps {
+interface TasksLayoutProps {
   children: React.ReactNode;
 }
 
-export default function SettingsLayout({ children }: SettingsLayoutProps) {
+export default function TasksLayout({ children }: TasksLayoutProps) {
   return (
     <div className='flex'>
       <div className='space-y-6 p-10 pb-16'>

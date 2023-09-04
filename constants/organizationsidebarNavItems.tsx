@@ -8,7 +8,7 @@ export const organizationSidebarNavItems = [
     href: '/organization/departments',
   },
   {
-    title: 'Configuration',
-    href: '/organization/configuration',
+    title: 'Leaves',
+    href: '/organization/leaves',
   },
 ];

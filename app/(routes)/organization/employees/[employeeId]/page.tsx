@@ -11,7 +11,6 @@ import HRSettings from './components/hr-settings';
 import LoadingState from './components/loading-state';
 import PrivateInfo from './components/private-info';
 import WorkInfo from './components/work-info';
-import { Department } from '@prisma/client';
 
 interface EmployeeProps {
   params: {
@@ -28,7 +27,6 @@ const Employee: FC<EmployeeProps> = ({ params }) => {
     isLoading,
     isFetching,
   } = useGetEmployeeByIdQuery({ employeeId });
-console.log(employee);
 
   if (isLoading || isFetching) {
     // Display loading skeleton while data is being fetched
@@ -83,10 +81,10 @@ console.log(employee);
           <span>
             Department:{' '}
             <span className='text-sm text-gray-600 dark:text-gray-300'>
-              {/* @ts-ignore */}
               {(employee &&
-                employee.departments.map(
-                  (department: Department) => department.name
+              // @ts-ignore
+                employee.Department.map((department) => department.name).join(
+                  ' ,'
                 )) ||
                 `Department not specified`}
             </span>

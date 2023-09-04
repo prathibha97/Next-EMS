@@ -24,6 +24,7 @@ interface DepartmentCardProps {
 
 const DepartmentCard: FC<DepartmentCardProps> = ({ department, onClick }) => {
   const router = useRouter();
+  console.log(department);
   return (
     <div>
       <Card

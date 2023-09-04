@@ -18,8 +18,9 @@ export async function GET(req: Request, { params }: { params: IParams }) {
         id: employeeId,
       },
       include: {
-        departments: true,
+        Department: true,
         user: true,
+        Attendance: true,
       }
     });
     return NextResponse.json(employee);

@@ -26,15 +26,15 @@ model User {
 }
 
 model Department {
-  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  manager     Employee?     @relation(fields: [managerId], references: [id])
-  managerId   String        @db.ObjectId
+  managerId   String?    @db.ObjectId
   description String?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  employees   Employee[]    @relation("DepartmentEmployees")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  employees   Employee[] @relation("DepartmentEmployees")
   jobPosition jobPosition[]
+  manager    Employee?     @relation(fields: [managerId], references: [id])
 }
 
 model Employee {
@@ -74,20 +74,20 @@ model Employee {
   user   User?   @relation(fields: [userId], references: [id])
   userId String? @db.ObjectId
 
-  departments        Department[]
   departmentId       String?      @db.ObjectId
   employeeDepartment Department?  @relation("DepartmentEmployees", fields: [departmentId], references: [id], onUpdate: NoAction, onDelete: NoAction)
   Attendance         Attendance[]
+  Department         Department[]
 }
 
 model Attendance {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  date      DateTime
-  timeIn    DateTime
-  timeOut   DateTime
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  date       DateTime
+  timeIn     DateTime
+  timeOut    DateTime
   totalHours String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   employee   Employee? @relation(fields: [employeeId], references: [id])
   employeeId String?   @db.ObjectId

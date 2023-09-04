@@ -27,6 +27,7 @@ export async function POST(req: Request) {
       },
       include: {
         employees: true, // Include the employees relation in the created department
+        manager: true, // Include the manager relation in the created department
       },
     });
 

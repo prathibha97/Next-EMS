@@ -20,7 +20,6 @@ export async function POST(req: Request) {
     jobPosition,
     profile_photo,
   } = body;
-  console.log(body);
 
     try {
       // First, check if the department exists
@@ -44,7 +43,7 @@ export async function POST(req: Request) {
           personalMobile,
           jobPosition,
           profile_photo,
-          departments: {
+          employeeDepartment: {
             connect:{
               id: departmentId
             }

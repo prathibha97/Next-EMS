@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
+import { useSession } from 'next-auth/react';
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
@@ -15,6 +16,11 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
 
 export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
   const pathname = usePathname();
+  const {data} = useSession();
+
+  if (data?.user?.role === 'USER') {
+    items = items.filter((item) => item.href !== '/settings/users');
+  }
 
   return (
     <nav

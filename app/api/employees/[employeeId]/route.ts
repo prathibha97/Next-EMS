@@ -1,3 +1,4 @@
+import { createDefaultLeaveBalances } from '@/lib/calculateDefaultLeaves';
 import prisma from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
@@ -5,6 +6,8 @@ import { NextResponse } from 'next/server';
 interface IParams {
   employeeId?: string;
 }
+
+type LeaveType = 'Casual' | 'Annual' | 'Medical' | 'Maternity' | 'BroughtForward' | 'Duty' | 'Unpaid';
 
 export async function GET(req: Request, { params }: { params: IParams }) {
   const session = getServerSession();
@@ -94,6 +97,9 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
         passbookCopy,
       },
     });
+  
+    await createDefaultLeaveBalances({employeeId, employeeType, gender});
+
     return NextResponse.json(employee);
   } catch (error: any) {
     return new Response(`Could not update employee - ${error.message}`, {

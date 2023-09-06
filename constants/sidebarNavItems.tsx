@@ -8,6 +8,10 @@ export const sidebarNavItems = [
     href: '/settings/account',
   },
   {
+    title: 'Users',
+    href: '/settings/users',
+  },
+  {
     title: 'Appearance',
     href: '/settings/appearance',
   },

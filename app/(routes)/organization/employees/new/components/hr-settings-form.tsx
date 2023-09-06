@@ -38,7 +38,6 @@ interface HRSettingsFormProps {
 
 const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
   const employeeId = employee?.id;
-  console.log(employeeId);
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { startUpload } = useUploadThing('pdfUploader');
@@ -53,7 +52,8 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
     },
   });
 
-  const { data: users, isLoading: isUsersLoading } = useGetUsersQuery();
+  const { data: users, isLoading: isUsersLoading, refetch: refetchUsers } = useGetUsersQuery();
+  console.log(users);
   const [updateEmployee, { isLoading: loading }] = useUpdateEmployeeMutation();
 
   const handleFileUpload = (
@@ -125,6 +125,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
         description: 'Employee details updated successfully',
       });
       form.reset();
+      refetchUsers();
     } catch (error) {
       setIsLoading(false);
       toast({

@@ -5,12 +5,14 @@ import { Separator } from '@/components/ui/separator';
 import { ProfileForm } from './profile-form';
 
 export default function SettingsProfilePage() {
-  const session = useSession();
   const router = useRouter();
 
-  // if (session.status === 'unauthenticated') {
-  //   router.push('/');
-  // }
+const { data: session } = useSession({
+  required: true,
+  onUnauthenticated() {
+    router.push('/');
+  },
+});
   return (
     <div className='container space-y-6'>
       <div>

@@ -5,6 +5,7 @@ import authReducer from './features/authSlice';
 import departmentReducer from './features/departmentSlice';
 import employeeReducer from './features/employeeSlice';
 import attendanceReducer from './features/attendanceSlice';
+import usersReducer from './features/usersSlice';
 import { apiSlice } from './services/api';
 import storage from './customStorage';
 
@@ -16,6 +17,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
   auth: authReducer,
+  users: usersReducer,
   employee: employeeReducer,
   department: departmentReducer,
   attendance: attendanceReducer,

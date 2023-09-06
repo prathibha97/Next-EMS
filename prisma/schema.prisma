@@ -13,6 +13,21 @@ enum UserRole {
   MANAGER
 }
 
+enum LeaveStatus {
+  Pending
+  Approved
+  Rejected
+}
+
+enum LeaveType {
+  Annual
+  Medical
+  Maternity
+  Unpaid
+  Duty
+  BroughtForward
+}
+
 model User {
   id             String     @id @default(auto()) @map("_id") @db.ObjectId
   email          String     @unique
@@ -73,10 +88,12 @@ model Employee {
   user   User?   @relation(fields: [userId], references: [id])
   userId String? @db.ObjectId
 
-  departmentId       String?      @db.ObjectId
-  employeeDepartment Department?  @relation("DepartmentEmployees", fields: [departmentId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  departmentId       String?        @db.ObjectId
+  employeeDepartment Department?    @relation("DepartmentEmployees", fields: [departmentId], references: [id], onUpdate: NoAction, onDelete: NoAction)
   Attendance         Attendance[]
   Department         Department[]
+  Leave              Leave[]
+  LeaveBalance       LeaveBalance[]
 }
 
 model Attendance {
@@ -87,6 +104,37 @@ model Attendance {
   totalHours String?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
+
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  employeeId String   @db.ObjectId
+}
+
+model LeaveBalance {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  leaveType  LeaveType
+  balance    Int
+  employee   Employee  @relation(fields: [employeeId], references: [id])
+  employeeId String    @db.ObjectId
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Leave {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  type       LeaveType
+  startDate  DateTime?
+  endDate    DateTime?
+  reason     String?
+  status     LeaveStatus? @default(Pending)
+  medical    String?
+  approvedBy String?
+  approvedAt DateTime?
+  rejectedBy String?
+  rejectedAt DateTime?
+  remarks    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   employee   Employee @relation(fields: [employeeId], references: [id])
   employeeId String   @db.ObjectId

@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from '@/hooks/use-toast';
+import { useTheme } from 'next-themes';
 
 const appearanceFormSchema = z.object({
   theme: z.enum(['light', 'dark'], {
@@ -42,7 +43,17 @@ export function AppearanceForm() {
     defaultValues,
   });
 
+  const {setTheme} = useTheme();
+
   function onSubmit(data: AppearanceFormValues) {
+    setTheme(data.theme);
+
+    const selectedFont = data.font === 'system' ? 'system-ui' : data.font;
+
+    // Set the font based on the selected option
+    if (selectedFont) {
+      document.body.style.fontFamily = selectedFont;
+    }
     toast({
       title: 'You submitted the following values:',
       description: (

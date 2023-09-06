@@ -58,11 +58,11 @@ export function DashboardNav({ className }: React.HTMLAttributes<HTMLElement>) {
                   Add, View and Manage Organization Departments.
                 </ListItem>
                 <ListItem
-                  href='/organization/configuration'
-                  title='Configuration'
+                  href='/organization/leaves'
+                  title='Leaves'
                   className='hover:bg-slate-50 dark:hover:bg-gray-700'
                 >
-                  Configure Organization Settings.
+                  View, approve and Manage Employee Leave request.
                 </ListItem>
               </ul>
             </NavigationMenuContent>

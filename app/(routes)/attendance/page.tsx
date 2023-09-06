@@ -27,7 +27,7 @@ const AttendancePage = () => {
 
   const [markAttendance, { isLoading }] = useMarkAttendanceMutation();
 
-  const { data: attendanceList , isLoading:isAttendanceDataLoading} = useGetAttendanceByIdQuery(employeeId as string);
+  const { data: attendanceList , isLoading:isAttendanceDataLoading, refetch:refetchAttendanceList} = useGetAttendanceByIdQuery(employeeId as string);
 
   const handleMarkAttendance = async () => {
     try {
@@ -49,6 +49,8 @@ const AttendancePage = () => {
       toast({
         title: response.message,
       });
+      refetchAttendanceList();
+      router.refresh();
     } catch (err) {
       toast({
         title: 'Error marking attendance',

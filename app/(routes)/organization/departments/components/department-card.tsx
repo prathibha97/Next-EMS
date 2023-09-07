@@ -1,4 +1,5 @@
 'use client';
+import { useRemoveDepartmentMutation } from '@/app/redux/services/departmentApi';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -20,21 +21,29 @@ interface DepartmentCardProps {
     manager: Employee | null;
   };
   onClick: () => void;
+  refetchDepartments: () => void;
 }
 
-const DepartmentCard: FC<DepartmentCardProps> = ({ department, onClick }) => {
+const DepartmentCard: FC<DepartmentCardProps> = ({
+  department,
+  onClick,
+  refetchDepartments,
+}) => {
   const router = useRouter();
+  const [removeDepartment] = useRemoveDepartmentMutation();
   console.log(department);
   return (
     <div>
-      <Card
-        className='flex bg-white rounded-md shadow-md min-w-[100px] hover:cursor-pointer'
-        onClick={() => onClick()}
-      >
+      <Card className='flex bg-white rounded-md shadow-md min-w-[100px] '>
         <CardContent className='flex mt-2 space-x-4'>
           <div className='flex flex-col'>
             <div className='flex justify-between lg:w-[390px]'>
-              <h1 className='text-lg font-semibold'>{department.name}</h1>
+              <h1
+                className='text-lg font-semibold hover:cursor-pointer'
+                onClick={() => onClick()}
+              >
+                {department.name}
+              </h1>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant='ghost' className='h-8 w-8 p-0'>
@@ -59,7 +68,14 @@ const DepartmentCard: FC<DepartmentCardProps> = ({ department, onClick }) => {
                   >
                     View department
                   </DropdownMenuItem>
-                  <DropdownMenuItem className='text-red-500' onClick={() => {}}>
+                  <DropdownMenuItem
+                    className='text-red-500'
+                    onClick={() => {
+                      removeDepartment({ departmentId: department.id });
+                      refetchDepartments();
+                      router.refresh();
+                    }}
+                  >
                     Remove department
                   </DropdownMenuItem>
                 </DropdownMenuContent>

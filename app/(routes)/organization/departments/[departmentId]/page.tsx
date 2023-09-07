@@ -1,7 +1,7 @@
 'use client';
 import { useGetDepartmentByIdQuery } from '@/app/redux/services/departmentApi';
 import { DataTable } from '@/components/data-table';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import LoadingState from '../components/loading-state';
 import { columns } from './components/columns';
 
@@ -12,12 +12,16 @@ interface DepartmentPageProps {
 }
 
 const DepartmentPage: FC<DepartmentPageProps> = ({ params }) => {
-  const { data: department, isLoading } = useGetDepartmentByIdQuery({
+  const { data: department, isLoading, refetch:refetchDepartmentEmployees } = useGetDepartmentByIdQuery({
     departmentId: params.departmentId,
   });
   // @ts-ignore
   const data = department?.employees;
-  console.log(department);
+
+  useEffect(() => {
+    refetchDepartmentEmployees();
+    // @ts-ignore
+  }, [department?.employees]);
 
   if (isLoading) return <LoadingState />;
   return (

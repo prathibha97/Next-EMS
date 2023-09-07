@@ -1,16 +1,22 @@
 'use client'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const AccountsPage = () => {
-  const session = useSession()
-  const router = useRouter()
+const router = useRouter();
 
-  if(session.status === 'unauthenticated') {
-    router.push('/')
+const { data: session } = useSession({
+  required: true,
+  onUnauthenticated() {
+    router.push('/');
+  },
+});
+useEffect(() => {
+  if (session && session?.user?.role !== 'ADMIN') {
+    router.push('/denied');
   }
-  console.log(session);
+}, [session]);
   return (
     <div>AccountsPage</div>
   )

@@ -35,8 +35,8 @@ const EmployeesPage = () => {
 
 
   return (
-    <div>
-      <div className='flex justify-end mb-5 w-[550px]'>
+    <div className='container'>
+      <div className='flex justify-end mb-5'>
         <Button onClick={() => router.push(`employees/new`)}>
           Add Employee
         </Button>

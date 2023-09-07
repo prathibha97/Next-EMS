@@ -33,7 +33,7 @@ const Employee: FC<EmployeeProps> = ({ params }) => {
     return <LoadingState />;
   }
   return (
-    <div className='bg-slate-50 md:w-[850px] p-5 rounded-lg dark:bg-gray-800/40'>
+    <div className='bg-slate-50 md:w-[850px] xl:w-[950px] p-5 rounded-lg dark:bg-gray-800/40'>
       <div>
         <div className='flex justify-between'>
           <div className='flex flex-col'>

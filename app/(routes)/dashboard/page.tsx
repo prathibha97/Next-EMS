@@ -12,27 +12,28 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { MainNav } from '../../../components/main-nav';
+import { DashboardNav } from './components/dashboard-nav';
 import { CalendarDateRangePicker } from './components/date-range-picker';
 import { Overview } from './components/overview';
 import { RecentProjects } from './components/recent-projects';
 import TeamSwitcher from './components/team-switcher';
-import { DashboardNav } from './components/dashboard-nav';
 
 export default function DashboardPage() {
-  const session = useSession();
   const router = useRouter();
-
+  
   const [isMounted, setIsMounted] = useState(false);
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push('/');
+    },
+  });
 
   useEffect(() => {
     if (!isMounted) {
       setIsMounted(true);
     }
-    if (session && session.status === 'unauthenticated') {
-      router.push('/');
-    }
-  }, [isMounted, session, router]);
+  }, [isMounted]);
 
   if (!isMounted) {
     return null;

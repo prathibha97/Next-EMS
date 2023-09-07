@@ -1,7 +1,7 @@
 'use client';
 import { setDepartments } from '@/app/redux/features/departmentSlice';
 import { useAppDispatch } from '@/app/redux/hooks';
-import { useAddDepartmentMutation } from '@/app/redux/services/departmentApi';
+import { useAddDepartmentMutation, useGetDepartmentsQuery } from '@/app/redux/services/departmentApi';
 import { useGetEmployeesQuery } from '@/app/redux/services/employeeApi';
 import ActionButton from '@/components/buttons/action-button';
 import {
@@ -45,6 +45,8 @@ const NewDepartment = () => {
 
   const { data: employees, isLoading: isEmployeesLoading } =
     useGetEmployeesQuery();
+  const { refetch:refetchDepartments} = useGetDepartmentsQuery();
+
   const [addDepartment] = useAddDepartmentMutation();
 
   const onSubmit = async (data: DepartmentFormValues) => {
@@ -58,7 +60,9 @@ const NewDepartment = () => {
           description: 'Department has been created successfully',
         });
         form.reset();
+        refetchDepartments();
         router.push('/organization/departments');
+        router.refresh();
       } else if ('error' in response) {
         toast({
           title: 'Error',

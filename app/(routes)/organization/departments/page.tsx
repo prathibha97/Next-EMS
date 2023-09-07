@@ -25,7 +25,7 @@ const DepartmentsPage = () => {
     }
   }, [session]);
 
-  const { data: departments, isLoading } = useGetDepartmentsQuery();
+  const { data: departments, isLoading, refetch:refetchDepartments } = useGetDepartmentsQuery();
 
   const handleClick = (id: string) => {
     router.push(`/organization/departments/${id}`);
@@ -54,6 +54,7 @@ const DepartmentsPage = () => {
                   handleClick(department.id.toString());
                   dispatch(selectDepartment(department));
                 }}
+                refetchDepartments={refetchDepartments}
               />
             ))}
       </div>

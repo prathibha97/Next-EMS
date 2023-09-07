@@ -3,7 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 
-import { useRemoveEmployeeFromDepartmentMutation } from '@/app/redux/services/departmentApi';
+import { useGetDepartmentByIdQuery, useRemoveEmployeeFromDepartmentMutation } from '@/app/redux/services/departmentApi';
 import { EmployeeHoverCard } from '@/components/cards/employee-hover-card';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -71,17 +71,6 @@ export const columns: ColumnDef<Employee>[] = [
   {
     accessorKey: 'jobPosition',
     header: () => <div className='text-right'>Designation</div>,
-    // cell: ({ row }) => {
-    // const amount = parseFloat(row.getValue('amount'));
-
-    // Format the amount as a dollar amount
-    // const formatted = new Intl.NumberFormat('en-US', {
-    //   style: 'currency',
-    //   currency: 'USD',
-    // }).format(amount);
-
-    // return <div className='text-right font-medium'>{formatted}</div>;
-    // },
     cell: ({ row }) => (
       <div className='capitalize'>{row.getValue('jobPosition')}</div>
     ),
@@ -99,12 +88,15 @@ export const columns: ColumnDef<Employee>[] = [
       const [removeEmployeeFromDepartment] =
         useRemoveEmployeeFromDepartmentMutation();
       const employee = row.original;
-      console.log(employee);
+      const { refetch} = useGetDepartmentByIdQuery({
+        departmentId: employee.departmentId as string,
+      });
       const handleDelete = async () => {
         removeEmployeeFromDepartment({
           employeeId: employee.id,
           departmentId: employee.departmentId as string,
         });
+        refetch();
         router.refresh();
       };
 

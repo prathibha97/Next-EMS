@@ -1,11 +1,9 @@
-import { FC } from 'react'
+import { FC } from "react";
 
-interface PayrollPageProps {
-  
-}
+interface PayrollPageProps {}
 
 const PayrollPage: FC<PayrollPageProps> = ({}) => {
-  return <div>PayrollPage</div>
-}
+  return <div>PayrollPage</div>;
+};
 
-export default PayrollPage
+export default PayrollPage;

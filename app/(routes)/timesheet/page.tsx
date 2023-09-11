@@ -4,7 +4,7 @@ import { DataTable } from '@/components/data-table';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';import React from 'react'
 import { columns } from './components/columns';
-import { timesheet_data } from '@/constants/timesheet-data';
+import { timesheet_data } from '@/constants/sample/timesheet-data';
 import { TimeSheetTable } from './components/time-sheet-table';
 
 const TimeSheetPage = () => {

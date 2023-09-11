@@ -17,7 +17,7 @@ import { CalendarDateRangePicker } from "./components/date-range-picker";
 import { Overview } from "./components/overview";
 import { RecentProjects } from "./components/recent-projects";
 import TeamSwitcher from "./components/team-switcher";
-import "./dashboard-page.css";
+import Image from "next/image";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -74,16 +74,17 @@ export default function DashboardPage() {
             </TabsList>
             <TabsContent value="overview" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Card className="bg-[#ffffff] drop-shadow-lg">
+                <Card className="bg-white drop-shadow-lg">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       Total Revenue
                     </CardTitle>
                     <div>
-                      <img
-                        className="w-[50px]"
+                      <Image
                         src="/icons/revenue.png"
                         alt="Image 1"
+                        width={50}
+                        height={50}
                       />
                     </div>
                     {/* <svg
@@ -107,15 +108,16 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-[#ffffff] drop-shadow-lg">
+                <Card className="bg-white drop-shadow-lg">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       Subscriptions
                     </CardTitle>
-                    <img
-                      className="w-[50px]"
+                    <Image
                       src="/icons/subscriptions.png"
                       alt="Image 1"
+                      width={50}
+                      height={50}
                     />
                     {/* <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -139,13 +141,14 @@ export default function DashboardPage() {
                     </p>
                   </CardContent>
                 </Card>
-                <Card className="bg-[#ffffff] drop-shadow-lg">
+                <Card className="bg-white drop-shadow-lg">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Sales</CardTitle>
-                    <img
-                      className="w-[50px]"
+                    <Image
                       src="/icons/sales.png"
                       alt="Image 1"
+                      width={50}
+                      height={50}
                     />
                     {/* <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -168,15 +171,16 @@ export default function DashboardPage() {
                     </p>
                   </CardContent>
                 </Card>
-                <Card className="bg-[#ffffff] drop-shadow-lg">
+                <Card className="bg-white drop-shadow-lg">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       Active Now
                     </CardTitle>
-                    <img
-                      className="w-[50px]"
+                    <Image
                       src="/icons/active.png"
                       alt="Image 1"
+                      width={50}
+                      height={50}
                     />
                     {/* <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -200,7 +204,7 @@ export default function DashboardPage() {
                 </Card>
               </div>
               <div className=" grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-4 bg-[#ffffff] drop-shadow-lg ">
+                <Card className="col-span-4 bg-white drop-shadow-lg ">
                   <CardHeader>
                     <CardTitle>Overview</CardTitle>
                   </CardHeader>
@@ -209,7 +213,7 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="col-span-3 bg-[#ffffff] drop-shadow-lg">
+                <Card className="col-span-3 bg-white drop-shadow-lg">
                   <CardHeader>
                     <CardTitle>Recent Projects</CardTitle>
                     <CardDescription>

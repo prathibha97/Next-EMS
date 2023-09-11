@@ -1,7 +1,9 @@
-import * as React from 'react';
 import Link from 'next/link';
+import * as React from 'react';
 
-import { cn } from '@/lib/utils';
+import { UserNav } from '@/app/(routes)/dashboard/components/user-nav';
+import { NotificationButton } from '@/components/buttons/notification-button';
+import { ModeToggle } from '@/components/buttons/theme-toggle-button';
 import { Icons } from '@/components/icons';
 import {
   NavigationMenu,
@@ -12,13 +14,9 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
-import { UserNav } from '@/app/(routes)/dashboard/components/user-nav';
-import { usePathname } from 'next/navigation';
-import { NotificationButton } from '@/components/buttons/notification-button';
-import { ModeToggle } from '@/components/buttons/theme-toggle-button';
+import { cn } from '@/lib/utils';
 
 export function DashboardNav({ className }: React.HTMLAttributes<HTMLElement>) {
-
   return (
     <div className={`flex justify-between`}>
       <NavigationMenu className={className}>

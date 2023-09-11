@@ -1,7 +1,11 @@
 
 'use client';
+import { DataTable } from '@/components/data-table';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';import React from 'react'
+import { columns } from './components/columns';
+import { timesheet_data } from '@/constants/timesheet-data';
+import { TimeSheetTable } from './components/time-sheet-table';
 
 const TimeSheetPage = () => {
 const router = useRouter();
@@ -11,9 +15,18 @@ const { data: session } = useSession({
     router.push('/');
   },
 });
+
+
   return (
-    <div>TimeSheetPage</div>
-  )
+    <div>
+      <TimeSheetTable
+        columns={columns}
+        data={timesheet_data}
+        searchFilter='project'
+        placeholder='Project'
+      />
+    </div>
+  );
 }
 
 export default TimeSheetPage

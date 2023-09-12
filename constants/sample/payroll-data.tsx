@@ -105,4 +105,4 @@ export const payrollData = [
     basicSalary: 49000,
     netSalary: 39200,
   },
-] as const;
+];

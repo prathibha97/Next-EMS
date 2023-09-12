@@ -29,7 +29,7 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({}) => {
     }
   }, [session]);
   return (
-    <div>
+    <div className='space-y-3'>
       <Form>
       <Input placeholder='sample input' />
       <Select>

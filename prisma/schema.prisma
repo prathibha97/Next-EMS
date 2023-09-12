@@ -40,15 +40,14 @@ model User {
 }
 
 model Department {
-  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  managerId   String?       @db.ObjectId
+  managerId   String?    @db.ObjectId
   description String?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  employees   Employee[]    @relation("DepartmentEmployees")
-  jobPosition jobPosition[]
-  manager     Employee?     @relation(fields: [managerId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  employees   Employee[] @relation("DepartmentEmployees")
+  manager     Employee?  @relation(fields: [managerId], references: [id])
 }
 
 model Employee {
@@ -94,6 +93,7 @@ model Employee {
   Department         Department[]
   Leave              Leave[]
   LeaveBalance       LeaveBalance[]
+  Payroll            Payroll[]
 }
 
 model Attendance {
@@ -140,11 +140,27 @@ model Leave {
   employeeId String   @db.ObjectId
 }
 
-model jobPosition {
-  id           String      @id @default(auto()) @map("_id") @db.ObjectId
-  title        String
-  departmentId String?     @db.ObjectId
-  department   Department? @relation(fields: [departmentId], references: [id])
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+model Payroll {
+  id                     String   @id @default(auto()) @map("_id") @db.ObjectId
+  month                  String
+  year                   String
+  basicSalary            Float
+  dataAllowance          Float
+  mobileAllowance        Float?
+  projectAllowances      Float?
+  performanceAllowance   Float?
+  holidayAllowance       Float?
+  otherAllowances        Float?
+  salaryAdvance          Float?
+  epfDeduction           Float
+  etfDeduction           Float
+  companyEpfContribution Float
+  companyEtfContribution Float
+  otherDeductions        Float?
+  netSalary              Float
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  employeeId String   @db.ObjectId
 }

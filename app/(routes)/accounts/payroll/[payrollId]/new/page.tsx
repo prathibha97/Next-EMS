@@ -283,6 +283,11 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({}) => {
               </div>
             </div>
           </div>
+        <ActionButton
+          label='Add Salary'
+          type='submit'
+          onClick={() => onSubmit}
+        />
         </form>
         {/* <Select>
           <SelectTrigger className="w-[180px]">
@@ -294,11 +299,6 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({}) => {
             <SelectItem value="system">System</SelectItem>
           </SelectContent>
         </Select> */}
-        <ActionButton
-          label='Add Salary'
-          type='submit'
-          onClick={() => onSubmit}
-        />
       </Form>
     </div>
   );

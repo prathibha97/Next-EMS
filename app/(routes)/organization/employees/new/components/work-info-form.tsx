@@ -1,5 +1,4 @@
 'use client';
-import { updateEmployeeData } from '@/app/redux/features/employeeSlice';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { useUpdateEmployeeMutation } from '@/app/redux/services/employeeApi';
 import ActionButton from '@/components/buttons/action-button';
@@ -28,7 +27,7 @@ interface WorkInfoFormProps {
 }
 
 const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
-  const employeeId =  employee?.id ;
+  const employeeId = employee?.id;
   console.log(employeeId);
   const dispatch = useAppDispatch();
   const [updateEmployee, { isLoading }] = useUpdateEmployeeMutation();
@@ -55,14 +54,14 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
           timeZone: data.timeZone,
         },
       });
-        const updatedEmployee = response;
-        console.log(updatedEmployee);
-        // dispatch(updateEmployeeData(updatedEmployee));
-        toast({
-          title: 'Employee updated successfully',
-          description: 'Please update the rest of the employee information',
-        });
-        form.reset();
+      const updatedEmployee = response;
+      console.log(updatedEmployee);
+      // dispatch(updateEmployeeData(updatedEmployee));
+      toast({
+        title: 'Employee updated successfully',
+        description: 'Please update the rest of the employee information',
+      });
+      form.reset();
     } catch (error) {
       toast({
         title: 'Error',

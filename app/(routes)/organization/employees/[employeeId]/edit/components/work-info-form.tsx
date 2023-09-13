@@ -16,7 +16,7 @@ import { toast } from '@/hooks/use-toast';
 import {
   WorkInfoFormSchema,
   WorkInfoFormValues,
-} from '@/lib/validation/work-form-validation';
+} from '@/lib/validation/payroll-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Employee } from '@prisma/client';
 import { FC } from 'react';

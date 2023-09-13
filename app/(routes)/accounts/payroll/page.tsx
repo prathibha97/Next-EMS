@@ -1,4 +1,5 @@
 'use client';
+import { Button } from '@/components/ui/button';
 import { payrollData } from '@/constants/sample/payroll-data';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -23,6 +24,12 @@ const PayrollsPage: FC<PayrollsPageProps> = ({}) => {
   }, [session]);
   return (
     <div>
+      {/* <div className='flex justify-between'>
+        <h1 className='text-2xl font-semibold mb-8'>Payroll Management</h1>
+        <Button onClick={() => router.push('/accounts/payroll/new')}>
+          Create New Payroll
+        </Button>
+      </div> */}
       <PayrollDataTable columns={columns} data={payrollData} />
     </div>
   );

@@ -36,6 +36,7 @@ import { useRouter } from 'next/navigation';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useGetDepartmentsQuery } from '@/app/redux/services/departmentApi';
 import LoadingState from './components/loading-state';
+import { employeeTypeOptions } from '@/constants/employees';
 
 const NewEmployeePage = () => {
 
@@ -76,6 +77,7 @@ const NewEmployeePage = () => {
       jobPosition: '',
       manager: '',
       profile_photo: '',
+      // employeeType: '',
     },
   });
 
@@ -103,6 +105,7 @@ const NewEmployeePage = () => {
   };
 
   const onSubmit = async (values: EmployeeFormValues) => {
+    console.log(values);
     setLoading(true);
     try {
       const blob = values.profile_photo;
@@ -126,6 +129,7 @@ const NewEmployeePage = () => {
         profile_photo: values.profile_photo,
         workEmail: values.workEmail,
         workMobile: values.workMobile,
+        // employeeType: values.employeeType,
       });
       if ('data' in response) {
         const newEmployee = response.data; // Access the nested data
@@ -305,7 +309,7 @@ const NewEmployeePage = () => {
                       </FormControl>
                       <SelectContent>
                         {departments &&
-                          departments.map((department:Department) => (
+                          departments.map((department: Department) => (
                             <SelectItem
                               key={department.id}
                               value={department.id}
@@ -347,6 +351,33 @@ const NewEmployeePage = () => {
                   )}
                 />
               </span> */}
+              {/* <FormField
+                control={form.control}
+                name='employeeType'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Employee Type</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder='Select an employee type to display' />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {employeeTypeOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              /> */}
             </div>
           </div>
           <div className='mt-4'>

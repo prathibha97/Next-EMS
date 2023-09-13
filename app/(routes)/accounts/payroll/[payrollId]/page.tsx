@@ -14,6 +14,7 @@ interface PayrollPageProps {
 }
 
 const PayrollPage: FC<PayrollPageProps> = ({ params }) => {
+  const { payrollId } = params;
   const router = useRouter();
   const { data: session } = useSession({
     required: true,
@@ -28,7 +29,7 @@ const PayrollPage: FC<PayrollPageProps> = ({ params }) => {
   }, [session]);
   return (
     <div>
-      <Button onClick={() => router.push('/accounts/payroll/new')}>
+      <Button onClick={() => router.push(`/accounts/payroll/${payrollId}/new`)}>
         Add Salary
       </Button>
       <PaySheetDataTable data={payslipsData} columns={columns} />

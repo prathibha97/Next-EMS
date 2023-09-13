@@ -286,6 +286,7 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({}) => {
         <ActionButton
           label='Add Salary'
           type='submit'
+          className=""
           onClick={() => onSubmit}
         />
         </form>

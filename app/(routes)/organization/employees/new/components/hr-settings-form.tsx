@@ -31,6 +31,7 @@ import { Employee } from '@prisma/client';
 import { ChangeEvent, FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import LoadingState from './loading-state';
+import { useRouter } from 'next/navigation';
 
 interface HRSettingsFormProps {
   employee: Employee | null;
@@ -38,12 +39,14 @@ interface HRSettingsFormProps {
 
 const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
   const employeeId = employee?.id;
+  const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { startUpload } = useUploadThing('pdfUploader');
   const form = useForm<HRSettingsFormValues>({
     resolver: zodResolver(HRSettingsFormSchema),
     defaultValues: {
+      employeeNumber: '',
       employeeType: '',
       userId: '',
       idCopy: '',
@@ -53,7 +56,6 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
   });
 
   const { data: users, isLoading: isUsersLoading, refetch: refetchUsers } = useGetUsersQuery();
-  console.log(users);
   const [updateEmployee, { isLoading: loading }] = useUpdateEmployeeMutation();
 
   const handleFileUpload = (
@@ -111,6 +113,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
       const response = updateEmployee({
         employeeId, // Pass the employeeId to the mutation
         body: {
+          employeeNumber: values.employeeNumber,
           employeeType: values.employeeType,
           userId: values.userId,
           idCopy: values.idCopy,
@@ -126,6 +129,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
       });
       form.reset();
       refetchUsers();
+      router.refresh();
     } catch (error) {
       setIsLoading(false);
       toast({
@@ -147,6 +151,21 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
               <h2 className='text-lg font-semibold'>Status</h2>
               <Separator className='mt-1 mb-3' />
               <div className='flex flex-col gap-y-4'>
+                <FormField
+                  control={form.control}
+                  name='employeeNumber'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Employee Number</FormLabel>
+                      <Input
+                        {...field}
+                        placeholder='Enter employee number'
+                        type='text'
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name='employeeType'

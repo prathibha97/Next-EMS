@@ -48,6 +48,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
   const form = useForm<HRSettingsFormValues>({
     resolver: zodResolver(HRSettingsFormSchema),
     defaultValues: {
+      employeeNumber: employee?.employeeNumber ?? 'Employee number not set',
       employeeType: employee?.employeeType ?? 'Employee type is not specified',
       userId:
         employee?.userId ?? 'No user account associated with the employee',
@@ -112,6 +113,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
       const response = updateEmployee({
         employeeId, // Pass the employeeId to the mutation
         body: {
+          employeeNumber: values.employeeNumber,
           employeeType: values.employeeType,
           userId: values.userId,
           idCopy: values.idCopy,
@@ -147,6 +149,21 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
               <h2 className='text-lg font-semibold'>Status</h2>
               <Separator className='mt-1 mb-3' />
               <div className='flex flex-col gap-y-4'>
+                <FormField
+                  control={form.control}
+                  name='employeeNumber'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Employee Number</FormLabel>
+                      <Input
+                        {...field}
+                        placeholder='Enter employee number'
+                        type='text'
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name='employeeType'

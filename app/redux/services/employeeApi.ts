@@ -38,5 +38,4 @@ export const {
   useGetLoggedInEmployeeQuery,
   useAddEmployeeMutation,
   useUpdateEmployeeMutation,
-  
 } = employeeApi;

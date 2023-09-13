@@ -1,9 +1,8 @@
 'use client';
-import { Button } from '@/components/ui/button';
-import { payrollData } from '@/constants/sample/payroll-data';
+import { useGetEmployeesQuery } from '@/app/redux/services/employeeApi';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { columns } from './components/columns';
 import { PayrollDataTable } from './components/payroll-data-table';
 
@@ -22,15 +21,27 @@ const PayrollsPage: FC<PayrollsPageProps> = ({}) => {
       router.push('/denied');
     }
   }, [session]);
+
+  const { data: employeeData, isLoading, refetch } = useGetEmployeesQuery();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    if (employeeData) {
+      // @ts-ignore
+      setData(employeeData);
+    }
+  }, [employeeData]);
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div>
-      {/* <div className='flex justify-between'>
-        <h1 className='text-2xl font-semibold mb-8'>Payroll Management</h1>
-        <Button onClick={() => router.push('/accounts/payroll/new')}>
-          Create New Payroll
-        </Button>
-      </div> */}
-      <PayrollDataTable columns={columns} data={payrollData} />
+      <PayrollDataTable columns={columns} data={data} />
     </div>
   );
 };

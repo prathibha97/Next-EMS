@@ -17,6 +17,13 @@ const HRSettings: FC<HRSettingsProps> = ({employee}) => {
           <Separator className='mt-1 mb-3' />
           <div className='flex flex-col gap-y-4'>
             <span>
+              Employee Number :{' '}
+              <span className='text-sm text-gray-600 dark:text-gray-300'>
+                {employee?.employeeNumber}
+              </span>
+            </span>
+
+            <span>
               Employee Type :{' '}
               <span className='text-sm text-gray-600 dark:text-gray-300'>
                 {employee?.employeeType}

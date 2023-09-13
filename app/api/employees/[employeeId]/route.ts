@@ -64,6 +64,7 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
       idCopy,
       resumeCopy,
       passbookCopy,
+      employeeNumber,
     } = body;
 
     const leaveBalanceData = createLeaveBalanceData(body.employeeType);
@@ -96,6 +97,7 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
         idCopy,
         resumeCopy,
         passbookCopy,
+        employeeNumber,
         leaveBalance: {
           create: leaveBalanceData,
         },

@@ -70,30 +70,30 @@ export function PayrollDataTable<TData, TValue>({
         <Input
           placeholder={`Filter by Employee Number...`}
           value={
-            (table.getColumn("employeeId")?.getFilterValue() as string) ?? ""
+            (table.getColumn("employeeNumber")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
-            table.getColumn("employeeId")?.setFilterValue(event.target.value)
+            table.getColumn("employeeNumber")?.setFilterValue(event.target.value)
           }
           className="max-w-sm  "
         />
         <Input
           placeholder={`Filter by Employee Name...`}
           value={
-            (table.getColumn("employeeName")?.getFilterValue() as string) ?? ""
+            (table.getColumn("name")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
-            table.getColumn("employeeName")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
         <Input
           placeholder={`Filter by Designation...`}
           value={
-            (table.getColumn("designation")?.getFilterValue() as string) ?? ""
+            (table.getColumn("jobPosition")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
-            table.getColumn("designation")?.setFilterValue(event.target.value)
+            table.getColumn("jobPosition")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

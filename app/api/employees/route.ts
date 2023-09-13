@@ -111,7 +111,13 @@ export async function GET(req: Request) {
     throw new NextResponse('Unauthorized', { status: 401 });
   }
   try {
-    const employees = await prisma.employee.findMany();
+    const employees = await prisma.employee.findMany({
+      include: {
+        employeeDepartment: true,
+        leaveBalance: true,
+        Department: true,
+      },
+    });
     return NextResponse.json(employees);
   } catch (error: any) {
     return new Response(`Could not fetch employees - ${error.message}`, {

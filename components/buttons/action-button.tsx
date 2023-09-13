@@ -15,6 +15,7 @@ interface ActionButtonProps {
   onClick?: () => void;
   label: string;
   type?: 'button' | 'submit' | 'reset';
+  className?: string;
 }
 
 const ActionButton: FC<ActionButtonProps> = ({
@@ -24,9 +25,10 @@ const ActionButton: FC<ActionButtonProps> = ({
   size,
   variant,
   type,
+  className
 }) => {
   return (
-    <Button variant={variant} size={size} onClick={onClick} type={type}>
+    <Button variant={variant} size={size} onClick={onClick} type={type} className={className}>
       {isLoading && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
       {label}
     </Button>

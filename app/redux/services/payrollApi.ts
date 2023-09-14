@@ -26,6 +26,12 @@ export const payrollApi = apiSlice.injectEndpoints({
         body: body,
       }),
     }),
+    removePayroll: builder.mutation<void, string>({
+      query: (payrollId) => ({
+        url: `/payrolls/${payrollId}`,
+        method: 'DELETE',
+      }),
+    })
   }),
 });
 
@@ -34,4 +40,5 @@ export const {
   useUpdatePayrollMutation,
   useGetPayrollByIdQuery,
   useAddPayrollMutation,
+  useRemovePayrollMutation,
 } = payrollApi;

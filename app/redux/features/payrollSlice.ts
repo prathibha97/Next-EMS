@@ -33,21 +33,20 @@ const payrollSlice = createSlice({
         state.payroll = action.payload;
       }
     },
-    removePayroll(state) {
-      if (state.payroll) {
+    removePayrollData(state, action: PayloadAction<Payroll>) {
+      if (!action.payload) return;
         state.payrolls = state.payrolls.filter(
-          (p) => p.id !== state.payroll!.id
+          (p) => p.id !== action.payload.id
         );
         state.payroll = null;
-      }
     },
     selectPayroll(state, action: PayloadAction<Payroll>) {
       state.payroll = action.payload;
-    }
+    },
   },
 });
 
-export const { addPayrollData, updatePayroll, removePayroll, selectPayroll } =
+export const { addPayrollData, updatePayroll, removePayrollData, selectPayroll } =
   payrollSlice.actions;
 
 export default payrollSlice.reducer;

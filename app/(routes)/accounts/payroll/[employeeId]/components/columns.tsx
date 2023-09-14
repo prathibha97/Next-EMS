@@ -23,11 +23,14 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-import { selectPayroll } from '@/app/redux/features/payrollSlice';
+import {
+  removePayrollData,
+  selectPayroll,
+} from '@/app/redux/features/payrollSlice';
 import { useAppDispatch } from '@/app/redux/hooks';
-import { useRouter } from 'next/navigation';
+import { useRemovePayrollMutation } from '@/app/redux/services/payrollApi';
 import { Payroll } from '@prisma/client';
-
+import { useRouter } from 'next/navigation';
 
 export const columns: ColumnDef<Payroll>[] = [
   {
@@ -87,7 +90,7 @@ export const columns: ColumnDef<Payroll>[] = [
       const router = useRouter();
       const dispatch = useAppDispatch();
       const paysheet = row.original;
-
+      const [removePayroll] = useRemovePayrollMutation();
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -128,12 +131,20 @@ export const columns: ColumnDef<Payroll>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
+                dispatch(selectPayroll(paysheet));
                 router.push(`/accounts/payroll/${paysheet.employeeId}/edit`);
               }}
             >
               Edit PaySlip
             </DropdownMenuItem>
-            <DropdownMenuItem className='text-red-500' onClick={() => {}}>
+            <DropdownMenuItem
+              className='text-red-500'
+              onClick={() => {
+                removePayroll(paysheet.id);
+                dispatch(removePayrollData(paysheet));
+                router.refresh();
+              }}
+            >
               Delete PaySlip
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -1,15 +1,9 @@
-"use client";
-import { Input } from "@/components/ui/input";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { FC, useEffect, useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+'use client';
+import { addPayrollData } from '@/app/redux/features/payrollSlice';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { useAddPayrollMutation } from '@/app/redux/services/payrollApi';
+import ActionButton from '@/components/buttons/action-button';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -17,50 +11,57 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import ActionButton from "@/components/buttons/action-button";
-import { toast } from "@/hooks/use-toast";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { months } from '@/constants/months';
+import { toast } from '@/hooks/use-toast';
 import {
   PayrollFormSchema,
   PayrollFormValues,
-} from "@/lib/validation/payroll-form-validation";
-import { useAddPayrollMutation } from "@/app/redux/services/payrollApi";
-import { months } from "@/constants/months";
-import { useAppDispatch } from "@/app/redux/hooks";
-import { addPayrollData } from "@/app/redux/features/payrollSlice";
+} from '@/lib/validation/payroll-form-validation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { FC, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 interface AddPayrollPageProps {
-  params:{
+  params: {
     employeeId: string;
-  }
+  };
 }
 
-const AddPayrollPage: FC<AddPayrollPageProps> = ({params}) => {
+const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
   const router = useRouter();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      router.push("/");
+      router.push('/');
     },
   });
   useEffect(() => {
-    if (session && session?.user?.role !== "ADMIN") {
-      router.push("/denied");
+    if (session && session?.user?.role !== 'ADMIN') {
+      router.push('/denied');
     }
   }, [session]);
 
   const employeeId = params.employeeId;
 
-  const [addPayroll, {isLoading}] = useAddPayrollMutation();
+  const [addPayroll, { isLoading }] = useAddPayrollMutation();
 
   const form = useForm<PayrollFormValues>({
     resolver: zodResolver(PayrollFormSchema),
     defaultValues: {
-      month: "",
-      year: "",
+      month: '',
+      year: '',
       basicSalary: '',
       dataAllowance: '',
       mobileAllowance: '',
@@ -77,49 +78,48 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({params}) => {
   const [totalAdditions, setTotalAdditions] = useState(0);
   const [totalDeductions, setTotalDeductions] = useState(0);
   const [netSalary, setNetSalary] = useState(0);
-  
+
   const calculateValues = (values: PayrollFormValues) => {
-  const {
-    dataAllowance,
-    mobileAllowance,
-    projectAllowance,
-    performanceAllowance,
-    holidayAllowance,
-    salaryAdvance,
-    epfDeduction,
-    otherDeductions,
-    basicSalary
-  } = values;
+    const {
+      dataAllowance,
+      mobileAllowance,
+      projectAllowance,
+      performanceAllowance,
+      holidayAllowance,
+      salaryAdvance,
+      epfDeduction,
+      otherDeductions,
+      basicSalary,
+    } = values;
 
-  // Convert string inputs to numbers
-  const parsedDataAllowance = parseFloat(dataAllowance);
-  const parsedMobileAllowance = parseFloat(mobileAllowance);
-  const parsedProjectAllowance = parseFloat(projectAllowance);
-  const parsedPerformanceAllowance = parseFloat(performanceAllowance);
-  const parsedHolidayAllowance = parseFloat(holidayAllowance);
-  const parsedSalaryAdvance = parseFloat(salaryAdvance);
-  const parsedEpfDeduction = parseFloat(epfDeduction);
-  const parsedOtherDeductions = parseFloat(otherDeductions);
+    // Convert string inputs to numbers
+    const parsedDataAllowance = parseFloat(dataAllowance);
+    const parsedMobileAllowance = parseFloat(mobileAllowance);
+    const parsedProjectAllowance = parseFloat(projectAllowance);
+    const parsedPerformanceAllowance = parseFloat(performanceAllowance);
+    const parsedHolidayAllowance = parseFloat(holidayAllowance);
+    const parsedSalaryAdvance = parseFloat(salaryAdvance);
+    const parsedEpfDeduction = parseFloat(epfDeduction);
+    const parsedOtherDeductions = parseFloat(otherDeductions);
 
-  setBasicSalary(parseFloat(basicSalary));
-  
-  const additions =
-    parsedDataAllowance +
-    parsedMobileAllowance +
-    parsedProjectAllowance +
-    parsedPerformanceAllowance +
-    parsedHolidayAllowance;
+    setBasicSalary(parseFloat(basicSalary));
 
-  const deductions =
-    parsedSalaryAdvance + parsedEpfDeduction + parsedOtherDeductions;
+    const additions =
+      parsedDataAllowance +
+      parsedMobileAllowance +
+      parsedProjectAllowance +
+      parsedPerformanceAllowance +
+      parsedHolidayAllowance;
 
+    const deductions =
+      parsedSalaryAdvance + parsedEpfDeduction + parsedOtherDeductions;
 
-  const total = Number(basicSalary) + additions - deductions;
+    const total = Number(basicSalary) + additions - deductions;
 
-  setTotalAdditions(additions);
-  setTotalDeductions(deductions);
-  setNetSalary(total);
-};
+    setTotalAdditions(additions);
+    setTotalDeductions(deductions);
+    setNetSalary(total);
+  };
 
   const onSubmit = async (values: PayrollFormValues) => {
     try {
@@ -143,17 +143,17 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({params}) => {
       const payroll = response; // Access the nested data
       dispatch(addPayrollData(payroll));
       toast({
-        title: "Success",
-        description: "Employee salary successfully added",
+        title: 'Success',
+        description: 'Employee salary successfully added',
       });
       form.reset();
       router.push(`/accounts/payroll/${employeeId}`);
       router.refresh();
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Something went wrong, Please try again",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Something went wrong, Please try again',
+        variant: 'destructive',
       });
       console.log(error);
     }
@@ -417,29 +417,22 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({params}) => {
               </div>
             </div>
           </div>
-          <ActionButton
-            label='Add Salary'
-            type='submit'
-            className='flex ml-auto rounded-md text-white bg-[#2ebdaa]'
-            onClick={() => onSubmit}
-            isLoading={isLoading}
-          />
+          <div className='flex items-center'>
+            <Button type='button' onClick={() => router.back()}>
+              Cancel
+            </Button>
+            <ActionButton
+              label='Add Salary'
+              type='submit'
+              className='flex ml-auto rounded-md text-white bg-[#2ebdaa]'
+              onClick={() => onSubmit}
+              isLoading={isLoading}
+            />
+          </div>
         </form>
-        {/* <Select>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="sample select" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="light">Light</SelectItem>
-            <SelectItem value="dark">Dark</SelectItem>
-            <SelectItem value="system">System</SelectItem>
-          </SelectContent>
-        </Select> */}
       </Form>
     </div>
   );
 };
-// NOTE: I will implement form validation later
-// copy this code to edit page as well
 
 export default AddPayrollPage;

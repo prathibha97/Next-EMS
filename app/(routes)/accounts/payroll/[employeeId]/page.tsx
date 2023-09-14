@@ -34,6 +34,7 @@ const PayrollPage: FC<PayrollPageProps> = ({ params }) => {
     isLoading,
     refetch,
   } = useGetEmployeeByIdQuery({ employeeId });
+  
 
   useEffect(() => {
     if (employeeData) {
@@ -41,6 +42,7 @@ const PayrollPage: FC<PayrollPageProps> = ({ params }) => {
       setData(employeeData.Payroll);
     }
   }, [employeeData]);
+
 
   useEffect(() => {
     refetch();
@@ -58,6 +60,9 @@ const PayrollPage: FC<PayrollPageProps> = ({ params }) => {
         Add Salary
       </Button>
       <PaySheetDataTable data={data} columns={columns} />
+      <Button type='button' onClick={() => router.push('/accounts/payroll')}>
+        Go Back
+      </Button>
     </div>
   );
 };

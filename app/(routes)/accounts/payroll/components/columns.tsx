@@ -119,7 +119,7 @@ export const columns: ColumnDef<Employee>[] = [
               View Payroll
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
+            {/* <DropdownMenuItem
               onClick={() => {
                 router.push(`/accounts/payroll/${employee.id}/edit`);
               }}
@@ -128,7 +128,7 @@ export const columns: ColumnDef<Employee>[] = [
             </DropdownMenuItem>
             <DropdownMenuItem className='text-red-500' onClick={() => {}}>
               Delete Payroll
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );

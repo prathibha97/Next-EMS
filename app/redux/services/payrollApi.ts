@@ -6,11 +6,14 @@ export const payrollApi = apiSlice.injectEndpoints({
     fetchPayrolls: builder.query<Payroll[], void>({
       query: () => '/payrolls',
     }),
-    updatePayroll: builder.mutation<void, Partial<Payroll>>({
-      query: (payrollData) => ({
-        url: `/payrolls/${payrollData.id}`,
+    updatePayroll: builder.mutation<
+      Payroll,
+      { payrollId: string | undefined; body: Partial<Payroll> }
+    >({
+      query: ({ payrollId, body }) => ({
+        url: `/payrolls/${payrollId}`,
         method: 'PUT',
-        body: payrollData,
+        body,
       }),
     }),
     getPayrollById: builder.query({
@@ -31,7 +34,7 @@ export const payrollApi = apiSlice.injectEndpoints({
         url: `/payrolls/${payrollId}`,
         method: 'DELETE',
       }),
-    })
+    }),
   }),
 });
 

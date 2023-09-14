@@ -22,7 +22,7 @@ const payrollSlice = createSlice({
       state.payroll = action.payload;
       state.payrolls.push(action.payload);
     },
-    updatePayroll(state, action: PayloadAction<Payroll>) {
+    updatePayrollData(state, action: PayloadAction<Payroll>) {
       if (!action.payload) return;
 
       // Find the index of the payroll to update
@@ -46,7 +46,7 @@ const payrollSlice = createSlice({
   },
 });
 
-export const { addPayrollData, updatePayroll, removePayrollData, selectPayroll } =
+export const { addPayrollData, updatePayrollData, removePayrollData, selectPayroll } =
   payrollSlice.actions;
 
 export default payrollSlice.reducer;

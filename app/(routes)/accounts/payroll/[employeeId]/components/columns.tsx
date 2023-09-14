@@ -23,18 +23,13 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
+import { selectPayroll } from '@/app/redux/features/payrollSlice';
+import { useAppDispatch } from '@/app/redux/hooks';
 import { useRouter } from 'next/navigation';
+import { Payroll } from '@prisma/client';
 
-interface PaySheetData {
-  payslipId: string;
-  employeeId: string;
-  month: string;
-  year: number;
-  basicSalary: number;
-  netSalary: number;
-}
 
-export const columns: ColumnDef<PaySheetData>[] = [
+export const columns: ColumnDef<Payroll>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -54,13 +49,13 @@ export const columns: ColumnDef<PaySheetData>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    accessorKey: 'payslipId',
-    header: () => <div>PaySlip ID</div>,
-    cell: ({ row }) => (
-      <div className='capitalize text-center'>{row.getValue('payslipId')}</div>
-    ),
-  },
+  // {
+  //   accessorKey: 'payslipId',
+  //   header: () => <div>PaySlip ID</div>,
+  //   cell: ({ row }) => (
+  //     <div className='capitalize text-center'>{row.getValue('payslipId')}</div>
+  //   ),
+  // },
   {
     accessorKey: 'year',
     header: 'Year',
@@ -90,6 +85,7 @@ export const columns: ColumnDef<PaySheetData>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const router = useRouter();
+      const dispatch = useAppDispatch();
       const paysheet = row.original;
 
       return (
@@ -111,7 +107,12 @@ export const columns: ColumnDef<PaySheetData>[] = [
             </DropdownMenuItem> */}
             <DropdownMenuItem asChild>
               <Dialog>
-                <DialogTrigger className='text-sm text-center mx-auto w-full'>View PaySheet</DialogTrigger>
+                <DialogTrigger
+                  className='text-sm text-center mx-auto w-full'
+                  onClick={() => dispatch(selectPayroll(paysheet))}
+                >
+                  View PaySheet
+                </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>

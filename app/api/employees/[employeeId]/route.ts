@@ -22,6 +22,9 @@ export async function GET(req: Request, { params }: { params: IParams }) {
         Department: true,
         user: true,
         Attendance: true,
+        Payroll: true,
+        Leave: true,
+        leaveBalance: true,
       },
     });
     return NextResponse.json(employee);

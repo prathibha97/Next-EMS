@@ -26,11 +26,20 @@ import {
   PayrollFormSchema,
   PayrollFormValues,
 } from "@/lib/validation/payroll-form-validation";
+import { useAddPayrollMutation } from "@/app/redux/services/payrollApi";
+import { months } from "@/constants/months";
+import { useAppDispatch } from "@/app/redux/hooks";
+import { addPayrollData } from "@/app/redux/features/payrollSlice";
 
-interface AddPayrollPageProps {}
+interface AddPayrollPageProps {
+  params:{
+    employeeId: string;
+  }
+}
 
-const AddPayrollPage: FC<AddPayrollPageProps> = ({}) => {
+const AddPayrollPage: FC<AddPayrollPageProps> = ({params}) => {
   const router = useRouter();
+  const dispatch = useAppDispatch()
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -42,6 +51,10 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({}) => {
       router.push("/denied");
     }
   }, [session]);
+
+  const employeeId = params.employeeId;
+
+  const [addPayroll, {isLoading}] = useAddPayrollMutation();
 
   const form = useForm<PayrollFormValues>({
     resolver: zodResolver(PayrollFormSchema),
@@ -110,14 +123,32 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({}) => {
 
   const onSubmit = async (values: PayrollFormValues) => {
     try {
-      console.log(values);
       calculateValues(values);
-
+      const response = await addPayroll({
+        employeeId, // Pass the employeeId to the mutation
+        body: {
+          month: values.month,
+          year: values.year,
+          basicSalary: parseFloat(values.basicSalary),
+          dataAllowance: parseFloat(values.dataAllowance),
+          mobileAllowance: parseFloat(values.mobileAllowance),
+          projectAllowance: parseFloat(values.projectAllowance),
+          performanceAllowance: parseFloat(values.performanceAllowance),
+          holidayAllowance: parseFloat(values.holidayAllowance),
+          salaryAdvance: parseFloat(values.salaryAdvance),
+          epfDeduction: parseFloat(values.epfDeduction),
+          otherDeductions: parseFloat(values.otherDeductions),
+        },
+      }).unwrap();
+      const payroll = response; // Access the nested data
+      dispatch(addPayrollData(payroll));
       toast({
         title: "Success",
         description: "Employee salary successfully added",
       });
       form.reset();
+      router.push(`/accounts/payroll/${employeeId}`);
+      router.refresh();
     } catch (error) {
       toast({
         title: "Error",
@@ -139,16 +170,27 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({}) => {
             <div>
               <FormLabel>Month</FormLabel>
               <FormField
+                control={form.control}
                 name='month'
                 render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type='month'
-                        className='md:w-96 px-2 py-1 border rounded-md'
-                      />
-                    </FormControl>
+                  <FormItem className='md:w-96 rounded-md'>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder='Select a month to display' />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {months.map((month) => (
+                          <SelectItem key={month.value} value={month.value}>
+                            {month.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -378,8 +420,9 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({}) => {
           <ActionButton
             label='Add Salary'
             type='submit'
-            className='block rounded-md text-white bg-[#2ebdaa] p-2 ml-auto'
+            className='flex ml-auto rounded-md text-white bg-[#2ebdaa]'
             onClick={() => onSubmit}
+            isLoading={isLoading}
           />
         </form>
         {/* <Select>

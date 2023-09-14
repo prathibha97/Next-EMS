@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { getAuthSession } from '../auth/[...nextauth]/options';
 
 export async function POST(req: Request) {
-  const session = getAuthSession();
+  const session = await getAuthSession();
   if (!session) {
     throw new NextResponse('Unauthorized', { status: 401 });
   }

@@ -149,13 +149,12 @@ model Payroll {
   basicSalary            Float
   dataAllowance          Float
   mobileAllowance        Float?
-  projectAllowances      Float?
+  projectAllowance      Float?
   performanceAllowance   Float?
   holidayAllowance       Float?
   otherAllowances        Float?
   salaryAdvance          Float?
   epfDeduction           Float
-  etfDeduction           Float
   companyEpfContribution Float
   companyEtfContribution Float
   otherDeductions        Float?

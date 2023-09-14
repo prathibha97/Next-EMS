@@ -1,9 +1,9 @@
 import prisma from '@/lib/prisma';
-import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
+import { getAuthSession } from '../auth/[...nextauth]/options';
 
 export async function POST(req: Request) {
-  const session = await getServerSession();
+  const session = getAuthSession();
   if (!session) {
     throw new NextResponse('Unauthorized', { status: 401 });
   }
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const currentDate = new Date();
     const currentDateString = currentDate.toISOString().split('T')[0];
 
-    const attendanceDate = new Date(date).toISOString();;
+    const attendanceDate = new Date(date).toISOString();
     const attendanceDateString = attendanceDate.split('T')[0];
 
     if (attendanceDateString !== currentDateString) {
@@ -50,7 +50,6 @@ export async function POST(req: Request) {
         },
       },
     });
-    console.log('existing attendance', existingAttendance);
 
     if (!existingAttendance) {
       // Create a new attendance record with timeIn and other relevant details
@@ -76,7 +75,7 @@ export async function POST(req: Request) {
       // Update the existing attendance record's timeOut and recalculate totalHours
       const timeOutDate = new Date(timeOut);
       const hoursDifference =
-      // @ts-ignore
+        // @ts-ignore
         Math.abs(timeOutDate - existingAttendance.timeIn) / 36e5; // Calculate hours difference
 
       const updatedAttendance = await prisma.attendance.update({

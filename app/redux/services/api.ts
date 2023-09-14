@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: `https://next-ems.vercel.app/api`,
+  baseUrl: `http://localhost:3000/api`,
   // prepareHeaders: (headers) => {
   //   // Add the access token to the headers
   //   const session = getSession();

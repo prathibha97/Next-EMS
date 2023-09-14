@@ -29,6 +29,8 @@ const AttendancePage = () => {
 
   const { data: attendanceList , isLoading:isAttendanceDataLoading, refetch:refetchAttendanceList} = useGetAttendanceByIdQuery(employeeId as string);
 
+  console.log(loggedInEmployee);
+
   const handleMarkAttendance = async () => {
     try {
       const attendanceData = {

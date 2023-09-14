@@ -1,13 +1,13 @@
 import prisma from '@/lib/prisma';
-import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
+import { getAuthSession } from '../../auth/[...nextauth]/options';
 
 interface IParams {
   employeeId: string;
 }
 
 export async function GET(req: Request, { params }: { params: IParams }) {
-  const session = await getServerSession();
+  const session = await getAuthSession();
   if (!session) {
     throw new NextResponse('Unauthorized', { status: 401 });
   }
@@ -21,9 +21,10 @@ export async function GET(req: Request, { params }: { params: IParams }) {
       },
     });
 
-    if(!attendance) {
+    if (!attendance) {
       throw new NextResponse('Attendance data not found', { status: 404 });
     }
+    console.log('attendance', attendance);
 
     return NextResponse.json({
       attendance,

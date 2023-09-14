@@ -116,6 +116,7 @@ export async function GET(req: Request) {
         employeeDepartment: true,
         leaveBalance: true,
         Department: true,
+        Attendance: true,
       },
     });
     return NextResponse.json(employees);

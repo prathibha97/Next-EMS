@@ -24,7 +24,4 @@ export const apiSlice = createApi({
 //     headers.set('Authorization', `Bearer ${session.}`);
 //   }
 //   return headers;
-// },1234567890
-
-//abcdasfsd
-//wqeqwe
+// },

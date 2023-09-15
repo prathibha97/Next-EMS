@@ -1,3 +1,4 @@
+'use client'
 import { BellRing, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -11,6 +12,8 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
+import { useEffect, useState } from 'react';
+import { pusherClient } from '@/lib/pusher';
 
 const notifications = [
   {
@@ -28,15 +31,37 @@ const notifications = [
 ];
 
 type CardProps = React.ComponentProps<typeof Card>;
+type Notification = {
+  title: string;
+  description: string;
+}
 
 export function NotificationCard({ className, ...props }: CardProps) {
+   const [notifications, setNotifications] = useState<Notification[]>([]);
+
+    useEffect(() => {
+      // Subscribe to a channel
+      const channel = pusherClient.subscribe('notifications');
+
+      // Bind to an event (e.g., 'new-notification')
+      channel.bind('new-notification', (data:any) => {
+        setNotifications((prevNotifications) => [data, ...prevNotifications]);
+      });
+
+      // Clean up subscriptions when component unmounts
+      return () => {
+        channel.unbind(); // Unbind event
+        pusherClient.unsubscribe('notifications'); // Unsubscribe from the channel
+      };
+    }, []);
+
   return (
     <Card className={cn('w-fit', className)} {...props}>
       <CardHeader>
         <CardTitle>Notifications</CardTitle>
         <CardDescription>You have 3 unread messages.</CardDescription>
       </CardHeader>
-      <CardContent className='grid gap-4'>
+      {/* <CardContent className='grid gap-4'>
         <div className='flex items-center space-x-4 rounded-md border p-4'>
           <BellRing />
           <div className='flex-1 space-y-1'>
@@ -65,6 +90,24 @@ export function NotificationCard({ className, ...props }: CardProps) {
             </div>
           </div>
         ))}
+      </CardContent> */}
+      <CardContent className='grid gap-4'>
+        {/* ... */}
+        {notifications.map((notification, index) => (
+          <div
+            key={index}
+            className='flex items-start space-x-4 pb-4 last:pb-0'
+          >
+            {/* ... */}
+            <p className='text-sm font-medium leading-none'>
+              {notification.title}
+            </p>
+            <p className='text-sm text-muted-foreground'>
+              {notification.description}
+            </p>
+          </div>
+        ))}
+        {/* ... */}
       </CardContent>
       <CardFooter>
         <Button className='w-full'>

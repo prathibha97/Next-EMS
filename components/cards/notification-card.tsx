@@ -15,20 +15,20 @@ import { Switch } from '@/components/ui/switch';
 import { useEffect, useState } from 'react';
 import { pusherClient } from '@/lib/pusher';
 
-const notifications = [
-  {
-    title: 'Your call has been confirmed.',
-    description: '1 hour ago',
-  },
-  {
-    title: 'You have a new message!',
-    description: '1 hour ago',
-  },
-  {
-    title: 'Your subscription is expiring soon!',
-    description: '2 hours ago',
-  },
-];
+// const notifications = [
+//   {
+//     title: 'Your call has been confirmed.',
+//     description: '1 hour ago',
+//   },
+//   {
+//     title: 'You have a new message!',
+//     description: '1 hour ago',
+//   },
+//   {
+//     title: 'Your subscription is expiring soon!',
+//     description: '2 hours ago',
+//   },
+// ];
 
 type CardProps = React.ComponentProps<typeof Card>;
 type Notification = {
@@ -59,7 +59,9 @@ export function NotificationCard({ className, ...props }: CardProps) {
     <Card className={cn('w-fit', className)} {...props}>
       <CardHeader>
         <CardTitle>Notifications</CardTitle>
-        <CardDescription>You have 3 unread messages.</CardDescription>
+        <CardDescription>
+          You have {notifications.length} unread messages.
+        </CardDescription>
       </CardHeader>
       {/* <CardContent className='grid gap-4'>
         <div className='flex items-center space-x-4 rounded-md border p-4'>
@@ -93,6 +95,18 @@ export function NotificationCard({ className, ...props }: CardProps) {
       </CardContent> */}
       <CardContent className='grid gap-4'>
         {/* ... */}
+        <div className='flex items-center space-x-4 rounded-md border p-4'>
+          <BellRing />
+          <div className='flex-1 space-y-1'>
+            <p className='text-sm font-medium leading-none'>
+              Push Notifications
+            </p>
+            <p className='text-sm text-muted-foreground'>
+              Send notifications to device.
+            </p>
+          </div>
+          <Switch />
+        </div>
         {notifications.map((notification, index) => (
           <div
             key={index}

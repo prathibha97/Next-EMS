@@ -2,16 +2,18 @@ import prisma from '@/lib/prisma';
 import { LeaveType } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
+import { getAuthSession } from '../../auth/[...nextauth]/options';
 
 interface IParams {
   employeeId?: string;
 }
 
 export async function GET(req: Request, { params }: { params: IParams }) {
-  const session = getServerSession();
-  if (!session) {
+  const session = await getAuthSession();
+  if (!session || session.user.role !== 'ADMIN') {
     throw new NextResponse('Unauthorized', { status: 401 });
   }
+
   const { employeeId } = params;
   try {
     const employee = await prisma.employee.findUnique({
@@ -36,73 +38,36 @@ export async function GET(req: Request, { params }: { params: IParams }) {
 }
 
 export async function PUT(req: Request, { params }: { params: IParams }) {
-  const session = getServerSession();
-  if (!session) {
+  const session = await getAuthSession();
+  if (!session || session.user.role !== 'ADMIN') {
     throw new NextResponse('Unauthorized', { status: 401 });
   }
+
   try {
     const { employeeId } = params;
     const body = await req.json();
-    const {
-      workAddress,
-      workLocation,
-      workingHours,
-      startDate,
-      timeZone,
-      privateAddress,
-      personalEmail,
-      phone,
-      bankAccountNumber,
-      bankName,
-      maritalStatus,
-      numberOfDependents,
-      emergencyContactName,
-      emergencyContactPhone,
-      nationality,
-      idNumber,
-      gender,
-      dateOfBirth,
-      employeeType,
-      userId,
-      idCopy,
-      resumeCopy,
-      passbookCopy,
-      employeeNumber,
-    } = body;
 
-    const leaveBalanceData = createLeaveBalanceData(body.employeeType);
+    // Validate that the provided userId corresponds to an existing User record
+    const { userId, ...otherEmployeeData } = body;
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new Error(`User with id ${userId} not found.`);
+    }
 
     const employee = await prisma.employee.update({
       where: {
         id: employeeId,
       },
       data: {
-        workAddress,
-        workLocation,
-        workingHours,
-        startDate,
-        timeZone,
-        privateAddress,
-        personalEmail,
-        phone,
-        bankAccountNumber,
-        bankName,
-        maritalStatus,
-        numberOfDependents,
-        emergencyContactName,
-        emergencyContactPhone,
-        nationality,
-        idNumber,
-        gender,
-        dateOfBirth,
-        employeeType,
-        userId,
-        idCopy,
-        resumeCopy,
-        passbookCopy,
-        employeeNumber,
-        leaveBalance: {
-          create: leaveBalanceData,
+        ...otherEmployeeData,
+        user:{
+          connect:{
+            id: userId
+          }
         },
       },
     });
@@ -113,33 +78,4 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
       status: 500,
     });
   }
-}
-
-function createLeaveBalanceData(employeeType: string) {
-  return [
-    {
-      leaveType: 'Casual' as LeaveType,
-      balance: employeeType === 'fullTime' ? 7 : 1,
-    },
-    {
-      leaveType: 'Annual' as LeaveType,
-      balance: employeeType === 'fullTime' ? 7 : 0,
-    },
-    {
-      leaveType: 'Medical' as LeaveType,
-      balance: employeeType === 'fullTime' ? 7 : 1,
-    },
-    {
-      leaveType: 'Unpaid' as LeaveType,
-      balance: 0,
-    },
-    {
-      leaveType: 'Duty' as LeaveType,
-      balance: 0,
-    },
-    {
-      leaveType: 'BroughtForward' as LeaveType,
-      balance: 0,
-    },
-  ];
 }

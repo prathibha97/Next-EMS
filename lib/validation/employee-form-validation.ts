@@ -21,11 +21,11 @@ export const EmployeeFormSchema = z.object({
   jobPosition: z.string().max(30),
   manager: z.string().max(30),
   profile_photo: z.string().url().nonempty(),
-  // employeeType: z
-  //   .string({
-  //     required_error: 'Please select an employee type.',
-  //   })
-  //   .nonempty({ message: 'Employee type is required' }),
+  employeeType: z
+    .string({
+      required_error: 'Please select an employee type.',
+    })
+    .nonempty({ message: 'Employee type is required' }),
 });
 
 export type EmployeeFormValues = z.infer<typeof EmployeeFormSchema>;

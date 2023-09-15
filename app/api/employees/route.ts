@@ -1,11 +1,11 @@
 import prisma from '@/lib/prisma';
-import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
+import { getAuthSession } from '../auth/[...nextauth]/options';
 
 export async function POST(req: Request) {
-  const session = getServerSession();
+  const session = await getAuthSession();
 
-  if (!session) {
+  if (!session || session.user.role !== 'ADMIN') {
     throw new NextResponse('Unauthorized', { status: 401 });
   }
 
@@ -22,13 +22,11 @@ export async function POST(req: Request) {
       profile_photo,
       employeeType,
     } = body;
-    console.log(body);
-    // First, check if the department exists
+
+    // check if the department exists
     const existingDepartment = await prisma.department.findUnique({
       where: { id: departmentId },
     });
-
-    console.log(existingDepartment);
 
     if (!existingDepartment) {
       return new Response(`Department with ID ${departmentId} not found`, {
@@ -46,44 +44,38 @@ export async function POST(req: Request) {
         personalMobile,
         jobPosition,
         profile_photo,
-        employeeType: 'fullTime',
+        employeeType,
         employeeDepartment: {
           connect: {
             id: departmentId,
           },
         },
-        // leaveBalance: {
-        //   create: [
-        //     {
-        //       leaveType: 'Casual',
-        //       balance: employeeType === 'fullTime' ? 7 : 1,
-        //     },
-        //     {
-        //       leaveType: 'Annual',
-        //       balance: employeeType === 'fullTime' ? 7 : 0,
-        //     },
-        //     {
-        //       leaveType: 'Medical',
-        //       balance: employeeType === 'fullTime' ? 7 : 1,
-        //     },
-        //     {
-        //       leaveType: 'Unpaid',
-        //       balance: 0,
-        //     },
-        //     {
-        //       leaveType: 'Duty',
-        //       balance: 0,
-        //     },
-        //     {
-        //       leaveType: 'BroughtForward',
-        //       balance: 0,
-        //     },
-        //   ],
-        // },
       },
-      // include: {
-      //   leaveBalance: true,
-      // },
+    });
+
+    // Create leave balance for the employee
+    const leaveBalance = await prisma.leaveBalance.create({
+      data: {
+        employeeId: employee.id,
+        annual: employeeType === 'fullTime' ? 7 : 0,
+        casual: employeeType === 'fullTime' ? 7 : 1,
+        medical: employeeType === 'fullTime' ? 7 : 1,
+        unpaid: 0,
+        broughtForward: 0,
+        duty: 0,
+      },
+    });
+
+    // Associate leaveBalance with employee
+    await prisma.employee.update({
+      where: { id: employee.id },
+      data: {
+        leaveBalance: {
+          connect: {
+            id: leaveBalance.id,
+          },
+        },
+      },
     });
 
     // Update the department's employees list
@@ -105,7 +97,7 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
-  const session = getServerSession();
+  const session = await getAuthSession();
 
   if (!session) {
     throw new NextResponse('Unauthorized', { status: 401 });

@@ -42,6 +42,7 @@ import LoadingState from '../components/loading-state';
 import HRSettingsForm from './components/hr-settings-form';
 import PrivateInfoForm from './components/private-info-form';
 import WorkInfoForm from './components/work-info-form';
+import { employeeTypeOptions } from '@/constants/employees';
 
 interface EmployeeEditPageProps {
   params: {
@@ -91,6 +92,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
       department: employee?.departmentId || '',
       jobPosition: employee?.jobPosition,
       profile_photo: employee?.profile_photo,
+      employeeType: employee?.employeeType || '',
     },
   });
 
@@ -144,9 +146,9 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
           departmentId: values.department,
           jobPosition: values.jobPosition,
           profile_photo: values.profile_photo,
+          employeeType: values.employeeType,
         },
-      });
-      console.log(response);
+      }).unwrap();
       // const updatedEmployee = response?.data;
       // console.log(updatedEmployee);
       // dispatch(updateEmployeeData(updatedEmployee));
@@ -181,7 +183,10 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} className='text-3xl text-gray-600 dark:text-gray-300' />
+                        <Input
+                          {...field}
+                          className='text-3xl text-gray-600 dark:text-gray-300'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -194,7 +199,10 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} className='text-xl text-gray-600 dark:text-gray-300' />
+                        <Input
+                          {...field}
+                          className='text-xl text-gray-600 dark:text-gray-300'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -250,7 +258,10 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                      <Input
+                        {...field}
+                        className='text-sm text-gray-600 dark:text-gray-300'
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -262,7 +273,10 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                      <Input
+                        {...field}
+                        className='text-sm text-gray-600 dark:text-gray-300'
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -274,7 +288,10 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                      <Input
+                        {...field}
+                        className='text-sm text-gray-600 dark:text-gray-300'
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -319,8 +336,39 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} className='text-sm text-gray-600 dark:text-gray-300' />
+                      <Input
+                        {...field}
+                        className='text-sm text-gray-600 dark:text-gray-300'
+                      />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='employeeType'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Employee Type</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder='Select an employee type to display' />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {employeeTypeOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

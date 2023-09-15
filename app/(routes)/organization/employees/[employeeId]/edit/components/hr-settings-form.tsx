@@ -19,7 +19,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { employeeTypeOptions } from '@/constants/employees';
 import { toast } from '@/hooks/use-toast';
 import { useUploadThing } from '@/lib/uploadthing';
 import {
@@ -49,7 +48,6 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
     resolver: zodResolver(HRSettingsFormSchema),
     defaultValues: {
       employeeNumber: employee?.employeeNumber ?? 'Employee number not set',
-      employeeType: employee?.employeeType ?? 'Employee type is not specified',
       userId:
         employee?.userId ?? 'No user account associated with the employee',
       idCopy: employee?.idCopy ?? 'ID copy not uploaded',
@@ -111,10 +109,9 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
       }
       setIsLoading(false);
       const response = updateEmployee({
-        employeeId, // Pass the employeeId to the mutation
+        employeeId,
         body: {
           employeeNumber: values.employeeNumber,
-          employeeType: values.employeeType,
           userId: values.userId,
           idCopy: values.idCopy,
           resumeCopy: values.resumeCopy,
@@ -160,33 +157,6 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
                         placeholder='Enter employee number'
                         type='text'
                       />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='employeeType'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Employee Type</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder='Select an employee type to display' />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {employeeTypeOptions.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}

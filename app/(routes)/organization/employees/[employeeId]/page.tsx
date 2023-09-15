@@ -21,7 +21,6 @@ interface EmployeeProps {
 const Employee: FC<EmployeeProps> = ({ params }) => {
   const router = useRouter();
   const { employeeId } = params;
-  // const employee = useAppSelector((state) => state.employeeReducer.employee);
   const {
     data: employee,
     isLoading,
@@ -97,12 +96,12 @@ const Employee: FC<EmployeeProps> = ({ params }) => {
               </span>
             </span>
           </span>
-          {/* <span>
-            Manager:{' '}
+          <span>
+            Employee Number:{' '}
             <span className='text-sm text-gray-600'>
-              {employee?.manager || `Prathibha Ratnayake`}
+              {employee?.employeeType || `Employee type not specified`}
             </span>
-          </span> */}
+          </span>
         </div>
       </div>
 

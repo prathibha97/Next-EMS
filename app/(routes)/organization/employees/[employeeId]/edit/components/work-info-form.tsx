@@ -16,7 +16,7 @@ import { toast } from '@/hooks/use-toast';
 import {
   WorkInfoFormSchema,
   WorkInfoFormValues,
-} from '@/lib/validation/payroll-form-validation';
+} from '@/lib/validation/work-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Employee } from '@prisma/client';
 import { FC } from 'react';
@@ -55,7 +55,6 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee }) => {
       });
       const updatedEmployee = response;
       console.log(updatedEmployee);
-      // dispatch(updateEmployeeData(updatedEmployee));
       toast({
         title: 'Employee updated successfully',
         description: 'Please update the rest of the employee information',

@@ -6,11 +6,6 @@ export const HRSettingsFormSchema = z.object({
       required_error: 'Employee number is required.',
     })
     .max(10, { message: 'Employee number must be less than 10 characters.' }),
-  employeeType: z
-    .string({
-      required_error: 'Please select an employee type.',
-    })
-    .nonempty({ message: 'Employee type is required' }),
   userId: z
     .string({
       required_error: 'Please select an email to display.',

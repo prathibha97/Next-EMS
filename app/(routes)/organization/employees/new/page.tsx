@@ -77,7 +77,7 @@ const NewEmployeePage = () => {
       jobPosition: '',
       manager: '',
       profile_photo: '',
-      // employeeType: '',
+      employeeType: '',
     },
   });
 
@@ -129,7 +129,7 @@ const NewEmployeePage = () => {
         profile_photo: values.profile_photo,
         workEmail: values.workEmail,
         workMobile: values.workMobile,
-        // employeeType: values.employeeType,
+        employeeType: values.employeeType,
       });
       if ('data' in response) {
         const newEmployee = response.data; // Access the nested data
@@ -337,21 +337,7 @@ const NewEmployeePage = () => {
                   )}
                 />
               </span>
-              {/* <span>
-                Manager:
-                <FormField
-                  name='manager'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input {...field} className='text-sm text-gray-600' />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </span> */}
-              {/* <FormField
+              <FormField
                 control={form.control}
                 name='employeeType'
                 render={({ field }) => (
@@ -377,7 +363,7 @@ const NewEmployeePage = () => {
                     <FormMessage />
                   </FormItem>
                 )}
-              /> */}
+              />
             </div>
           </div>
           <div className='mt-4'>

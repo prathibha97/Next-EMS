@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
 import { columns } from './components/columns';
 import { PayrollDataTable } from './components/payroll-data-table';
+import Loading from './loading';
 
 interface PayrollsPageProps {}
 
 const PayrollsPage: FC<PayrollsPageProps> = ({}) => {
   const router = useRouter();
+  const [data, setData] = useState([]);
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -23,7 +25,6 @@ const PayrollsPage: FC<PayrollsPageProps> = ({}) => {
   }, [session]);
 
   const { data: employeeData, isLoading, refetch } = useGetEmployeesQuery();
-  const [data, setData] = useState([]);
 
   useEffect(() => {
     if (employeeData) {
@@ -37,7 +38,7 @@ const PayrollsPage: FC<PayrollsPageProps> = ({}) => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading/>;
   }
   return (
     <div>

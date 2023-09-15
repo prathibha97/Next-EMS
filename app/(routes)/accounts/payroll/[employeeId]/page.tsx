@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
 import { columns } from './components/columns';
 import { PaySheetDataTable } from './components/paysheet-table';
+import Loading from './loading';
 
 interface PayrollPageProps {
   params: {
@@ -49,7 +50,7 @@ const PayrollPage: FC<PayrollPageProps> = ({ params }) => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading/>;
   }
 
   return (

@@ -19,15 +19,6 @@ enum LeaveStatus {
   Rejected
 }
 
-enum LeaveType {
-  Casual
-  Annual
-  Medical
-  Unpaid
-  Duty
-  BroughtForward
-}
-
 model User {
   id             String     @id @default(auto()) @map("_id") @db.ObjectId
   email          String     @unique
@@ -94,8 +85,8 @@ model Employee {
   Department         Department[]
   Leave              Leave[]
   leaveBalance       LeaveBalance? @relation(fields: [leaveBalanceId], references: [id])
-  Payroll            Payroll[]
   leaveBalanceId     String?       @db.ObjectId
+  Payroll            Payroll[]
 }
 
 model Attendance {
@@ -112,12 +103,17 @@ model Attendance {
 }
 
 model LeaveBalance {
-  id         String     @id @default(auto()) @map("_id") @db.ObjectId
-  leaveType  LeaveType
-  balance    Int
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  annual         Int      @default(0)
+  casual         Int      @default(0)
+  medical        Int      @default(0)
+  unpaid         Int      @default(0)
+  broughtForward Int      @default(0)
+  duty           Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
   employeeId String     @db.ObjectId
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
   Employee   Employee[]
 }
 
@@ -149,7 +145,7 @@ model Payroll {
   basicSalary            Float
   dataAllowance          Float
   mobileAllowance        Float?
-  projectAllowance      Float?
+  projectAllowance       Float?
   performanceAllowance   Float?
   holidayAllowance       Float?
   otherAllowances        Float?

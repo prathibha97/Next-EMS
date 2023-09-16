@@ -19,6 +19,9 @@ export const payrollApi = apiSlice.injectEndpoints({
     getPayrollById: builder.query({
       query: (payrollId: string) => `/payrolls/${payrollId}`,
     }),
+    getPayrollByEmployeeId: builder.query({
+      query: (employeeId: string) => `/payrolls/employees/${employeeId}`,
+    }),
     addPayroll: builder.mutation<
       Payroll,
       { employeeId: string | undefined; body: Partial<Payroll> }
@@ -42,6 +45,7 @@ export const {
   useFetchPayrollsQuery,
   useUpdatePayrollMutation,
   useGetPayrollByIdQuery,
+  useGetPayrollByEmployeeIdQuery,
   useAddPayrollMutation,
   useRemovePayrollMutation,
 } = payrollApi;

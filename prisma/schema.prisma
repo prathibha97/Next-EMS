@@ -154,6 +154,8 @@ model Payroll {
   companyEpfContribution Float
   companyEtfContribution Float
   otherDeductions        Float?
+  totalDeductions        Float
+  totalEarnings          Float
   netSalary              Float
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt

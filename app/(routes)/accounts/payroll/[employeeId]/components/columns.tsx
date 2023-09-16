@@ -56,13 +56,6 @@ export const columns: ColumnDef<PaySheetData>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "payslipId",
-    header: () => <div>PaySlip ID</div>,
-    cell: ({ row }) => (
-      <div className="capitalize text-center">{row.getValue("payslipId")}</div>
-    ),
-  },
-  {
     accessorKey: "year",
     header: "Year",
     cell: ({ row }) => <div className="capitalize">{row.getValue("year")}</div>,
@@ -188,14 +181,14 @@ export const columns: ColumnDef<PaySheetData>[] = [
                 <td className="p-2 font-normal border-r-2 border-[#2ebdaa]">
                   Other Deductions
                 </td>
-                <td className="p-2 font-normal text-right text-right">1000</td>
+                <td className="p-2 font-normal text-right">1000</td>
               </tr>
 
               <tr>
                 <td className="p-2 font-normal border-r-2 border-[#2ebdaa]">
                   Project Allowance
                 </td>
-                <td className="p-2 font-normal border-r-2 border-[#2ebdaa] text-right text-right">
+                <td className="p-2 font-normal border-r-2 border-[#2ebdaa] text-right">
                   3000
                 </td>
                 <td className="p-2 font-semibold border-r-2 border-[#2ebdaa]"></td>

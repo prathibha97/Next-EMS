@@ -1,5 +1,5 @@
 'use client';
-import { useGetEmployeeByIdQuery } from '@/app/redux/services/employeeApi';
+import { useGetPayrollByEmployeeIdQuery } from '@/app/redux/services/payrollApi';
 import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -31,26 +31,24 @@ const PayrollPage: FC<PayrollPageProps> = ({ params }) => {
   }, [session]);
 
   const {
-    data: employeeData,
+    data: paysheetData,
     isLoading,
     refetch,
-  } = useGetEmployeeByIdQuery({ employeeId });
-  
+  } = useGetPayrollByEmployeeIdQuery(employeeId);
 
   useEffect(() => {
-    if (employeeData) {
+    if (paysheetData) {
       // @ts-ignore
-      setData(employeeData.Payroll);
+      setData(paysheetData);
     }
-  }, [employeeData]);
-
+  }, [paysheetData]);
 
   useEffect(() => {
     refetch();
   }, []);
 
   if (isLoading) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   return (

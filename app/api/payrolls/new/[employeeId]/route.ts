@@ -38,15 +38,16 @@ export async function POST(req: Request, { params }: { params: IParams }) {
     const totalDeductions =
       employeeEpfContribution + otherDeductions + salaryAdvance;
 
-    // Calculate net salary
-    const netSalary =
+    const totalEarnings =
       basicSalary +
-      (dataAllowance || 0) +
-      (mobileAllowance || 0) +
-      (projectAllowance || 0) +
-      (performanceAllowance || 0) +
-      (holidayAllowance || 0) -
-      totalDeductions;
+      dataAllowance +
+      mobileAllowance +
+      projectAllowance +
+      performanceAllowance +
+      holidayAllowance;
+
+    // Calculate net salary
+    const netSalary = totalEarnings - totalDeductions;
 
     // Save the calculated values in your database using Prisma
     const payroll = await prisma.payroll.create({
@@ -61,11 +62,13 @@ export async function POST(req: Request, { params }: { params: IParams }) {
         holidayAllowance,
         otherAllowances: 0, // You need to handle this value
         salaryAdvance,
-        epfDeduction:employeeEpfContribution,
+        epfDeduction: employeeEpfContribution,
         companyEpfContribution,
         companyEtfContribution,
         otherDeductions,
         netSalary,
+        totalDeductions,
+        totalEarnings,
         employee: {
           connect: {
             id: employeeId,

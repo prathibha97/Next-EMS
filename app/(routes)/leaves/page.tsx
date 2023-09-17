@@ -1,20 +1,22 @@
-"use client";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { FC } from "react";
+'use client';
+import { DataTable } from '@/components/data-table';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { leaveBalanceData } from '@/constants/sample/leave-balance-data';
+import { leaveData } from '@/constants/sample/leave-data';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { FC } from 'react';
 
-// data table import starts here
-import { Payment, columns } from "./columns";
-import { DataTable } from "./leaves-data-table";
-// data table import ends here
+import { Button } from '@/components/ui/button';
+import { columns } from './components/columns';
+import LeaveBalanceCard from './components/leave-balance-card';
 
 interface pageProps {}
 
@@ -23,72 +25,45 @@ const page: FC<pageProps> = ({}) => {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      router.push("/");
+      router.push('/');
     },
   });
+
   return (
     <div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
-        <div className="bg-white drop-shadow-lg rounded-md">
-          <div className="p-2 pt-4 px-10 text-center">Casual Leave</div>
-
-          <div className="p-2 text-2xl font-bold text-center">2/7</div>
-          <div className="p-4">
-            <Progress value={28} />
-          </div>
-        </div>
-
-        <div className="bg-white drop-shadow-lg rounded-md">
-          <div className="p-2 pt-4 text-center">Annual Leave</div>
-
-          <div className="p-2 text-2xl font-bold text-center">6/7</div>
-          <div className="p-4">
-            <Progress value={85} />
-          </div>
-        </div>
-
-        <div className="bg-white drop-shadow-lg rounded-md">
-          <div className="p-2 pt-4 text-center">Medical Leave</div>
-
-          <div className="p-2 text-2xl font-bold text-center">4/7</div>
-          <div className="p-4">
-            <Progress value={57} />
-          </div>
-        </div>
-        <div className="bg-white drop-shadow-lg rounded-md">
-          <div className="p-2 px-8 pt-4 text-center">Leave 1</div>
-
-          <div className="p-2 text-2xl font-bold text-center">2/4</div>
-          <div className="p-4">
-            <Progress value={50} />
-          </div>
-        </div>
-        <div className="bg-white drop-shadow-lg rounded-md">
-          <div className="p-2 px-8 pt-4 text-center">Leave 2</div>
-
-          <div className="p-2 text-2xl font-bold text-center">2/6</div>
-          <div className="p-4">
-            <Progress value={33} />
-          </div>
-        </div>
-        <div className="bg-white drop-shadow-lg rounded-md">
-          <div className="p-2 px-8 pt-4 text-center">No Pay</div>
-
-          <div className="p-2 text-2xl font-bold text-center">1/6</div>
-          <div className="p-4">
-            <Progress value={16} />
-          </div>
-        </div>
-
-        {/* <Card className="bg-white drop-shadow-lg">
-          <CardContent>
-            <div className="text-2xl font-bold">+573</div>
-            <p className="text-xs text-muted-foreground">
-              +201 since last hour
-            </p>
-          </CardContent>
-        </Card> */}
+      <div className='mb-5'>
+        <Dialog>
+          <DialogTrigger>
+            <Button>Apply Leave</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+              <DialogDescription>
+                This action cannot be undone. This will permanently delete your
+                account and remove your data from our servers.
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
       </div>
+
+      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 mb-5'>
+        {leaveBalanceData.map((leaveBalance) => (
+          <LeaveBalanceCard
+            key={leaveBalance.id}
+            balance={leaveBalance.balance}
+            entitlement={leaveBalance.entitlement}
+            leaveType={leaveBalance.leaveType}
+          />
+        ))}
+      </div>
+      <DataTable
+        columns={columns}
+        data={leaveData}
+        placeholder='Date'
+        searchFilter='requestDate'
+      />
     </div>
   );
 };

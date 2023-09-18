@@ -14,6 +14,7 @@ export const HRSettingsFormSchema = z.object({
   idCopy: z.string().optional(),
   resumeCopy: z.string().optional(),
   passbookCopy: z.string().optional(),
+  employeeType: z.string()
 });
 
 export type HRSettingsFormValues = z.infer<typeof HRSettingsFormSchema>;

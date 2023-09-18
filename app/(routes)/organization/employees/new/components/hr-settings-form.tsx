@@ -27,7 +27,7 @@ import {
   HRSettingsFormValues,
 } from '@/lib/validation/hr-settings-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Employee } from '@prisma/client';
+import { Employee, User } from '@prisma/client';
 import { ChangeEvent, FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import LoadingState from './loading-state';
@@ -209,7 +209,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {users?.map((user) => (
+                          {users?.map((user:User) => (
                             <SelectItem key={user.id} value={user.id}>
                               {user.email}
                             </SelectItem>

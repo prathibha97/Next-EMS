@@ -1,24 +1,29 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
-interface OrganizationSidebarNavProps extends React.HTMLAttributes<HTMLElement> {
+interface OrganizationSidebarNavProps
+  extends React.HTMLAttributes<HTMLElement> {
   items: {
     href: string;
     title: string;
   }[];
 }
 
-export function OrganizationSidebarNav({ className, items, ...props }: OrganizationSidebarNavProps) {
+export function OrganizationSidebarNav({
+  className,
+  items,
+  ...props
+}: OrganizationSidebarNavProps) {
   const pathname = usePathname();
   return (
     <nav
       className={cn(
-        'flex items-center justify-center space-x-2 lg:space-x-0 lg:space-y-1 mb-2',
+        "flex items-center justify-center space-x-2 lg:space-x-0 lg:space-y-1 mb-2",
         className
       )}
       {...props}
@@ -28,11 +33,11 @@ export function OrganizationSidebarNav({ className, items, ...props }: Organizat
           key={item.href}
           href={item.href}
           className={cn(
-            buttonVariants({ variant: 'ghost' }),
+            buttonVariants({ variant: "ghost" }),
             pathname.startsWith(item.href)
-              ? 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200'
-              : 'hover:bg-transparent hover:underline',
-            'justify-start'
+              ? "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200"
+              : "hover:bg-transparent hover:underline",
+            "justify-start"
           )}
         >
           {item.title}

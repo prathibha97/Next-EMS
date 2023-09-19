@@ -41,17 +41,6 @@ interface AddPayrollPageProps {
 const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push('/');
-    },
-  });
-  useEffect(() => {
-    if (session && session?.user?.role !== 'ADMIN') {
-      router.push('/denied');
-    }
-  }, [session]);
 
   const employeeId = params.employeeId;
 

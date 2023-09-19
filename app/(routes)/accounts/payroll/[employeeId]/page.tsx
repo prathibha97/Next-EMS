@@ -18,17 +18,6 @@ const PayrollPage: FC<PayrollPageProps> = ({ params }) => {
   const { employeeId } = params;
   const router = useRouter();
   const [data, setData] = useState([]);
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push('/');
-    },
-  });
-  useEffect(() => {
-    if (session && session?.user?.role !== 'ADMIN') {
-      router.push('/denied');
-    }
-  }, [session]);
 
   const {
     data: paysheetData,

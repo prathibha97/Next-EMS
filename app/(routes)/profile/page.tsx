@@ -151,13 +151,13 @@ interface pageProps {
 }
 
 const page: FC<pageProps> = ({}) => {
-  const router = useRouter();
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push('/');
-    },
-  });
+  // const router = useRouter();
+  // const { data: session } = useSession({
+  //   required: true,
+  //   onUnauthenticated() {
+  //     router.push('/');
+  //   },
+  // });
   return <div>page</div>
 }
 

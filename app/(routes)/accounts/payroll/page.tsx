@@ -10,19 +10,7 @@ import Loading from './loading';
 interface PayrollsPageProps {}
 
 const PayrollsPage: FC<PayrollsPageProps> = ({}) => {
-  const router = useRouter();
   const [data, setData] = useState([]);
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push('/');
-    },
-  });
-  useEffect(() => {
-    if (session && session?.user?.role !== 'ADMIN') {
-      router.push('/denied');
-    }
-  }, [session]);
 
   const { data: employeeData, isLoading, refetch } = useGetEmployeesQuery();
 

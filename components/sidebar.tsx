@@ -1,7 +1,7 @@
 'use client';
 import { sidebarItems } from '@/constants/sidebarItems';
 import { LogOut } from 'lucide-react';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from './ui/button';
@@ -9,6 +9,7 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import { setLogout } from '@/app/redux/features/authSlice';
 
 const Sidebar = () => {
+  const {data:session} = useSession()
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch()
@@ -25,26 +26,28 @@ const Sidebar = () => {
         </div>
         <div className='flex-1 mt-4'>
           <ul className='space-y-1 text-sm'>
-            {sidebarItems.map((item) => (
-              <li
-                className={`rounded-sm ${
-                  pathname === item.link ? 'bg-muted dark:text-black' : ''
-                }`}
-                key={item.name}
-              >
-                <Link
-                  href={item.link}
-                  className={`flex items-center p-2 space-x-3 rounded-md ${
-                    pathname === item.link
-                      ? 'bg-gray-300 font-semibold'
-                      : 'hover:bg-gray-200 hover:dark:bg-gray-700'
+            {sidebarItems.map((item) =>
+              item.name === 'Home' && session?.user.role !== 'ADMIN' ? null : (
+                <li
+                  className={`rounded-sm ${
+                    pathname === item.link ? 'bg-muted dark:text-black' : ''
                   }`}
+                  key={item.name}
                 >
-                  {item.icon}
-                  <span>{item.name}</span>
-                </Link>
-              </li>
-            ))}
+                  <Link
+                    href={item.link}
+                    className={`flex items-center p-2 space-x-3 rounded-md ${
+                      pathname === item.link
+                        ? 'bg-gray-300 font-semibold'
+                        : 'hover:bg-gray-200 hover:dark:bg-gray-700'
+                    }`}
+                  >
+                    {item.icon}
+                    <span>{item.name}</span>
+                  </Link>
+                </li>
+              )
+            )}
           </ul>
         </div>
         <div className='mt-auto'>
@@ -52,7 +55,7 @@ const Sidebar = () => {
             className='flex items-center p-2 space-x-3 rounded-md w-full'
             onClick={() => {
               signOut();
-              dispatch(setLogout())
+              dispatch(setLogout());
               router.push('/');
             }}
           >

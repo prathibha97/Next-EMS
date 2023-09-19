@@ -20,15 +20,15 @@ import TeamSwitcher from "./components/team-switcher";
 import Image from "next/image";
 
 export default function DashboardPage() {
-  const router = useRouter();
-
+  
   const [isMounted, setIsMounted] = useState(false);
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push("/");
-    },
-  });
+  // const router = useRouter();
+  // const { data: session } = useSession({
+  //   required: true,
+  //   onUnauthenticated() {
+  //     router.push("/");
+  //   },
+  // });
 
   useEffect(() => {
     if (!isMounted) {

@@ -1,29 +1,20 @@
-// Ref: https://next-auth.js.org/configuration/nextjs#advanced-usage
-import { NextRequestWithAuth, withAuth } from 'next-auth/middleware';
-import { NextResponse } from 'next/server';
+import { withAuth } from 'next-auth/middleware';
 
-export default withAuth(
-  // `withAuth` augments your `Request` with the user's token.
-  function middleware(request: NextRequestWithAuth) {
-
-
-    if (
-      request.nextUrl.pathname.startsWith('/organization') &&
-      request.nextauth.token?.role !== 'ADMIN' &&
-      request.nextauth.token?.role !== 'MANAGER'
-    ) {
-      return NextResponse.rewrite(new URL('/denied', request.url));
-    }
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token,
+// More on how NextAuth.js middleware works: https://next-auth.js.org/configuration/nextjs#middleware
+export default withAuth({
+  callbacks: {
+    authorized({ req, token }) {
+      // `/admin` requires admin role
+      if (req.nextUrl.pathname === '/dashboard') {
+        return token?.role === 'ADMIN';
+      }
+      if (req.nextUrl.pathname === '/accounts/payroll') {
+        return token?.role === 'ADMIN';
+      }
+      // `/me` only requires the user to be logged in
+      return !!token;
     },
-  }
-);
+  },
+});
 
-// Applies next-auth only to matching routes - can be regex
-// Ref: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-export const config = { matcher: ['/organization'] };
-
-
+export const config = { matcher: ['/dashboard', '/accounts/payroll', '/profile'] };

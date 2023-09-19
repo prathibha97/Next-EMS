@@ -1,3 +1,6 @@
+'use client'
+import { setLogout } from '@/app/redux/features/authSlice';
+import { useAppDispatch } from '@/app/redux/hooks';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,8 +13,12 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export function UserNav() {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   return (
     <div>
       <DropdownMenu>
@@ -44,7 +51,13 @@ export function UserNav() {
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              signOut();
+              dispatch(setLogout());
+              router.push('/');
+            }}
+          >
             Log out
             <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>

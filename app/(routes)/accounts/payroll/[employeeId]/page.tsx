@@ -6,6 +6,7 @@ import AddLoan from "./components/add-loan";
 import { columns } from "./components/columns";
 import { PaySheetDataTable } from "./components/paysheet-table";
 import SalaryAdvance from "./components/salary-advance";
+import Image from "next/image";
 
 interface PayrollPageProps {
   params: {
@@ -36,6 +37,20 @@ const PayrollPage: FC<PayrollPageProps> = async ({ params }) => {
               label="Add Salary"
               className="bg-[#2ebdaa] text-white p-2 m-1 h-8 "
             />
+            {/* Add Salary button started here */}
+            <div className="bg-[#f1f5f9] w-24 h-24 border border-[#2ebdaa] flex flex-col justify-center p-2 rounded-lg drop-shadow-lg">
+              <div className="flex  justify-center">
+                <Image
+                  src="/icons/add-salary-icon.png"
+                  alt="Image 1"
+                  width={60}
+                  height={60}
+                />
+              </div>
+
+              <p className="text-sm font-semibold mt-1">Add Salary</p>
+            </div>
+            {/* Add Salary button ended here */}
             {/* border-solid border-2 border-gray-400 */}
             <div>
               <SalaryAdvance />

@@ -20,9 +20,21 @@ const SalaryAdvance: FC<SalaryAdvanceProps> = ({}) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="bg-[#2ebdaa] text-white p-2 m-1 h-8">
+        {/* <Button className="bg-[#2ebdaa] text-white p-2 m-1 h-8">
           Add Salary Advance
-        </Button>
+        </Button> */}
+        <div className="bg-[#f1f5f9] w-24 h-24 border border-[#2ebdaa] flex flex-col justify-center p-2 rounded-lg drop-shadow-lg">
+          <div className="flex  justify-center">
+            <Image
+              src="/icons/salary-advance-icon.png"
+              alt="Image 1"
+              width={60}
+              height={60}
+            />
+          </div>
+
+          <p className="text-sm font-semibold mt-1">Advance</p>
+        </div>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="bg-[#eef5f9]">
@@ -33,7 +45,7 @@ const SalaryAdvance: FC<SalaryAdvanceProps> = ({}) => {
                 <Image
                   className="mt-6"
                   src="/icons/salary-advance.png"
-                  alt="Image 1"
+                  alt="Image 2"
                   width={300}
                   height={300}
                 />

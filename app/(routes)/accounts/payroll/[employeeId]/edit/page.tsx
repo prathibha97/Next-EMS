@@ -13,23 +13,14 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { months } from '@/constants/months';
 import { toast } from '@/hooks/use-toast';
 import {
   PayrollFormSchema,
   PayrollFormValues,
 } from '@/lib/validation/payroll-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface EditPayrollPageProps {
@@ -50,8 +41,7 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
   const form = useForm<PayrollFormValues>({
     resolver: zodResolver(PayrollFormSchema),
     defaultValues: {
-      month: payroll?.month,
-      year: payroll?.year,
+      monthYear: payroll?.monthYear ?? '',
       basicSalary: payroll?.basicSalary?.toString() ?? '',
       dataAllowance: payroll?.dataAllowance?.toString() ?? '',
       mobileAllowance: payroll?.mobileAllowance?.toString() ?? '',
@@ -139,8 +129,7 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
       const response = await updatePayroll({
         payrollId: payroll?.id, // Pass the payrollId to the mutation
         body: {
-          month: values.month,
-          year: values.year,
+          monthYear: values.monthYear,
           basicSalary: parseFloat(values.basicSalary),
           dataAllowance: parseFloat(values.dataAllowance),
           mobileAllowance: parseFloat(values.mobileAllowance),
@@ -177,8 +166,8 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
       <h1 className='text-2xl font-semibold mb-8'>Edit Employee Salary</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className='flex flex-col md:flex-row justify-center items-center gap-y-3 gap-x-10'>
-            <div>
+          <div className='flex flex-col md:flex-row gap-y-3 gap-x-10'>
+            {/* <div>
               <FormLabel>Month</FormLabel>
               <FormField
                 control={form.control}
@@ -218,6 +207,26 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
                       <Input
                         {...field}
                         className='md:w-96 px-2 py-1 border rounded-md'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div> */}
+
+            <div>
+              <FormLabel>Month & Year</FormLabel>
+              <FormField
+                name='monthYear'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className='md:w-96 px-2 py-1 border rounded-md'
+                        type='month'
                       />
                     </FormControl>
                     <FormMessage />
@@ -429,7 +438,9 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
             </div>
           </div>
           <div className='flex items-center'>
-            <Button type='button' onClick={() => router.back()}>Cancel</Button>
+            <Button type='button' onClick={() => router.back()}>
+              Cancel
+            </Button>
             <ActionButton
               label='Edit Salary'
               type='submit'

@@ -12,10 +12,21 @@ export default withAuth({
       if (pathname.startsWith('/accounts')) {
         return token?.role === 'ADMIN';
       }
+      if (pathname.startsWith('/organization')) {
+        return token?.role === 'ADMIN';
+      }
       // other routes only requires the user to be logged in
       return !!token;
     },
   },
 });
 
-export const config = { matcher: ['/dashboard', '/accounts/:path*', '/profile'] };
+export const config = {
+  matcher: [
+    '/dashboard',
+    '/accounts/:path*',
+    '/profile',
+    '/leaves',
+    '/organization/:path*',
+  ],
+};

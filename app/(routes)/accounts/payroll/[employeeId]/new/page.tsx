@@ -49,8 +49,7 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
   const form = useForm<PayrollFormValues>({
     resolver: zodResolver(PayrollFormSchema),
     defaultValues: {
-      month: '',
-      year: '',
+      monthYear: '',
       basicSalary: '',
       dataAllowance: '',
       mobileAllowance: '',
@@ -62,6 +61,18 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
       otherDeductions: '',
     },
   });
+
+  useEffect(() => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    let currentMonth = (currentDate.getMonth() + 1).toString();
+    if (currentMonth.length === 1) {
+      currentMonth = `0${currentMonth}`;
+    }
+    const defaultMonthYear = `${currentYear}-${currentMonth}`;
+
+    form.setValue('monthYear', defaultMonthYear);
+  }, [form]);
 
   const [basicSalary, setBasicSalary] = useState(0);
   const [totalAdditions, setTotalAdditions] = useState(0);
@@ -116,8 +127,7 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
       const response = await addPayroll({
         employeeId, // Pass the employeeId to the mutation
         body: {
-          month: values.month,
-          year: values.year,
+          monthYear: values.monthYear,
           basicSalary: parseFloat(values.basicSalary),
           dataAllowance: parseFloat(values.dataAllowance),
           mobileAllowance: parseFloat(values.mobileAllowance),
@@ -155,8 +165,8 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
       </h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className='flex flex-col md:flex-row justify-center items-center gap-y-3 gap-x-10'>
-            <div>
+          <div className='flex flex-col md:flex-row gap-y-3 gap-x-10'>
+            {/* <div>
               <FormLabel>Month</FormLabel>
               <FormField
                 control={form.control}
@@ -196,6 +206,24 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                       <Input
                         {...field}
                         className='md:w-96 px-2 py-1 border rounded-md'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div> */}
+            <div>
+              <FormLabel>Month & Year</FormLabel>
+              <FormField
+                name='monthYear'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className='md:w-96 px-2 py-1 border rounded-md'
+                        type='month'
                       />
                     </FormControl>
                     <FormMessage />

@@ -9,8 +9,6 @@ import {
 } from '@/components/ui/dialog';
 import { leaveBalanceData } from '@/constants/sample/leave-balance-data';
 import { leaveData } from '@/constants/sample/leave-data';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -35,14 +33,16 @@ import {
 } from '@/components/ui/select';
 
 import { DatePicker } from '@/components/inputs/date-picker';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { leaveTypes } from '@/constants/leaveTypes';
-import { HRSettingsFormSchema } from '@/lib/validation/hr-settings-form-validation';
-import { LeaveFormSchema, LeaveFormValues } from '@/lib/validation/leave-form-validation';
+import { toast } from '@/hooks/use-toast';
+import {
+  LeaveFormSchema,
+  LeaveFormValues,
+} from '@/lib/validation/leave-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
-import { Input } from '@/components/ui/input';
-import { toast } from '@/hooks/use-toast';
 
 interface pageProps {}
 
@@ -53,13 +53,6 @@ const page: FC<pageProps> = ({}) => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  const router = useRouter();
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push('/');
-    },
-  });
 
   const form = useForm<LeaveFormValues>({
     resolver: zodResolver(LeaveFormSchema),

@@ -17,8 +17,7 @@ export async function POST(req: Request, { params }: { params: IParams }) {
   const body = await req.json();
 
   const {
-    month,
-    year,
+    monthYear,
     basicSalary,
     dataAllowance,
     mobileAllowance,
@@ -26,7 +25,6 @@ export async function POST(req: Request, { params }: { params: IParams }) {
     performanceAllowance,
     holidayAllowance,
     salaryAdvance,
-    epfDeduction,
     otherDeductions,
   } = body;
 
@@ -52,8 +50,7 @@ export async function POST(req: Request, { params }: { params: IParams }) {
     // Save the calculated values in your database using Prisma
     const payroll = await prisma.payroll.create({
       data: {
-        month,
-        year,
+        monthYear,
         basicSalary,
         dataAllowance,
         mobileAllowance,

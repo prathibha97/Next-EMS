@@ -1,20 +1,12 @@
-"use client";
+'use client';
 
-import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Eye, MoreHorizontal } from "lucide-react";
+import { ColumnDef } from '@tanstack/react-table';
+import { ArrowUpDown, Eye } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
-import { Employee } from "@prisma/client";
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Employee } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 
 export const columns: ColumnDef<Employee>[] = [
   {
@@ -102,25 +94,16 @@ export const columns: ColumnDef<Employee>[] = [
       const employee = row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='ghost' className='h-8 w-8 p-0'>
-              <span className='sr-only'>Open menu</span>
-              <Eye className='h-4 w-4' />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='center'>
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => {
-                router.push(`/accounts/payroll/${employee.id}`);
-              }}
-            >
-              View Payroll
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Button
+          variant='ghost'
+          className='h-8 w-8 p-0'
+          onClick={() => {
+            router.push(`/accounts/payroll/${employee.id}`);
+          }}
+        >
+          <span className='sr-only'>Open menu</span>
+          <Eye className='h-4 w-4' />
+        </Button>
       );
     },
   },

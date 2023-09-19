@@ -140,8 +140,9 @@ model Leave {
 
 model Payroll {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
-  month                  String
-  year                   String
+  // month                  String
+  // year                   String
+  monthYear              String
   basicSalary            Float
   dataAllowance          Float
   mobileAllowance        Float?

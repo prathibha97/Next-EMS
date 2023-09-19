@@ -1,8 +1,9 @@
 import * as z from 'zod';
 
 export const PayrollFormSchema = z.object({
-  month: z.string().max(50),
-  year: z.string().max(50),
+  // month: z.string().max(50),
+  // year: z.string().max(50),
+  monthYear: z.string().max(50),
   basicSalary: z.string(),
   dataAllowance: z.string(),
   mobileAllowance: z.string(),

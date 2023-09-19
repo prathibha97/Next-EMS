@@ -23,7 +23,7 @@ const usePayroll = () => {
         },
       },
       orderBy: {
-        year: 'desc',
+        monthYear: 'desc',
       },
     });
     return payrolls;

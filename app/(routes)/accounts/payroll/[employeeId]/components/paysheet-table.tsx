@@ -28,7 +28,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Filter } from 'lucide-react';
 import { useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
@@ -67,21 +67,16 @@ export function PaySheetDataTable<TData, TValue>({
   return (
     <div className='w-full'>
       <div className='flex items-center py-4 px-4 gap-x-2  '>
+        Filter by Payroll Period
+        <Filter size={18}/>
         <Input
-          placeholder={`Filter by Year...`}
-          value={(table.getColumn('year')?.getFilterValue() as string) ?? ''}
+          placeholder={`Filter by Payroll Period`}
+          type='month'
+          value={(table.getColumn('monthYear')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn('year')?.setFilterValue(event.target.value)
+            table.getColumn('monthYear')?.setFilterValue(event.target.value)
           }
-          className='max-w-sm'
-        />
-        <Input
-          placeholder={`Filter by Month...`}
-          value={(table.getColumn('month')?.getFilterValue() as string) ?? ''}
-          onChange={(event) =>
-            table.getColumn('month')?.setFilterValue(event.target.value)
-          }
-          className='max-w-sm'
+          className='w-[200px]'
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
-import { getAuthSession } from "../../auth/[...nextauth]/options";
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
+import { NextResponse } from 'next/server';
+import { getAuthSession } from '../../auth/[...nextauth]/options';
 
 interface IParams {
   payrollId?: string;
@@ -40,8 +40,7 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
   const body = await req.json();
 
   const {
-    month,
-    year,
+    monthYear,
     basicSalary,
     dataAllowance,
     mobileAllowance,
@@ -49,7 +48,6 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
     performanceAllowance,
     holidayAllowance,
     salaryAdvance,
-    epfDeduction,
     otherDeductions,
   } = body;
 
@@ -73,12 +71,11 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
 
     // Save the calculated values in your database using Prisma
     const payroll = await prisma.payroll.update({
-      where:{
-        id: payrollId
+      where: {
+        id: payrollId,
       },
       data: {
-        month,
-        year,
+        monthYear,
         basicSalary,
         dataAllowance,
         mobileAllowance,

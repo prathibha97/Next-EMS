@@ -31,6 +31,8 @@ import { Payroll } from '@prisma/client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+import { format, addDays, isAfter } from 'date-fns';
+
 
 export const columns: ColumnDef<Payroll>[] = [
   {
@@ -53,17 +55,17 @@ export const columns: ColumnDef<Payroll>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'year',
-    header: 'Year',
-    cell: ({ row }) => <div className='capitalize'>{row.getValue('year')}</div>,
+    accessorKey: 'monthYear',
+    header: 'Payroll Period',
+    cell: ({ row }) => <div className='capitalize'>{row.getValue('monthYear')}</div>,
   },
-  {
-    accessorKey: 'month',
-    header: 'Month',
-    cell: ({ row }) => (
-      <div className='capitalize'>{row.getValue('month')}</div>
-    ),
-  },
+  // {
+  //   accessorKey: 'month',
+  //   header: 'Month',
+  //   cell: ({ row }) => (
+  //     <div className='capitalize'>{row.getValue('month')}</div>
+  //   ),
+  // },
   {
     accessorKey: 'basicSalary',
     header: () => <div className='text-left -ml-3'>Basic Salary</div>,
@@ -241,6 +243,16 @@ export const columns: ColumnDef<Payroll>[] = [
         );
       }
 
+      const today = new Date();
+
+      const endOfMonth = new Date(paysheet.monthYear);
+      endOfMonth.setMonth(endOfMonth.getMonth() + 1);
+      endOfMonth.setDate(0); // This sets the date to the last day of the previous month.
+
+      const endOfGracePeriod = addDays(endOfMonth, 10);
+
+      const isPastGracePeriod = isAfter(today, endOfGracePeriod);
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -287,7 +299,7 @@ export const columns: ColumnDef<Payroll>[] = [
                           className='flex justify-center flex-col gap-y-4'
                           gap-y-8
                         >
-                          Pay sheet for {paysheet.month}, {paysheet.year}
+                          Pay sheet for {paysheet.monthYear}
                           <EmployeeDetails />
                         </div>
 
@@ -318,18 +330,24 @@ export const columns: ColumnDef<Payroll>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
-                router.push(`/accounts/payroll/${paysheet.employeeId}/edit`);
+                if (!isPastGracePeriod) {
+                  router.push(`/accounts/payroll/${paysheet.employeeId}/edit`);
+                }
               }}
+              disabled={isPastGracePeriod}
             >
               Edit PaySlip
             </DropdownMenuItem>
             <DropdownMenuItem
               className='text-red-500'
               onClick={() => {
-                removePayroll(paysheet.id);
-                refetch();
-                router.refresh();
+                if (!isPastGracePeriod) {
+                  removePayroll(paysheet.id);
+                  refetch();
+                  router.refresh();
+                }
               }}
+              disabled={isPastGracePeriod}
             >
               Delete PaySlip
             </DropdownMenuItem>

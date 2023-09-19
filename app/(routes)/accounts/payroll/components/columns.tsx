@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, Eye, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -106,10 +106,10 @@ export const columns: ColumnDef<Employee>[] = [
           <DropdownMenuTrigger asChild>
             <Button variant='ghost' className='h-8 w-8 p-0'>
               <span className='sr-only'>Open menu</span>
-              <MoreHorizontal className='h-4 w-4' />
+              <Eye className='h-4 w-4' />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
+          <DropdownMenuContent align='center'>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() => {
@@ -119,16 +119,6 @@ export const columns: ColumnDef<Employee>[] = [
               View Payroll
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            {/* <DropdownMenuItem
-              onClick={() => {
-                router.push(`/accounts/payroll/${employee.id}/edit`);
-              }}
-            >
-              Edit Payroll
-            </DropdownMenuItem>
-            <DropdownMenuItem className='text-red-500' onClick={() => {}}>
-              Delete Payroll
-            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );

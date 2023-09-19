@@ -1,12 +1,9 @@
-'use client';
-import { useGetPayrollByEmployeeIdQuery } from '@/app/redux/services/payrollApi';
-import { Button } from '@/components/ui/button';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { FC, useEffect, useState } from 'react';
+import LinkButton from '@/components/buttons/link-button';
+import prisma from '@/lib/prisma';
+import { FC } from 'react';
 import { columns } from './components/columns';
 import { PaySheetDataTable } from './components/paysheet-table';
-import Loading from './loading';
+import usePayroll from '@/hooks/usePayroll';
 
 interface PayrollPageProps {
   params: {
@@ -14,43 +11,21 @@ interface PayrollPageProps {
   };
 }
 
-const PayrollPage: FC<PayrollPageProps> = ({ params }) => {
+const PayrollPage: FC<PayrollPageProps> = async ({ params }) => {
   const { employeeId } = params;
-  const router = useRouter();
-  const [data, setData] = useState([]);
 
-  const {
-    data: paysheetData,
-    isLoading,
-    refetch,
-  } = useGetPayrollByEmployeeIdQuery(employeeId);
-
-  useEffect(() => {
-    if (paysheetData) {
-      // @ts-ignore
-      setData(paysheetData);
-    }
-  }, [paysheetData]);
-
-  useEffect(() => {
-    refetch();
-  }, []);
-
-  if (isLoading) {
-    return <Loading />;
-  }
+  const {getPayrollByEmployee} =usePayroll();
+  const payrolls = await getPayrollByEmployee(employeeId);
 
   return (
     <div>
-      <Button
-        onClick={() => router.push(`/accounts/payroll/${employeeId}/new`)}
-      >
-        Add Salary
-      </Button>
-      <PaySheetDataTable data={data} columns={columns} />
-      <Button type='button' onClick={() => router.push('/accounts/payroll')}>
-        Go Back
-      </Button>
+      <LinkButton
+        link={`/accounts/payroll/${employeeId}/new`}
+        label='Add Salary'
+      />
+
+      <PaySheetDataTable data={payrolls} columns={columns} />
+      <LinkButton link={`/accounts/payroll`} label='Go Back' />
     </div>
   );
 };

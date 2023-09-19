@@ -16,6 +16,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -65,45 +75,47 @@ export function PayrollDataTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full">
-      <div className="flex items-center py-4 px-4 gap-x-2  ">
+    <div className='w-full'>
+      <div className='flex items-center py-4 px-4 gap-x-2  '>
         <Input
           placeholder={`Filter by Employee Number...`}
           value={
-            (table.getColumn("employeeNumber")?.getFilterValue() as string) ?? ""
+            (table.getColumn('employeeNumber')?.getFilterValue() as string) ??
+            ''
           }
           onChange={(event) =>
-            table.getColumn("employeeNumber")?.setFilterValue(event.target.value)
+            table
+              .getColumn('employeeNumber')
+              ?.setFilterValue(event.target.value)
           }
-          className="max-w-sm  "
+          className='max-w-xs'
         />
         <Input
           placeholder={`Filter by Employee Name...`}
-          value={
-            (table.getColumn("name")?.getFilterValue() as string) ?? ""
-          }
+          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn('name')?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className='max-w-xs'
         />
         <Input
           placeholder={`Filter by Designation...`}
           value={
-            (table.getColumn("jobPosition")?.getFilterValue() as string) ?? ""
+            (table.getColumn('jobPosition')?.getFilterValue() as string) ?? ''
           }
           onChange={(event) =>
-            table.getColumn("jobPosition")?.setFilterValue(event.target.value)
+            table.getColumn('jobPosition')?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className='max-w-xs'
         />
+        
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className="ml-2 h-4 w-4 " />
+            <Button variant='outline' className='ml-auto'>
+              Columns <ChevronDown className='ml-2 h-4 w-4 ' />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align='end'>
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -111,7 +123,7 @@ export function PayrollDataTable<TData, TValue>({
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
-                    className="capitalize"
+                    className='capitalize'
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) =>
                       column.toggleVisibility(!!value)
@@ -124,7 +136,7 @@ export function PayrollDataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className='rounded-md border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -149,7 +161,7 @@ export function PayrollDataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -165,7 +177,7 @@ export function PayrollDataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className='h-24 text-center'
                 >
                   No results.
                 </TableCell>
@@ -174,23 +186,23 @@ export function PayrollDataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+      <div className='flex items-center justify-end space-x-2 py-4'>
+        <div className='flex-1 text-sm text-muted-foreground'>
+          {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="space-x-2">
+        <div className='space-x-2'>
           <Button
-            variant="outline"
-            size="sm"
+            variant='outline'
+            size='sm'
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
             Previous
           </Button>
           <Button
-            variant="outline"
-            size="sm"
+            variant='outline'
+            size='sm'
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >

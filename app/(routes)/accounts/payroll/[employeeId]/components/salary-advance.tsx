@@ -1,5 +1,5 @@
-'use client';
-import { FC } from 'react';
+"use client";
+import { FC } from "react";
 
 import {
   Dialog,
@@ -8,9 +8,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 
 interface SalaryAdvanceProps {}
 
@@ -18,7 +18,9 @@ const SalaryAdvance: FC<SalaryAdvanceProps> = ({}) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button>Add Salary Advance</Button>
+        <Button className="bg-[#2ebdaa] text-white p-2 m-1 h-8">
+          Add Salary Advance
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

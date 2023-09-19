@@ -1,9 +1,9 @@
-'use client';
-import { updatePayrollData } from '@/app/redux/features/payrollSlice';
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
-import { useUpdatePayrollMutation } from '@/app/redux/services/payrollApi';
-import ActionButton from '@/components/buttons/action-button';
-import { Button } from '@/components/ui/button';
+"use client";
+import { updatePayrollData } from "@/app/redux/features/payrollSlice";
+import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
+import { useUpdatePayrollMutation } from "@/app/redux/services/payrollApi";
+import ActionButton from "@/components/buttons/action-button";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -11,17 +11,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { toast } from '@/hooks/use-toast';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { toast } from "@/hooks/use-toast";
 import {
   PayrollFormSchema,
   PayrollFormValues,
-} from '@/lib/validation/payroll-form-validation';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { FC, useState } from 'react';
-import { useForm } from 'react-hook-form';
+} from "@/lib/validation/payroll-form-validation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { FC, useState } from "react";
+import { useForm } from "react-hook-form";
 
 interface EditPayrollPageProps {
   params: {
@@ -41,16 +41,16 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
   const form = useForm<PayrollFormValues>({
     resolver: zodResolver(PayrollFormSchema),
     defaultValues: {
-      monthYear: payroll?.monthYear ?? '',
-      basicSalary: payroll?.basicSalary?.toString() ?? '',
-      dataAllowance: payroll?.dataAllowance?.toString() ?? '',
-      mobileAllowance: payroll?.mobileAllowance?.toString() ?? '',
-      projectAllowance: payroll?.projectAllowance?.toString() ?? '',
-      performanceAllowance: payroll?.performanceAllowance?.toString() ?? '',
-      holidayAllowance: payroll?.holidayAllowance?.toString() ?? '',
-      salaryAdvance: payroll?.salaryAdvance?.toString() ?? '',
-      epfDeduction: payroll?.epfDeduction?.toString() ?? '',
-      otherDeductions: payroll?.otherDeductions?.toString() ?? '',
+      monthYear: payroll?.monthYear ?? "",
+      basicSalary: payroll?.basicSalary?.toString() ?? "",
+      dataAllowance: payroll?.dataAllowance?.toString() ?? "",
+      mobileAllowance: payroll?.mobileAllowance?.toString() ?? "",
+      projectAllowance: payroll?.projectAllowance?.toString() ?? "",
+      performanceAllowance: payroll?.performanceAllowance?.toString() ?? "",
+      holidayAllowance: payroll?.holidayAllowance?.toString() ?? "",
+      salaryAdvance: payroll?.salaryAdvance?.toString() ?? "",
+      epfDeduction: payroll?.epfDeduction?.toString() ?? "",
+      otherDeductions: payroll?.otherDeductions?.toString() ?? "",
     },
   });
 
@@ -145,28 +145,28 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
       dispatch(updatePayrollData(payrollData));
       console.log(values);
       toast({
-        title: 'Success',
-        description: 'Employee salary successfully added',
+        title: "Success",
+        description: "Employee salary successfully added",
       });
       form.reset();
       router.push(`/accounts/payroll/${employeeId}`);
       router.refresh();
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Something went wrong, Please try again',
-        variant: 'destructive',
+        title: "Error",
+        description: "Something went wrong, Please try again",
+        variant: "destructive",
       });
       console.log(error);
     }
   };
 
   return (
-    <div className='space-y-3'>
-      <h1 className='text-2xl font-semibold mb-8'>Edit Employee Salary</h1>
+    <div className="space-y-3">
+      <h1 className="text-2xl font-semibold mb-8">Edit Employee Salary</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className='flex flex-col md:flex-row gap-y-3 gap-x-10'>
+          <div className="flex flex-col md:flex-row gap-y-3 gap-x-10">
             {/* <div>
               <FormLabel>Month</FormLabel>
               <FormField
@@ -219,14 +219,14 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
             <div>
               <FormLabel>Month & Year</FormLabel>
               <FormField
-                name='monthYear'
+                name="monthYear"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         {...field}
-                        className='md:w-96 px-2 py-1 border rounded-md'
-                        type='month'
+                        className="md:w-96 px-2 py-1 border rounded-md"
+                        type="month"
                       />
                     </FormControl>
                     <FormMessage />
@@ -236,20 +236,20 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
             </div>
           </div>
 
-          <div className='flex flex-col md:flex-row justify-center gap-x-10'>
+          <div className="flex flex-col md:flex-row justify-center gap-x-10">
             <div>
-              <h1 className='font-semibold mt-5 text-[#2ebdaa]'>Earnings</h1>
-              <div className='my-3'>
+              <h1 className="font-semibold mt-5 text-[#2ebdaa]">Earnings</h1>
+              <div className="my-3">
                 <FormLabel>Basic Salary</FormLabel>
                 <FormField
-                  name='basicSalary'
+                  name="basicSalary"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className='md:w-96 px-2 py-1 border rounded-md'
-                          type='number'
+                          className="md:w-96 px-2 py-1 border rounded-md"
+                          type="number"
                         />
                       </FormControl>
                       <FormMessage />
@@ -257,17 +257,17 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
                   )}
                 />
               </div>
-              <div className='my-5'>
+              <div className="my-5">
                 <FormLabel>Data Allowance</FormLabel>
                 <FormField
-                  name='dataAllowance'
+                  name="dataAllowance"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className='md:w-96 px-2 py-1 border rounded-md'
-                          type='number'
+                          className="md:w-96 px-2 py-1 border rounded-md"
+                          type="number"
                         />
                       </FormControl>
                       <FormMessage />
@@ -276,16 +276,16 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
                 />
               </div>
 
-              <div className='my-5'>
+              <div className="my-5">
                 <FormLabel>Mobile Allowance</FormLabel>
                 <FormField
-                  name='mobileAllowance'
+                  name="mobileAllowance"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className='md:w-96 px-2 py-1 border rounded-md'
+                          className="md:w-96 px-2 py-1 border rounded-md"
                         />
                       </FormControl>
                       <FormMessage />
@@ -294,16 +294,16 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
                 />
               </div>
 
-              <div className='my-5'>
+              <div className="my-5">
                 <FormLabel>Project Allowance</FormLabel>
                 <FormField
-                  name='projectAllowance'
+                  name="projectAllowance"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className='md:w-96 px-2 py-1 border rounded-md'
+                          className="md:w-96 px-2 py-1 border rounded-md"
                         />
                       </FormControl>
                       <FormMessage />
@@ -312,16 +312,16 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
                 />
               </div>
 
-              <div className='my-5'>
+              <div className="my-5">
                 <FormLabel>Performance Allowance</FormLabel>
                 <FormField
-                  name='performanceAllowance'
+                  name="performanceAllowance"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className='md:w-96 px-2 py-1 border rounded-md'
+                          className="md:w-96 px-2 py-1 border rounded-md"
                         />
                       </FormControl>
                       <FormMessage />
@@ -330,16 +330,16 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
                 />
               </div>
 
-              <div className='my-5'>
+              <div className="my-5">
                 <FormLabel>Holiday Allowance</FormLabel>
                 <FormField
-                  name='holidayAllowance'
+                  name="holidayAllowance"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className='md:w-96 px-2 py-1 border rounded-md'
+                          className="md:w-96 px-2 py-1 border rounded-md"
                         />
                       </FormControl>
                       <FormMessage />
@@ -350,18 +350,18 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
             </div>
 
             <div>
-              <h1 className='font-semibold mt-5 text-[#2ebdaa]'>Deductions</h1>
+              <h1 className="font-semibold mt-5 text-[#2ebdaa]">Deductions</h1>
 
-              <div className='my-3'>
+              <div className="my-3">
                 <FormLabel>Salary Advance</FormLabel>
                 <FormField
-                  name='salaryAdvance'
+                  name="salaryAdvance"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className='md:w-96 px-2 py-1 border rounded-md'
+                          className="md:w-96 px-2 py-1 border rounded-md"
                         />
                       </FormControl>
                       <FormMessage />
@@ -370,16 +370,16 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
                 />
               </div>
 
-              <div className='my-5'>
+              <div className="my-5">
                 <FormLabel>EPF Deduction</FormLabel>
                 <FormField
-                  name='epfDeduction'
+                  name="epfDeduction"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className='md:w-96 px-2 py-1 border rounded-md'
+                          className="md:w-96 px-2 py-1 border rounded-md"
                         />
                       </FormControl>
                       <FormMessage />
@@ -388,16 +388,16 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
                 />
               </div>
 
-              <div className='my-5'>
+              <div className="my-5">
                 <FormLabel>Other Deductions</FormLabel>
                 <FormField
-                  name='otherDeductions'
+                  name="otherDeductions"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className='md:w-96 px-2 py-1 border rounded-md'
+                          className="md:w-96 px-2 py-1 border rounded-md"
                         />
                       </FormControl>
                       <FormMessage />
@@ -405,46 +405,46 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
                   )}
                 />
               </div>
-              <div className='grid grid-cols-2 gap-4 mt-10'>
+              <div className="grid grid-cols-2 gap-4 mt-10">
                 <div>
-                  <p className='font-medium'>Basic Salary :</p>
+                  <p className="font-medium">Basic Salary :</p>
                 </div>
                 <div>
-                  <p className='text-right font-medium'>{basicSalary}</p>
+                  <p className="text-right font-medium">{basicSalary}</p>
                 </div>
                 <div>
-                  <p className='font-medium'>Total Additions :</p>
+                  <p className="font-medium">Total Additions :</p>
                 </div>
                 <div>
-                  <p className='text-right font-medium'>{totalAdditions}</p>
+                  <p className="text-right font-medium">{totalAdditions}</p>
                 </div>
                 <div>
-                  <p className='font-medium'>Total Deductions :</p>
+                  <p className="font-medium">Total Deductions:</p>
                 </div>
                 <div>
-                  <p className='text-right font-medium'>{totalDeductions}</p>
+                  <p className="text-right font-medium">{totalDeductions}</p>
                 </div>
               </div>
 
               <hr />
-              <div className='grid grid-cols-2 gap-4 mt-2'>
+              <div className="grid grid-cols-2 gap-4 mt-2">
                 <div>
-                  <p className='font-semibold ml-0.5'>Net Salary :</p>
+                  <p className="font-semibold ml-0.5">Net Salary :</p>
                 </div>
                 <div>
-                  <p className='text-right font-semibold'>{netSalary}</p>
+                  <p className="text-right font-semibold">{netSalary}</p>
                 </div>
               </div>
             </div>
           </div>
-          <div className='flex items-center'>
-            <Button type='button' onClick={() => router.back()}>
+          <div className="flex items-center">
+            <Button type="button" onClick={() => router.back()}>
               Cancel
             </Button>
             <ActionButton
-              label='Edit Salary'
-              type='submit'
-              className='flex ml-auto rounded-md text-white bg-[#2ebdaa]'
+              label="Edit Salary"
+              type="submit"
+              className="flex ml-auto rounded-md text-white bg-[#2ebdaa]"
               onClick={() => onSubmit}
               isLoading={isLoading}
             />

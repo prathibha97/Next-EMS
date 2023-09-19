@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -6,10 +6,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { FC } from 'react';
+} from "@/components/ui/dialog";
+import { FC } from "react";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 
 interface AddLoanProps {}
 
@@ -17,7 +17,9 @@ const AddLoan: FC<AddLoanProps> = ({}) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button>Add Loan</Button>
+        <Button className="bg-[#2ebdaa] text-white p-2 m-1 h-8 ">
+          Add Loan
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

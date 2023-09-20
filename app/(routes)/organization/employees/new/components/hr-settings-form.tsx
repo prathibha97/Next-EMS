@@ -47,11 +47,15 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
     resolver: zodResolver(HRSettingsFormSchema),
     defaultValues: {
       employeeNumber: '',
-      employeeType: '',
+      // employeeType: '',
       userId: '',
       idCopy: '',
       resumeCopy: '',
       passbookCopy: '',
+      basicSalary: '',
+      performanceAllowance: '',
+      mobileAllowance: '',
+      dataAllowance: '',
     },
   });
 
@@ -99,14 +103,14 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
       if (hasFileChanged) {
         const uploadRes = await startUpload(files);
         console.log(uploadRes);
-        if (uploadRes && uploadRes[0].fileUrl) {
-          values.idCopy = uploadRes[0].fileUrl;
+        if (uploadRes && uploadRes[0].url) {
+          values.idCopy = uploadRes[0].url;
         }
-        if (uploadRes && uploadRes[1].fileUrl) {
-          values.resumeCopy = uploadRes[1].fileUrl;
+        if (uploadRes && uploadRes[1].url) {
+          values.resumeCopy = uploadRes[1].url;
         }
-        if (uploadRes && uploadRes[2].fileUrl) {
-          values.passbookCopy = uploadRes[2].fileUrl;
+        if (uploadRes && uploadRes[2].url) {
+          values.passbookCopy = uploadRes[2].url;
         }
       }
       setIsLoading(false);
@@ -114,15 +118,18 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
         employeeId, // Pass the employeeId to the mutation
         body: {
           employeeNumber: values.employeeNumber,
-          employeeType: values.employeeType,
+          // employeeType: values.employeeType,
           userId: values.userId,
           idCopy: values.idCopy,
           resumeCopy: values.resumeCopy,
           passbookCopy: values.passbookCopy,
+          basicSalary: parseFloat(values.basicSalary),
+          performanceAllowance: parseFloat(values.performanceAllowance),
+          mobileAllowance: parseFloat(values.mobileAllowance),
+          dataAllowance: parseFloat(values.dataAllowance),
         },
       });
       const updatedEmployee = response; // Access the nested data
-      console.log(updatedEmployee);
       toast({
         title: 'Success',
         description: 'Employee details updated successfully',
@@ -166,7 +173,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                     </FormItem>
                   )}
                 />
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name='employeeType'
                   render={({ field }) => (
@@ -192,7 +199,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
                 <FormField
                   control={form.control}
                   name='userId'
@@ -225,7 +232,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
             <div className='flex flex-col gap-y-3'>
               <h2 className='text-lg font-semibold'>Upload Documents</h2>
               <Separator className='mt-1 mb-3' />
-              ID Card Copy:{' '}
+              <FormLabel>NIC Copy</FormLabel>
               <FormField
                 control={form.control}
                 name='idCopy'
@@ -243,7 +250,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                   </FormItem>
                 )}
               />
-              Resume Copy:{' '}
+              <FormLabel>Resume Copy</FormLabel>
               <FormField
                 control={form.control}
                 name='resumeCopy'
@@ -261,7 +268,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                   </FormItem>
                 )}
               />
-              Passbook Copy:{' '}
+              <FormLabel>Passbook Copy</FormLabel>
               <FormField
                 control={form.control}
                 name='passbookCopy'
@@ -289,13 +296,13 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
               <div className='w-1/2 space-y-3'>
                 <FormField
                   control={form.control}
-                  name='employeeNumber'
+                  name='basicSalary'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Basic Salary</FormLabel>
                       <Input
                         {...field}
-                        placeholder='Enter employee number'
+                        placeholder='Enter Basic Salary Amount'
                         type='text'
                       />
                       <FormMessage />
@@ -304,13 +311,13 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                 />
                 <FormField
                   control={form.control}
-                  name='employeeNumber'
+                  name='performanceAllowance'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Performance Allowance</FormLabel>
                       <Input
                         {...field}
-                        placeholder='Enter employee number'
+                        placeholder='Enter Performance Allowance Amount'
                         type='text'
                       />
                       <FormMessage />
@@ -321,13 +328,13 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
               <div className='w-1/2 space-y-3'>
                 <FormField
                   control={form.control}
-                  name='employeeNumber'
+                  name='mobileAllowance'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Mobile Allowance</FormLabel>
                       <Input
                         {...field}
-                        placeholder='Enter employee number'
+                        placeholder='Enter Mobile Allowance Amount'
                         type='text'
                       />
                       <FormMessage />
@@ -336,13 +343,13 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                 />
                 <FormField
                   control={form.control}
-                  name='employeeNumber'
+                  name='dataAllowance'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Data Allowance</FormLabel>
                       <Input
                         {...field}
-                        placeholder='Enter employee number'
+                        placeholder='Enter Data Allowance Amount'
                         type='text'
                       />
                       <FormMessage />

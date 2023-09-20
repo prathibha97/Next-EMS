@@ -60,6 +60,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
     data: employee,
     isLoading: isLoadingEmployee,
     isFetching,
+    refetch
   } = useGetEmployeeByIdQuery({ employeeId: params.employeeId });
 
   const { data: departments, isLoading: isDepartmentsLoading } =
@@ -142,6 +143,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
         title: 'Employee updated successfully',
         description: 'Please update the rest of the employee information',
       });
+      refetch();
     } catch (error) {
       toast({
         title: 'Error',
@@ -381,7 +383,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
             <TabsTrigger value='HR'>HR Settings</TabsTrigger>
           </TabsList>
           <TabsContent value='work'>
-            <WorkInfoForm employeeId={params.employeeId} employee={employee} />
+            <WorkInfoForm employeeId={params.employeeId} employee={employee} refetchEmployees={refetch}/>
           </TabsContent>
           <TabsContent value='private'>
             <PrivateInfoForm

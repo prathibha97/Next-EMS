@@ -37,6 +37,7 @@ const EditPayrollPage: FC<EditPayrollPageProps> = ({ params }) => {
 
   const [updatePayroll, { isLoading }] = useUpdatePayrollMutation();
   const payroll = useAppSelector((state) => state.payroll.payroll);
+  console.log(payroll);
 
   const form = useForm<PayrollFormValues>({
     resolver: zodResolver(PayrollFormSchema),

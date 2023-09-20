@@ -19,8 +19,7 @@ export const EmployeeFormSchema = z.object({
   personalMobile: z.string().max(10),
   department: z.string().max(30),
   jobPosition: z.string().max(30),
-  manager: z.string().max(30),
-  profile_photo: z.string().url().nonempty(),
+  profile_photo: z.string().url(),
   employeeType: z
     .string({
       required_error: 'Please select an employee type.',

@@ -26,11 +26,11 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
             <ReduxProvider>
-              <div className="flex h-screen overflow-hidden">
+              <div className="flex h-screen overflow-hidden  bg-[#eef5f9] dark:bg-slate-800">
                 <Sidebar />
                 <div className="container flex flex-col w-full overflow-x-hidden">
                   <MainNav />
-                  <div className="flex-grow overflow-x-auto overflow-y-auto">
+                  <div className="flex-grow overflow-x-auto overflow-y-auto ">
                     {children}
                   </div>
                 </div>

@@ -209,7 +209,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {users?.map((user:User) => (
+                          {users?.map((user: User) => (
                             <SelectItem key={user.id} value={user.id}>
                               {user.email}
                             </SelectItem>
@@ -223,6 +223,8 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
               </div>
             </div>
             <div className='flex flex-col gap-y-3'>
+              <h2 className='text-lg font-semibold'>Upload Documents</h2>
+              <Separator className='mt-1 mb-3' />
               ID Card Copy:{' '}
               <FormField
                 control={form.control}
@@ -277,6 +279,77 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                   </FormItem>
                 )}
               />
+            </div>
+          </div>
+
+          <div className='mt-5'>
+            <h2 className='text-lg font-semibold'>Salary Information</h2>
+            <Separator className='mt-1 mb-3' />
+            <div className='flex justify-between space-x-5'>
+              <div className='w-1/2 space-y-3'>
+                <FormField
+                  control={form.control}
+                  name='employeeNumber'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Basic Salary</FormLabel>
+                      <Input
+                        {...field}
+                        placeholder='Enter employee number'
+                        type='text'
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='employeeNumber'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Performance Allowance</FormLabel>
+                      <Input
+                        {...field}
+                        placeholder='Enter employee number'
+                        type='text'
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className='w-1/2 space-y-3'>
+                <FormField
+                  control={form.control}
+                  name='employeeNumber'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Mobile Allowance</FormLabel>
+                      <Input
+                        {...field}
+                        placeholder='Enter employee number'
+                        type='text'
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='employeeNumber'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Data Allowance</FormLabel>
+                      <Input
+                        {...field}
+                        placeholder='Enter employee number'
+                        type='text'
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
           </div>
           <div className='mt-4'>

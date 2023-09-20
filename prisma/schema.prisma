@@ -73,6 +73,10 @@ model Employee {
   resumeCopy            String?
   passbookCopy          String?
   employeeNumber        String?
+  basicSalary            Float
+  dataAllowance          Float?
+  mobileAllowance        Float?
+  performanceAllowance   Float?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 

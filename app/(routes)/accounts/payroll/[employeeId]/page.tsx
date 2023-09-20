@@ -25,6 +25,8 @@ const PayrollPage: FC<PayrollPageProps> = async ({ params }) => {
       <Tabs defaultValue='payroll'>
         <TabsList>
           <TabsTrigger value='payroll'>Payroll</TabsTrigger>
+          <TabsTrigger value='advance'>Salary Advance</TabsTrigger>
+          <TabsTrigger value='loan'>Loans</TabsTrigger>
           <TabsTrigger value='analytics'>Analytics</TabsTrigger>
         </TabsList>
         <TabsContent value='payroll' className='mt-5'>
@@ -38,6 +40,12 @@ const PayrollPage: FC<PayrollPageProps> = async ({ params }) => {
           </div>
           <PaySheetDataTable data={payrolls} columns={columns} />
           <LinkButton link={`/accounts/payroll`} label='Go Back' />
+        </TabsContent>
+        <TabsContent value='advance' className='mt-5'>
+          Add Salary Advance content here.
+        </TabsContent>
+        <TabsContent value='loan' className='mt-5'>
+          Add loan here.
         </TabsContent>
         <TabsContent value='analytics' className='mt-5'>
           Add charts here.

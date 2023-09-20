@@ -4,9 +4,7 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import { useGetEmployeesQuery } from '@/app/redux/services/employeeApi';
 import { Button } from '@/components/ui/button';
 import { Employee } from '@prisma/client';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import EmployeeCard from './components/employee-card';
 import { SkeletonCard } from './components/loading-employee-card';
 
@@ -14,25 +12,11 @@ const EmployeesPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const { data:session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push('/');
-    }
-  });
-  useEffect(() => {
-    if (session && session?.user?.role !== 'ADMIN') {
-      router.push('/denied');
-    }
-  }, [session]);
-
   const { data: employees, isLoading } = useGetEmployeesQuery();
 
   const handleClick = (id: string) => {
     router.push(`/organization/employees/${id}`);
   };
-
-
 
   return (
     <div className='container'>

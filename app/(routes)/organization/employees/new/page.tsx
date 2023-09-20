@@ -40,19 +40,6 @@ import { employeeTypeOptions } from '@/constants/employees';
 
 const NewEmployeePage = () => {
 
-  const router = useRouter();
-    const { data: session } = useSession({
-      required: true,
-      onUnauthenticated() {
-        router.push('/');
-      },
-    });
-    useEffect(() => {
-      if (session && session?.user?.role !== 'ADMIN') {
-        router.push('/denied');
-      }
-    }, [session]);
-
   const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
   const { startUpload } = useUploadThing('imageUploader');

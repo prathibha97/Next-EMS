@@ -159,13 +159,13 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
   };
 
   return (
-    <div className="space-y-3">
-      <h1 className="text-center text-2xl font-semibold mb-8">
+    <div className='space-y-3'>
+      <h1 className='text-center text-2xl font-semibold mb-8'>
         Add Employee Salary
       </h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex flex-col md:flex-row gap-y-3 gap-x-10">
+          <div className='flex flex-col md:flex-row gap-y-3 gap-x-10'>
             {/* <div>
               <FormLabel>Month</FormLabel>
               <FormField
@@ -216,14 +216,14 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
             <div>
               <FormLabel>Month & Year </FormLabel>
               <FormField
-                name="monthYear"
+                name='monthYear'
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         {...field}
-                        className="md:w-96 px-2 py-1 border rounded-md"
-                        type="month"
+                        className='md:w-96 px-2 py-1 border rounded-md'
+                        type='month'
                       />
                     </FormControl>
                     <FormMessage />
@@ -233,20 +233,20 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row justify-center gap-x-10">
+          <div className='flex flex-col md:flex-row justify-center gap-x-10'>
             <div>
-              <h1 className="font-semibold mt-5 text-[#2ebdaa]">Earnings</h1>
-              <div className="my-3">
+              <h1 className='font-semibold mt-5 text-[#2ebdaa]'>Earnings</h1>
+              <div className='my-3'>
                 <FormLabel>Basic Salary </FormLabel>
                 <FormField
-                  name="basicSalary"
+                  name='basicSalary'
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className="md:w-96 px-2 py-1 border rounded-md"
-                          type="number"
+                          className='md:w-96 px-2 py-1 border rounded-md'
+                          type='number'
                         />
                       </FormControl>
                       <FormMessage />
@@ -254,17 +254,17 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                   )}
                 />
               </div>
-              <div className="my-5">
+              <div className='my-5'>
                 <FormLabel>Data Allowance</FormLabel>
                 <FormField
-                  name="dataAllowance"
+                  name='dataAllowance'
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className="md:w-96 px-2 py-1 border rounded-md"
-                          type="number"
+                          className='md:w-96 px-2 py-1 border rounded-md'
+                          type='number'
                         />
                       </FormControl>
                       <FormMessage />
@@ -273,16 +273,16 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                 />
               </div>
 
-              <div className="my-5">
+              <div className='my-5'>
                 <FormLabel>Mobile Allowance</FormLabel>
                 <FormField
-                  name="mobileAllowance"
+                  name='mobileAllowance'
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className="md:w-96 px-2 py-1 border rounded-md"
+                          className='md:w-96 px-2 py-1 border rounded-md'
                         />
                       </FormControl>
                       <FormMessage />
@@ -291,16 +291,16 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                 />
               </div>
 
-              <div className="my-5">
+              <div className='my-5'>
                 <FormLabel>Project Allowance </FormLabel>
                 <FormField
-                  name="projectAllowance"
+                  name='projectAllowance'
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className="md:w-96 px-2 py-1 border rounded-md"
+                          className='md:w-96 px-2 py-1 border rounded-md'
                         />
                       </FormControl>
                       <FormMessage />
@@ -309,16 +309,16 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                 />
               </div>
 
-              <div className="my-5">
+              <div className='my-5'>
                 <FormLabel>Performance Allowance</FormLabel>
                 <FormField
-                  name="performanceAllowance"
+                  name='performanceAllowance'
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className="md:w-96 px-2 py-1 border rounded-md"
+                          className='md:w-96 px-2 py-1 border rounded-md'
                         />
                       </FormControl>
                       <FormMessage />
@@ -327,16 +327,16 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                 />
               </div>
 
-              <div className="my-5">
+              <div className='my-5'>
                 <FormLabel>Holiday Allowance</FormLabel>
                 <FormField
-                  name="holidayAllowance"
+                  name='holidayAllowance'
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className="md:w-96 px-2 py-1 border rounded-md"
+                          className='md:w-96 px-2 py-1 border rounded-md'
                         />
                       </FormControl>
                       <FormMessage />
@@ -347,18 +347,18 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
             </div>
 
             <div>
-              <h1 className="font-semibold mt-5 text-[#2ebdaa]">Deductions</h1>
+              <h1 className='font-semibold mt-5 text-[#2ebdaa]'>Deductions</h1>
 
-              <div className="my-3">
+              <div className='my-3'>
                 <FormLabel>Salary Advance</FormLabel>
                 <FormField
-                  name="salaryAdvance"
+                  name='salaryAdvance'
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className="md:w-96 px-2 py-1 border rounded-md"
+                          className='md:w-96 px-2 py-1 border rounded-md'
                         />
                       </FormControl>
                       <FormMessage />
@@ -385,16 +385,16 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                 />
               </div> */}
 
-              <div className="my-5">
+              <div className='my-5'>
                 <FormLabel>Other Deductions</FormLabel>
                 <FormField
-                  name="otherDeductions"
+                  name='otherDeductions'
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           {...field}
-                          className="md:w-96 px-2 py-1 border rounded-md"
+                          className='md:w-96 px-2 py-1 border rounded-md'
                         />
                       </FormControl>
                       <FormMessage />
@@ -403,7 +403,7 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                 />
               </div>
               <div>
-                <h1 className="font-semibold mt-8 text-[#2ebdaa]">
+                <h1 className='font-semibold mt-8 text-[#2ebdaa]'>
                   EPF & ETF Contribution
                 </h1>
                 <div>
@@ -421,68 +421,74 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                     <div>ETF company Contribution:</div>
                     <div>earnings* 3%</div>
                   </div> */}
-                  <div className="grid grid-cols-2 gap-4 mt-2 ">
+                  <div className='grid grid-cols-2 gap-4 mt-2 '>
                     <div>
-                      <p className="font-medium">EPF Employee Contribution :</p>
+                      <p className='font-medium'>
+                        EPF Employee Contribution : {basicSalary * 0.08}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-right font-medium">earnings* 8%</p>
+                      <p className='text-right font-medium'>earnings* 8%</p>
                     </div>
                     <div>
-                      <p className="font-medium">EPF Company Contribution :</p>
+                      <p className='font-medium'>
+                        EPF Company Contribution : {basicSalary * 0.15}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-right font-medium">earnings* 15%</p>
+                      <p className='text-right font-medium'>earnings* 15%</p>
                     </div>
                     <div>
-                      <p className="font-medium">ETF Company Contribution :</p>
+                      <p className='font-medium'>
+                        ETF Company Contribution : {basicSalary * 0.03}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-right font-medium">earnings* 3%</p>
+                      <p className='text-right font-medium'>earnings* 3%</p>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4 mt-10">
+              <div className='grid grid-cols-2 gap-4 mt-10'>
                 <div>
-                  <p className="font-medium">Basic Salary :</p>
+                  <p className='font-medium'>Basic Salary :</p>
                 </div>
                 <div>
-                  <p className="text-right font-medium">{basicSalary}</p>
+                  <p className='text-right font-medium'>{basicSalary}</p>
                 </div>
                 <div>
-                  <p className="font-medium">Total Additions :</p>
+                  <p className='font-medium'>Total Additions :</p>
                 </div>
                 <div>
-                  <p className="text-right font-medium">{totalAdditions}</p>
+                  <p className='text-right font-medium'>{totalAdditions}</p>
                 </div>
                 <div>
-                  <p className="font-medium">Total Deductions :</p>
+                  <p className='font-medium'>Total Deductions :</p>
                 </div>
                 <div>
-                  <p className="text-right font-medium">{totalDeductions}</p>
+                  <p className='text-right font-medium'>{totalDeductions}</p>
                 </div>
               </div>
 
               <hr />
-              <div className="grid grid-cols-2 gap-4 mt-2">
+              <div className='grid grid-cols-2 gap-4 mt-2'>
                 <div>
-                  <p className="font-semibold ml-0.5">Net Salary :</p>
+                  <p className='font-semibold ml-0.5'>Net Salary :</p>
                 </div>
                 <div>
-                  <p className="text-right font-semibold">{netSalary}</p>
+                  <p className='text-right font-semibold'>{netSalary}</p>
                 </div>
               </div>
             </div>
           </div>
-          <div className="flex items-center">
-            <Button type="button" onClick={() => router.back()}>
+          <div className='flex items-center'>
+            <Button type='button' onClick={() => router.back()}>
               Cancel
             </Button>
             <ActionButton
-              label="Add Salary"
-              type="submit"
-              className="flex ml-auto rounded-md text-white bg-[#2ebdaa]"
+              label='Add Salary'
+              type='submit'
+              className='flex ml-auto rounded-md text-white bg-[#2ebdaa]'
               onClick={() => onSubmit}
               isLoading={isLoading}
             />

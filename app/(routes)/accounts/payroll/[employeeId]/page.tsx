@@ -1,8 +1,9 @@
 import LinkButton from '@/components/buttons/link-button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import usePayroll from '@/hooks/usePayroll';
 import { FC } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AddLoan from './components/add-loan';
+import AddSalary from './components/add-salary';
 import { columns } from './components/columns';
 import { PaySheetDataTable } from './components/paysheet-table';
 import SalaryAdvance from './components/salary-advance';
@@ -30,11 +31,8 @@ const PayrollPage: FC<PayrollPageProps> = async ({ params }) => {
           <h1 className='text-2xl font-semibold mb-5'>
             Payroll of {payrolls[0]?.employee.name || 'employee is not set yet'}
           </h1>
-          <div className='flex justify-evenly'>
-            <LinkButton
-              link={`/accounts/payroll/${employeeId}/new`}
-              label='Add Salary'
-            />
+          <div className='flex gap-4 rounded-md'>
+            <AddSalary employeeId={employeeId} />
             <SalaryAdvance />
             <AddLoan />
           </div>

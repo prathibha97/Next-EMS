@@ -19,25 +19,31 @@ import {
 } from '@/lib/validation/work-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Employee } from '@prisma/client';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface WorkInfoFormProps {
   employeeId: string;
   employee: Employee | undefined;
+  refetchEmployees: () => void;
 }
 
-const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee }) => {
+const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee,refetchEmployees }) => {
+
+
+
   const form = useForm<WorkInfoFormValues>({
     resolver: zodResolver(WorkInfoFormSchema),
     defaultValues: {
       workAddress: employee?.workAddress ?? 'Work address not specified',
       workLocation: employee?.workLocation ?? 'Work location not specified',
       workingHours: employee?.workingHours ?? 'Working hours not specified',
-      startDate: employee?.startDate ?? new Date(),
+      startDate: new Date(employee?.startDate as Date) ?? 'Start date not specified',
       timeZone: employee?.timeZone ?? 'Time Zone is not specified',
     },
   });
+
+  console.log(employee);
 
   const [updateEmployee, { isLoading }] = useUpdateEmployeeMutation();
 
@@ -51,7 +57,7 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee }) => {
           workingHours: data.workingHours,
           startDate: data.startDate,
           timeZone: data.timeZone,
-        },
+        }, 
       });
       const updatedEmployee = response;
       console.log(updatedEmployee);

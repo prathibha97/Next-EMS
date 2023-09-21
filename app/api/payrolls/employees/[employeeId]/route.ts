@@ -38,7 +38,7 @@ export async function GET(req: Request, { params }: IParams) {
         },
       },
       orderBy: {
-        year: 'desc',
+        monthYear: 'desc',
       },
     });
     return NextResponse.json(payrolls);

@@ -73,7 +73,7 @@ model Employee {
   resumeCopy            String?
   passbookCopy          String?
   employeeNumber        String?
-  basicSalary            Float
+  basicSalary            Float?
   dataAllowance          Float?
   mobileAllowance        Float?
   performanceAllowance   Float?

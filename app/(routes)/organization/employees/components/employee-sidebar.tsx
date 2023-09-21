@@ -1,14 +1,23 @@
 'use client'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useGetDepartmentsQuery } from '@/app/redux/services/departmentApi';
 import { SkeletonCard } from './loading-employee-card';
+import { Department } from '@prisma/client';
 
 const EmployeeSidebar = () => {
   const pathname = usePathname();
   const shouldDisplaySidebar = pathname === '/organization/employees';
 
-  const {data:departments, isLoading} = useGetDepartmentsQuery()
+  const {data:departmentData, isLoading} = useGetDepartmentsQuery()
+
+  const [departments, setDepartments] = useState<Department[]>([])
+
+  useEffect(() => {
+    if (departmentData) {
+      setDepartments(departmentData)
+    }
+  }, [departmentData])
 
   // Calculate the total employee count across all departments
   const totalEmployees = departments?.reduce(

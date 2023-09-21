@@ -14,14 +14,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const AttendancePage = () => {
   const router = useRouter();
-
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push('/');
-    },
-  });
-
   const { data: loggedInEmployee } = useGetLoggedInEmployeeQuery();
   const employeeId = loggedInEmployee?.id;
 

@@ -32,6 +32,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { format, addDays, isAfter } from "date-fns";
+import { useAppDispatch } from "@/app/redux/hooks";
+import { selectPayroll } from "@/app/redux/features/payrollSlice";
 
 export const columns: ColumnDef<Payroll>[] = [
   {
@@ -88,6 +90,7 @@ export const columns: ColumnDef<Payroll>[] = [
 
       const [removePayroll] = useRemovePayrollMutation();
       const { refetch } = useGetPayrollByEmployeeIdQuery(paysheet.employeeId);
+      const dispatch = useAppDispatch()
 
       function EmployeeDetails() {
         return (
@@ -332,6 +335,7 @@ export const columns: ColumnDef<Payroll>[] = [
             <DropdownMenuItem
               onClick={() => {
                 if (!isPastGracePeriod) {
+                  dispatch(selectPayroll(paysheet))
                   router.push(`/accounts/payroll/${paysheet.employeeId}/edit`);
                 }
               }}

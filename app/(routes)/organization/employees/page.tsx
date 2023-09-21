@@ -7,12 +7,25 @@ import { Employee } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import EmployeeCard from './components/employee-card';
 import { SkeletonCard } from './components/loading-employee-card';
+import { useEffect, useState } from 'react';
 
 const EmployeesPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const { data: employees, isLoading } = useGetEmployeesQuery();
+  const { data: employeeData, isLoading, refetch:refetchEmployees} = useGetEmployeesQuery();
+
+  const [employees, setEmployees] = useState<Employee[]>([])
+
+  useEffect(() => {
+    if (employeeData) {
+      setEmployees(employeeData);
+    }
+  }, [employeeData]);
+
+  useEffect(() => {
+    refetchEmployees()
+  }, [])
 
   const handleClick = (id: string) => {
     router.push(`/organization/employees/${id}`);

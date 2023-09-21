@@ -3,9 +3,9 @@ import { selectDepartment } from '@/app/redux/features/departmentSlice';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { useGetDepartmentsQuery } from '@/app/redux/services/departmentApi';
 import { Button } from '@/components/ui/button';
-import { useSession } from 'next-auth/react';
+import { Department } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import DepartmentCard from './components/department-card';
 import { SkeletonCard } from './components/loading-employee-card';
 
@@ -13,19 +13,23 @@ const DepartmentsPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push('/');
-    },
-  });
-  useEffect(() => {
-    if (session && session?.user?.role !== 'ADMIN') {
-      router.push('/denied');
-    }
-  }, [session]);
+  const {
+    data: departmentData,
+    isLoading,
+    refetch: refetchDepartments,
+  } = useGetDepartmentsQuery();
 
-  const { data: departments, isLoading, refetch:refetchDepartments } = useGetDepartmentsQuery();
+  const [departments, setDepartments] = useState<Department[]>([]);
+
+  useEffect(() => {
+    if (departmentData) {
+      setDepartments(departmentData);
+    }
+  }, [departmentData]);
+
+  useEffect(() => {
+    refetchDepartments();
+  }, []);
 
   const handleClick = (id: string) => {
     router.push(`/organization/departments/${id}`);

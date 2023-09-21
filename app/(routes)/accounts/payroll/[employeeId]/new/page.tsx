@@ -1,6 +1,7 @@
 "use client";
 import { addPayrollData } from "@/app/redux/features/payrollSlice";
 import { useAppDispatch } from "@/app/redux/hooks";
+import { useGetEmployeeByIdQuery } from "@/app/redux/services/employeeApi";
 import { useAddPayrollMutation } from "@/app/redux/services/payrollApi";
 import ActionButton from "@/components/buttons/action-button";
 import { Button } from "@/components/ui/button";
@@ -44,17 +45,20 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
 
   const employeeId = params.employeeId;
 
-  const [addPayroll, { isLoading }] = useAddPayrollMutation();
+  const {data:employee, isLoading}= useGetEmployeeByIdQuery({employeeId});
+  console.log(employee);
+
+  const [addPayroll, { isLoading:isEmployeeDataLoading }] = useAddPayrollMutation();
 
   const form = useForm<PayrollFormValues>({
     resolver: zodResolver(PayrollFormSchema),
     defaultValues: {
       monthYear: "",
-      basicSalary: "",
-      dataAllowance: "",
-      mobileAllowance: "",
+      basicSalary: employee?.basicSalary?.toString(),
+      dataAllowance: employee?.dataAllowance?.toString(),
+      mobileAllowance: employee?.mobileAllowance?.toString(),
       projectAllowance: "",
-      performanceAllowance: "",
+      performanceAllowance: employee?.performanceAllowance?.toString(),
       holidayAllowance: "",
       salaryAdvance: "",
       epfDeduction: "",
@@ -158,6 +162,10 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
     }
   };
 
+  if (isEmployeeDataLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className='space-y-3'>
       <h1 className='text-center text-2xl font-semibold mb-8'>
@@ -166,53 +174,6 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='flex flex-col md:flex-row gap-y-3 gap-x-10'>
-            {/* <div>
-              <FormLabel>Month</FormLabel>
-              <FormField
-                control={form.control}
-                name='month'
-                render={({ field }) => (
-                  <FormItem className='md:w-96 rounded-md'>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder='Select a month to display' />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {months.map((month) => (
-                          <SelectItem key={month.value} value={month.value}>
-                            {month.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div>
-              <FormLabel>Year</FormLabel>
-              <FormField
-                name='year'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        className='md:w-96 px-2 py-1 border rounded-md'
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div> */}
             <div>
               <FormLabel>Month & Year </FormLabel>
               <FormField
@@ -366,25 +327,6 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                   )}
                 />
               </div>
-
-              {/* <div className='my-5'>
-                <FormLabel>EPF Deduction</FormLabel>
-                <FormField
-                  name='epfDeduction'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className='md:w-96 px-2 py-1 border rounded-md'
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div> */}
-
               <div className='my-5'>
                 <FormLabel>Other Deductions</FormLabel>
                 <FormField
@@ -407,20 +349,6 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                   EPF & ETF Contribution
                 </h1>
                 <div>
-                  {/* <div className="flex mt-2 gap-2">
-                    <div className="">EPF employee Contribution:</div>
-                    <div>earnings* 8%</div>
-                  </div>
-
-                  <div className="flex mt-2 gap-2">
-                    <div>EPF company Contribution:</div>
-                    <div>earnings* 15%</div>
-                  </div>
-
-                  <div className="flex mt-2 gap-2">
-                    <div>ETF company Contribution:</div>
-                    <div>earnings* 3%</div>
-                  </div> */}
                   <div className='grid grid-cols-2 gap-4 mt-2 '>
                     <div>
                       <p className='font-medium'>

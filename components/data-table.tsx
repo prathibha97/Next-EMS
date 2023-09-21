@@ -69,7 +69,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full bg-white p-6 rounded-lg drop-shadow-md">
+    <div className="w-full bg-white p-2 rounded-lg ">
       <div className="flex items-center py-4">
         <Input
           placeholder={`Filter ${placeholder}...`}

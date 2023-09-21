@@ -53,6 +53,14 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
       idCopy: employee?.idCopy ?? 'ID copy not uploaded',
       resumeCopy: employee?.resumeCopy ?? 'Resume not uploaded',
       passbookCopy: employee?.passbookCopy ?? 'Passbook copy not uploaded',
+      basicSalary: employee?.basicSalary?.toString() ?? 'Basic salary not set',
+      performanceAllowance:
+        employee?.performanceAllowance?.toString() ??
+        'Performance allowance not set',
+      mobileAllowance:
+        employee?.mobileAllowance?.toString() ?? 'Mobile allowance not set',
+      dataAllowance:
+        employee?.dataAllowance?.toString() ?? 'Data allowance not set',
     },
   });
 
@@ -97,14 +105,14 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
       if (hasFileChanged) {
         const uploadRes = await startUpload(files);
         console.log(uploadRes);
-        if (uploadRes && uploadRes[0].fileUrl) {
-          values.idCopy = uploadRes[0].fileUrl;
+        if (uploadRes && uploadRes[0].url) {
+          values.idCopy = uploadRes[0].url;
         }
-        if (uploadRes && uploadRes[1].fileUrl) {
-          values.resumeCopy = uploadRes[1].fileUrl;
+        if (uploadRes && uploadRes[1].url) {
+          values.resumeCopy = uploadRes[1].url;
         }
-        if (uploadRes && uploadRes[2].fileUrl) {
-          values.passbookCopy = uploadRes[2].fileUrl;
+        if (uploadRes && uploadRes[2].url) {
+          values.passbookCopy = uploadRes[2].url;
         }
       }
       setIsLoading(false);
@@ -116,8 +124,12 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
           idCopy: values.idCopy,
           resumeCopy: values.resumeCopy,
           passbookCopy: values.passbookCopy,
+          basicSalary: parseFloat(values.basicSalary),
+          performanceAllowance: parseFloat(values.performanceAllowance),
+          mobileAllowance: parseFloat(values.mobileAllowance),
+          dataAllowance: parseFloat(values.dataAllowance),
         },
-      });
+      }).unwrap();
       const updatedEmployee = response; // Access the nested data
       console.log(updatedEmployee);
       toast({
@@ -248,6 +260,76 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
                   </FormItem>
                 )}
               />
+            </div>
+          </div>
+          <div className='mt-5'>
+            <h2 className='text-lg font-semibold'>Salary Information</h2>
+            <Separator className='mt-1 mb-3' />
+            <div className='flex justify-between space-x-5'>
+              <div className='w-1/2 space-y-3'>
+                <FormField
+                  control={form.control}
+                  name='basicSalary'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Basic Salary</FormLabel>
+                      <Input
+                        {...field}
+                        placeholder='Enter Basic Salary Amount'
+                        type='text'
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='performanceAllowance'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Performance Allowance</FormLabel>
+                      <Input
+                        {...field}
+                        placeholder='Enter Performance Allowance Amount'
+                        type='text'
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className='w-1/2 space-y-3'>
+                <FormField
+                  control={form.control}
+                  name='mobileAllowance'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Mobile Allowance</FormLabel>
+                      <Input
+                        {...field}
+                        placeholder='Enter Mobile Allowance Amount'
+                        type='text'
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='dataAllowance'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Data Allowance</FormLabel>
+                      <Input
+                        {...field}
+                        placeholder='Enter Data Allowance Amount'
+                        type='text'
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
           </div>
           <div className='mt-4'>

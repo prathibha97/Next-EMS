@@ -19,7 +19,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { employeeTypeOptions } from '@/constants/employees';
 import { toast } from '@/hooks/use-toast';
 import { useUploadThing } from '@/lib/uploadthing';
 import {
@@ -28,26 +27,35 @@ import {
 } from '@/lib/validation/hr-settings-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Employee, User } from '@prisma/client';
-import { ChangeEvent, FC, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import LoadingState from './loading-state';
-import { useRouter } from 'next/navigation';
 
 interface HRSettingsFormProps {
   employee: Employee | null;
 }
 
 const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
-  const employeeId = employee?.id;
   const router = useRouter();
+  const employeeId = employee?.id;
+
   const [files, setFiles] = useState<File[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
   const { startUpload } = useUploadThing('pdfUploader');
+
+    const {
+      data: userData,
+      isLoading: isUsersLoading,
+      refetch: refetchUsers,
+    } = useGetUsersQuery();
+    
   const form = useForm<HRSettingsFormValues>({
     resolver: zodResolver(HRSettingsFormSchema),
     defaultValues: {
       employeeNumber: '',
-      // employeeType: '',
       userId: '',
       idCopy: '',
       resumeCopy: '',
@@ -59,8 +67,18 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
     },
   });
 
-  const { data: users, isLoading: isUsersLoading, refetch: refetchUsers } = useGetUsersQuery();
   const [updateEmployee, { isLoading: loading }] = useUpdateEmployeeMutation();
+
+  useEffect(() => {
+    if (userData) {
+      setUsers(userData);
+    }
+  }, [userData]);
+  console.log(users);
+
+  useEffect(() => {
+    refetchUsers();
+  }, []);
 
   const handleFileUpload = (
     e: ChangeEvent<HTMLInputElement>,
@@ -173,33 +191,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                     </FormItem>
                   )}
                 />
-                {/* <FormField
-                  control={form.control}
-                  name='employeeType'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Employee Type</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder='Select an employee type to display' />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {employeeTypeOptions.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
+
                 <FormField
                   control={form.control}
                   name='userId'

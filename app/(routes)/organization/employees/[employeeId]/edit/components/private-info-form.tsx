@@ -51,7 +51,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
       nationality: employee?.nationality ?? 'Nationality not specified',
       idNumber: employee?.idNumber ?? 'ID Number not specified',
       gender: employee?.gender ?? 'Gender not specified',
-      dateOfBirth: employee?.dateOfBirth ?? new Date(),
+      dateOfBirth: new Date(employee?.dateOfBirth as Date) ?? new Date(),
     },
   });
 

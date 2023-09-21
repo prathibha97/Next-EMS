@@ -97,7 +97,7 @@ const Employee: FC<EmployeeProps> = ({ params }) => {
             </span>
           </span>
           <span>
-            Employee Number:{' '}
+            Employee Type:{' '}
             <span className='text-sm text-gray-600'>
               {employee?.employeeType || `Employee type not specified`}
             </span>

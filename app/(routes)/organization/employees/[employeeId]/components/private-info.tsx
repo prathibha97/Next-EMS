@@ -1,5 +1,6 @@
 import { Separator } from '@/components/ui/separator';
 import { Employee } from '@prisma/client';
+import { format } from 'date-fns';
 import { FC } from 'react';
 
 interface PrivateInfoProps {
@@ -121,7 +122,7 @@ const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {
             <span>
               date of Birth :{' '}
               <span className='text-sm text-gray-600 dark:text-gray-300'>
-                {employee?.dateOfBirth}
+                {format(new Date(employee?.dateOfBirth as Date),'MM/dd/yyyy')}
               </span>
             </span>
           </div>

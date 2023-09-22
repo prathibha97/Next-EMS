@@ -16,6 +16,7 @@ import { CalendarDateRangePicker } from './components/date-range-picker';
 import { Overview } from './components/overview';
 import { RecentProjects } from './components/recent-projects';
 import TeamSwitcher from './components/team-switcher';
+import { SocketIndicator } from '@/components/socket-indicator';
 
 export default function DashboardPage() {
   const [isMounted, setIsMounted] = useState(false);
@@ -45,6 +46,7 @@ export default function DashboardPage() {
               Dashboard
             </h2>
             <div className='flex items-center space-x-2'>
+              <SocketIndicator />
               <CalendarDateRangePicker />
               <Button>Download</Button>
             </div>

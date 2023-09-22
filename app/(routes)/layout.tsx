@@ -7,6 +7,7 @@ import { Inter } from "next/font/google";
 import ReduxProvider from "../redux/provider";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/themeProvider";
+import { SocketProvider } from "@/providers/socketProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,24 +22,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang='en' suppressHydrationWarning>
       <body className={`${inter.className} overflow-hidden`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <AuthProvider>
-            <ReduxProvider>
-              <div className="flex h-screen overflow-hidden  bg-[#eef5f9] dark:bg-slate-800">
-                <Sidebar />
-                <div className="container flex flex-col w-full overflow-x-hidden">
-                  <MainNav />
-                  <div className="flex-grow overflow-x-auto overflow-y-auto ">
-                    {children}
+        <SocketProvider>
+          <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+            <AuthProvider>
+              <ReduxProvider>
+                <div className='flex h-screen overflow-hidden  bg-[#eef5f9] dark:bg-slate-800'>
+                  <Sidebar />
+                  <div className='container flex flex-col w-full overflow-x-hidden'>
+                    <MainNav />
+                    <div className='flex-grow overflow-x-auto overflow-y-auto '>
+                      {children}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <Toaster />
-            </ReduxProvider>
-          </AuthProvider>
-        </ThemeProvider>
+                <Toaster />
+              </ReduxProvider>
+            </AuthProvider>
+          </ThemeProvider>
+        </SocketProvider>
       </body>
     </html>
   );

@@ -24,7 +24,7 @@ const PayrollsPage = async () => {
         </TabsContent>
         <TabsContent value="analytics" className="mt-5">
           <div>
-            <Tabs defaultValue="account" className="w-full">
+            <Tabs defaultValue="all" className="w-full">
               <div className="flex justify-center">
                 <div>
                   {" "}

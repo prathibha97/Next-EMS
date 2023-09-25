@@ -1,10 +1,10 @@
-"use client";
-import { addPayrollData } from "@/app/redux/features/payrollSlice";
-import { useAppDispatch } from "@/app/redux/hooks";
-import { useGetEmployeeByIdQuery } from "@/app/redux/services/employeeApi";
-import { useAddPayrollMutation } from "@/app/redux/services/payrollApi";
-import ActionButton from "@/components/buttons/action-button";
-import { Button } from "@/components/ui/button";
+'use client';
+import { addPayrollData } from '@/app/redux/features/payrollSlice';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { useGetEmployeeByIdQuery } from '@/app/redux/services/employeeApi';
+import { useAddPayrollMutation } from '@/app/redux/services/payrollApi';
+import ActionButton from '@/components/buttons/action-button';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -12,26 +12,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { months } from "@/constants/months";
-import { toast } from "@/hooks/use-toast";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { toast } from '@/hooks/use-toast';
 import {
   PayrollFormSchema,
   PayrollFormValues,
-} from "@/lib/validation/payroll-form-validation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { FC, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+} from '@/lib/validation/payroll-form-validation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { FC, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 interface AddPayrollPageProps {
   params: {
@@ -45,24 +36,25 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
 
   const employeeId = params.employeeId;
 
-  const {data:employee, isLoading}= useGetEmployeeByIdQuery({employeeId});
+  const { data: employee, isLoading } = useGetEmployeeByIdQuery({ employeeId });
   console.log(employee);
 
-  const [addPayroll, { isLoading:isEmployeeDataLoading }] = useAddPayrollMutation();
+  const [addPayroll, { isLoading: isEmployeeDataLoading }] =
+    useAddPayrollMutation();
 
   const form = useForm<PayrollFormValues>({
     resolver: zodResolver(PayrollFormSchema),
     defaultValues: {
-      monthYear: "",
+      monthYear: '',
       basicSalary: employee?.basicSalary?.toString(),
       dataAllowance: employee?.dataAllowance?.toString(),
       mobileAllowance: employee?.mobileAllowance?.toString(),
-      projectAllowance: "",
+      projectAllowance: '',
       performanceAllowance: employee?.performanceAllowance?.toString(),
-      holidayAllowance: "",
-      salaryAdvance: "",
-      epfDeduction: "",
-      otherDeductions: "",
+      holidayAllowance: '',
+      salaryAdvance: '',
+      epfDeduction: '',
+      otherDeductions: '',
     },
   });
 
@@ -75,7 +67,7 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
     }
     const defaultMonthYear = `${currentYear}-${currentMonth}`;
 
-    form.setValue("monthYear", defaultMonthYear);
+    form.setValue('monthYear', defaultMonthYear);
   }, [form]);
 
   const [basicSalary, setBasicSalary] = useState(0);
@@ -146,23 +138,23 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
       const payroll = response; // Access the nested data
       dispatch(addPayrollData(payroll));
       toast({
-        title: "Success",
-        description: "Employee salary successfully added",
+        title: 'Success',
+        description: 'Employee salary successfully added',
       });
       form.reset();
       router.push(`/accounts/payroll/${employeeId}`);
       router.refresh();
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Something went wrong, Please try again",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Something went wrong, Please try again',
+        variant: 'destructive',
       });
       console.log(error);
     }
   };
 
-  if (isEmployeeDataLoading) {
+  if (isEmployeeDataLoading || isLoading) {
     return <div>Loading...</div>;
   }
 

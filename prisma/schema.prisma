@@ -129,6 +129,7 @@ model Leave {
   reason     String?
   status     LeaveStatus? @default(Pending)
   medical    String?
+  otherProof String?
   approvedBy String?
   approvedAt DateTime?
   rejectedBy String?

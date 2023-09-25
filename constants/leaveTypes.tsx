@@ -17,10 +17,14 @@ export const leaveTypes = [
   },
   {
     label: 'Unpaid',
-    value: 'Unpaid',
+    value: 'unpaid',
   },
   {
     label: 'Duty',
-    value: 'Duty',
+    value: 'duty',
+  },
+  {
+    label: 'Special',
+    value: 'special',
   },
 ];

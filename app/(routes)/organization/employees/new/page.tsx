@@ -62,7 +62,7 @@ const NewEmployeePage = () => {
       workEmail: '',
       department: '',
       jobPosition: '',
-      manager: '',
+      // manager: '',
       profile_photo: '',
       employeeType: '',
     },

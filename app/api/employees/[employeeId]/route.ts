@@ -35,52 +35,6 @@ export async function GET(req: Request, { params }: { params: IParams }) {
   }
 }
 
-// export async function PUT(req: Request, { params }: { params: IParams }) {
-//   const session = await getAuthSession();
-//   if (!session || session.user.role !== 'ADMIN') {
-//     throw new NextResponse('Unauthorized', { status: 401 });
-//   }
-
-//   try {
-//     const { employeeId } = params;
-//     const body = await req.json();
-
-//     // Validate that the provided userId corresponds to an existing User record
-//     const { userId, ...otherEmployeeData } = body;
-
-//     if (!userId) {
-//       throw new Error('userId is undefined');
-//     }
-
-//     const user = await prisma.user.findUnique({
-//       where: { id: userId },
-//     });
-
-//     if (!user) {
-//       throw new Error(`User with id ${userId} not found.`);
-//     }
-
-//     const employee = await prisma.employee.update({
-//       where: {
-//         id: employeeId,
-//       },
-//       data: {
-//         ...otherEmployeeData,
-//         user: {
-//           connect: {
-//             id: userId,
-//           },
-//         },
-//       },
-//     });
-
-//     return NextResponse.json(employee);
-//   } catch (error: any) {
-//     return new Response(`Could not update employee - ${error.message}`, {
-//       status: 500,
-//     });
-//   }
-// }
 
 export async function PUT(req: Request, { params }: { params: IParams }) {
   const session = await getAuthSession();

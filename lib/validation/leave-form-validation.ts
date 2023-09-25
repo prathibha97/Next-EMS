@@ -6,6 +6,7 @@ export const LeaveFormSchema = z.object({
   endDate: z.date(),
   reason: z.string(),
   medical: z.string().optional(),
+  otherProof: z.string().optional(),
 });
 
 export type LeaveFormValues = z.infer<typeof LeaveFormSchema>;

@@ -7,9 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { leaveBalanceData } from '@/constants/sample/leave-balance-data';
-import { leaveData } from '@/constants/sample/leave-data';
-import { FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { columns } from './components/columns';
@@ -32,26 +30,65 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { useGetLoggedInEmployeeQuery } from '@/app/redux/services/employeeApi';
+import {
+  useCreateLeaveRequestMutation,
+  useGetLeavesByEmployeeIdQuery,
+} from '@/app/redux/services/leaveApi';
+import ActionButton from '@/components/buttons/action-button';
 import { DatePicker } from '@/components/inputs/date-picker';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { leaveTypes } from '@/constants/leaveTypes';
 import { toast } from '@/hooks/use-toast';
+import { useUploadThing } from '@/lib/uploadthing';
 import {
   LeaveFormSchema,
   LeaveFormValues,
 } from '@/lib/validation/leave-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Leave } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
+import { useSession } from 'next-auth/react';
 
 interface pageProps {}
 
 const page: FC<pageProps> = ({}) => {
+  const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
   const [selectedLeaveType, setSelectedLeaveType] = useState('');
+  const [files, setFiles] = useState<File[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { startUpload } = useUploadThing('pdfUploader');
+
+  const { data: currentEmployee,  } = useGetLoggedInEmployeeQuery();
+  const {data} = useSession()
+
+  const employeeId = currentEmployee?.id || '';
+  const { data: leavesData, refetch: refetchLeaves } =
+    useGetLeavesByEmployeeIdQuery({ employeeId });
+
+  const [leaves, setLeaves] = useState<Leave[]>([]);
+
+  const [
+    createLeaveRequest,
+    { isLoading: leaveRequestLoading, error: leaveRequeestError },
+  ] = useCreateLeaveRequestMutation();
+
 
   useEffect(() => {
     setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (leavesData) {
+      setLeaves(leavesData);
+    }
+  }, [leavesData]);
+
+  useEffect(() => {
+    refetchLeaves();
   }, []);
 
   const form = useForm<LeaveFormValues>({
@@ -61,23 +98,88 @@ const page: FC<pageProps> = ({}) => {
       startDate: new Date(),
       endDate: new Date(),
       reason: '',
+      medical: '',
+      otherProof: '',
     },
   });
+  const handleFileUpload = (
+    e: ChangeEvent<HTMLInputElement>,
+    fieldChange: (value: string) => void
+  ) => {
+    e.preventDefault();
 
-  const onSubmit = (values: LeaveFormValues) => {
-    console.log(values);
+    if (e.target.files && e.target.files.length > 0) {
+      const newFiles = Array.from(e.target.files);
+
+      const validFiles = newFiles.filter((file) => file.type.includes('pdf'));
+
+      if (validFiles.length === 0) return; // No valid PDF files
+
+      setFiles((prevFiles) => [...prevFiles, ...validFiles]);
+
+      const fileDataUrls: string[] = [];
+
+      validFiles.forEach((file) => {
+        const fileReader = new FileReader();
+        fileReader.onload = (event) => {
+          const fileDataUrl = event.target?.result?.toString() || '';
+          fileDataUrls.push(fileDataUrl);
+
+          if (fileDataUrls.length === validFiles.length) {
+            fieldChange(fileDataUrls.join(','));
+
+            // Clear the file input
+            e.target.value = '';
+          }
+        };
+        fileReader.readAsDataURL(file);
+      });
+    }
+  };
+
+  const onSubmit = async (values: LeaveFormValues) => {
+    // Perform save action here using data
+    setIsLoading(true);
     try {
+      const hasFileChanged = files.length > 0;
+
+      if (hasFileChanged) {
+        const uploadRes = await startUpload(files);
+        if (uploadRes && uploadRes[0].url) {
+          values.medical = uploadRes[0].url;
+        }
+        if (uploadRes && uploadRes[1].url) {
+          values.otherProof = uploadRes[1].url;
+        }
+      }
+      const response = await createLeaveRequest({
+        employeeId: employeeId,
+        type: values.type,
+        startDate: values.startDate,
+        endDate: values.endDate,
+        reason: values.reason,
+        medical: values.medical,
+        otherProof: values.otherProof,
+      }).unwrap();
+      const leaveRequest = response;
+      console.log(leaveRequest);
       toast({
         title: 'Success',
         description: 'Leave request submitted successfully',
       });
       form.reset();
-    } catch (error) {
+      refetchLeaves();
+      router.refresh();
+    } catch (err) {
+      setIsLoading(false);
       toast({
         title: 'Error',
-        description: 'Something went wrong. Please try again later.',
+        // @ts-ignore
+        description: leaveRequeestError?.data || 'Something went wrong',
         variant: 'destructive',
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -104,7 +206,7 @@ const page: FC<pageProps> = ({}) => {
                     name='type'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Employee Type</FormLabel>
+                        <FormLabel>Leave Type</FormLabel>
                         <Select
                           onValueChange={(value) => {
                             setSelectedLeaveType(value);
@@ -131,7 +233,7 @@ const page: FC<pageProps> = ({}) => {
                   />
                   <div className='flex gap-x-2'>
                     <div className='flex flex-col gap-y-2 mb-2 mt-6'>
-                      <FormLabel>From Date</FormLabel>
+                      <FormLabel>Start Date</FormLabel>
                       <Controller
                         name='startDate'
                         control={form.control}
@@ -144,7 +246,7 @@ const page: FC<pageProps> = ({}) => {
                       />
                     </div>
                     <div className='flex flex-col gap-y-2 mb-2 mt-6'>
-                      <FormLabel>To Date</FormLabel>
+                      <FormLabel>End Date</FormLabel>
                       <Controller
                         name='endDate'
                         control={form.control}
@@ -174,7 +276,35 @@ const page: FC<pageProps> = ({}) => {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Upload Medical</FormLabel>
-                            <Input {...field} type='file' />
+                            <Input
+                              {...field}
+                              type='file'
+                              onChange={(e) =>
+                                handleFileUpload(e, field.onChange)
+                              }
+                            />
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )}
+
+                  {selectedLeaveType === 'special' && (
+                    <div className='mb-2 mt-6'>
+                      <FormField
+                        control={form.control}
+                        name='otherProof'
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Upload Attachment</FormLabel>
+                            <Input
+                              {...field}
+                              type='file'
+                              onChange={(e) =>
+                                handleFileUpload(e, field.onChange)
+                              }
+                            />
                             <FormMessage />
                           </FormItem>
                         )}
@@ -199,12 +329,12 @@ const page: FC<pageProps> = ({}) => {
                     />
                   </div>
                   <div className='mx-auto mb-4'>
-                    <Button
+                    <ActionButton
                       className='bg-[#2ebdaa] w-20 text-center'
                       type='submit'
-                    >
-                      Submit
-                    </Button>
+                      label='Submit'
+                      isLoading={isLoading || leaveRequestLoading}
+                    />
                   </div>
                 </div>
               </form>
@@ -214,20 +344,49 @@ const page: FC<pageProps> = ({}) => {
       </div>
 
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 mb-5'>
-        {leaveBalanceData.map((leaveBalance) => (
+        <LeaveBalanceCard
+          balance={currentEmployee?.leaveBalance.annual}
+          entitlement={currentEmployee?.employeeType === 'fullTime' ? 7 : 0}
+          leaveType='Annual'
+        />
+        <LeaveBalanceCard
+          balance={currentEmployee?.leaveBalance.casual}
+          entitlement={currentEmployee?.employeeType === 'fullTime' ? 7 : 1}
+          leaveType='Casual'
+        />
+        <LeaveBalanceCard
+          balance={currentEmployee?.leaveBalance.medical}
+          entitlement={currentEmployee?.employeeType === 'fullTime' ? 7 : 1}
+          leaveType='Medical'
+        />
+        {currentEmployee?.employeeType === 'fullTime' &&
+          currentEmployee?.leaveBalance.broughtForward > 1 && (
+            <LeaveBalanceCard
+              balance={currentEmployee?.leaveBalance.broughtForward}
+              entitlement={currentEmployee?.employeeType === 'fullTime' ? 4 : 0}
+              leaveType='Brought Forward'
+            />
+          )}
+        {currentEmployee?.leaveBalance.duty > 1 && (
           <LeaveBalanceCard
-            key={leaveBalance.id}
-            balance={leaveBalance.balance}
-            entitlement={leaveBalance.entitlement}
-            leaveType={leaveBalance.leaveType}
+            balance={currentEmployee?.leaveBalance.unpaid}
+            entitlement={currentEmployee?.leaveBalance.duty}
+            leaveType='Unpaid'
           />
-        ))}
+        )}
+        {currentEmployee?.leaveBalance.duty > 1 && (
+          <LeaveBalanceCard
+            balance={currentEmployee?.leaveBalance.duty}
+            entitlement={currentEmployee?.leaveBalance.duty}
+            leaveType='Duty'
+          />
+        )}
       </div>
       <DataTable
         columns={columns}
-        data={leaveData}
+        data={leaves}
         placeholder='Date'
-        searchFilter='requestDate'
+        searchFilter='createdAt'
       />
     </div>
   );

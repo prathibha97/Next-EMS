@@ -74,7 +74,6 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
       setUsers(userData);
     }
   }, [userData]);
-  console.log(users);
 
   useEffect(() => {
     refetchUsers();

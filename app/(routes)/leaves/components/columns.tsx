@@ -3,50 +3,22 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 
-import { EmployeeHoverCard } from '@/components/cards/employee-hover-card';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Employee } from '@prisma/client';
+import { Leave } from '@prisma/client';
+import { differenceInDays, format, parseISO } from 'date-fns';
 
-interface Leaves{
-  id: number
-  requestDate: string
-  leaveType: string
-  startDate: string
-  endDate: string
-  leaveDays: number
-  leaveStatus: string
-}
-
-export const columns: ColumnDef<Leaves>[] = [
+export const columns: ColumnDef<Leave>[] = [
   {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Select all'
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label='Select row'
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: 'requestDate',
-    header: 'Request Date',
+    accessorKey: 'createdAt',
+    header: () => <div>Request Date</div>,
     cell: ({ row }) => {
-      <div className='text-center'>{row.getValue('requestDate')}</div>;
+      const date = row.original.createdAt;
+
+      return <div>{format(new Date(date), 'MM/dd/yyyy')}</div>;
     },
   },
   {
-    accessorKey: 'leaveType',
+    accessorKey: 'type',
     header: ({ column }) => {
       return (
         <Button
@@ -59,31 +31,55 @@ export const columns: ColumnDef<Leaves>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className='text-center capitalize'>{row.getValue('leaveType')}</div>
+      <div className='text-center capitalize'>{row.getValue('type')}</div>
     ),
   },
   {
     accessorKey: 'startDate',
     header: () => <div>Start Date</div>,
-    cell: ({ row }) => (
-      <div className='capitalize'>{row.getValue('startDate')}</div>
-    ),
+    cell: ({ row }) => {
+      const startDate = row.original.startDate;
+
+      return <div>{format(new Date(startDate), 'MM/dd/yyyy')}</div>;
+    },
   },
   {
     accessorKey: 'endDate',
     header: () => <div>End Date</div>,
-    cell: ({ row }) => <div>{row.getValue('endDate')}</div>,
+    cell: ({ row }) => {
+      const endDate = row.original.endDate;
+
+      return <div>{format(new Date(endDate), 'MM/dd/yyyy')}</div>;
+    },
   },
   {
     accessorKey: 'leaveDays',
     header: () => <div>Leave Days</div>,
-    cell: ({ row }) => (
-      <div className='text-center'>{row.getValue('leaveDays')}</div>
-    ),
+    cell: ({ row }) => {
+      const leave = row.original;
+      const leaveDays = differenceInDays(
+        parseISO(leave.endDate),
+        parseISO(leave.startDate )
+      );
+      return <div className='text-center'>{leaveDays}</div>;
+    },
   },
   {
-    accessorKey: 'leaveStatus',
-    header: () => <div>End Date</div>,
-    cell: ({ row }) => <div>{row.getValue('leaveStatus')}</div>,
+    accessorKey: 'status',
+    header: () => <div className='font-bold'>Status</div>,
+    cell: ({ row }) => {
+      const leaveStatus = row.getValue('status');
+      let textColor = '';
+
+      if (leaveStatus === 'Approved') {
+        textColor = 'text-green-500';
+      } else if (leaveStatus === 'Pending') {
+        textColor = 'text-yellow-500';
+      } else if (leaveStatus === 'Rejected') {
+        textColor = 'text-red-500';
+      }
+
+      return <div className={textColor}>{row.getValue('status')}</div>;
+    },
   },
 ];

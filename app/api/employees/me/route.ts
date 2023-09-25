@@ -5,6 +5,10 @@ import { getAuthSession } from '../../auth/[...nextauth]/options';
 export async function GET(req: Request) {
   const session = await getAuthSession();
 
+  if (!session) {
+    throw new NextResponse('Unauthorized', { status: 401 });
+  }
+
   try {
     const employee = await prisma.employee.findFirst({
       where: {
@@ -13,6 +17,7 @@ export async function GET(req: Request) {
       include: {
         Department: true,
         Attendance: true,
+        leaveBalance: true,
       },
     });
     return NextResponse.json(employee);

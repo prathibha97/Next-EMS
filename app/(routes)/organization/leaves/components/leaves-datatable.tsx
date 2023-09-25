@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -15,7 +15,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -27,24 +27,23 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
-import { ChevronDown } from "lucide-react";
-import { useState } from "react";
-import { FormLabel } from "./ui/form";
+} from '@tanstack/react-table';
+import { ChevronDown } from 'lucide-react';
+import { useState } from 'react';
 
-interface DataTableProps<TData, TValue> {
+interface LeavesDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchFilter?: string | undefined;
   placeholder?: string | undefined;
 }
 
-export function DataTable<TData, TValue>({
+export function LeavesDataTable<TData, TValue>({
   columns,
   data,
   searchFilter,
   placeholder,
-}: DataTableProps<TData, TValue>) {
+}: LeavesDataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -72,21 +71,36 @@ export function DataTable<TData, TValue>({
   return (
     <div className='w-full bg-white p-2 rounded-lg '>
       <div className='flex items-center py-4'>
-        <Input
-        type="date"
-          placeholder={`Filter ${placeholder}...`}
-          value={
-            (table
-              .getColumn(searchFilter || '')
-              ?.getFilterValue() as string) ?? ''
-          }
-          onChange={(event) =>
-            table
-              .getColumn(searchFilter || '')
-              ?.setFilterValue(event.target.value)
-          }
-          className='max-w-sm'
-        />
+        <div className='flex space-x-4'>
+          <Input
+            type='date'
+            placeholder={`Filter ${placeholder}...`}
+            value={
+              (table
+                .getColumn('createdAt')
+                ?.getFilterValue() as string) ?? ''
+            }
+            onChange={(event) =>
+              table
+                .getColumn('createdAt')
+                ?.setFilterValue(event.target.value)
+            }
+            className='max-w-sm'
+          />
+          <Input
+            placeholder={`Filter Employee`}
+            value={
+              (table.getColumn('employee_name')?.getFilterValue() as string) ??
+              ''
+            }
+            onChange={(event) =>
+              table
+                .getColumn('employee_name')
+                ?.setFilterValue(event.target.value)
+            }
+            className='max-w-sm'
+          />
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant='outline' className='ml-auto'>

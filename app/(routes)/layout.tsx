@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body className={`${inter.className} overflow-hidden`}>
-        <SocketProvider>
+        {/* <SocketProvider> */}
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
             <AuthProvider>
               <ReduxProvider>
@@ -41,7 +41,7 @@ export default function RootLayout({
               </ReduxProvider>
             </AuthProvider>
           </ThemeProvider>
-        </SocketProvider>
+        {/* </SocketProvider> */}
       </body>
     </html>
   );

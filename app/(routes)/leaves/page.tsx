@@ -50,7 +50,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Leave } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
-import { useSession } from 'next-auth/react';
 
 interface pageProps {}
 
@@ -62,8 +61,7 @@ const page: FC<pageProps> = ({}) => {
   const [isLoading, setIsLoading] = useState(false);
   const { startUpload } = useUploadThing('pdfUploader');
 
-  const { data: currentEmployee,  } = useGetLoggedInEmployeeQuery();
-  const {data} = useSession()
+  const { data: currentEmployee } = useGetLoggedInEmployeeQuery();
 
   const employeeId = currentEmployee?.id || '';
   const { data: leavesData, refetch: refetchLeaves } =
@@ -75,7 +73,6 @@ const page: FC<pageProps> = ({}) => {
     createLeaveRequest,
     { isLoading: leaveRequestLoading, error: leaveRequeestError },
   ] = useCreateLeaveRequestMutation();
-
 
   useEffect(() => {
     setIsMounted(true);
@@ -102,37 +99,37 @@ const page: FC<pageProps> = ({}) => {
       otherProof: '',
     },
   });
- const handleFileUpload = (
-   e: ChangeEvent<HTMLInputElement>,
-   fieldChange: (value: string) => void
- ) => {
-   e.preventDefault();
+  const handleFileUpload = (
+    e: ChangeEvent<HTMLInputElement>,
+    fieldChange: (value: string) => void
+  ) => {
+    e.preventDefault();
 
-   if (e.target.files && e.target.files.length > 0) {
-     const newFiles = Array.from(e.target.files);
+    if (e.target.files && e.target.files.length > 0) {
+      const newFiles = Array.from(e.target.files);
 
-     const validFiles = newFiles.filter((file) => file.type.includes('pdf'));
+      const validFiles = newFiles.filter((file) => file.type.includes('pdf'));
 
-     if (validFiles.length === 0) return; // No valid PDF files
+      if (validFiles.length === 0) return; // No valid PDF files
 
-     setFiles((prevFiles) => [...prevFiles, ...validFiles]);
+      setFiles((prevFiles) => [...prevFiles, ...validFiles]);
 
-     const fileDataUrls: string[] = [];
+      const fileDataUrls: string[] = [];
 
-     validFiles.forEach((file) => {
-       const fileReader = new FileReader();
-       fileReader.onload = (event) => {
-         const fileDataUrl = event.target?.result?.toString() || '';
-         fileDataUrls.push(fileDataUrl);
+      validFiles.forEach((file) => {
+        const fileReader = new FileReader();
+        fileReader.onload = (event) => {
+          const fileDataUrl = event.target?.result?.toString() || '';
+          fileDataUrls.push(fileDataUrl);
 
-         if (fileDataUrls.length === validFiles.length) {
-           fieldChange(fileDataUrls.join(','));
-         }
-       };
-       fileReader.readAsDataURL(file);
-     });
-   }
- };
+          if (fileDataUrls.length === validFiles.length) {
+            fieldChange(fileDataUrls.join(','));
+          }
+        };
+        fileReader.readAsDataURL(file);
+      });
+    }
+  };
 
   const onSubmit = async (values: LeaveFormValues) => {
     setIsLoading(true);
@@ -142,13 +139,18 @@ const page: FC<pageProps> = ({}) => {
       if (hasFileChanged) {
         const uploadRes = await startUpload(files);
         console.log(uploadRes);
-        if (uploadRes && uploadRes[0].url) {
-          values.medical = uploadRes[0].url;
-        }
-        if (uploadRes && uploadRes[1].url) {
-          values.otherProof = uploadRes[1].url;
+
+        if (selectedLeaveType === 'medical') {
+          if (uploadRes && uploadRes[0].url) {
+            values.medical = uploadRes[0].url;
+          }
+        } else if (selectedLeaveType === 'special') {
+          if (uploadRes && uploadRes[0].url) {
+            values.otherProof = uploadRes[0].url;
+          }
         }
       }
+
       const response = await createLeaveRequest({
         employeeId: employeeId,
         type: values.type,
@@ -158,12 +160,15 @@ const page: FC<pageProps> = ({}) => {
         medical: values.medical,
         otherProof: values.otherProof,
       }).unwrap();
+
       const leaveRequest = response;
       console.log(leaveRequest);
+
       toast({
         title: 'Success',
         description: 'Leave request submitted successfully',
       });
+
       form.reset();
       refetchLeaves();
       router.refresh();
@@ -171,7 +176,6 @@ const page: FC<pageProps> = ({}) => {
       setIsLoading(false);
       toast({
         title: 'Error',
-        // @ts-ignore
         description: leaveRequeestError?.data || 'Something went wrong',
         variant: 'destructive',
       });
@@ -297,8 +301,9 @@ const page: FC<pageProps> = ({}) => {
                           <FormItem>
                             <FormLabel>Upload Attachment</FormLabel>
                             <Input
-                              {...field}
                               type='file'
+                              accept='.pdf'
+                              placeholder='Upload Attachment'
                               onChange={(e) =>
                                 handleFileUpload(e, field.onChange)
                               }
@@ -331,7 +336,7 @@ const page: FC<pageProps> = ({}) => {
                       className='bg-[#2ebdaa] w-20 text-center'
                       type='submit'
                       label='Submit'
-                      isLoading={isLoading || leaveRequestLoading}
+                      isLoading={isLoading}
                     />
                   </div>
                 </div>

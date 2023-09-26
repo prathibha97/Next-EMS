@@ -57,13 +57,20 @@ export const columns: ColumnDef<Leave>[] = [
     header: () => <div>Leave Days</div>,
     cell: ({ row }) => {
       const leave = row.original;
-      const leaveDays = differenceInDays(
-        parseISO(leave.endDate),
-        parseISO(leave.startDate )
-      );
+      const startDate = parseISO(leave.startDate);
+      const endDate = parseISO(leave.endDate);
+
+      let leaveDays = differenceInDays(endDate, startDate);
+
+      // If leave duration is less than a day, consider it as one day
+      if (leaveDays <= 0) {
+        leaveDays = 1;
+      }
+
       return <div className='text-center'>{leaveDays}</div>;
     },
   },
+
   {
     accessorKey: 'status',
     header: () => <div className='font-bold'>Status</div>,

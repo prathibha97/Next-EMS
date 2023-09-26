@@ -102,49 +102,46 @@ const page: FC<pageProps> = ({}) => {
       otherProof: '',
     },
   });
-  const handleFileUpload = (
-    e: ChangeEvent<HTMLInputElement>,
-    fieldChange: (value: string) => void
-  ) => {
-    e.preventDefault();
+ const handleFileUpload = (
+   e: ChangeEvent<HTMLInputElement>,
+   fieldChange: (value: string) => void
+ ) => {
+   e.preventDefault();
 
-    if (e.target.files && e.target.files.length > 0) {
-      const newFiles = Array.from(e.target.files);
+   if (e.target.files && e.target.files.length > 0) {
+     const newFiles = Array.from(e.target.files);
 
-      const validFiles = newFiles.filter((file) => file.type.includes('pdf'));
+     const validFiles = newFiles.filter((file) => file.type.includes('pdf'));
 
-      if (validFiles.length === 0) return; // No valid PDF files
+     if (validFiles.length === 0) return; // No valid PDF files
 
-      setFiles((prevFiles) => [...prevFiles, ...validFiles]);
+     setFiles((prevFiles) => [...prevFiles, ...validFiles]);
 
-      const fileDataUrls: string[] = [];
+     const fileDataUrls: string[] = [];
 
-      validFiles.forEach((file) => {
-        const fileReader = new FileReader();
-        fileReader.onload = (event) => {
-          const fileDataUrl = event.target?.result?.toString() || '';
-          fileDataUrls.push(fileDataUrl);
+     validFiles.forEach((file) => {
+       const fileReader = new FileReader();
+       fileReader.onload = (event) => {
+         const fileDataUrl = event.target?.result?.toString() || '';
+         fileDataUrls.push(fileDataUrl);
 
-          if (fileDataUrls.length === validFiles.length) {
-            fieldChange(fileDataUrls.join(','));
-
-            // Clear the file input
-            e.target.value = '';
-          }
-        };
-        fileReader.readAsDataURL(file);
-      });
-    }
-  };
+         if (fileDataUrls.length === validFiles.length) {
+           fieldChange(fileDataUrls.join(','));
+         }
+       };
+       fileReader.readAsDataURL(file);
+     });
+   }
+ };
 
   const onSubmit = async (values: LeaveFormValues) => {
-    // Perform save action here using data
     setIsLoading(true);
     try {
       const hasFileChanged = files.length > 0;
 
       if (hasFileChanged) {
         const uploadRes = await startUpload(files);
+        console.log(uploadRes);
         if (uploadRes && uploadRes[0].url) {
           values.medical = uploadRes[0].url;
         }
@@ -277,8 +274,9 @@ const page: FC<pageProps> = ({}) => {
                           <FormItem>
                             <FormLabel>Upload Medical</FormLabel>
                             <Input
-                              {...field}
                               type='file'
+                              accept='.pdf'
+                              placeholder='Upload Medical'
                               onChange={(e) =>
                                 handleFileUpload(e, field.onChange)
                               }

@@ -34,12 +34,21 @@ export async function POST(req: Request) {
 
   //  @ts-ignore
    const availableBalance = leaveBalance[type.toLowerCase()];
+   console.log('availableBalance', availableBalance);
 
    if (availableBalance === undefined) {
      return new Response('Invalid leave type', { status: 400 });
    }
 
-   const requestedDuration = differenceInDays(parseISO(endDate), parseISO(startDate));
+   let requestedDuration = differenceInDays(
+     parseISO(endDate),
+     parseISO(startDate)
+   );
+   if (requestedDuration <= 0) {
+     requestedDuration = 1;
+   }
+
+
 
    if (requestedDuration <= 0 || requestedDuration > availableBalance) {
      return new Response('Insufficient leave balance', { status: 400 });

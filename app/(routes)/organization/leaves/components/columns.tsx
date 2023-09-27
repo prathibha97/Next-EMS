@@ -21,6 +21,9 @@ import {
   rankItem,
 } from '@tanstack/match-sorter-utils';
 import { FilterFn, SortingFn, sortingFns } from '@tanstack/react-table';
+import { useRemoveLeaveRequestMutation } from '@/app/redux/services/leaveApi';
+import { useRouter } from 'next/navigation';
+import { format } from 'date-fns';
 
 declare module '@tanstack/table-core' {
   interface FilterFns {
@@ -86,7 +89,8 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
   {
     accessorKey: 'createdAt',
     header: () => <div>Request Date</div>,
-    accessorFn: (row) => row.createdAt.toLocaleDateString(),
+    accessorFn: (row) => format(new Date(row?.createdAt || ''), 'dd-MM-yyyy'),
+
     filterFn: 'fuzzy',
     sortingFn: fuzzySort,
   },
@@ -108,12 +112,12 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
   {
     accessorKey: 'startDate',
     header: () => <div>Start Date</div>,
-    accessorFn: (row) => row?.startDate?.toLocaleDateString(),
+    accessorFn: (row) => format(new Date(row?.startDate || ''), 'dd-MM-yyyy'),
   },
   {
     accessorKey: 'endDate',
     header: () => <div>End Date</div>,
-    accessorFn: (row) => row?.startDate?.toLocaleDateString(),
+    accessorFn: (row) => format(new Date(row?.endDate || ''), 'dd-MM-yyyy'),
   },
   {
     accessorKey: 'reason',
@@ -142,9 +146,14 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
+      const router = useRouter();
       const leave = row.original;
+      const [removeLeaveRequest] = useRemoveLeaveRequestMutation();
 
-      const handleDelete = async () => {};
+      const handleDelete = async () => {
+        await removeLeaveRequest({ leaveId: row.original.id });
+        router.refresh();
+      };
 
       return (
         <DropdownMenu>

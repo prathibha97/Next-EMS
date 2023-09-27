@@ -18,7 +18,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
         <div className="space-y-0.5">
           <h2 className="text-2xl font-bold tracking-tight">Apply for Leave</h2>
           <p className="text-muted-foreground">
-            You can apply for leave anf view your leave here.
+            You can apply for leave and view your leave history here.
           </p>
         </div>
         <Separator className="my-6" />

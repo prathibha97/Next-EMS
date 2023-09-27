@@ -21,7 +21,6 @@ import {
   rankItem,
 } from '@tanstack/match-sorter-utils';
 import { FilterFn, SortingFn, sortingFns } from '@tanstack/react-table';
-import { format } from 'date-fns';
 
 declare module '@tanstack/table-core' {
   interface FilterFns {
@@ -33,8 +32,8 @@ declare module '@tanstack/table-core' {
 }
 
 type LeaveWithEmployee = Leave & {
-  employee: Employee
-}
+  employee: Employee;
+};
 
 export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Rank the item
@@ -87,11 +86,7 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
   {
     accessorKey: 'createdAt',
     header: () => <div>Request Date</div>,
-    cell: ({ row }) => {
-      const date = row.original.createdAt;
-
-      return <div>{format(new Date(date), 'MM/dd/yyyy')}</div>;
-    },
+    accessorFn: (row) => row.createdAt.toLocaleDateString(),
     filterFn: 'fuzzy',
     sortingFn: fuzzySort,
   },
@@ -101,11 +96,7 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
     header: () => <div>Employee</div>,
     filterFn: 'fuzzy',
     sortingFn: fuzzySort,
-    cell: ({ row }) => {
-      const name = row.original.employee.name;
-
-      return <div className='capitalize'>{name}</div>;
-    },
+    accessorFn: (row) => row.employee.name,
   },
   {
     accessorKey: 'type',
@@ -117,20 +108,12 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
   {
     accessorKey: 'startDate',
     header: () => <div>Start Date</div>,
-    cell: ({ row }) => {
-      const startDate = row.original.startDate;
-
-      return <div>{format(new Date(startDate || ''), 'MM/dd/yyyy')}</div>;
-    },
+    accessorFn: (row) => row?.startDate?.toLocaleDateString(),
   },
   {
     accessorKey: 'endDate',
     header: () => <div>End Date</div>,
-    cell: ({ row }) => {
-      const endDate = row.original.endDate;
-
-      return <div>{format(new Date(endDate || ''), 'MM/dd/yyyy')}</div>;
-    },
+    accessorFn: (row) => row?.startDate?.toLocaleDateString(),
   },
   {
     accessorKey: 'reason',

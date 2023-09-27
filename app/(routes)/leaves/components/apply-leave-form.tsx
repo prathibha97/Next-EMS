@@ -27,11 +27,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { useGetLoggedInEmployeeQuery } from '@/app/redux/services/employeeApi';
-import {
-  useCreateLeaveRequestMutation,
-  useGetLeavesByEmployeeIdQuery,
-} from '@/app/redux/services/leaveApi';
+import { useCreateLeaveRequestMutation } from '@/app/redux/services/leaveApi';
 import ActionButton from '@/components/buttons/action-button';
 import { DatePicker } from '@/components/inputs/date-picker';
 import { Input } from '@/components/ui/input';
@@ -44,16 +40,17 @@ import {
   LeaveFormValues,
 } from '@/lib/validation/leave-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Employee, Leave, LeaveBalance } from '@prisma/client';
-import { Controller, useForm } from 'react-hook-form';
+import { Employee, LeaveBalance } from '@prisma/client';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { Controller, useForm } from 'react-hook-form';
 
 type EmployeeWithLeaveBalance = Employee & {
   leaveBalance: LeaveBalance;
 };
 
 interface ApplyLeaveFormProps {
-  currentEmployee: Employee
+  currentEmployee: Employee;
 }
 
 const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
@@ -68,7 +65,6 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
 
   const employeeId = currentEmployee?.id || '';
 
@@ -151,7 +147,6 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
       }).unwrap();
 
       const leaveRequest = response;
-      console.log(leaveRequest);
 
       toast({
         title: 'Success',
@@ -159,8 +154,12 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
       });
 
       form.reset();
-
       router.refresh();
+
+      await axios.post('http://localhost:3000/api/email/leave', {
+        employeeId,
+        ...values,
+      });
     } catch (err) {
       setIsLoading(false);
       toast({

@@ -1,13 +1,7 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import {
-  AlertOctagon,
-  ArrowUpDown,
-  BadgeCheck,
-  Check,
-  MoreHorizontal,
-} from 'lucide-react';
+import { AlertOctagon, BadgeCheck, Check, MoreHorizontal } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -20,12 +14,57 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-import { Leave } from '@prisma/client';
+import { Employee, Leave } from '@prisma/client';
+import {
+  RankingInfo,
+  compareItems,
+  rankItem,
+} from '@tanstack/match-sorter-utils';
+import { FilterFn, SortingFn, sortingFns } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { useRouter } from 'next/navigation';
-import useLeaves from '@/hooks/useLeaves';
 
-export const columns: ColumnDef<Leave>[] = [
+declare module '@tanstack/table-core' {
+  interface FilterFns {
+    fuzzy: FilterFn<unknown>;
+  }
+  interface FilterMeta {
+    itemRank: RankingInfo;
+  }
+}
+
+type LeaveWithEmployee = Leave & {
+  employee: Employee
+}
+
+export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+  // Rank the item
+  const itemRank = rankItem(row.getValue(columnId), value);
+
+  // Store the itemRank info
+  addMeta({
+    itemRank,
+  });
+
+  // Return if the item should be filtered in/out
+  return itemRank.passed;
+};
+
+const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
+  let dir = 0;
+
+  // Only sort by rank if the column has ranking information
+  if (rowA.columnFiltersMeta[columnId]) {
+    dir = compareItems(
+      rowA.columnFiltersMeta[columnId]?.itemRank!,
+      rowB.columnFiltersMeta[columnId]?.itemRank!
+    );
+  }
+
+  // Provide an alphanumeric fallback for when the item ranks are equal
+  return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
+};
+
+export const columns: ColumnDef<LeaveWithEmployee>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -47,26 +86,21 @@ export const columns: ColumnDef<Leave>[] = [
   },
   {
     accessorKey: 'createdAt',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Request Date
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
+    header: () => <div>Request Date</div>,
     cell: ({ row }) => {
       const date = row.original.createdAt;
 
       return <div>{format(new Date(date), 'MM/dd/yyyy')}</div>;
     },
+    filterFn: 'fuzzy',
+    sortingFn: fuzzySort,
   },
+
   {
     accessorKey: 'employee_name',
     header: () => <div>Employee</div>,
+    filterFn: 'fuzzy',
+    sortingFn: fuzzySort,
     cell: ({ row }) => {
       const name = row.original.employee.name;
 
@@ -76,6 +110,8 @@ export const columns: ColumnDef<Leave>[] = [
   {
     accessorKey: 'type',
     header: () => <div>Leave type</div>,
+    filterFn: 'fuzzy',
+    sortingFn: fuzzySort,
     cell: ({ row }) => <div className='capitalize'>{row.getValue('type')}</div>,
   },
   {
@@ -84,7 +120,7 @@ export const columns: ColumnDef<Leave>[] = [
     cell: ({ row }) => {
       const startDate = row.original.startDate;
 
-      return <div>{format(new Date(startDate), 'MM/dd/yyyy')}</div>;
+      return <div>{format(new Date(startDate || ''), 'MM/dd/yyyy')}</div>;
     },
   },
   {
@@ -93,7 +129,7 @@ export const columns: ColumnDef<Leave>[] = [
     cell: ({ row }) => {
       const endDate = row.original.endDate;
 
-      return <div>{format(new Date(endDate), 'MM/dd/yyyy')}</div>;
+      return <div>{format(new Date(endDate || ''), 'MM/dd/yyyy')}</div>;
     },
   },
   {
@@ -123,17 +159,9 @@ export const columns: ColumnDef<Leave>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-
       const leave = row.original;
 
-      const handleDelete = async () => {
-        // removeEmployeeFromDepartment({
-        //   employeeId: employee.id,
-        //   departmentId: employee.departmentId as string,
-        // });
-        // refetch();
-        // router.refresh();
-      };
+      const handleDelete = async () => {};
 
       return (
         <DropdownMenu>

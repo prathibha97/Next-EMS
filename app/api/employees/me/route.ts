@@ -18,6 +18,7 @@ export async function GET(req: Request) {
         Department: true,
         Attendance: true,
         leaveBalance: true,
+        Leave: true
       },
     });
     return NextResponse.json(employee);

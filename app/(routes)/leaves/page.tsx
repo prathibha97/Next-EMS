@@ -47,13 +47,14 @@ import {
   LeaveFormValues,
 } from '@/lib/validation/leave-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Leave } from '@prisma/client';
+import { Employee, Leave, LeaveBalance } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
 
-interface pageProps {}
-
-const page: FC<pageProps> = ({}) => {
+type EmployeeWithLeaveBalance = Employee & {
+  leaveBalance: LeaveBalance
+}
+const page = () => {
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
   const [selectedLeaveType, setSelectedLeaveType] = useState('');
@@ -61,13 +62,17 @@ const page: FC<pageProps> = ({}) => {
   const [isLoading, setIsLoading] = useState(false);
   const { startUpload } = useUploadThing('pdfUploader');
 
-  const { data: currentEmployee } = useGetLoggedInEmployeeQuery();
+  const { data: currentEmployeeData } = useGetLoggedInEmployeeQuery();
+
+  
+  const [leaves, setLeaves] = useState<Leave[]>([]);
+  const [currentEmployee, setCurrentEmployee] =
+    useState<EmployeeWithLeaveBalance>({});
 
   const employeeId = currentEmployee?.id || '';
-  const { data: leavesData, refetch: refetchLeaves } =
-    useGetLeavesByEmployeeIdQuery({ employeeId });
 
-  const [leaves, setLeaves] = useState<Leave[]>([]);
+  const { data: leavesData, refetch: refetchLeaves } =
+  useGetLeavesByEmployeeIdQuery({ employeeId });
 
   const [
     createLeaveRequest,
@@ -83,6 +88,12 @@ const page: FC<pageProps> = ({}) => {
       setLeaves(leavesData);
     }
   }, [leavesData]);
+
+  useEffect(() => {
+    if (currentEmployeeData) {
+      setCurrentEmployee(currentEmployeeData);
+    }
+  }, [currentEmployeeData]);
 
   useEffect(() => {
     refetchLeaves();
@@ -176,6 +187,7 @@ const page: FC<pageProps> = ({}) => {
       setIsLoading(false);
       toast({
         title: 'Error',
+        // @ts-ignore
         description: leaveRequeestError?.data || 'Something went wrong',
         variant: 'destructive',
       });

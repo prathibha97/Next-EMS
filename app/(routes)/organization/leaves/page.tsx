@@ -8,7 +8,13 @@ const LeavesPage = async () => {
   const leaves = await getAllLeaveRequests();
   return (
     <div>
-      <LeavesDataTable columns={columns} data={leaves} />
+      <LeavesDataTable
+      // @ts-ignore
+        columns={columns}
+        data={leaves}
+        searchFilter='employee_name'
+        placeholder='Date'
+      />
     </div>
   );
 };

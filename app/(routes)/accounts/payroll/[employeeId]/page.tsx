@@ -10,6 +10,9 @@ import SalaryAdvance from './components/salary-advance';
 import { SalaryAdvanceDataTable } from './components/advance-datagrid';
 import { SalaryAdvanceColumns } from './components/advance-column';
 import { salaryAdvanceData } from '@/constants/sample/salary-advance';
+import { LoanDataTable } from './components/loan-datatable';
+import { Loancolumns } from './components/loan-columns';
+import { loanData } from '@/constants/sample/loan-data';
 
 interface PayrollPageProps {
   params: {
@@ -55,7 +58,8 @@ const PayrollPage: FC<PayrollPageProps> = async ({ params }) => {
 
         </TabsContent>
         <TabsContent value='loan' className='mt-5'>
-          Add loan here.
+          Add loan here
+          <LoanDataTable columns={Loancolumns} data={loanData}/>
         </TabsContent>
         <TabsContent value='analytics' className='mt-5'>
           Add charts here.

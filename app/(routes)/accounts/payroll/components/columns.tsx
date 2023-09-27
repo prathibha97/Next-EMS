@@ -81,7 +81,7 @@ export const columns: ColumnDef<Employee>[] = [
   },
   {
     accessorKey: "workMobile",
-    header: () => <div className="text-left -ml-3">Contact Number</div>,
+    header: () => <div className="text-left -ml-3">Contact Number </div>,
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("workMobile")}</div>
     ),

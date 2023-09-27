@@ -38,8 +38,8 @@ const PayrollsPage = async () => {
                           <Image
                             src="/icons/department/all-icon.png"
                             alt="Image 1"
-                            width={35}
-                            height={35}
+                            width={25}
+                            height={25}
                           />
                         </div>
                         <div className="my-auto">All</div>
@@ -112,11 +112,11 @@ const PayrollsPage = async () => {
                             height={35}
                           />
                         </div>
-                        <div className="my-auto">Dep 4</div>
+                        <div className="my-auto">Marketing</div>
                       </div>
                     </TabsTrigger>
 
-                    <TabsTrigger
+                    {/* <TabsTrigger
                       className="w-28 h-16 data-[state=active]:border-b-4 border-[#2ebdaa] bg-white p-2 m-4"
                       value="Department_5"
                     >
@@ -131,81 +131,77 @@ const PayrollsPage = async () => {
                         </div>
                         <div className="my-auto">Dep 5</div>
                       </div>
-                    </TabsTrigger>
+                    </TabsTrigger> */}
                   </TabsList>
                 </div>
               </div>
 
               <TabsContent value="all">
-                <div>ALL Section Contents here</div>
+                
                 {/* --------------------------------------------------------ALL SECTION CONTENTS HERE------------------------------------------------------------- */}
-              </TabsContent>
-              <TabsContent value="software">
-                {/* --------------------------------------------------------SOFTWARE SECTION CONTENTS HERE------------------------------------------------------------- */}
-
                 <div>
-                  <div className="eweweeeeeeeeeeeeeeeeeeeeeeeeeeeee">
-                    <div className="text-lg font-semibold">Recent Months</div>
+                  <div >
+                    <div className="text-lg font-semibold mb-4">Recent Months</div>
                     <div>
                       <div>
                         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                          <Card className="bg-[#fbbc08] drop-shadow-none">
+                          <Card className="drop-shadow-lg">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                              <CardTitle className="text-sm font-semibold text-slate-50">
+                              <CardTitle className="text-sm font-semibold text-black">
                                 August
                               </CardTitle>
                             </CardHeader>
                             <CardContent>
-                              <div className="text-2xl font-bold text-slate-50">
-                                12500.00
+                              <div className="text-2xl font-bold text-black">
+                                7500.00
                               </div>
-                              <p className="text-xs text-muted-foreground text-slate-50">
+                              <p className="text-xs text-muted-foreground text-black">
                                 +20.1% from last month
                               </p>
                             </CardContent>
                           </Card>
 
-                          <Card className="bg-[#4286f4] drop-shadow-none">
+                          <Card className=" drop-shadow-lg">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                              <CardTitle className="text-sm font-semibold text-slate-50">
+                              <CardTitle className="text-sm font-semibold text-black">
                                 July
                               </CardTitle>
                             </CardHeader>
                             <CardContent>
-                              <div className="text-2xl font-bold text-slate-50">
-                                10700.00
+                              <div className="text-2xl font-bold text-black">
+                                8900.00
                               </div>
-                              <p className="text-xs text-muted-foreground text-slate-50">
+                              <p className="text-xs text-muted-foreground text-black">
                                 +180.1% from last month
                               </p>
                             </CardContent>
                           </Card>
-                          <Card className="bg-[#eb4235] drop-shadow-none">
+                          <Card className=" drop-shadow-lg">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                              <CardTitle className="text-sm font-semibold text-slate-50">
+                              <CardTitle className="text-sm font-semibold text-black">
                                 June
                               </CardTitle>
                             </CardHeader>
                             <CardContent>
-                              <div className="text-2xl font-bold text-slate-50">
-                                14270.00
+                              <div className="text-2xl font-bold text-black">
+                                5600.00
                               </div>
-                              <p className="text-xs text-muted-foreground text-slate-50">
+                              <p className="text-xs text-muted-foreground text-black">
                                 +19% from last month
                               </p>
                             </CardContent>
                           </Card>
-                          <Card className="bg-[#34a953] drop-shadow-none">
+                          <Card className="drop-shadow-lg">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                              <CardTitle className="text-sm font-semibold text-slate-50">
+                              <CardTitle className="text-sm font-semibold text-black">
                                 May
                               </CardTitle>
                             </CardHeader>
                             <CardContent>
-                              <div className="text-2xl font-bold text-slate-50">
-                                11400.00
+                              <div className="text-2xl font-bold text-black">
+                               17000.00
                               </div>
-                              <p className="text-xs text-muted-foreground text-slate-50">
+                              <p className="text-xs text-muted-foreground text-black">
                                 +201 since last hour
                               </p>
                             </CardContent>
@@ -227,9 +223,9 @@ const PayrollsPage = async () => {
                         </div>
 
                         <TabsContent value="account">
-                          <div className="grid grid-cols-5 gap-6 mt-8">
+                          <div >
                             {/* grid column1 starts here */}
-                            <div className="bg-[#fff] col-span-2 rounded-lg p-4">
+                            <div className="bg-[#fff]  rounded-lg p-4">
                               <div className="text-sm font-semibold my-2 text-center">
                                 Table of ETF and EPF Contribution History
                               </div>
@@ -245,7 +241,7 @@ const PayrollsPage = async () => {
                             {/* grid column1 ends here */}
 
                             {/* grid column2 starts here */}
-                            <div className="bg-[#fff] col-span-3 rounded-lg p-2">
+                            <div className="bg-[#fff]  rounded-lg p-2 mt-12">
                               <div className="text-sm font-semibold my-2 text-center">
                                 ETF & EPF Contribution Graphical Visualization
                               </div>
@@ -256,9 +252,9 @@ const PayrollsPage = async () => {
                           </div>
                         </TabsContent>
                         <TabsContent value="password">
-                          <div className="grid grid-cols-5 gap-6 mt-8">
+                          <div >
                             {/* grid column1 starts here */}
-                            <div className="bg-[#fff] col-span-2 rounded-lg  p-4">
+                            <div className="bg-[#fff]  rounded-lg  p-4">
                               <div className="text-sm font-semibold my-2 text-center">
                                 Table of ETF and EPF Contribution History
                               </div>
@@ -274,7 +270,156 @@ const PayrollsPage = async () => {
                             {/* grid column1 ends here */}
 
                             {/* grid column2 starts here */}
-                            <div className="bg-[#fff] col-span-3 rounded-lg  p-2">
+                            <div className="bg-[#fff] rounded-lg  p-2 mt-12">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                ETF & EPF Contribution Graphical Visualization
+                              </div>
+                              <div>
+                                <EPFETFChart />
+                              </div>
+                            </div>
+                          </div>
+                        </TabsContent>
+                      </Tabs>
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+              <TabsContent value="software">
+                {/* --------------------------------------------------------SOFTWARE SECTION CONTENTS HERE------------------------------------------------------------- */}
+
+                <div>
+                  <div >
+                    <div className="text-lg font-semibold mb-4">Recent Months</div>
+                    <div>
+                      <div>
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                          <Card className="drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                August
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                                12500.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +20.1% from last month
+                              </p>
+                            </CardContent>
+                          </Card>
+
+                          <Card className=" drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                July
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                                10700.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +180.1% from last month
+                              </p>
+                            </CardContent>
+                          </Card>
+                          <Card className=" drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                June
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                                14270.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +19% from last month
+                              </p>
+                            </CardContent>
+                          </Card>
+                          <Card className="drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                May
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                                11400.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +201 since last hour
+                              </p>
+                            </CardContent>
+                          </Card>
+                        </div>
+                      </div>
+                    </div>
+                    {/* <div className="grid grid-cols-2 gap-4 mt-8"> */}
+                    <div className="bg-slate-200 mt-10 p-4 drop-shadow-md rounded-lg ">
+                      <div className="text-xl font-semibold text-center mb-4">
+                        ETF & EPF Contribution
+                      </div>
+                      <Tabs defaultValue="account">
+                        <div className="text-center">
+                          <TabsList>
+                            <TabsTrigger value="account">Monthly</TabsTrigger>
+                            <TabsTrigger value="password">Yearly</TabsTrigger>
+                          </TabsList>
+                        </div>
+
+                        <TabsContent value="account">
+                          <div >
+                            {/* grid column1 starts here */}
+                            <div className="bg-[#fff]  rounded-lg p-4">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                Table of ETF and EPF Contribution History
+                              </div>
+                              <div>
+                                <DataTable
+                                  columns={EPFEPTFColumns}
+                                  data={monthlyEpfEtfData}
+                                  placeholder="Month"
+                                  searchFilter="month"
+                                />
+                              </div>
+                            </div>
+                            {/* grid column1 ends here */}
+
+                            {/* grid column2 starts here */}
+                            <div className="bg-[#fff]  rounded-lg p-2 mt-12">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                ETF & EPF Contribution Graphical Visualization
+                              </div>
+                              <div>
+                                <EPFETFChart />
+                              </div>
+                            </div>
+                          </div>
+                        </TabsContent>
+                        <TabsContent value="password">
+                          <div >
+                            {/* grid column1 starts here */}
+                            <div className="bg-[#fff]  rounded-lg  p-4">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                Table of ETF and EPF Contribution History
+                              </div>
+                              <div>
+                                <DataTable
+                                  columns={EPFEPTFColumns}
+                                  data={monthlyEpfEtfData}
+                                  placeholder="Month"
+                                  searchFilter="month"
+                                />
+                              </div>
+                            </div>
+                            {/* grid column1 ends here */}
+
+                            {/* grid column2 starts here */}
+                            <div className="bg-[#fff] rounded-lg  p-2 mt-12">
                               <div className="text-sm font-semibold my-2 text-center">
                                 ETF & EPF Contribution Graphical Visualization
                               </div>
@@ -291,15 +436,450 @@ const PayrollsPage = async () => {
               </TabsContent>
               <TabsContent value="hr">
                 {/* --------------------------------------------------------HR SECTION CONTENTS HERE--------------------------------------------------------------- */}
+                <div>
+                  <div >
+                    <div className="text-lg font-semibold mb-4">Recent Months</div>
+                    <div>
+                      <div>
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                          <Card className="drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                August
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                                9900.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +20.1% from last month
+                              </p>
+                            </CardContent>
+                          </Card>
+
+                          <Card className=" drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                July
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                              5600.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +180.1% from last month
+                              </p>
+                            </CardContent>
+                          </Card>
+                          <Card className=" drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                June
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                                11000.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +19% from last month
+                              </p>
+                            </CardContent>
+                          </Card>
+                          <Card className="drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                May
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                                23000.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +201 since last hour
+                              </p>
+                            </CardContent>
+                          </Card>
+                        </div>
+                      </div>
+                    </div>
+                    {/* <div className="grid grid-cols-2 gap-4 mt-8"> */}
+                    <div className="bg-slate-200 mt-10 p-4 drop-shadow-md rounded-lg ">
+                      <div className="text-xl font-semibold text-center mb-4">
+                        ETF & EPF Contribution
+                      </div>
+                      <Tabs defaultValue="account">
+                        <div className="text-center">
+                          <TabsList>
+                            <TabsTrigger value="account">Monthly</TabsTrigger>
+                            <TabsTrigger value="password">Yearly</TabsTrigger>
+                          </TabsList>
+                        </div>
+
+                        <TabsContent value="account">
+                          <div >
+                            {/* grid column1 starts here */}
+                            <div className="bg-[#fff]  rounded-lg p-4">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                Table of ETF and EPF Contribution History
+                              </div>
+                              <div>
+                                <DataTable
+                                  columns={EPFEPTFColumns}
+                                  data={monthlyEpfEtfData}
+                                  placeholder="Month"
+                                  searchFilter="month"
+                                />
+                              </div>
+                            </div>
+                            {/* grid column1 ends here */}
+
+                            {/* grid column2 starts here */}
+                            <div className="bg-[#fff]  rounded-lg p-2 mt-12">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                ETF & EPF Contribution Graphical Visualization
+                              </div>
+                              <div>
+                                <EPFETFChart />
+                              </div>
+                            </div>
+                          </div>
+                        </TabsContent>
+                        <TabsContent value="password">
+                          <div >
+                            {/* grid column1 starts here */}
+                            <div className="bg-[#fff]  rounded-lg  p-4">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                Table of ETF and EPF Contribution History
+                              </div>
+                              <div>
+                                <DataTable
+                                  columns={EPFEPTFColumns}
+                                  data={monthlyEpfEtfData}
+                                  placeholder="Month"
+                                  searchFilter="month"
+                                />
+                              </div>
+                            </div>
+                            {/* grid column1 ends here */}
+
+                            {/* grid column2 starts here */}
+                            <div className="bg-[#fff] rounded-lg  p-2 mt-12">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                ETF & EPF Contribution Graphical Visualization
+                              </div>
+                              <div>
+                                <EPFETFChart />
+                              </div>
+                            </div>
+                          </div>
+                        </TabsContent>
+                      </Tabs>
+                    </div>
+                  </div>
+                </div>
                 <div>HR Section Contents here</div>
               </TabsContent>
               <TabsContent value="Department_3">
                 {/* --------------------------------------------------------DIGITAL ARTIST SECTION CONTENTS HERE----------------------------------------------------*/}
+                <div>
+                  <div >
+                    <div className="text-lg font-semibold mb-4">Recent Months</div>
+                    <div>
+                      <div>
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                          <Card className="drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                August
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                                12500.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +20.1% from last month
+                              </p>
+                            </CardContent>
+                          </Card>
+
+                          <Card className=" drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                July
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                                10700.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +180.1% from last month
+                              </p>
+                            </CardContent>
+                          </Card>
+                          <Card className=" drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                June
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                                14270.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +19% from last month
+                              </p>
+                            </CardContent>
+                          </Card>
+                          <Card className="drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                May
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                                11400.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +201 since last hour
+                              </p>
+                            </CardContent>
+                          </Card>
+                        </div>
+                      </div>
+                    </div>
+                    {/* <div className="grid grid-cols-2 gap-4 mt-8"> */}
+                    <div className="bg-slate-200 mt-10 p-4 drop-shadow-md rounded-lg ">
+                      <div className="text-xl font-semibold text-center mb-4">
+                        ETF & EPF Contribution
+                      </div>
+                      <Tabs defaultValue="account">
+                        <div className="text-center">
+                          <TabsList>
+                            <TabsTrigger value="account">Monthly</TabsTrigger>
+                            <TabsTrigger value="password">Yearly</TabsTrigger>
+                          </TabsList>
+                        </div>
+
+                        <TabsContent value="account">
+                          <div >
+                            {/* grid column1 starts here */}
+                            <div className="bg-[#fff]  rounded-lg p-4">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                Table of ETF and EPF Contribution History
+                              </div>
+                              <div>
+                                <DataTable
+                                  columns={EPFEPTFColumns}
+                                  data={monthlyEpfEtfData}
+                                  placeholder="Month"
+                                  searchFilter="month"
+                                />
+                              </div>
+                            </div>
+                            {/* grid column1 ends here */}
+
+                            {/* grid column2 starts here */}
+                            <div className="bg-[#fff]  rounded-lg p-2 mt-12">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                ETF & EPF Contribution Graphical Visualization
+                              </div>
+                              <div>
+                                <EPFETFChart />
+                              </div>
+                            </div>
+                          </div>
+                        </TabsContent>
+                        <TabsContent value="password">
+                          <div >
+                            {/* grid column1 starts here */}
+                            <div className="bg-[#fff]  rounded-lg  p-4">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                Table of ETF and EPF Contribution History
+                              </div>
+                              <div>
+                                <DataTable
+                                  columns={EPFEPTFColumns}
+                                  data={monthlyEpfEtfData}
+                                  placeholder="Month"
+                                  searchFilter="month"
+                                />
+                              </div>
+                            </div>
+                            {/* grid column1 ends here */}
+
+                            {/* grid column2 starts here */}
+                            <div className="bg-[#fff] rounded-lg  p-2 mt-12">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                ETF & EPF Contribution Graphical Visualization
+                              </div>
+                              <div>
+                                <EPFETFChart />
+                              </div>
+                            </div>
+                          </div>
+                        </TabsContent>
+                      </Tabs>
+                    </div>
+                  </div>
+                </div>
                 <div>Digital Artist contents here</div>
               </TabsContent>
               <TabsContent value="Department_4">
                 {/* --------------------------------------------------------DEPARTMENT 4 SECTION CONTENTS HERE------------------------------------------------------ */}
-                <div>Department 4</div>
+                <div>
+                  <div >
+                    <div className="text-lg font-semibold mb-4">Recent Months</div>
+                    <div>
+                      <div>
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                          <Card className="drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                August
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                                12500.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +20.1% from last month
+                              </p>
+                            </CardContent>
+                          </Card>
+
+                          <Card className=" drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                July
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                                10700.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +180.1% from last month
+                              </p>
+                            </CardContent>
+                          </Card>
+                          <Card className=" drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                June
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                                14270.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +19% from last month
+                              </p>
+                            </CardContent>
+                          </Card>
+                          <Card className="drop-shadow-lg">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                              <CardTitle className="text-sm font-semibold text-black">
+                                May
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="text-2xl font-bold text-black">
+                                11400.00
+                              </div>
+                              <p className="text-xs text-muted-foreground text-black">
+                                +201 since last hour
+                              </p>
+                            </CardContent>
+                          </Card>
+                        </div>
+                      </div>
+                    </div>
+                    {/* <div className="grid grid-cols-2 gap-4 mt-8"> */}
+                    <div className="bg-slate-200 mt-10 p-4 drop-shadow-md rounded-lg ">
+                      <div className="text-xl font-semibold text-center mb-4">
+                        ETF & EPF Contribution
+                      </div>
+                      <Tabs defaultValue="account">
+                        <div className="text-center">
+                          <TabsList>
+                            <TabsTrigger value="account">Monthly</TabsTrigger>
+                            <TabsTrigger value="password">Yearly</TabsTrigger>
+                          </TabsList>
+                        </div>
+
+                        <TabsContent value="account">
+                          <div >
+                            {/* grid column1 starts here */}
+                            <div className="bg-[#fff]  rounded-lg p-4">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                Table of ETF and EPF Contribution History
+                              </div>
+                              <div>
+                                <DataTable
+                                  columns={EPFEPTFColumns}
+                                  data={monthlyEpfEtfData}
+                                  placeholder="Month"
+                                  searchFilter="month"
+                                />
+                              </div>
+                            </div>
+                            {/* grid column1 ends here */}
+
+                            {/* grid column2 starts here */}
+                            <div className="bg-[#fff]  rounded-lg p-2 mt-12">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                ETF & EPF Contribution Graphical Visualization
+                              </div>
+                              <div>
+                                <EPFETFChart />
+                              </div>
+                            </div>
+                          </div>
+                        </TabsContent>
+                        <TabsContent value="password">
+                          <div >
+                            {/* grid column1 starts here */}
+                            <div className="bg-[#fff]  rounded-lg  p-4">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                Table of ETF and EPF Contribution History
+                              </div>
+                              <div>
+                                <DataTable
+                                  columns={EPFEPTFColumns}
+                                  data={monthlyEpfEtfData}
+                                  placeholder="Month"
+                                  searchFilter="month"
+                                />
+                              </div>
+                            </div>
+                            {/* grid column1 ends here */}
+
+                            {/* grid column2 starts here */}
+                            <div className="bg-[#fff] rounded-lg  p-2 mt-12">
+                              <div className="text-sm font-semibold my-2 text-center">
+                                ETF & EPF Contribution Graphical Visualization
+                              </div>
+                              <div>
+                                <EPFETFChart />
+                              </div>
+                            </div>
+                          </div>
+                        </TabsContent>
+                      </Tabs>
+                    </div>
+                  </div>
+                </div>
+                <div>Digital Marketing</div>
               </TabsContent>
               <TabsContent value="Department_5">
                 {/* --------------------------------------------------------DEPARTMENT 5 SECTION CONTENTS HERE------------------------------------------------------ */}

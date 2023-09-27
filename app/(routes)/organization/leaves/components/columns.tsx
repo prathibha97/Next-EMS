@@ -1,8 +1,23 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { AlertOctagon, BadgeCheck, Check, MoreHorizontal } from 'lucide-react';
+import { BadgeCheck, Check, MoreHorizontal } from 'lucide-react';
 
+import {
+  useRemoveLeaveRequestMutation,
+  useUpdateLeaveRequestMutation,
+} from '@/app/redux/services/leaveApi';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -21,9 +36,9 @@ import {
   rankItem,
 } from '@tanstack/match-sorter-utils';
 import { FilterFn, SortingFn, sortingFns } from '@tanstack/react-table';
-import { useRemoveLeaveRequestMutation } from '@/app/redux/services/leaveApi';
-import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
+import DeleteConfirmationDialog from '@/components/delete-confirmation-dialog';
 
 declare module '@tanstack/table-core' {
   interface FilterFns {
@@ -121,7 +136,7 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
   },
   {
     accessorKey: 'reason',
-    header: () => <div className='text-right'>Reason</div>,
+    header: () => <div>Reason</div>,
     cell: ({ row }) => <div>{row.getValue('reason')}</div>,
   },
   {
@@ -142,6 +157,11 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
       return <div className={textColor}>{row.getValue('status')}</div>;
     },
   },
+  // {
+  //   accessorKey: 'remarks',
+  //   header: () => <div>Remarks</div>,
+  //   cell: ({ row }) => <div>{row.getValue('remarks')}</div>,
+  // },
   {
     id: 'actions',
     enableHiding: false,
@@ -149,6 +169,25 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
       const router = useRouter();
       const leave = row.original;
       const [removeLeaveRequest] = useRemoveLeaveRequestMutation();
+      const [updateLeaveRequest] = useUpdateLeaveRequestMutation();
+
+      const handleApprove = async () => {
+        await updateLeaveRequest({
+          leaveId: row.original.id,
+          body: {
+            status: 'Approved',
+          },
+        });
+      };
+
+      const handleReject = async () => {
+        await updateLeaveRequest({
+          leaveId: row.original.id,
+          body: {
+            status: 'Rejected',
+          },
+        });
+      };
 
       const handleDelete = async () => {
         await removeLeaveRequest({ leaveId: row.original.id });
@@ -165,16 +204,15 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => {}}>
+            <DropdownMenuItem className='text-green-500' onClick={handleApprove}>
               Approve leave
-              <Check className='ml-auto text-green-500' />
             </DropdownMenuItem>
             {leave.medical && (
               <DropdownMenuItem onClick={() => {}}>
                 <Button
                   variant={'outline'}
                   className={cn(
-                    'w-[280px] justify-start text-left font-normal',
+                    'w-fit justify-start text-left font-normal',
                     !leave?.medical && 'text-muted-foreground'
                   )}
                 >
@@ -222,9 +260,8 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
               </DropdownMenuItem>
             )}
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => {}}>
-              Reject leave
-              <AlertOctagon className='ml-auto text-red-500' />
+            <DropdownMenuItem asChild>
+              <DeleteConfirmationDialog label='Reject leave' onClick={handleReject}/>
             </DropdownMenuItem>
             <DropdownMenuItem className='text-red-500' onClick={handleDelete}>
               Remove leave request

@@ -29,8 +29,8 @@ export const leaveApi = apiSlice.injectEndpoints({
     }),
     removeLeaveRequest: builder.mutation<Leave, { leaveId: string }>({
       query: ({ leaveId }) => ({
-        url:`/leaves/${leaveId}`,
-        method: 'DELETE'
+        url: `/leaves/${leaveId}`,
+        method: 'DELETE',
       }),
     }),
   }),

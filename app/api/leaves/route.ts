@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma';
+import { getNumberOfDays } from '@/lib/utils';
 import { NextResponse } from 'next/server';
 import { getAuthSession } from '../auth/[...nextauth]/options';
-import { differenceInDays, parseISO } from 'date-fns';
 
 export async function POST(req: Request) {
   const session = await getAuthSession();
@@ -22,37 +22,28 @@ export async function POST(req: Request) {
       employeeId,
     } = body;
 
- const leaveBalance = await prisma.leaveBalance.findFirst({
-      where: { 
+    const leaveBalance = await prisma.leaveBalance.findFirst({
+      where: {
         employeeId: employeeId,
-       },
+      },
     });
 
-   if (!leaveBalance) {
-     return new Response('Leave balance not found', { status: 400 });
-   }
+    if (!leaveBalance) {
+      return new Response('Leave balance not found', { status: 400 });
+    }
 
-  //  @ts-ignore
-   const availableBalance = leaveBalance[type.toLowerCase()];
-   console.log('availableBalance', availableBalance);
+    //  @ts-ignore
+    const availableBalance = leaveBalance[type.toLowerCase()];
 
-   if (availableBalance === undefined) {
-     return new Response('Invalid leave type', { status: 400 });
-   }
+    if (availableBalance === undefined) {
+      return new Response('Invalid leave type', { status: 400 });
+    }
 
-   let requestedDuration = differenceInDays(
-     parseISO(endDate),
-     parseISO(startDate)
-   );
-   if (requestedDuration <= 0) {
-     requestedDuration = 1;
-   }
+    let requestedDuration = getNumberOfDays(startDate, endDate);
 
-
-
-   if (requestedDuration <= 0 || requestedDuration > availableBalance) {
-     return new Response('Insufficient leave balance', { status: 400 });
-   }
+    if (requestedDuration <= 0 || requestedDuration > availableBalance) {
+      return new Response('Insufficient leave balance', { status: 400 });
+    }
 
     const leave = await prisma.leave.create({
       data: {

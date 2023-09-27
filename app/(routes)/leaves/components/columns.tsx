@@ -6,6 +6,7 @@ import { ArrowUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Leave } from '@prisma/client';
 import { differenceInDays, format } from 'date-fns';
+import { getNumberOfDays } from '@/lib/utils';
 
 export const columns: ColumnDef<Leave>[] = [
   {
@@ -58,12 +59,7 @@ export const columns: ColumnDef<Leave>[] = [
       const startDate = new Date(leave.startDate || '');
       const endDate = new Date(leave.endDate || '');
 
-      let leaveDays = differenceInDays(endDate, startDate);
-
-      // If leave duration is less than a day, consider it as one day
-      if (leaveDays <= 0) {
-        leaveDays = 1;
-      }
+      const leaveDays = getNumberOfDays(startDate, endDate);
 
       return <div className='text-center'>{leaveDays}</div>;
     },

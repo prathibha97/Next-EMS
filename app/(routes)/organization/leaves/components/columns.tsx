@@ -1,23 +1,13 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { BadgeCheck, Check, MoreHorizontal } from 'lucide-react';
+import { BadgeCheck, MoreHorizontal } from 'lucide-react';
 
 import {
   useRemoveLeaveRequestMutation,
   useUpdateLeaveRequestMutation,
 } from '@/app/redux/services/leaveApi';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import DeleteConfirmationDialog from '@/components/delete-confirmation-dialog';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -38,7 +28,7 @@ import {
 import { FilterFn, SortingFn, sortingFns } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
-import DeleteConfirmationDialog from '@/components/delete-confirmation-dialog';
+import { useState } from 'react';
 
 declare module '@tanstack/table-core' {
   interface FilterFns {
@@ -168,8 +158,12 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
     cell: ({ row }) => {
       const router = useRouter();
       const leave = row.original;
+
+
       const [removeLeaveRequest] = useRemoveLeaveRequestMutation();
       const [updateLeaveRequest] = useUpdateLeaveRequestMutation();
+
+   
 
       const handleApprove = async () => {
         await updateLeaveRequest({
@@ -178,6 +172,7 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
             status: 'Approved',
           },
         });
+        router.refresh();
       };
 
       const handleReject = async () => {
@@ -185,8 +180,10 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
           leaveId: row.original.id,
           body: {
             status: 'Rejected',
+            remarks: '',
           },
         });
+        router.refresh();
       };
 
       const handleDelete = async () => {
@@ -204,7 +201,10 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem className='text-green-500' onClick={handleApprove}>
+            <DropdownMenuItem
+              className='text-green-500'
+              onClick={handleApprove}
+            >
               Approve leave
             </DropdownMenuItem>
             {leave.medical && (
@@ -261,7 +261,10 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
             )}
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <DeleteConfirmationDialog label='Reject leave' onClick={handleReject}/>
+              <DeleteConfirmationDialog
+                label='Reject leave'
+                onClick={handleReject}
+              />
             </DropdownMenuItem>
             <DropdownMenuItem className='text-red-500' onClick={handleDelete}>
               Remove leave request

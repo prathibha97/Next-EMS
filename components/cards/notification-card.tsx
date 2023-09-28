@@ -1,6 +1,4 @@
-'use client'
-import { BellRing, Check } from 'lucide-react';
-import { cn } from '@/lib/utils';
+'use client';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -10,35 +8,24 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
-import { useEffect, useState } from 'react';
-import { pusherClient } from '@/lib/pusher';
-
-const notifications = [
-  {
-    title: 'Your call has been confirmed.',
-    description: '1 hour ago',
-  },
-  {
-    title: 'You have a new message!',
-    description: '1 hour ago',
-  },
-  {
-    title: 'Your subscription is expiring soon!',
-    description: '2 hours ago',
-  },
-];
+import { cn } from '@/lib/utils';
+import { Notification } from '@prisma/client';
+import { formatDistance } from 'date-fns';
+import { BellRing, Check } from 'lucide-react';
 
 type CardProps = React.ComponentProps<typeof Card>;
-type Notification = {
-  title: string;
-  description: string;
+
+interface NotificationCardProps {
+  notifications: Notification[];
+  className?: string;
 }
 
-export function NotificationCard({ className, ...props }: CardProps) {
-
-
+export function NotificationCard({
+  className,
+  notifications,
+  ...props
+}: NotificationCardProps) {
   return (
     <Card className={cn('w-fit', className)} {...props}>
       <CardHeader>
@@ -68,10 +55,12 @@ export function NotificationCard({ className, ...props }: CardProps) {
             <span className='w-2 h-2 bg-sky-500 rounded-full' />
             <div className='flex-1 space-y-1'>
               <p className='text-sm font-medium leading-none'>
-                {notification.title}
+                {notification.message}
               </p>
               <p className='text-sm text-muted-foreground'>
-                {notification.description}
+                {formatDistance(new Date(notification.createdAt), new Date(), {
+                  addSuffix: true,
+                })}
               </p>
             </div>
           </div>

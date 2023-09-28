@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+'use client';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,7 +10,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
+import { FC } from 'react';
+// import { Input } from './ui/input';
 import { Label } from './ui/label';
 
 interface DeleteConfirmationDialogProps {
@@ -22,6 +23,7 @@ const DeleteConfirmationDialog: FC<DeleteConfirmationDialogProps> = ({
   onClick,
   label,
 }) => {
+  // const [remark, setRemark] = useState('');
   return (
     <AlertDialog>
       <AlertDialogTrigger>
@@ -36,6 +38,17 @@ const DeleteConfirmationDialog: FC<DeleteConfirmationDialogProps> = ({
             This action cannot be undone. This will permanently delete data from
             our servers.
           </AlertDialogDescription>
+          {/* {label === 'Reject leave' && (
+              <Input
+                className='w-full'
+                placeholder='Add remark...'
+                value={remark}
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  setRemark(e.target.value);
+                }}
+              />
+            )} */}
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>

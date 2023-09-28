@@ -66,7 +66,6 @@ export function NotificationButton() {
       (notification) => !notification.isRead
     ).length;
 
-    console.log(unreadCount);
 
     if (!employee) {
       return <div>Loading...</div>;
@@ -79,13 +78,17 @@ export function NotificationButton() {
         <Button variant='outline' className='relative'>
           <BellRing />
           {unreadCount > 0 && (
-              <span className='animate-ping absolute h-3 w-3 top-0 right-0 rounded-full bg-sky-400 opacity-75'></span>
-              
+            <span className='animate-ping absolute h-3 w-3 top-0 right-0 rounded-full bg-sky-400 opacity-75'></span>
           )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className='w-[410px]'>
-        <NotificationCard notifications={notifications} />
+        <NotificationCard
+          notifications={notifications}
+          employee={employee}
+          unreadCount={unreadCount}
+          setNotifications={setNotifications}
+        />
       </PopoverContent>
     </Popover>
   );

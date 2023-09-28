@@ -1,4 +1,8 @@
 'use client';
+import {
+  useClearNotificationsMutation,
+  useMarkAllAsReadMutation,
+} from '@/app/redux/services/notificationApi';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -10,22 +14,48 @@ import {
 } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
-import { Notification } from '@prisma/client';
+import { Employee, Notification } from '@prisma/client';
 import { formatDistance } from 'date-fns';
-import { BellRing, Check } from 'lucide-react';
-
-type CardProps = React.ComponentProps<typeof Card>;
+import { BellRing, Check, Loader2 } from 'lucide-react';
+import { Dispatch, SetStateAction } from 'react';
+import ActionButton from '../buttons/action-button';
+import { ScrollArea } from '../ui/scroll-area';
 
 interface NotificationCardProps {
   notifications: Notification[];
+  employee: Employee;
   className?: string;
+  unreadCount: number;
+  setNotifications: Dispatch<SetStateAction<Notification[]>>;
 }
 
 export function NotificationCard({
   className,
   notifications,
+  employee,
+  unreadCount,
+  setNotifications,
   ...props
 }: NotificationCardProps) {
+  const employeeId = employee.id;
+  const [markAllAsRead, { isLoading: isMarkAsReadLoading }] =
+    useMarkAllAsReadMutation();
+  const [clearNotifications, { isLoading: isClearNotificationsLoading }] =
+    useClearNotificationsMutation();
+  const hanldeMarkAsRead = async () => {
+    await markAllAsRead({ employeeId });
+    setNotifications((prevNotifications) => {
+      return prevNotifications.map((notification) => {
+        return { ...notification, isRead: true };
+      });
+    });
+  };
+
+  const hanldeClearNotifications = async () => {
+    await clearNotifications({ employeeId });
+    setNotifications([]);
+  };
+
   return (
     <Card className={cn('w-fit', className)} {...props}>
       <CardHeader>
@@ -47,30 +77,61 @@ export function NotificationCard({
           </div>
           <Switch />
         </div>
-        {notifications.map((notification, index) => (
-          <div
-            key={index}
-            className='flex items-start space-x-4 pb-4 last:pb-0'
-          >
-            <span className='w-2 h-2 bg-sky-500 rounded-full' />
-            <div className='flex-1 space-y-1'>
-              <p className='text-sm font-medium leading-none'>
-                {notification.message}
-              </p>
-              <p className='text-sm text-muted-foreground'>
-                {formatDistance(new Date(notification.createdAt), new Date(), {
-                  addSuffix: true,
-                })}
-              </p>
+        <ScrollArea>
+          {notifications.map((notification) => (
+            <div
+              className='flex items-start bg-gray-100 dark:bg-gray-800/30 rounded-md p-2 space-x-4 pb-2 last:pb-1 mt-2 first:mt-0'
+              key={notification.id}
+            >
+              {notification.isRead === false && (
+                <span className='w-2 h-2 bg-sky-500 rounded-full' />
+              )}
+              <div className='flex-1 space-y-1'>
+                <p
+                  className={cn(
+                    'text-sm font-medium leading-none',
+                    notification.isRead === true && 'font-light'
+                  )}
+                >
+                  {notification.message}
+                </p>
+                {notification.createdAt && (
+                  <p className='text-sm text-muted-foreground'>
+                    {formatDistance(
+                      new Date(notification.createdAt),
+                      new Date(),
+                      {
+                        addSuffix: true,
+                      }
+                    )}
+                  </p>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </ScrollArea>
       </CardContent>
 
       <CardFooter>
-        <Button className='w-full'>
-          <Check className='h-4 w-4 mr-2' /> Mark all as read
-        </Button>
+        {unreadCount > 0 && (
+          <ActionButton
+            className='w-full'
+            onClick={hanldeMarkAsRead}
+            label=' Mark all as read'
+            isLoading={isMarkAsReadLoading}
+          />
+        )}
+
+        {unreadCount === 0 && notifications.length > 0 && (
+          <Button className='w-full' onClick={hanldeClearNotifications}>
+            {isClearNotificationsLoading ? (
+              <Loader2 className='h-4 w-4 mr-2 animate-spin' />
+            ) : (
+              <Check className='h-4 w-4 mr-2' />
+            )}
+            Clear notifications
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

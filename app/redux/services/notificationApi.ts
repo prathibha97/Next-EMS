@@ -10,19 +10,15 @@ export const notificationApi = apiSlice.injectEndpoints({
       query: ({ employeeId }) => `/notifications/employee/${employeeId}`,
     }),
 
-    readNotification: builder.mutation<
-      Notification,
-      { notificationId: string | undefined; body: Partial<Notification> }
-    >({
-      query: ({ notificationId, body }) => ({
-        url: `/notifications/${notificationId}`,
+    markAllAsRead: builder.mutation<Notification, { employeeId: string }>({
+      query: ({ employeeId }) => ({
+        url: `/notifications/employee/${employeeId}`,
         method: 'PUT',
-        body,
       }),
     }),
     clearNotifications: builder.mutation<Notification, { employeeId: string }>({
       query: ({ employeeId }) => ({
-        url: `/notifications/${employeeId}`,
+        url: `/notifications/employee/${employeeId}`,
         method: 'DELETE',
       }),
     }),
@@ -31,6 +27,6 @@ export const notificationApi = apiSlice.injectEndpoints({
 
 export const {
   useGetNotificationsByEmployeeIdQuery,
-  useReadNotificationMutation,
+  useMarkAllAsReadMutation,
   useClearNotificationsMutation,
 } = notificationApi;

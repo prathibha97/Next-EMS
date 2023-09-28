@@ -155,12 +155,11 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
         </NavigationMenu>
       )}
       <div className={cn('flex items-center space-x-4 pr-5',
-      session?.user.role === 'USER' ? 'justify-end ml-auto' : 'justify-between'
+      session?.user.role === 'USER' ? 'justify-end ml-auto' : 'justify-between ml-auto'
       )}>
-        {/* <Search /> */}
         <NotificationButton />
         <ModeToggle />
-        <UserNav />{' '}
+        <UserNav />
       </div>
     </div>
   );

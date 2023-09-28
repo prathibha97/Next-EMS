@@ -1,7 +1,7 @@
 import { Employee, Leave } from '@prisma/client';
 import { apiSlice } from './api';
 
-export const employeeApi = apiSlice.injectEndpoints({
+export const leaveApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllLeaves: builder.query<Leave[], void>({
       query: () => '/leaves',
@@ -27,6 +27,12 @@ export const employeeApi = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    removeLeaveRequest: builder.mutation<Leave, { leaveId: string }>({
+      query: ({ leaveId }) => ({
+        url: `/leaves/${leaveId}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -35,4 +41,5 @@ export const {
   useGetLeavesByEmployeeIdQuery,
   useCreateLeaveRequestMutation,
   useUpdateLeaveRequestMutation,
-} = employeeApi;
+  useRemoveLeaveRequestMutation
+} = leaveApi;

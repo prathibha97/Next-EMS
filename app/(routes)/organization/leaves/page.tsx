@@ -6,10 +6,15 @@ const LeavesPage = async () => {
   const { getAllLeaveRequests } = useLeaves();
 
   const leaves = await getAllLeaveRequests();
-  console.log(leaves);
   return (
     <div>
-      <LeavesDataTable columns={columns} data={leaves} />
+      <LeavesDataTable
+      // @ts-ignore
+        columns={columns}
+        data={leaves}
+        searchFilter='employee_name'
+        placeholder='Date'
+      />
     </div>
   );
 };

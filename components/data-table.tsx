@@ -31,6 +31,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { FormLabel } from "./ui/form";
+import { fuzzyFilter } from "@/app/(routes)/organization/leaves/components/columns";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -53,6 +54,9 @@ export function DataTable<TData, TValue>({
   const table = useReactTable({
     columns,
     data,
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -70,7 +74,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className='w-full bg-white p-2 rounded-lg '>
+    <div className='w-full bg-white dark:bg-black p-2 px-5 rounded-lg '>
       <div className='flex items-center py-4'>
         <Input
         type="date"

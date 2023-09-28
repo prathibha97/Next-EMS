@@ -1,14 +1,13 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import {
-  AlertOctagon,
-  ArrowUpDown,
-  BadgeCheck,
-  Check,
-  MoreHorizontal,
-} from 'lucide-react';
+import { BadgeCheck, MoreHorizontal } from 'lucide-react';
 
+import {
+  useRemoveLeaveRequestMutation,
+  useUpdateLeaveRequestMutation,
+} from '@/app/redux/services/leaveApi';
+import DeleteConfirmationDialog from '@/components/delete-confirmation-dialog';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -20,12 +19,59 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-import { Leave } from '@prisma/client';
+import { Employee, Leave } from '@prisma/client';
+import {
+  RankingInfo,
+  compareItems,
+  rankItem,
+} from '@tanstack/match-sorter-utils';
+import { FilterFn, SortingFn, sortingFns } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
-import useLeaves from '@/hooks/useLeaves';
+import { useState } from 'react';
 
-export const columns: ColumnDef<Leave>[] = [
+declare module '@tanstack/table-core' {
+  interface FilterFns {
+    fuzzy: FilterFn<unknown>;
+  }
+  interface FilterMeta {
+    itemRank: RankingInfo;
+  }
+}
+
+type LeaveWithEmployee = Leave & {
+  employee: Employee;
+};
+
+export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+  // Rank the item
+  const itemRank = rankItem(row.getValue(columnId), value);
+
+  // Store the itemRank info
+  addMeta({
+    itemRank,
+  });
+
+  // Return if the item should be filtered in/out
+  return itemRank.passed;
+};
+
+const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
+  let dir = 0;
+
+  // Only sort by rank if the column has ranking information
+  if (rowA.columnFiltersMeta[columnId]) {
+    dir = compareItems(
+      rowA.columnFiltersMeta[columnId]?.itemRank!,
+      rowB.columnFiltersMeta[columnId]?.itemRank!
+    );
+  }
+
+  // Provide an alphanumeric fallback for when the item ranks are equal
+  return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
+};
+
+export const columns: ColumnDef<LeaveWithEmployee>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -47,58 +93,40 @@ export const columns: ColumnDef<Leave>[] = [
   },
   {
     accessorKey: 'createdAt',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Request Date
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const date = row.original.createdAt;
+    header: () => <div>Request Date</div>,
+    accessorFn: (row) => format(new Date(row?.createdAt || ''), 'dd-MM-yyyy'),
 
-      return <div>{format(new Date(date), 'MM/dd/yyyy')}</div>;
-    },
+    filterFn: 'fuzzy',
+    sortingFn: fuzzySort,
   },
+
   {
     accessorKey: 'employee_name',
     header: () => <div>Employee</div>,
-    cell: ({ row }) => {
-      const name = row.original.employee.name;
-
-      return <div className='capitalize'>{name}</div>;
-    },
+    filterFn: 'fuzzy',
+    sortingFn: fuzzySort,
+    accessorFn: (row) => row.employee.name,
   },
   {
     accessorKey: 'type',
     header: () => <div>Leave type</div>,
+    filterFn: 'fuzzy',
+    sortingFn: fuzzySort,
     cell: ({ row }) => <div className='capitalize'>{row.getValue('type')}</div>,
   },
   {
     accessorKey: 'startDate',
     header: () => <div>Start Date</div>,
-    cell: ({ row }) => {
-      const startDate = row.original.startDate;
-
-      return <div>{format(new Date(startDate), 'MM/dd/yyyy')}</div>;
-    },
+    accessorFn: (row) => format(new Date(row?.startDate || ''), 'dd-MM-yyyy'),
   },
   {
     accessorKey: 'endDate',
     header: () => <div>End Date</div>,
-    cell: ({ row }) => {
-      const endDate = row.original.endDate;
-
-      return <div>{format(new Date(endDate), 'MM/dd/yyyy')}</div>;
-    },
+    accessorFn: (row) => format(new Date(row?.endDate || ''), 'dd-MM-yyyy'),
   },
   {
     accessorKey: 'reason',
-    header: () => <div className='text-right'>Reason</div>,
+    header: () => <div>Reason</div>,
     cell: ({ row }) => <div>{row.getValue('reason')}</div>,
   },
   {
@@ -119,20 +147,48 @@ export const columns: ColumnDef<Leave>[] = [
       return <div className={textColor}>{row.getValue('status')}</div>;
     },
   },
+  // {
+  //   accessorKey: 'remarks',
+  //   header: () => <div>Remarks</div>,
+  //   cell: ({ row }) => <div>{row.getValue('remarks')}</div>,
+  // },
   {
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-
+      const router = useRouter();
       const leave = row.original;
 
+
+      const [removeLeaveRequest] = useRemoveLeaveRequestMutation();
+      const [updateLeaveRequest] = useUpdateLeaveRequestMutation();
+
+   
+
+      const handleApprove = async () => {
+        await updateLeaveRequest({
+          leaveId: row.original.id,
+          body: {
+            status: 'Approved',
+          },
+        });
+        router.refresh();
+      };
+
+      const handleReject = async () => {
+        await updateLeaveRequest({
+          leaveId: row.original.id,
+          body: {
+            status: 'Rejected',
+            remarks: '',
+          },
+        });
+        router.refresh();
+      };
+
       const handleDelete = async () => {
-        // removeEmployeeFromDepartment({
-        //   employeeId: employee.id,
-        //   departmentId: employee.departmentId as string,
-        // });
-        // refetch();
-        // router.refresh();
+        await removeLeaveRequest({ leaveId: row.original.id });
+        router.refresh();
       };
 
       return (
@@ -145,16 +201,18 @@ export const columns: ColumnDef<Leave>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => {}}>
+            <DropdownMenuItem
+              className='text-green-500'
+              onClick={handleApprove}
+            >
               Approve leave
-              <Check className='ml-auto text-green-500' />
             </DropdownMenuItem>
             {leave.medical && (
               <DropdownMenuItem onClick={() => {}}>
                 <Button
                   variant={'outline'}
                   className={cn(
-                    'w-[280px] justify-start text-left font-normal',
+                    'w-fit justify-start text-left font-normal',
                     !leave?.medical && 'text-muted-foreground'
                   )}
                 >
@@ -202,9 +260,11 @@ export const columns: ColumnDef<Leave>[] = [
               </DropdownMenuItem>
             )}
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => {}}>
-              Reject leave
-              <AlertOctagon className='ml-auto text-red-500' />
+            <DropdownMenuItem asChild>
+              <DeleteConfirmationDialog
+                label='Reject leave'
+                onClick={handleReject}
+              />
             </DropdownMenuItem>
             <DropdownMenuItem className='text-red-500' onClick={handleDelete}>
               Remove leave request

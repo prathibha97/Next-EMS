@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx"
+import { differenceInDays } from "date-fns";
 import { twMerge } from "tailwind-merge"
  
 export function cn(...inputs: ClassValue[]) {
@@ -29,3 +30,8 @@ export function formatDateString(dateString: Date) {
 
   return `${time} - ${formattedDate}`;
 }
+
+export const getNumberOfDays = (startDate:Date, endDate:Date) => {
+  const days = differenceInDays(new Date(endDate), new Date(startDate));
+  return days + 1;
+};

@@ -5,17 +5,24 @@ import { ArrowUpDown } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Leave } from '@prisma/client';
-import { differenceInDays, format, parseISO } from 'date-fns';
+import { differenceInDays, format } from 'date-fns';
+import { getNumberOfDays } from '@/lib/utils';
 
 export const columns: ColumnDef<Leave>[] = [
   {
     accessorKey: 'createdAt',
-    header: () => <div>Request Date</div>,
-    cell: ({ row }) => {
-      const date = row.original.createdAt;
-
-      return <div>{format(new Date(date), 'MM/dd/yyyy')}</div>;
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Request Date
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
     },
+    accessorFn: (row) => format(new Date(row?.createdAt || ''), 'dd-MM-yyyy'),
   },
   {
     accessorKey: 'type',
@@ -37,33 +44,27 @@ export const columns: ColumnDef<Leave>[] = [
   {
     accessorKey: 'startDate',
     header: () => <div>Start Date</div>,
-    cell: ({ row }) => {
-      const startDate = row.original.startDate;
-
-      return <div>{format(new Date(startDate), 'MM/dd/yyyy')}</div>;
-    },
+    accessorFn: (row) => format(new Date(row?.startDate || ''), 'dd-MM-yyyy'),
   },
   {
     accessorKey: 'endDate',
     header: () => <div>End Date</div>,
-    cell: ({ row }) => {
-      const endDate = row.original.endDate;
-
-      return <div>{format(new Date(endDate), 'MM/dd/yyyy')}</div>;
-    },
+    accessorFn: (row) => format(new Date(row?.endDate || ''), 'dd-MM-yyyy'),
   },
   {
     accessorKey: 'leaveDays',
     header: () => <div>Leave Days</div>,
     cell: ({ row }) => {
       const leave = row.original;
-      const leaveDays = differenceInDays(
-        parseISO(leave.endDate),
-        parseISO(leave.startDate )
-      );
+      const startDate = new Date(leave.startDate || '');
+      const endDate = new Date(leave.endDate || '');
+
+      const leaveDays = getNumberOfDays(startDate, endDate);
+
       return <div className='text-center'>{leaveDays}</div>;
     },
   },
+
   {
     accessorKey: 'status',
     header: () => <div className='font-bold'>Status</div>,

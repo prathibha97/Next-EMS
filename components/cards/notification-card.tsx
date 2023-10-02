@@ -61,7 +61,7 @@ export function NotificationCard({
       <CardHeader>
         <CardTitle>Notifications</CardTitle>
         <CardDescription>
-          You have {notifications.length} unread messages.
+          You have {unreadCount} unread messages.
         </CardDescription>
       </CardHeader>
       <CardContent className='grid gap-4'>

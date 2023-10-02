@@ -29,6 +29,7 @@ import { FilterFn, SortingFn, sortingFns } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from '@/hooks/use-toast';
 
 declare module '@tanstack/table-core' {
   interface FilterFns {
@@ -166,24 +167,50 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
    
 
       const handleApprove = async () => {
-        await updateLeaveRequest({
-          leaveId: row.original.id,
-          body: {
-            status: 'Approved',
-          },
-        });
-        router.refresh();
+        try {
+          await updateLeaveRequest({
+            leaveId: row.original.id,
+            body: {
+              status: 'Approved',
+            },
+          });
+          router.refresh();
+          toast({
+            title: 'Success',
+            description: `${row.original.employee.name}'s leave approved successfully`,
+          });
+        } catch (error) {
+          toast({
+            title: 'Failed',
+            description: `Failed to approve ${row.original.employee.name}'s leave request. Please try again`,
+            variant: 'destructive'
+          });
+          console.log(error);
+        }
       };
 
       const handleReject = async () => {
-        await updateLeaveRequest({
-          leaveId: row.original.id,
-          body: {
-            status: 'Rejected',
-            remarks: '',
-          },
-        });
-        router.refresh();
+        try {
+          await updateLeaveRequest({
+            leaveId: row.original.id,
+            body: {
+              status: 'Rejected',
+              remarks: '',
+            },
+          });
+          router.refresh();
+          toast({
+            title: 'Success',
+            description: `${row.original.employee.name}'s leave rejected successfully`
+          })
+        } catch (error) {
+          toast({
+            title: 'Failed',
+            description: `Failed to reject ${row.original.employee.name}'s leave request. Please try again`,
+            variant: 'destructive',
+          });
+          console.log(error);
+        }
       };
 
       const handleDelete = async () => {

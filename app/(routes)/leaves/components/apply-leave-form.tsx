@@ -156,7 +156,7 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
       form.reset();
       router.refresh();
 
-      await axios.post('http://localhost:3000/api/email/leave', {
+      await axios.post(`${process.env.NEXT_PUBLIC_URL}/email/leave`, {
         employeeId,
         ...values,
       });

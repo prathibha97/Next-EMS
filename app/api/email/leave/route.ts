@@ -29,7 +29,7 @@ export async function POST(req: Request) {
 
     const data = await resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: 'prsthibha@gmail.com',
+      to: 'prathibha@sphiriadigital.com',
       subject: 'New Leave Request',
       react: LeaveRequestEmail({
         company: 'Sphiria Digital Studio',

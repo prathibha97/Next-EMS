@@ -20,6 +20,7 @@ import {
   PayrollFormValues,
 } from '@/lib/validation/payroll-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Employee } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -36,10 +37,20 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
 
   const employeeId = params.employeeId;
 
-  const { data: employee, isLoading } = useGetEmployeeByIdQuery({ employeeId });
-  console.log(employee);
+  const { data: employeeData, isLoading } = useGetEmployeeByIdQuery({
+    employeeId,
+  });
 
-  const [addPayroll, { isLoading: isEmployeeDataLoading }] =
+  const [employee, setEmployee] = useState<Employee | null>(null);
+  const [basicSalary, setBasicSalary] = useState(0);
+  const [totalAdditions, setTotalAdditions] = useState(0);
+  const [totalDeductions, setTotalDeductions] = useState(0);
+  const [netSalary, setNetSalary] = useState(0);
+
+  console.log('netSalary', netSalary);
+  console.log('total deductions', totalDeductions);
+
+  const [addPayroll, { isLoading: isAddPayrollLoading }] =
     useAddPayrollMutation();
 
   const form = useForm<PayrollFormValues>({
@@ -59,6 +70,28 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
   });
 
   useEffect(() => {
+    if(employeeData){
+      setEmployee(employeeData);
+    }
+
+    if (employeeData) {
+      form.setValue('basicSalary', employeeData?.basicSalary?.toString() ?? '');
+      form.setValue(
+        'dataAllowance',
+        employeeData?.dataAllowance?.toString() ?? ''
+      );
+      form.setValue(
+        'mobileAllowance',
+        employeeData?.mobileAllowance?.toString() ?? ''
+      );
+      form.setValue(
+        'performanceAllowance',
+        employeeData?.performanceAllowance?.toString() ?? ''
+      );
+    }
+  }, [employeeData]);
+
+  useEffect(() => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     let currentMonth = (currentDate.getMonth() + 1).toString();
@@ -70,10 +103,37 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
     form.setValue('monthYear', defaultMonthYear);
   }, [form]);
 
-  const [basicSalary, setBasicSalary] = useState(0);
-  const [totalAdditions, setTotalAdditions] = useState(0);
-  const [totalDeductions, setTotalDeductions] = useState(0);
-  const [netSalary, setNetSalary] = useState(0);
+  useEffect(() => {
+    const parsedBasicSalary = parseFloat(form.getValues('basicSalary'));
+    const parsedDataAllowance = parseFloat(form.getValues('dataAllowance'));
+    const parsedMobileAllowance = parseFloat(form.getValues('mobileAllowance'));
+    const parsedPerformanceAllowance = parseFloat(
+      form.getValues('performanceAllowance')
+    );
+
+    const additions =
+      parsedDataAllowance + parsedMobileAllowance + parsedPerformanceAllowance;
+
+    const deductions =
+      parseFloat(form.getValues('salaryAdvance')) +
+      parseFloat(form.getValues('epfDeduction')) +
+      parseFloat(form.getValues('otherDeductions'));
+
+    const total = parsedBasicSalary + additions - deductions;
+
+    setBasicSalary(parsedBasicSalary);
+    setTotalAdditions(additions);
+    setTotalDeductions(deductions);
+    setNetSalary(total);
+  }, [
+    form.getValues('basicSalary'),
+    form.getValues('dataAllowance'),
+    form.getValues('mobileAllowance'),
+    form.getValues('performanceAllowance'),
+    form.getValues('salaryAdvance'),
+    form.getValues('epfDeduction'),
+    form.getValues('otherDeductions'),
+  ]);
 
   const calculateValues = (values: PayrollFormValues) => {
     const {
@@ -98,7 +158,9 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
     const parsedEpfDeduction = parseFloat(epfDeduction);
     const parsedOtherDeductions = parseFloat(otherDeductions);
 
-    setBasicSalary(parseFloat(basicSalary));
+    setBasicSalary(
+      (prevBasicSalary) => prevBasicSalary + parseFloat(basicSalary)
+    );
 
     const additions =
       parsedDataAllowance +
@@ -112,9 +174,14 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
 
     const total = Number(basicSalary) + additions - deductions;
 
-    setTotalAdditions(additions);
-    setTotalDeductions(deductions);
-    setNetSalary(total);
+    setBasicSalary(
+      (prevBasicSalary) => prevBasicSalary + parseFloat(basicSalary)
+    );
+    setTotalAdditions((prevTotalAdditions) => prevTotalAdditions + additions);
+    setTotalDeductions(
+      (prevTotalDeductions) => prevTotalDeductions + deductions
+    );
+    setNetSalary((prevNetSalary) => prevNetSalary + total);
   };
 
   const onSubmit = async (values: PayrollFormValues) => {
@@ -154,7 +221,10 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
     }
   };
 
-  if (isEmployeeDataLoading || isLoading) {
+  const dataAllowance = parseFloat(form.watch('dataAllowance'));
+  const mobileAllowance = parseFloat(form.watch('mobileAllowance'));
+
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
@@ -200,6 +270,13 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                           {...field}
                           className='md:w-96 px-2 py-1 border rounded-md'
                           type='number'
+                          onChange={(e) => {
+                            form.setValue('basicSalary', e.target.value);
+                            calculateValues({
+                              ...form.getValues(),
+                              basicSalary: e.target.value,
+                            });
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -218,6 +295,13 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                           {...field}
                           className='md:w-96 px-2 py-1 border rounded-md'
                           type='number'
+                          onChange={(e) => {
+                            form.setValue('dataAllowance', e.target.value);
+                            calculateValues({
+                              ...form.getValues(),
+                              basicSalary: e.target.value,
+                            });
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -235,7 +319,15 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                       <FormControl>
                         <Input
                           {...field}
+                          type='number'
                           className='md:w-96 px-2 py-1 border rounded-md'
+                          onChange={(e) => {
+                            form.setValue('mobileAllowance', e.target.value);
+                            calculateValues({
+                              ...form.getValues(),
+                              basicSalary: e.target.value,
+                            });
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -253,7 +345,15 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                       <FormControl>
                         <Input
                           {...field}
+                          type='number'
                           className='md:w-96 px-2 py-1 border rounded-md'
+                          onChange={(e) => {
+                            form.setValue('projectAllowance', e.target.value);
+                            calculateValues({
+                              ...form.getValues(),
+                              basicSalary: e.target.value,
+                            });
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -271,7 +371,18 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                       <FormControl>
                         <Input
                           {...field}
+                          type='number'
                           className='md:w-96 px-2 py-1 border rounded-md'
+                          onChange={(e) => {
+                            form.setValue(
+                              'performanceAllowance',
+                              e.target.value
+                            );
+                            calculateValues({
+                              ...form.getValues(),
+                              basicSalary: e.target.value,
+                            });
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -289,7 +400,15 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                       <FormControl>
                         <Input
                           {...field}
+                          type='number'
                           className='md:w-96 px-2 py-1 border rounded-md'
+                          onChange={(e) => {
+                            form.setValue('holidayAllowance', e.target.value);
+                            calculateValues({
+                              ...form.getValues(),
+                              basicSalary: e.target.value,
+                            });
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -311,7 +430,15 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                       <FormControl>
                         <Input
                           {...field}
+                          type='number'
                           className='md:w-96 px-2 py-1 border rounded-md'
+                          onChange={(e) => {
+                            form.setValue('salaryAdvance', e.target.value);
+                            calculateValues({
+                              ...form.getValues(),
+                              basicSalary: e.target.value,
+                            });
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -328,7 +455,15 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                       <FormControl>
                         <Input
                           {...field}
+                          type='number'
                           className='md:w-96 px-2 py-1 border rounded-md'
+                          onChange={(e) => {
+                            form.setValue('otherDeductions', e.target.value);
+                            calculateValues({
+                              ...form.getValues(),
+                              basicSalary: e.target.value,
+                            });
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -344,7 +479,8 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                   <div className='grid grid-cols-2 gap-4 mt-2 '>
                     <div>
                       <p className='font-medium'>
-                        EPF Employee Contribution : {basicSalary * 0.08}
+                        EPF Employee Contribution :{' '}
+                        {(basicSalary * 0.08).toFixed(2)}
                       </p>
                     </div>
                     <div>
@@ -352,7 +488,8 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                     </div>
                     <div>
                       <p className='font-medium'>
-                        EPF Company Contribution : {basicSalary * 0.15}
+                        EPF Company Contribution :{' '}
+                        {(basicSalary * 0.15).toFixed(2)}
                       </p>
                     </div>
                     <div>
@@ -360,7 +497,8 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                     </div>
                     <div>
                       <p className='font-medium'>
-                        ETF Company Contribution : {basicSalary * 0.03}
+                        ETF Company Contribution :{' '}
+                        {(basicSalary * 0.03).toFixed(2)}
                       </p>
                     </div>
                     <div>
@@ -410,7 +548,7 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
               type='submit'
               className='flex ml-auto rounded-md text-white bg-[#2ebdaa]'
               onClick={() => onSubmit}
-              isLoading={isLoading}
+              isLoading={isAddPayrollLoading}
             />
           </div>
         </form>

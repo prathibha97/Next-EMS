@@ -28,7 +28,6 @@ interface WorkInfoFormProps {
 
 const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
   const employeeId = employee?.id;
-  console.log(employeeId);
   // const dispatch = useAppDispatch();
   const [updateEmployee, { isLoading }] = useUpdateEmployeeMutation();
   const form = useForm<WorkInfoFormValues>({

@@ -1,76 +1,77 @@
-'use client'
-import { BellRing } from 'lucide-react';
+'use client';
 import { Button } from '@/components/ui/button';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { NotificationCard } from '../cards/notification-card';
-import { useEffect, useState } from 'react';
+import { pusherClient } from '@/lib/pusher';
 import { Employee, Notification } from '@prisma/client';
 import axios from 'axios';
-import { pusherClient } from '@/lib/pusher';
+import { BellRing } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { NotificationCard } from '../cards/notification-card';
 
 export function NotificationButton() {
-    const [notifications, setNotifications] = useState<Notification[]>([]);
-    // @ts-ignore
-    const [employee, setEmployee] = useState<Employee>({});
+  const router = useRouter();
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  // @ts-ignore
+  const [employee, setEmployee] = useState<Employee>({});
 
-    useEffect(() => {
-      const getCurrentEmployee = async () => {
-        try {
-          const { data } = await axios.get(
-            `${process.env.NEXT_PUBLIC_URL}/employees/me`
-          );
-          setEmployee(data);
-        } catch (error) {
-          console.error('Error fetching employee data:', error);
-        }
-      };
-
-      getCurrentEmployee();
-    }, []);
-
-    useEffect(() => {
-      const getEmployeeNotifications = async () => {
-        try {
-          const { data } = await axios.get(
-            `${process.env.NEXT_PUBLIC_URL}/notifications/employee/${employee?.id}`
-          );
-          setNotifications(data);
-        } catch (error) {
-          console.error('Error fetching employee notification data:', error);
-        }
-      };
-      if (employee?.id) {
-        getEmployeeNotifications();
+  useEffect(() => {
+    const getCurrentEmployee = async () => {
+      try {
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_URL}/employees/me`
+        );
+        setEmployee(data);
+      } catch (error) {
+        console.error('Error fetching employee data:', error);
       }
-    }, [employee]);
+    };
 
-    useEffect(() => {
-      if (employee && employee.id) {
-        const channel = pusherClient.subscribe(employee.id);
+    getCurrentEmployee();
+  }, []);
 
-        channel.bind('notifications:new', (data: Notification) => {
-          setNotifications((prevNotifications) => [...prevNotifications, data]);
-        });
-
-        return () => {
-          pusherClient.unsubscribe(employee.id);
-        };
+  useEffect(() => {
+    const getEmployeeNotifications = async () => {
+      try {
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_URL}/notifications/employee/${employee?.id}`
+        );
+        setNotifications(data);
+        router.refresh();
+      } catch (error) {
+        console.error('Error fetching employee notification data:', error);
       }
-    }, [employee]);
-    
-    const unreadCount = notifications?.filter(
-      (notification) => !notification.isRead
-    ).length;
-
-
-    if (!employee) {
-      return <div>Loading...</div>;
+    };
+    if (employee?.id) {
+      getEmployeeNotifications();
     }
+  }, [employee]);
 
+  useEffect(() => {
+    if (employee && employee.id) {
+      const channel = pusherClient.subscribe(employee.id);
+
+      channel.bind('notifications:new', (data: Notification) => {
+        setNotifications((prevNotifications) => [...prevNotifications, data]);
+      });
+
+      return () => {
+        pusherClient.unsubscribe(employee.id);
+      };
+    }
+  }, [employee]);
+
+  const unreadCount = notifications?.filter(
+    (notification) => !notification.isRead
+  ).length;
+
+  if (!employee) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Popover>

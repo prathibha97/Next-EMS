@@ -30,9 +30,11 @@ export async function POST(req: Request, { params }: { params: IParams }) {
 
   try {
     // Calculate contributions and deductions
-    const employeeEpfContribution = 0.08 * basicSalary;
-    const companyEpfContribution = 0.15 * basicSalary;
-    const companyEtfContribution = 0.03 * basicSalary;
+    const employeeEpfContribution = 0.08 * (basicSalary + dataAllowance + mobileAllowance);
+    const companyEpfContribution =
+      0.15 * (basicSalary + dataAllowance + mobileAllowance);
+    const companyEtfContribution =
+      0.03 * (basicSalary + dataAllowance + mobileAllowance);
     const totalDeductions =
       employeeEpfContribution + otherDeductions + salaryAdvance;
 

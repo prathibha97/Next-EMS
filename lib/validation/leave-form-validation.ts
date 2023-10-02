@@ -2,8 +2,8 @@ import * as z from 'zod';
 
 export const LeaveFormSchema = z.object({
   type: z.string(),
-  startDate: z.date(),
-  endDate: z.date(),
+  startDate: z.string(),
+  endDate: z.string(),
   reason: z.string(),
   medical: z.string().optional(),
   otherProof: z.string().optional(),

@@ -77,8 +77,8 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
     resolver: zodResolver(LeaveFormSchema),
     defaultValues: {
       type: '',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date().toISOString(),
+      endDate: new Date().toISOString(),
       reason: '',
       medical: '',
       otherProof: '',
@@ -139,8 +139,8 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
       const response = await createLeaveRequest({
         employeeId: employeeId,
         type: values.type,
-        startDate: values.startDate,
-        endDate: values.endDate,
+        startDate: new Date(values.startDate),
+        endDate: new Date(values.endDate),
         reason: values.reason,
         medical: values.medical,
         otherProof: values.otherProof,
@@ -221,9 +221,9 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
                   )}
                 />
                 <div className='flex gap-x-2'>
-                  <div className='flex flex-col gap-y-2 mb-2 mt-6'>
+                  <div className='flex flex-col gap-y-2 mb-2 mt-6 w-full'>
                     <FormLabel>Start Date</FormLabel>
-                    <Controller
+                    {/* <Controller
                       name='startDate'
                       control={form.control}
                       render={({ field }) => (
@@ -232,11 +232,21 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
                           onChange={(date) => field.onChange(date)}
                         />
                       )}
+                    /> */}
+                    <FormField
+                      control={form.control}
+                      name='startDate'
+                      render={({ field }) => (
+                        <FormItem>
+                          <Input type='date' {...field} />
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
                   </div>
                   <div className='flex flex-col gap-y-2 mb-2 mt-6'>
                     <FormLabel>End Date</FormLabel>
-                    <Controller
+                    {/* <Controller
                       name='endDate'
                       control={form.control}
                       render={({ field }) => (
@@ -244,6 +254,16 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
                           value={field.value}
                           onChange={(date) => field.onChange(date)}
                         />
+                      )}
+                    /> */}
+                    <FormField
+                      control={form.control}
+                      name='endDate'
+                      render={({ field }) => (
+                        <FormItem>
+                          <Input type='date' {...field} />
+                          <FormMessage />
+                        </FormItem>
                       )}
                     />
                   </div>

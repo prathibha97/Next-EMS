@@ -38,6 +38,13 @@ export const payrollApi = apiSlice.injectEndpoints({
         method: 'DELETE',
       }),
     }),
+    addSalaryAdvance: builder.mutation({
+      query: (body) => ({
+        url: `/payrolls/advance`,
+        method: 'POST',
+        body: body,
+      }),
+    }),
   }),
 });
 
@@ -48,4 +55,5 @@ export const {
   useGetPayrollByEmployeeIdQuery,
   useAddPayrollMutation,
   useRemovePayrollMutation,
+  useAddSalaryAdvanceMutation,
 } = payrollApi;

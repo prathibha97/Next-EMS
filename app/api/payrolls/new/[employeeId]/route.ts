@@ -84,7 +84,6 @@
 //   }
 // }
 
-
 import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { getAuthSession } from '../../../auth/[...nextauth]/options';
@@ -112,6 +111,8 @@ export async function POST(req: Request, { params }: { params: IParams }) {
     performanceAllowance,
     holidayAllowance,
     otherDeductions,
+    workingDays,
+    paidDays
   } = body;
 
   try {
@@ -141,6 +142,17 @@ export async function POST(req: Request, { params }: { params: IParams }) {
         (total, advance) => total + advance.amount,
         0
       );
+
+      // Mark salary advances as settled
+      await prisma.salaryAdvance.updateMany({
+        where: {
+          employeeId,
+          isSettled: false,
+        },
+        data: {
+          isSettled: true,
+        },
+      });
     }
 
     // Check if there are unsettled loans
@@ -151,13 +163,33 @@ export async function POST(req: Request, { params }: { params: IParams }) {
       },
     });
 
-    if (unsettledLoans.length > 0) {
+if (unsettledLoans.length > 0) {
+  for (const loan of unsettledLoans) {
+    const paidInstallments = await prisma.payroll.count({
+      where: {
+        employeeId,
+        loanDeduction: {
+          gte: loan.amount / loan.instalments!,
+        },
+      },
+    });
+
+    if (paidInstallments >= loan.instalments!) {
       // Calculate total unsettled loan instalments
-      loanDeduction = unsettledLoans.reduce(
-        (total, loan) => total + loan.amount / loan.instalments!,
-        0
-      );
+      loanDeduction += loan.amount;
+
+      // Mark loan as settled
+      await prisma.loan.update({
+        where: {
+          id: loan.id,
+        },
+        data: {
+          isSettled: true,
+        },
+      });
     }
+  }
+}
 
     const totalDeductions =
       employeeEpfContribution + otherDeductions + salaryAdvance + loanDeduction;
@@ -183,7 +215,7 @@ export async function POST(req: Request, { params }: { params: IParams }) {
         projectAllowance,
         performanceAllowance,
         holidayAllowance,
-        otherAllowances: 0, // You need to handle this value
+        otherAllowances: 0, // handle this value
         epfDeduction: employeeEpfContribution,
         companyEpfContribution,
         companyEtfContribution,
@@ -193,6 +225,8 @@ export async function POST(req: Request, { params }: { params: IParams }) {
         totalDeductions,
         totalEarnings,
         netSalary,
+        workingDays,
+        paidDays,
         employee: {
           connect: {
             id: employeeId,

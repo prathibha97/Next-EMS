@@ -16,13 +16,12 @@ import {
   SalaryAdvanceFormValues,
 } from '@/lib/validation/salary-advance-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import { useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 const SalaryAdvanceForm = () => {
   const params = useParams();
-  const employeeId = params?.employeeId
+  const employeeId = params?.employeeId;
   const form = useForm<SalaryAdvanceFormValues>({
     resolver: zodResolver(SalaryAdvanceFormSchema),
     defaultValues: {
@@ -40,7 +39,7 @@ const SalaryAdvanceForm = () => {
       amount: values.amount,
     });
     try {
-      await addSalaryAdvance({employeeId, ...values}).unwrap();
+      await addSalaryAdvance({ employeeId, ...values }).unwrap();
       toast({
         title: 'Salary Advance Added!',
       });

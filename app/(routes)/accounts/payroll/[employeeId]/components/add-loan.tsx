@@ -1,12 +1,11 @@
 'use client';
 import { FC } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { loanData } from '@/constants/sample/loan-data';
 import Image from 'next/image';
 import { Loancolumns } from './loan-columns';
 import { LoanDataTable } from './loan-datatable';
+import LoanForm from './loan-form';
 
 interface AddLoanProps {}
 
@@ -34,18 +33,7 @@ const AddLoan: FC<AddLoanProps> = ({}) => {
               requested loan amounts.
             </div>
           </div>
-          <div>
-            <div className='flex gap-4 p-4 mb-4'>
-              <Button variant='outline'>Date</Button>
-              <Input />
-            </div>
-
-            <div className='text-center'>
-              <Button className='bg-[#2ebdaa] text-white' variant='outline'>
-                Submit
-              </Button>
-            </div>
-          </div>
+          <LoanForm />
         </div>
       </div>
       <div className='bg-blue-200 p-4'>

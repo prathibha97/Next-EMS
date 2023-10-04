@@ -45,6 +45,13 @@ export const payrollApi = apiSlice.injectEndpoints({
         body: body,
       }),
     }),
+    createNewLoan: builder.mutation({
+      query: (body) => ({
+        url: `/payrolls/loan`,
+        method: 'POST',
+        body: body,
+      }),
+    }),
   }),
 });
 
@@ -56,4 +63,5 @@ export const {
   useAddPayrollMutation,
   useRemovePayrollMutation,
   useAddSalaryAdvanceMutation,
+  useCreateNewLoanMutation
 } = payrollApi;

@@ -11,11 +11,12 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { amount, date, employeeId } = body;
-    const salaryAdvance = await prisma.salaryAdvance.create({
+    const { amount, date, employeeId, installments } = body;
+    const salaryAdvance = await prisma.loan.create({
       data: {
         amount: parseFloat(amount),
         date: new Date(date),
+        installments: parseInt(installments),
         employee: {
           connect: {
             id: employeeId,
@@ -26,7 +27,7 @@ export async function POST(req: Request) {
     return NextResponse.json(salaryAdvance);
   } catch (error: any) {
     console.error(error.message);
-    return new Response(`Could add salary advance - ${error.message}`, {
+    return new Response(`Could not add loan record - ${error.message}`, {
       status: 500,
     });
   }

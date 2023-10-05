@@ -66,6 +66,8 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
       salaryAdvance: '',
       epfDeduction: '',
       otherDeductions: '',
+      workingDays: '',
+      paidDays: ''
     },
   });
 
@@ -200,6 +202,8 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
           salaryAdvance: parseFloat(values.salaryAdvance),
           epfDeduction: parseFloat(values.epfDeduction),
           otherDeductions: parseFloat(values.otherDeductions),
+          workingDays: parseInt(values.workingDays),
+          paidDays: parseInt(values.paidDays)
         },
       }).unwrap();
       const payroll = response; // Access the nested data
@@ -247,6 +251,40 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                         {...field}
                         className='md:w-96 px-2 py-1 border rounded-md'
                         type='month'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className='space-y-3'>
+              <FormLabel>Number of Worked Days </FormLabel>
+              <FormField
+                name='workingDays'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className='md:w-96 px-2 py-1 border rounded-md'
+                        type='number'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormLabel>Number of Paid Days</FormLabel>
+              <FormField
+                name='paidDays'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className='md:w-96 px-2 py-1 border rounded-md'
+                        type='number'
                       />
                     </FormControl>
                     <FormMessage />

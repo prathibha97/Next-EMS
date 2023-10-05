@@ -43,7 +43,7 @@ const PayrollPage: FC<PayrollPageProps> = async ({ params }) => {
           <SalaryAdvance employeeId={employeeId} />
         </TabsContent>
         <TabsContent value='loan' className='mt-5'>
-          <AddLoan />
+          <AddLoan employeeId={employeeId} />
         </TabsContent>
         <TabsContent value='analytics' className='mt-5'>
           Add charts here.

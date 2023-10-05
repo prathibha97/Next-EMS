@@ -211,7 +211,7 @@ export const columns: ColumnDef<Payroll>[] = [
                     </td>
                   </>
                 )}
-                {paysheet.otherAllowances !== 0 && (
+                {paysheet.otherDeductions !== 0 && (
                   <>
                     <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
                       Other Deductions
@@ -224,8 +224,8 @@ export const columns: ColumnDef<Payroll>[] = [
               </tr>
 
               <tr>
-                {paysheet.projectAllowance !== 0 ||
-                  (paysheet.projectAllowance !== null && (
+                {paysheet.projectAllowance !== 0 &&
+                  paysheet.projectAllowance !== null && (
                     <>
                       <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
                         Project Allowance
@@ -234,9 +234,7 @@ export const columns: ColumnDef<Payroll>[] = [
                         {paysheet.projectAllowance}
                       </td>
                     </>
-                  ))}
-                <td className='p-2 font-semibold border-r-2 border-[#2ebdaa]'></td>
-                <td className='p-2 font-normal'></td>
+                  )}
               </tr>
 
               <tr>
@@ -255,16 +253,17 @@ export const columns: ColumnDef<Payroll>[] = [
               </tr>
 
               <tr>
-                {paysheet.holidayAllowance !== 0 && (
-                  <>
-                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
-                      Holiday Allowance
-                    </td>
-                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
-                      {paysheet.holidayAllowance}
-                    </td>
-                  </>
-                )}
+                {paysheet.holidayAllowance !== 0 &&
+                  paysheet.holidayAllowance !== null && (
+                    <>
+                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
+                        Holiday Allowance
+                      </td>
+                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
+                        {paysheet.holidayAllowance}
+                      </td>
+                    </>
+                  )}
                 <td className='p-2 font-semibold border-r-2 border-[#2ebdaa]'></td>
                 <td className='p-2 font-normal'></td>
               </tr>
@@ -283,6 +282,17 @@ export const columns: ColumnDef<Payroll>[] = [
                   {paysheet.totalDeductions}
                 </td>
               </tr>
+              {paysheet.loanDeduction !== 0 &&
+                paysheet.loanDeduction !== null && (
+                  <>
+                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
+                      Loan Deduction
+                    </td>
+                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
+                      {paysheet.loanDeduction}
+                    </td>
+                  </>
+                )}
             </tbody>
           </table>
         );

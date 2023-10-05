@@ -16,11 +16,12 @@ import {
   SalaryAdvanceFormValues,
 } from '@/lib/validation/salary-advance-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 const SalaryAdvanceForm = () => {
   const params = useParams();
+  const router = useRouter()
   const employeeId = params?.employeeId;
   const form = useForm<SalaryAdvanceFormValues>({
     resolver: zodResolver(SalaryAdvanceFormSchema),
@@ -43,6 +44,7 @@ const SalaryAdvanceForm = () => {
       toast({
         title: 'Salary Advance Added!',
       });
+      router.refresh();
     } catch (error) {
       toast({
         title: 'Something went wrong',

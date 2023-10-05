@@ -1,15 +1,21 @@
-'use client';
 import { FC } from 'react';
 
-import { loanData } from '@/constants/sample/loan-data';
+import prisma from '@/lib/prisma';
 import Image from 'next/image';
-import { Loancolumns } from './loan-columns';
+import { LoanColumns } from './loan-columns';
 import { LoanDataTable } from './loan-datatable';
 import LoanForm from './loan-form';
 
-interface AddLoanProps {}
+interface AddLoanProps {
+  employeeId: string;
+}
 
-const AddLoan: FC<AddLoanProps> = ({}) => {
+const AddLoan: FC<AddLoanProps> = async ({ employeeId }) => {
+  const loanData = await prisma.loan.findMany({
+    where: {
+      employeeId,
+    },
+  });
   return (
     <div className='grid grid-cols-2 gap-4'>
       <div className='bg-gray-200 p-4'>
@@ -38,7 +44,7 @@ const AddLoan: FC<AddLoanProps> = ({}) => {
       </div>
       <div className='bg-blue-200 p-4'>
         {' '}
-        <LoanDataTable columns={Loancolumns} data={loanData} />
+        <LoanDataTable columns={LoanColumns} data={loanData} />
       </div>
     </div>
   );

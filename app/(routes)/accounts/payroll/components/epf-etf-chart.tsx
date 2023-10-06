@@ -1,27 +1,33 @@
-'use client'
-import { efpEtfData } from '@/constants/sample/epf-etf-data';
-import { FC } from 'react';
+'use client';
+import { Payroll } from '@prisma/client';
+import { FC, useEffect, useState } from 'react';
 import {
   Bar,
   BarChart,
   CartesianGrid,
   Legend,
-  Rectangle,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
 
-interface EPFETFChartProps {}
+interface EPFETFChartProps {
+  data: any;
 
-const EPFETFChart: FC<EPFETFChartProps> = ({}) => {
+  
+}
+
+const EPFETFChart: FC<EPFETFChartProps> = ({ data }) => {
+  console.log('data', data);
+
+
   return (
     <ResponsiveContainer width='100%' height={350}>
       <BarChart
         width={500}
         height={300}
-        data={efpEtfData}
+        data={data}
         margin={{
           top: 5,
           right: 30,

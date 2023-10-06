@@ -7,6 +7,7 @@ import { columns } from './components/columns';
 import { PaySheetDataTable } from './components/paysheet-table';
 
 import AddLoan from './components/add-loan';
+import PayrollAnalyticsPage from './components/payroll-analytics-page';
 import SalaryAdvance from './components/salary-advance';
 
 interface PayrollPageProps {
@@ -46,7 +47,7 @@ const PayrollPage: FC<PayrollPageProps> = async ({ params }) => {
           <AddLoan employeeId={employeeId} />
         </TabsContent>
         <TabsContent value='analytics' className='mt-5'>
-          Add charts here.
+          <PayrollAnalyticsPage employeeId={employeeId} />
         </TabsContent>
       </Tabs>
     </div>

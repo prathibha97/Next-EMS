@@ -26,11 +26,12 @@ import {
   LoanFormValues,
 } from '@/lib/validation/loan-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 const LoanForm = () => {
   const params = useParams();
+  const router = useRouter()
   const employeeId = params?.employeeId;
   const form = useForm<LoanFormValues>({
     resolver: zodResolver(LoanFormSchema),
@@ -55,6 +56,7 @@ const LoanForm = () => {
       toast({
         title: 'Loan Added to Employee!',
       });
+      router.refresh();
     } catch (error) {
       toast({
         title: 'Something went wrong',

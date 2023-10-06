@@ -6,6 +6,7 @@ const useEmployee = () => {
     const employees = await prisma.employee.findMany({
       include: {
         employeeDepartment: true,
+        
       },
     });
     return employees;
@@ -16,13 +17,24 @@ const useEmployee = () => {
       where: {
         userId: session?.user.id,
       },
-      include:{
-        leaveBalance: true
-      }
+      include: {
+        leaveBalance: true,
+      },
     });
     return employee;
   };
-  return { getAllEmployees, getLoggedInEmployee };
+  const getEmployeeById = async (employeeId: string) => {
+    const employee = await prisma.employee.findUnique({
+      where: {
+        id: employeeId,
+      },
+      include: {
+        Payroll: true,
+      },
+    });
+    return employee;
+  };
+  return { getAllEmployees, getLoggedInEmployee, getEmployeeById };
 };
 
 export default useEmployee;

@@ -179,16 +179,17 @@ export const columns: ColumnDef<Payroll>[] = [
                 </td>
               </tr>
               <tr>
-                {paysheet.mobileAllowance !== 0 && (
-                  <>
-                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
-                      Mobile Allowance
-                    </td>
-                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
-                      {paysheet.mobileAllowance}
-                    </td>
-                  </>
-                )}
+                {paysheet.mobileAllowance !== 0 &&
+                  paysheet.mobileAllowance !== null &&(
+                    <>
+                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
+                        Mobile Allowance
+                      </td>
+                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
+                        {paysheet.mobileAllowance}
+                      </td>
+                    </>
+                  )}
                 {paysheet.salaryAdvance !== 0 && (
                   <>
                     <td className='p-2 font-normal border-r-2 border-[#2ebdaa] '>
@@ -201,26 +202,28 @@ export const columns: ColumnDef<Payroll>[] = [
                 )}
               </tr>
               <tr>
-                {paysheet.dataAllowance !== 0 && (
-                  <>
-                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
-                      Data Allowance
-                    </td>
-                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
-                      {paysheet.dataAllowance}
-                    </td>
-                  </>
-                )}
-                {paysheet.otherDeductions !== 0 && (
-                  <>
-                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
-                      Other Deductions
-                    </td>
-                    <td className='p-2 font-normal text-right'>
-                      {paysheet.otherDeductions}
-                    </td>
-                  </>
-                )}
+                {paysheet.dataAllowance !== 0 &&
+                  paysheet.dataAllowance !== null && (
+                    <>
+                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
+                        Data Allowance
+                      </td>
+                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
+                        {paysheet.dataAllowance}
+                      </td>
+                    </>
+                  )}
+                {paysheet.otherDeductions !== 0 &&
+                  paysheet.otherDeductions !== null && (
+                    <>
+                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
+                        Other Deductions
+                      </td>
+                      <td className='p-2 font-normal text-right'>
+                        {paysheet.otherDeductions}
+                      </td>
+                    </>
+                  )}
               </tr>
 
               <tr>
@@ -268,6 +271,17 @@ export const columns: ColumnDef<Payroll>[] = [
                 <td className='p-2 font-normal'></td>
               </tr>
 
+              {paysheet.loanDeduction !== 0 &&
+                paysheet.loanDeduction !== null && (
+                  <>
+                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
+                      Loan Deduction
+                    </td>
+                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
+                      {paysheet.loanDeduction}
+                    </td>
+                  </>
+                )}
               <tr>
                 <td className='p-2 font-semibold border-2 border-[#2ebdaa]'>
                   Total Earnings
@@ -282,17 +296,6 @@ export const columns: ColumnDef<Payroll>[] = [
                   {paysheet.totalDeductions}
                 </td>
               </tr>
-              {paysheet.loanDeduction !== 0 &&
-                paysheet.loanDeduction !== null && (
-                  <>
-                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
-                      Loan Deduction
-                    </td>
-                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
-                      {paysheet.loanDeduction}
-                    </td>
-                  </>
-                )}
             </tbody>
           </table>
         );

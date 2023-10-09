@@ -1,17 +1,11 @@
-'use client';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import React from 'react';
+import Calendar from './components/calendar';
 
 const MeetingsPage = () => {
-const router = useRouter();
-const { data: session } = useSession({
-  required: true,
-  onUnauthenticated() {
-    router.push('/');
-  },
-});
-  return <div>MeetingsPage</div>;
+  return (
+    <div className='w-full h-full m-auto'>
+      <Calendar />
+    </div>
+  );
 };
 
 export default MeetingsPage;

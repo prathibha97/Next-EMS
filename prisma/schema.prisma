@@ -95,6 +95,8 @@ model Employee {
   deductions         Deduction[]
   loans              Loan[]
   salaryAdvances     SalaryAdvance[]
+  meetingId          String?         @db.ObjectId
+  meeting            Meeting?        @relation(fields: [meetingId], references: [id])
 }
 
 model Attendance {
@@ -197,15 +199,15 @@ model Deduction {
 }
 
 model Loan {
-  id           String    @id @default(auto()) @map("_id") @db.ObjectId
-  amount       Float
-  date         DateTime
-  installments  Int?      @default(0)
-  isSettled Boolean? @default(false)
-  paidInstallments Int? 
-  settledAmount Float?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  amount           Float
+  date             DateTime
+  installments     Int?     @default(0)
+  isSettled        Boolean? @default(false)
+  paidInstallments Int?
+  settledAmount    Float?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   employee   Employee @relation(fields: [employeeId], references: [id])
   employeeId String   @db.ObjectId
@@ -224,8 +226,8 @@ model SalaryAdvance {
   employee   Employee @relation(fields: [employeeId], references: [id])
   employeeId String   @db.ObjectId
 
-  payroll    Payroll? @relation(fields: [payrollId], references: [id])
-  payrollId  String?  @db.ObjectId
+  payroll   Payroll? @relation(fields: [payrollId], references: [id])
+  payrollId String?  @db.ObjectId
 }
 
 model Notification {
@@ -239,4 +241,16 @@ model Notification {
 
   employeeId String   @db.ObjectId
   employee   Employee @relation(fields: [employeeId], references: [id])
+}
+
+model Meeting {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  startDatetime DateTime
+  endDatetime   DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  creatorId String @db.ObjectId
+
+  attendees Employee[]
 }

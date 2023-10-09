@@ -1,9 +1,17 @@
+import useEmployee from '@/hooks/useEmployee';
 import Calendar from './components/calendar';
+import GoogleLoginButton from './components/google-login-button';
 
-const MeetingsPage = () => {
+const MeetingsPage = async () => {
+  const { getAllEmployees,getLoggedInEmployee } = useEmployee();
+  const employees = await getAllEmployees();
+
+  const currentUser = await getLoggedInEmployee();
+
   return (
     <div className='w-full h-full m-auto'>
-      <Calendar />
+      <GoogleLoginButton />
+      <Calendar employees={employees} currentUser={currentUser}/>
     </div>
   );
 };

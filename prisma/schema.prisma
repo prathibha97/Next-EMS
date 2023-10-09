@@ -95,8 +95,6 @@ model Employee {
   deductions         Deduction[]
   loans              Loan[]
   salaryAdvances     SalaryAdvance[]
-  meetingId          String?         @db.ObjectId
-  meeting            Meeting?        @relation(fields: [meetingId], references: [id])
 }
 
 model Attendance {
@@ -243,14 +241,10 @@ model Notification {
   employee   Employee @relation(fields: [employeeId], references: [id])
 }
 
-model Meeting {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  startDatetime DateTime
-  endDatetime   DateTime
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  creatorId String @db.ObjectId
-
-  attendees Employee[]
+model Token {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

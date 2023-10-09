@@ -15,7 +15,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Employee } from '@prisma/client';
-import { Plus } from 'lucide-react';
 
 import { DropdownMenuCheckboxItemProps } from '@radix-ui/react-dropdown-menu';
 
@@ -38,49 +37,57 @@ import {
   MeetingFormValues,
 } from '@/lib/validation/meeting-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { parseISO } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 type Checked = DropdownMenuCheckboxItemProps['checked'];
 
-interface IMeetingScheduleMeetingProps {
+interface IEditMeetingProps {
   people: Employee[];
-  selectedDay: Date;
+  meeting: any;
 }
 
-function ScheduleMeeting({
-  people,
-  selectedDay,
-}: IMeetingScheduleMeetingProps) {
+function EditMeeting({ people, meeting }: IEditMeetingProps) {
   const router = useRouter();
-  const [isMounted, setIsMounted] = useState(false)
+  const [isMounted, setIsMounted] = useState(false);
+
   const [checkedEmployees, setCheckedEmployees] = useState<
     Record<string, Checked>
   >(
     people.reduce((acc, person) => {
       // @ts-ignore
-      acc[person.workEmail] = false; // Initialize all employees as unchecked
+      acc[person.workEmail] = people.includes(person) ? true : false;
       return acc;
     }, {})
   );
 
- useEffect(() => {
-   if (!isMounted) {
-     setIsMounted(true);
-   }
- }, [isMounted]);
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+      setCheckedEmployees((prevState) =>
+        people.reduce(
+          (acc, person) => {
+            acc[person.workEmail] = true; // Mark employees as checked if they are in `people`
+            return acc;
+          },
+          { ...prevState }
+        )
+      );
+    }
+  }, [isMounted, people]);
 
+  const startDateTime = parseISO(meeting.start.dateTime);
+  const endDateTime = parseISO(meeting.end.dateTime);
 
   const form = useForm<MeetingFormValues>({
     resolver: zodResolver(MeetingFormSchema),
     defaultValues: {
-      summary: '',
-      startDatetime: selectedDay.toISOString().slice(0, 16),
-      endDatetime: new Date(selectedDay.getTime() + 60 * 60 * 1000)
-        .toISOString()
-        .slice(0, 16), // Adding one hour (60 minutes * 60 seconds * 1000 milliseconds),
-      attendee: [],
+      summary: meeting.summary,
+      startDatetime: startDateTime.toISOString().slice(0, 16),
+      endDatetime: endDateTime.toISOString().slice(0, 16),
+      attendee: people.map((person) => person.workEmail),
     },
   });
 
@@ -125,15 +132,15 @@ function ScheduleMeeting({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size='icon' variant='ghost'>
-          <Plus />
+        <Button size='icon' variant='ghost' className='w-full'>
+          Edit
         </Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[525px] p-5'>
         <DialogHeader>
-          <DialogTitle>Schedule New Meeting</DialogTitle>
+          <DialogTitle>Edit Meeting</DialogTitle>
           <DialogDescription>
-            Select attendees and date to schedule your next meeting.
+            Update details of your your next meeting.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -238,4 +245,4 @@ function ScheduleMeeting({
   );
 }
 
-export default ScheduleMeeting;
+export default EditMeeting;

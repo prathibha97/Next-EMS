@@ -1,148 +1,144 @@
-// import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { Menu, Transition } from '@headlessui/react';
-// import { Button } from '@mui/material';
-// import { format, parseISO } from 'date-fns';
+'use client';
+import {
+  useCancelMeetingMutation,
+  useMyMeetingQuery,
+} from '@/app/redux/services/meetingApi';
+import { EmployeeHoverCard } from '@/components/cards/employee-hover-card';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { toast } from '@/hooks/use-toast';
 
-// import { Fragment, useState } from 'react';
-// import CustomAvatar from '../CustomAvatar';
-// import EditMeeting from '../EditMeeting';
+import { EmployeeWithLeaveBalance } from '@/types';
+import { Employee } from '@prisma/client';
+import { format, parseISO } from 'date-fns';
+import { MoreHorizontal } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import EditMeeting from './edit-meeting';
 
-// function Meeting({
-//   meeting,
-//   handleMeetingCancel,
-//   currentUser,
-//   people,
-//   handleMeetingEdit,
-// }) {
-//   const startDateTime = parseISO(meeting.start.dateTime);
-//   const endDateTime = parseISO(meeting.end.dateTime);
-
-//   const [isOpen, setIsOpen] = useState(false);
-
-//   function classNames(...classes) {
-//     return classes.filter(Boolean).join(' ');
-//   }
-
-//   const isCreator = meeting?.organizer?.email === currentUser?.email;
-
-//   const handleJoinMeeting = () => {
-//     window.open(meeting.hangoutLink, '_blank');
-//   };
-//   const handleGoogleCalendar = () => {
-//     window.open(meeting.htmlLink, '_blank');
-//   };
-
-//   return (
-//     <li className='flex items-center px-4 py-2 space-x-4 group rounded-xl focus-within:bg-gray-100 hover:bg-gray-100'>
-//       <CustomAvatar
-//         name={`${currentUser?.name?.first} ${currentUser?.name?.last}`}
-//       />
-//       <div className='flex-auto'>
-//         <p className='text-lg text-black'>{meeting.summary}</p>
-//         <p>Organized by: {meeting?.organizer?.email}</p>
-//         <p className='mt-0.5'>
-//           Duration:{' '}
-//           <time dateTime={meeting.startDatetime}>
-//             {format(startDateTime, 'h:mm a')}
-//           </time>{' '}
-//           -{' '}
-//           <time dateTime={meeting.endDatetime}>
-//             {format(endDateTime, 'h:mm a')}
-//           </time>
-//         </p>
-//         <Button onClick={handleJoinMeeting}>Join Meeting</Button>
-//         <Button onClick={handleGoogleCalendar}>View in Google Calendar</Button>
-//       </div>
-//       {meeting?.attendee?.length > 0 && (
-//         <div className='flex mt-2'>
-//           {meeting?.attendees?.map((attendee, index) => (
-//             <CustomAvatar
-//               key={index}
-//               name={`${attendee.email}`}
-//               size={28}
-//               style={{ fontSize: 12 }}
-//             />
-//           ))}
-//         </div>
-//       )}
-//       {isCreator && (
-//         <Menu
-//           as='div'
-//           className='relative opacity-0 focus-within:opacity-100 group-hover:opacity-100'
-//         >
-//           <div>
-//             <Menu.Button className='-m-2 flex items-center rounded-full p-1.5 text-gray-500 hover:text-gray-600'>
-//               <span className='sr-only'>Open options</span>
-//               <FontAwesomeIcon
-//                 icon={faEllipsisVertical}
-//                 className='w-6 h-6'
-//                 aria-hidden='true'
-//               />
-//             </Menu.Button>
-//           </div>
-
-//           <Transition
-//             as={Fragment}
-//             enter='transition ease-out duration-100'
-//             enterFrom='transform opacity-0 scale-95'
-//             enterTo='transform opacity-100 scale-100'
-//             leave='transition ease-in duration-75'
-//             leaveFrom='transform opacity-100 scale-100'
-//             leaveTo='transform opacity-0 scale-95'
-//           >
-//             <Menu.Items className='absolute right-0 z-10 mt-2 origin-top-right bg-white rounded-md shadow-lg w-36 ring-1 ring-black ring-opacity-5 focus:outline-none'>
-//               <div className='py-1'>
-//                 <Menu.Item>
-//                   {({ active }) => (
-//                     <button
-//                       type='button'
-//                       className={classNames(
-//                         active ? 'bg-gray-100  text-gray-900' : 'text-gray-700',
-//                         'block px-4 py-2 text-sm w-full'
-//                       )}
-//                       onClick={() => setIsOpen(true)}
-//                     >
-//                       Edit
-//                     </button>
-//                   )}
-//                 </Menu.Item>
-//                 <Menu.Item>
-//                   {({ active }) => (
-//                     <button
-//                       type='button'
-//                       className={classNames(
-//                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-//                         'block px-4 py-2 text-sm w-full'
-//                       )}
-//                       onClick={() => handleMeetingCancel(meeting?.id)}
-//                     >
-//                       Cancel
-//                     </button>
-//                   )}
-//                 </Menu.Item>
-//               </div>
-//             </Menu.Items>
-//           </Transition>
-//         </Menu>
-//       )}
-//       {isOpen && (
-//         <EditMeeting
-//           isOpen={isOpen}
-//           people={people}
-//           setIsOpen={setIsOpen}
-//           handleMeetingEdit={handleMeetingEdit}
-//           meeting={meeting}
-//         />
-//       )}
-//     </li>
-//   );
-// }
-
-// export default Meeting;
-
-const Meeting = () => {
-  return ( <div>Meeting</div> );
+interface IMeetingProps {
+  meeting: any;
+  currentUser: EmployeeWithLeaveBalance;
+  people: Employee[];
 }
- 
+const Meeting = ({ currentUser, meeting, people }: IMeetingProps) => {
+  const router = useRouter();
+  const [cancelMeeting] = useCancelMeetingMutation();
+  // @ts-ignore
+  const { refetch: refetchMeetings } = useMyMeetingQuery();
+
+  const startDateTime = parseISO(meeting.start.dateTime);
+  const endDateTime = parseISO(meeting.end.dateTime);
+
+  const isCreator = meeting?.organizer?.email === currentUser?.workEmail;
+
+  const handleJoinMeeting = () => {
+    window.open(meeting.hangoutLink, '_blank');
+  };
+  const handleGoogleCalendar = () => {
+    window.open(meeting.htmlLink, '_blank');
+  };
+
+  const handleMeetingCancel = async (id: string) => {
+    try {
+      const res = await cancelMeeting({ id }).unwrap();
+      toast({
+        title: 'Meeting Canceled Successfully',
+      });
+      refetchMeetings();
+      router.refresh();
+    } catch (error: any) {
+      toast({
+        title: 'Something went wrong!',
+        description: error.message,
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleMeetingEdit = () =>
+    // id,
+    // summary,
+    // selectedPeople,
+    // startValue,
+    // endValue
+    {
+      // try {
+      //   dispatch(editMeeting(id, summary, selectedPeople.map((person) => person.email), startValue, endValue));
+      //   setMeetingChangeCount(prev => prev + 1);
+      //   setAlert({ open: true, message: 'Meeting Edited Successfully', severity: 'success' });
+      // } catch (err) {
+      //   setAlert({ open: true, message: err.response.data.message, severity: 'error' });
+      // }
+    };
+
+  return (
+    <li>
+      <Card>
+        <CardHeader>
+          <CardTitle className='flex justify-between'>
+            <div className='text-2xl'>{meeting.summary}</div>
+            {isCreator && (
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <MoreHorizontal />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem asChild>
+                    <EditMeeting meeting={meeting} people={people} />
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className='flex text-red-500 text-center w-full'
+                    onClick={() => handleMeetingCancel(meeting.id)}
+                  >
+                    Cancel
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </CardTitle>
+          <CardDescription>
+            <p>Organized by: {meeting.organizer.email}</p>
+            <p>
+              Duration:{' '}
+              <time dateTime={meeting.startDatetime}>
+                {format(startDateTime, 'h:mm a')}{' '}
+              </time>{' '}
+              -{' '}
+              <time dateTime={meeting.end.dateTime}>
+                {format(endDateTime, 'h:mm a')}{' '}
+              </time>{' '}
+            </p>
+            <p>
+              Attendees:
+              {people.map((person) => (
+                <EmployeeHoverCard key={person.id} employee={person} />
+              ))}
+            </p>
+          </CardDescription>
+        </CardHeader>
+        <CardContent className='space-y-3'>
+          <Button variant={'secondary'} onClick={handleJoinMeeting}>
+            Join Meeting
+          </Button>
+          <Button variant={'outline'} onClick={handleGoogleCalendar}>
+            View in Google Calendar
+          </Button>
+        </CardContent>
+      </Card>
+    </li>
+  );
+};
+
 export default Meeting;

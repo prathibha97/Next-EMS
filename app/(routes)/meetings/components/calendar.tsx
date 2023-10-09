@@ -1,5 +1,5 @@
 'use client';
-import { useGetEmployeesQuery } from '@/app/redux/services/employeeApi';
+import { Employee } from '@prisma/client';
 import {
   add,
   eachDayOfInterval,
@@ -14,45 +14,38 @@ import {
   parseISO,
   startOfToday,
 } from 'date-fns';
-import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
-import { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import Meetings from './meeting';
 import ScheduleMeeting from './schedule-meeting';
-import { Button } from '@/components/ui/button';
+import { useMyMeetingQuery } from '@/app/redux/services/meetingApi';
+import { EmployeeWithLeaveBalance } from '@/types';
 
 function classNames(...classes: (string | boolean)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
+interface ICalendarProps {
+  employees: Employee[];
+  currentUser: EmployeeWithLeaveBalance | null;
+}
 
-function Calendar() {
+function Calendar({ employees,currentUser }: ICalendarProps) {
   const today = startOfToday();
   const [selectedDay, setSelectedDay] = useState(today);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'));
 
   const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date());
 
-  // Define a state variable to keep track of whether new meetings have been added or removed
-  const [meetingChangeCount, setMeetingChangeCount] = useState(0);
+// @ts-ignore
+  const { data: meetings } = useMyMeetingQuery();
 
-  // const { data: meetings, refetch: refetchMeetings } = useMyMeetingQuery({
-  //   refetchOnMountOrArgChange: true,
-  //   refetchOnReconnect: true,
-  //   refetchOnFocus: true,
-  //   refetchOnWindowFocus: true,
-  // });
-
-  const meetings = [];
-  const { data: employees, isLoading } = useGetEmployeesQuery();
-
-  // Second useEffect hook to get meetings again and reset meetingChangeCount
-  // useEffect(() => {
-  //   if (meetingChangeCount > 0) {
-  //     refetchMeetings();
-  //     setMeetingChangeCount(0);
-  //   }
-  // }, [meetingChangeCount]);
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+    }
+  }, [isMounted]);
 
   const days = eachDayOfInterval({
     start: firstDayCurrentMonth,
@@ -69,53 +62,9 @@ function Calendar() {
     setCurrentMonth(format(firstDayNextMonth, 'MMM-yyyy'));
   }
 
-  const selectedDayMeetings = meetings?.filter((meeting) =>
+  const selectedDayMeetings = meetings?.filter((meeting:any) =>
     isSameDay(parseISO(meeting?.start?.dateTime), selectedDay)
   );
-
-  const handleMeetingCancel = async (id) => {
-    // try {
-    //   const res = await cancelMeeting({ id }).unwrap();
-    //   dispatch(setcancelMeeting({ meetingId: res._id }));
-    //   setMeetingChangeCount(prev => prev + 1);
-    //   setAlert({ open: true, message: 'Meeting Cancelled Successfully', severity: 'success' });
-    // } catch (err) {
-    //   setAlert({ open: true, message: err.response.data.message, severity: 'error' });
-    // }
-  };
-
-  const handleMeetingEdit = () =>
-    // id,
-    // summary,
-    // selectedPeople,
-    // startValue,
-    // endValue
-    {
-      // try {
-      //   dispatch(editMeeting(id, summary, selectedPeople.map((person) => person.email), startValue, endValue));
-      //   setMeetingChangeCount(prev => prev + 1);
-      //   setAlert({ open: true, message: 'Meeting Edited Successfully', severity: 'success' });
-      // } catch (err) {
-      //   setAlert({ open: true, message: err.response.data.message, severity: 'error' });
-      // }
-    };
-
-  const handleSubmit = async () =>
-    // summary,
-    // selectedPeople,
-    // startValue,
-    // endValue
-    {
-      // try {
-      //   const meeting = await scheduleMeeting({ summary, attendee: selectedPeople.map((person) => person.email), startDatetime: startValue, endDatetime: endValue }).unwrap()
-      //   dispatch(setScheduleMeeting({ meeting }))
-      //   setMeetingChangeCount(prev => prev + 1);
-      //   setAlert({ open: true, message: `meeting scheduled with ${selectedPeople?.map((person) => person?.name?.first)} ${selectedPeople?.map((person) => person?.name?.last)} on ${startValue} to ${endValue}`, severity: 'success' });
-      // } catch (err) {
-      //   setAlert({ open: true, message: error?.data?.messeage, severity: 'error' });
-      // }
-      // setIsOpen(false)
-    };
 
   const colStartClasses = [
     '',
@@ -127,8 +76,9 @@ function Calendar() {
     'col-start-7',
   ];
 
-  // if (isCancelMeetingLoading) return <Loader />;
-  if (isLoading) return <p>Loading...</p>;
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className=' pt-12'>
@@ -207,7 +157,7 @@ function Calendar() {
                   </button>
 
                   <div className='w-1 h-1 mx-auto mt-1'>
-                    {meetings?.some((meeting) =>
+                    {meetings?.some((meeting:any) =>
                       isSameDay(parseISO(meeting.start.dateTime), day)
                     ) ? (
                       <div className='w-1 h-1 rounded-full bg-sky-500' />
@@ -225,25 +175,17 @@ function Calendar() {
                   {format(selectedDay, 'MMM dd, yyy')}
                 </time>
               </h2>
-              <ScheduleMeeting
-              // isOpen={isOpen}
-              // setIsOpen={setIsOpen}
-              // selectedDay={selectedDay}
-              // people={employees}
-              // handleSubmit={handleSubmit}
-              />
+              <ScheduleMeeting selectedDay={selectedDay} people={employees} />
             </div>
             <div>
               <ol className='mt-4 space-y-1 text-sm leading-6 text-gray-500'>
                 {selectedDayMeetings?.length > 0 ? (
-                  selectedDayMeetings?.map((meeting) => (
+                  selectedDayMeetings?.map((meeting:any) => (
                     <Meetings
-                    // meeting={meeting}
-                    // key={meeting.id}
-                    // handleMeetingCancel={handleMeetingCancel}
-                    // currentUser={user}
-                    // handleMeetingEdit={handleMeetingEdit}
-                    // people={employees}
+                      meeting={meeting}
+                      key={meeting.id}
+                      currentUser={currentUser}
+                      people={employees}
                     />
                   ))
                 ) : (

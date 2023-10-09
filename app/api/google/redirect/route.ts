@@ -36,5 +36,5 @@ export async function GET(req: Request) {
     });
   }
 
-  return NextResponse.redirect('http://localhost:3000/meetings');
+  return NextResponse.redirect(process.env.NEXT_PUBLIC_MEETING_REDIRECT_URL!);
 }

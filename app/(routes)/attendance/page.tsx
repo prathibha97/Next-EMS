@@ -6,11 +6,10 @@ import {
 import { useGetLoggedInEmployeeQuery } from '@/app/redux/services/employeeApi';
 import ActionButton from '@/components/buttons/action-button';
 import { DataTable } from '@/components/data-table';
+import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from '@/hooks/use-toast';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { columns } from './components/columns';
-import { Skeleton } from '@/components/ui/skeleton';
 
 const AttendancePage = () => {
   const router = useRouter();
@@ -19,9 +18,11 @@ const AttendancePage = () => {
 
   const [markAttendance, { isLoading }] = useMarkAttendanceMutation();
 
-  const { data: attendanceList , isLoading:isAttendanceDataLoading, refetch:refetchAttendanceList} = useGetAttendanceByIdQuery(employeeId as string);
-
-  console.log(loggedInEmployee);
+  const {
+    data: attendanceList,
+    isLoading: isAttendanceDataLoading,
+    refetch: refetchAttendanceList,
+  } = useGetAttendanceByIdQuery(employeeId as string);
 
   const handleMarkAttendance = async () => {
     try {
@@ -54,7 +55,7 @@ const AttendancePage = () => {
     }
   };
 
-  if(isAttendanceDataLoading) return <Skeleton/>
+  if (isAttendanceDataLoading) return <Skeleton />;
 
   return (
     <div className='w-[810px]'>

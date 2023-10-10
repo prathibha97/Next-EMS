@@ -74,6 +74,7 @@
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.45.4",
+    "react-loader-spinner": "^5.4.5",
     "react-redux": "^8.1.2",
     "recharts": "^2.7.3",
     "redux-logger": "^3.0.6",

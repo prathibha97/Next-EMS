@@ -2,6 +2,8 @@ import useLeaves from '@/hooks/useLeaves';
 import { columns } from './components/columns';
 import { LeavesDataTable } from './components/leaves-datatable';
 
+export const revalidate = 0;
+
 const LeavesPage = async () => {
   const { getAllLeaveRequests } = useLeaves();
 

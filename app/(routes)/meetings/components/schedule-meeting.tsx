@@ -19,10 +19,7 @@ import { Plus } from 'lucide-react';
 
 import { DropdownMenuCheckboxItemProps } from '@radix-ui/react-dropdown-menu';
 
-import {
-  useMyMeetingQuery,
-  useScheduleMeetingMutation,
-} from '@/app/redux/services/meetingApi';
+import { useScheduleMeetingMutation } from '@/app/redux/services/meetingApi';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -39,7 +36,7 @@ import {
 } from '@/lib/validation/meeting-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 type Checked = DropdownMenuCheckboxItemProps['checked'];
@@ -47,14 +44,16 @@ type Checked = DropdownMenuCheckboxItemProps['checked'];
 interface IMeetingScheduleMeetingProps {
   people: Employee[];
   selectedDay: Date;
+  updateMeetings: Dispatch<SetStateAction<boolean>>;
 }
 
 function ScheduleMeeting({
   people,
   selectedDay,
+  updateMeetings,
 }: IMeetingScheduleMeetingProps) {
   const router = useRouter();
-  const [isMounted, setIsMounted] = useState(false)
+  const [isMounted, setIsMounted] = useState(false);
   const [checkedEmployees, setCheckedEmployees] = useState<
     Record<string, Checked>
   >(
@@ -65,12 +64,11 @@ function ScheduleMeeting({
     }, {})
   );
 
- useEffect(() => {
-   if (!isMounted) {
-     setIsMounted(true);
-   }
- }, [isMounted]);
-
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+    }
+  }, [isMounted]);
 
   const form = useForm<MeetingFormValues>({
     resolver: zodResolver(MeetingFormSchema),
@@ -91,8 +89,6 @@ function ScheduleMeeting({
     }));
   };
   const [scheduleMeeting, { isLoading }] = useScheduleMeetingMutation();
-  // @ts-ignore
-  const { refetch: refetchMeetings } = useMyMeetingQuery();
 
   const onSubmit = async (values: MeetingFormValues) => {
     try {
@@ -104,11 +100,14 @@ function ScheduleMeeting({
         startDatetime: new Date(values.startDatetime),
         endDatetime: new Date(values.endDatetime),
       }).unwrap();
-      refetchMeetings();
       router.refresh();
       toast({
         title: 'Meeting Scheduled Successfully',
       });
+      // Trigger update in parent component
+      if (updateMeetings) {
+        updateMeetings(true); // Reset to false after triggering update
+      }
     } catch (error: any) {
       toast({
         title: 'Something went wrong!',

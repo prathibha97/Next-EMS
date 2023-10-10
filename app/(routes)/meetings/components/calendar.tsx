@@ -1,4 +1,6 @@
 'use client';
+import { useMeetings } from '@/hooks/useMeetings';
+import { EmployeeWithLeaveBalance } from '@/types';
 import { Employee } from '@prisma/client';
 import {
   add,
@@ -18,8 +20,6 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Meetings from './meeting';
 import ScheduleMeeting from './schedule-meeting';
-import { useMyMeetingQuery } from '@/app/redux/services/meetingApi';
-import { EmployeeWithLeaveBalance } from '@/types';
 
 function classNames(...classes: (string | boolean)[]): string {
   return classes.filter(Boolean).join(' ');
@@ -28,24 +28,43 @@ function classNames(...classes: (string | boolean)[]): string {
 interface ICalendarProps {
   employees: Employee[];
   currentUser: EmployeeWithLeaveBalance | null;
+  userMeetings: any;
 }
 
-function Calendar({ employees,currentUser }: ICalendarProps) {
+function Calendar({ employees, currentUser, userMeetings }: ICalendarProps) {
+  const { getUserMeetings } = useMeetings();
   const today = startOfToday();
   const [selectedDay, setSelectedDay] = useState(today);
-  const [isMounted, setIsMounted] = useState(false)
+  const [isMounted, setIsMounted] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'));
+  const [meetings, setMeetings] = useState([]);
+  const [updateMeetings, setUpdateMeetings] = useState(false);
 
   const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date());
-
-// @ts-ignore
-  const { data: meetings } = useMyMeetingQuery();
 
   useEffect(() => {
     if (!isMounted) {
       setIsMounted(true);
     }
   }, [isMounted]);
+
+  useEffect(() => {
+    if (userMeetings) {
+      setMeetings(userMeetings);
+    }
+  }, [userMeetings]);
+
+  useEffect(() => {
+    if (updateMeetings) {
+      const getMeetings = async () => {
+        const meetings = await getUserMeetings();
+        setMeetings(meetings);
+      };
+      getMeetings();
+    }
+  }, [updateMeetings]);
+
+  console.log(meetings);
 
   const days = eachDayOfInterval({
     start: firstDayCurrentMonth,
@@ -62,7 +81,7 @@ function Calendar({ employees,currentUser }: ICalendarProps) {
     setCurrentMonth(format(firstDayNextMonth, 'MMM-yyyy'));
   }
 
-  const selectedDayMeetings = meetings?.filter((meeting:any) =>
+  const selectedDayMeetings = meetings?.filter((meeting: any) =>
     isSameDay(parseISO(meeting?.start?.dateTime), selectedDay)
   );
 
@@ -157,7 +176,7 @@ function Calendar({ employees,currentUser }: ICalendarProps) {
                   </button>
 
                   <div className='w-1 h-1 mx-auto mt-1'>
-                    {meetings?.some((meeting:any) =>
+                    {meetings?.some((meeting: any) =>
                       isSameDay(parseISO(meeting.start.dateTime), day)
                     ) ? (
                       <div className='w-1 h-1 rounded-full bg-sky-500' />
@@ -175,15 +194,20 @@ function Calendar({ employees,currentUser }: ICalendarProps) {
                   {format(selectedDay, 'MMM dd, yyy')}
                 </time>
               </h2>
-              <ScheduleMeeting selectedDay={selectedDay} people={employees} />
+              <ScheduleMeeting
+                selectedDay={selectedDay}
+                people={employees}
+                updateMeetings={setUpdateMeetings}
+              />
             </div>
             <div>
               <ol className='mt-4 space-y-1 text-sm leading-6 text-gray-500'>
                 {selectedDayMeetings?.length > 0 ? (
-                  selectedDayMeetings?.map((meeting:any) => (
+                  selectedDayMeetings?.map((meeting: any) => (
                     <Meetings
                       meeting={meeting}
                       key={meeting.id}
+                      // @ts-ignore
                       currentUser={currentUser}
                       people={employees}
                     />

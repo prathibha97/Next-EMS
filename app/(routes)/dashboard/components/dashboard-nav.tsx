@@ -1,5 +1,5 @@
+'use client'
 import Link from 'next/link';
-import * as React from 'react';
 
 import { UserNav } from '@/app/(routes)/dashboard/components/user-nav';
 import { NotificationButton } from '@/components/buttons/notification-button';
@@ -15,8 +15,20 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
+import React, { useEffect, useState } from 'react';
 
 export function DashboardNav({ className }: React.HTMLAttributes<HTMLElement>) {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+    }
+  }, [isMounted]);
+
+  if (!isMounted) {
+    return null;
+  }
   return (
     <div className={`flex justify-between`}>
       <NavigationMenu className={className}>

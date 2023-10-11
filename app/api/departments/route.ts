@@ -1,16 +1,16 @@
 import prisma from '@/lib/prisma';
-import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
+import { getAuthSession } from '../auth/[...nextauth]/options';
 
 export async function POST(req: Request) {
-  const session = getServerSession();
-  if (!session) {
+  const session = await getAuthSession();
+  if (!session || session.user.role !== 'ADMIN') {
     throw new NextResponse('Unauthorized', { status: 401 });
   }
   const body = await req.json();
   const { name, description, manager } = body;
 
-  if (!name || !description || !manager ) {
+  if (!name || !description || !manager) {
     return new Response(`All fields are required`, {
       status: 400,
     });
@@ -40,8 +40,8 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
-  const session = getServerSession();
-  if (!session) {
+  const session = await getAuthSession();
+  if (!session || session.user.role !== 'ADMIN') {
     throw new NextResponse('Unauthorized', { status: 401 });
   }
   try {

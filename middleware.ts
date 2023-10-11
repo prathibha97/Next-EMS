@@ -34,6 +34,7 @@ export const config = {
     '/leaves',
     '/attendance',
     '/settings',
+    '/meetings',
     '/organization/:path*',
     '/projects/:path*',
     '/clients/:path*',

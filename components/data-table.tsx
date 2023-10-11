@@ -38,6 +38,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   searchFilter?: string | undefined;
   placeholder?: string | undefined;
+  inputType?: string | undefined;
 }
 
 export function DataTable<TData, TValue>({
@@ -45,6 +46,7 @@ export function DataTable<TData, TValue>({
   data,
   searchFilter,
   placeholder,
+  inputType
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -77,12 +79,11 @@ export function DataTable<TData, TValue>({
     <div className='w-full bg-white dark:bg-black p-2 px-5 rounded-lg '>
       <div className='flex items-center py-4'>
         <Input
-        type="date"
+          type={inputType || 'date'}
           placeholder={`Filter ${placeholder}...`}
           value={
-            (table
-              .getColumn(searchFilter || '')
-              ?.getFilterValue() as string) ?? ''
+            (table.getColumn(searchFilter || '')?.getFilterValue() as string) ??
+            ''
           }
           onChange={(event) =>
             table

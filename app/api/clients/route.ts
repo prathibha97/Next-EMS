@@ -33,3 +33,20 @@ export async function POST(req: Request) {
     });
   }
 }
+
+export async function GET(req: Request) {
+  try {
+    const session = await getAuthSession();
+    if (!session || session.user.role !== 'ADMIN') {
+      throw new NextResponse('Unauthorized', { status: 401 });
+    }
+
+    const clients = await prisma.client.findMany({});
+    return NextResponse.json(clients);
+  } catch (error: any) {
+    console.log(error.message);
+    return new Response(`Could not fetch clients - ${error.message}`, {
+      status: 500,
+    });
+  }
+}

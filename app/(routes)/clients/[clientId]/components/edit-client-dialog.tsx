@@ -36,7 +36,6 @@ interface EditClientDialogProps {
 }
 
 const EditClientDialog: FC<EditClientDialogProps> = ({ client }) => {
-  console.log(client);
   const router = useRouter();
 
   const [isMounted, setIsMounted] = useState(false);

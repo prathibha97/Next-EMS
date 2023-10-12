@@ -23,13 +23,7 @@ async function getTasks() {
 }
 
 export default async function TaskPage() {
-  // const router = useRouter();
-  // const { data: session } = useSession({
-  //   required: true,
-  //   onUnauthenticated() {
-  //     router.push('/');
-  //   },
-  // });
+
   const tasks = await getTasks();
 
   return (
@@ -41,9 +35,6 @@ export default async function TaskPage() {
             <p className='text-muted-foreground'>
               Here&apos;s a list of your tasks for this month!
             </p>
-          </div>
-          <div className='flex items-center space-x-2'>
-            <UserNav />
           </div>
         </div>
         <DataTable data={tasks} columns={columns} />

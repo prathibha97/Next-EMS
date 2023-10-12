@@ -1,9 +1,8 @@
-import Sidebar from '@/components/sidebar';
 import { Separator } from '@/components/ui/separator';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Leave Management',
+  title: 'Client Management',
   description: 'Advanced form example using react-hook-form and Zod.',
 };
 

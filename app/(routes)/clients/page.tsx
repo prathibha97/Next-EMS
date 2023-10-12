@@ -1,25 +1,15 @@
-'use client'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
+import useClient from '@/hooks/useClient';
+import ViewClients from './components/view-clients';
 
-const ClientPage = () => {
-  const router = useRouter()
-
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push('/');
-    },
-  });
-  useEffect(() => {
-    if (session && session?.user?.role !== 'ADMIN') {
-      router.push('/denied');
-    }
-  }, [session]);
+export const revalidate = 0;
+const ClientPage = async () => {
+  const { getAllClients } = useClient();
+  const clients = await getAllClients();
   return (
-    <div>ClientPage</div>
-  )
-}
+    <div>
+      <ViewClients clients={clients} />
+    </div>
+  );
+};
 
-export default ClientPage
+export default ClientPage;

@@ -1,24 +1,16 @@
-'use client'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
+import useProject from '@/hooks/useProject';
+import ViewProjects from './components/view-projects';
 
-const ProjectPage = () => {
-  const router = useRouter();
- const { data: session } = useSession({
-   required: true,
-   onUnauthenticated() {
-     router.push('/');
-   },
- });
- useEffect(() => {
-   if (session && session?.user?.role !== 'ADMIN') {
-     router.push('/denied');
-   }
- }, [session]);
+export const revalidate = 0;
+
+const ProjectPage = async () => {
+  const { getAllProjects } = useProject();
+  const projects = await getAllProjects();
   return (
-    <>ProjectPage</>
-  )
-}
+    <div>
+      <ViewProjects projects={projects} />
+    </div>
+  );
+};
 
-export default ProjectPage
+export default ProjectPage;

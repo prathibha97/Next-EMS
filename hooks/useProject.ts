@@ -33,6 +33,14 @@ const useProject = () => {
               }
             }
           }
+        },
+        tasks: {
+          select:{
+            title:true,
+            label:true,
+            description:true,
+            status:true,
+          }
         }
       },
     });

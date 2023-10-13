@@ -3,7 +3,7 @@ import { useRemoveProjectMutation } from '@/app/redux/services/projectApi';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
-import { ProjectWithClientWithAssignees } from '@/types';
+import { ProjectWithClientWithAssigneesWithTasks } from '@/types';
 import { format } from 'date-fns';
 import { Trash } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,7 @@ import { FC } from 'react';
 import EditProjectDialog from './edit-project-dialog';
 
 interface ViewProjectProps {
-  project: ProjectWithClientWithAssignees | null;
+  project: ProjectWithClientWithAssigneesWithTasks | null;
 }
 
 const ViewProject: FC<ViewProjectProps> = ({ project }) => {
@@ -56,6 +56,7 @@ const ViewProject: FC<ViewProjectProps> = ({ project }) => {
         <p>client: {project?.client.name}</p>
         <p>status: {project?.status}</p>
         <p>deadline: {format(project?.endDate as Date, 'dd-MM-yyyy')}</p>
+        <p>tasks: {project?.tasks.map(task => task.title)}</p>
       </div>
     </div>
   );

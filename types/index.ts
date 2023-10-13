@@ -1,4 +1,4 @@
-import { Client, Employee, EmployeeProject, LeaveBalance, Payroll, Project } from '@prisma/client';
+import { Client, Employee, EmployeeProject, LeaveBalance, Payroll, Project, Task } from '@prisma/client';
 import { Server as NetServer, Socket } from 'net';
 import { NextApiResponse } from 'next';
 import { Server as SocketIOServer } from 'socket.io';
@@ -19,8 +19,10 @@ export type EmployeeWithLeaveBalance = Employee & {
   leaveBalance: LeaveBalance;
 };
 
-export type ProjectWithClientWithAssignees = Project & {
+export type ProjectWithClientWithAssigneesWithTasks = Project & {
   client: Client;
 } & {
   projectAssignees: EmployeeProject;
+} & {
+  tasks: Task[];
 };

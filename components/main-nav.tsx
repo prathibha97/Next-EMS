@@ -99,6 +99,13 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
                   >
                     View all projects that are currently active and in progress.
                   </ListItem>
+                  <ListItem
+                    href='/projects/tasks'
+                    title='Manage Tasks'
+                    className='hover:bg-slate-50 dark:hover:bg-gray-700'
+                  >
+                    Manage tasks related to projects.
+                  </ListItem>
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
@@ -154,9 +161,14 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
           </NavigationMenuList>
         </NavigationMenu>
       )}
-      <div className={cn('flex items-center space-x-4 pr-5',
-      session?.user.role === 'USER' ? 'justify-end ml-auto' : 'justify-between ml-auto'
-      )}>
+      <div
+        className={cn(
+          'flex items-center space-x-4 pr-5',
+          session?.user.role === 'USER'
+            ? 'justify-end ml-auto'
+            : 'justify-between ml-auto'
+        )}
+      >
         <NotificationButton />
         <ModeToggle />
         <UserNav />

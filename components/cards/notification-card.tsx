@@ -90,15 +90,15 @@ export function NotificationCard({
                 <p
                   className={cn(
                     'text-sm font-medium leading-none',
-                    notification.isRead === true && 'font-light'
+                    notification?.isRead === true && 'font-light'
                   )}
                 >
-                  {notification.message}
+                  {notification?.message}
                 </p>
-                {notification.createdAt && (
+                {notification?.createdAt && (
                   <p className='text-sm text-muted-foreground'>
                     {formatDistance(
-                      new Date(notification.createdAt),
+                      new Date(notification?.createdAt),
                       new Date(),
                       {
                         addSuffix: true,

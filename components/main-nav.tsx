@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import * as React from 'react';
 
 import { UserNav } from '@/app/(routes)/dashboard/components/user-nav';
 import { Icons } from '@/components/icons';
@@ -19,6 +18,7 @@ import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { NotificationButton } from './buttons/notification-button';
 import { ModeToggle } from './buttons/theme-toggle-button';
+import React, { useEffect, useState } from 'react';
 
 export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
@@ -26,14 +26,22 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
   const homepage = pathname === '/';
   const dashboard = pathname === '/dashboard';
 
-  // if(session?.user.role !== 'ADMIN') return null
+  // const [isMounted, setIsMounted] = useState(false);
+
+  // useEffect(() => {
+  //   if (!isMounted) {
+  //     setIsMounted(true);
+  //   }
+  // }, []);
+
+  // if (!isMounted) {
+  //   return null;
+  // }
   return (
     <div
-      className={`flex justify-between w-full mt-3 pl-8 ${
-        dashboard && 'hidden'
-      } ${homepage && 'hidden'}`}
+      className={`flex justify-between w-full mt-3 pl-8  ${homepage && 'hidden'}`}
     >
-      {session?.user.role === 'ADMIN' && (
+      {session?.user?.role === 'ADMIN' && (
         <NavigationMenu className={className}>
           <NavigationMenuList>
             <NavigationMenuItem>

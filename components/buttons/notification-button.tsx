@@ -16,6 +16,13 @@ import { NotificationCard } from '../cards/notification-card';
 export function NotificationButton() {
   const router = useRouter();
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+    }
+  }, []);
   // @ts-ignore
   const [employee, setEmployee] = useState<Employee>({});
 
@@ -71,6 +78,10 @@ export function NotificationButton() {
 
   if (!employee) {
     return <div>Loading...</div>;
+  }
+
+  if(!isMounted){
+    return null
   }
 
   return (

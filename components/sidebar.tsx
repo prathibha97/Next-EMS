@@ -7,6 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Button } from './ui/button';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { setLogout } from '@/app/redux/features/authSlice';
+import { useEffect, useState } from 'react';
 
 const Sidebar = () => {
   const {data:session} = useSession()
@@ -17,6 +18,18 @@ const Sidebar = () => {
 
   // Determine whether to apply the md:flex class based on homepage
   const sidebarClass = homepage ? 'hidden' : 'md:flex';
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+    }
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className={`${sidebarClass}`}>
@@ -69,3 +82,9 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+
+
+
+
+

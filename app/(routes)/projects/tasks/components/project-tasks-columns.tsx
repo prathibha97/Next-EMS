@@ -9,14 +9,8 @@ import { labels, priorities, statuses } from '../data/data';
 import { Task } from '../data/schema';
 import { DataTableColumnHeader } from './data-table-column-header';
 import { DataTableRowActions } from './data-table-row-actions';
-import { Client, Project } from '@prisma/client';
-import { format } from 'date-fns';
 
-type ProjectWithClient = Project & {
-  client: Client
-}
-
-export const columns: ColumnDef<ProjectWithClient>[] = [
+export const columns: ColumnDef<Task>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -38,44 +32,31 @@ export const columns: ColumnDef<ProjectWithClient>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  // {
-  //   accessorKey: 'id',
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title='Task' />
-  //   ),
-  //   cell: ({ row }) => <div className='w-[80px]'>{row.getValue('id')}</div>,
-  //   enableSorting: false,
-  //   enableHiding: false,
-  // },
   {
-    accessorKey: 'name',
+    accessorKey: 'taskId',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Name' />
+      <DataTableColumnHeader column={column} title='Task' />
+    ),
+    cell: ({ row }) => <div className='w-[80px]'>{row.getValue('taskId')}</div>,
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: 'title',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Title' />
     ),
     cell: ({ row }) => {
-      const label = labels.find(
-        (label) => label.value === row.original.category
-      );
+      const label = labels.find((label) => label.value === row.original.label);
 
       return (
         <div className='flex space-x-2'>
           {label && <Badge variant='outline' className='dark:bg-purple-500/60'>{label.label}</Badge>}
           <span className='max-w-[500px] truncate font-medium'>
-            {row.getValue('name')}
+            {row.getValue('title')}
           </span>
         </div>
       );
-    },
-  },
-  {
-    accessorKey: 'client_name',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Client' />
-    ),
-    // cell: ({ row }) => <div className='w-[80px]'>{row.getValue('client.name')}</div>,
-    accessorFn: (row) => row.client.name,
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
     },
   },
   {
@@ -106,43 +87,48 @@ export const columns: ColumnDef<ProjectWithClient>[] = [
     },
   },
   {
-    accessorKey: 'endDate',
+    accessorKey: 'priority',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Deadline' />
+      <DataTableColumnHeader column={column} title='Priority' />
     ),
-    // cell: ({ row }) => <div className='w-[80px]'>{row.getValue('client.name')}</div>,
-    accessorFn: (row) => format(row.endDate as Date, 'dd-MM-yyyy'),
+    cell: ({ row }) => {
+      const priority = priorities.find(
+        (priority) => priority.value === row.getValue('priority')
+      );
+
+      if (!priority) {
+        return null;
+      }
+
+      let priorityClassName = '';
+      switch (priority.value) {
+        case 'High':
+          priorityClassName = 'text-red-600'; // Apply red color for high priority
+          break;
+        case 'Medium':
+          priorityClassName = 'text-yellow-600'; // Apply yellow color for medium priority
+          break;
+        case 'Low':
+          priorityClassName = 'text-green-600'; // Apply green color for low priority
+          break;
+        default:
+          priorityClassName = '';
+      }
+
+      return (
+        <div className={`flex items-center ${priorityClassName}`}>
+          {priority.icon && (
+            <priority.icon className='mr-2 h-4 w-4 text-muted-foreground' />
+          )}
+          <span>{priority.label}</span>
+        </div>
+      );
+    },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
   },
-  // {
-  //   accessorKey: 'priority',
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title='Priority' />
-  //   ),
-  //   cell: ({ row }) => {
-  //     const priority = priorities.find(
-  //       (priority) => priority.value === row.getValue('priority')
-  //     );
-
-  //     if (!priority) {
-  //       return null;
-  //     }
-
-  //     return (
-  //       <div className='flex items-center'>
-  //         {priority.icon && (
-  //           <priority.icon className='mr-2 h-4 w-4 text-muted-foreground' />
-  //         )}
-  //         <span>{priority.label}</span>
-  //       </div>
-  //     );
-  //   },
-  //   filterFn: (row, id, value) => {
-  //     return value.includes(row.getValue(id));
-  //   },
-  // },
+  
   {
     id: 'actions',
     cell: ({ row }) => <DataTableRowActions row={row} />,

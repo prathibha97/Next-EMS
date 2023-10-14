@@ -11,6 +11,9 @@ const useClient = () => {
       where: {
         id: clientId,
       },
+      include: {
+        projects: true,
+      },
     });
     return client;
   };

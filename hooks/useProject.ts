@@ -36,10 +36,12 @@ const useProject = () => {
         },
         tasks: {
           select:{
+            taskId:true,
             title:true,
             label:true,
             description:true,
             status:true,
+            priority:true
           }
         }
       },

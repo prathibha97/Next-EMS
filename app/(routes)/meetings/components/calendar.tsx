@@ -105,7 +105,7 @@ function Calendar({ employees, currentUser, userMeetings }: ICalendarProps) {
         <div className='md:grid md:grid-cols-2 md:divide-x md:divide-gray-200'>
           <div className='md:pr-14'>
             <div className='flex items-center'>
-              <h2 className='flex-auto font-semibold text-gray-900'>
+              <h2 className='flex-auto font-semibold text-gray-900 dark:text-gray-200'>
                 {format(firstDayCurrentMonth, 'MMMM yyyy')}
               </h2>
               <button
@@ -155,7 +155,7 @@ function Calendar({ employees, currentUser, userMeetings }: ICalendarProps) {
                       !isEqual(day, selectedDay) &&
                         !isToday(day) &&
                         isSameMonth(day, firstDayCurrentMonth) &&
-                        'text-gray-900',
+                        'text-gray-900 dark:text-gray-100',
                       !isEqual(day, selectedDay) &&
                         !isToday(day) &&
                         !isSameMonth(day, firstDayCurrentMonth) &&
@@ -163,8 +163,8 @@ function Calendar({ employees, currentUser, userMeetings }: ICalendarProps) {
                       isEqual(day, selectedDay) && isToday(day) && 'bg-red-500',
                       isEqual(day, selectedDay) &&
                         !isToday(day) &&
-                        'bg-gray-900',
-                      !isEqual(day, selectedDay) && 'hover:bg-gray-200',
+                        'bg-gray-900 dark:bg-gray-700/60',
+                      !isEqual(day, selectedDay) && 'hover:bg-gray-700/60',
                       (isEqual(day, selectedDay) || isToday(day)) &&
                         'font-semibold',
                       'mx-auto flex h-8 w-8 items-center justify-center rounded-full'
@@ -188,7 +188,7 @@ function Calendar({ employees, currentUser, userMeetings }: ICalendarProps) {
           </div>
           <section className='mt-12 md:mt-0 md:pl-10'>
             <div className='flex items-center justify-between'>
-              <h2 className='font-semibold text-gray-900'>
+              <h2 className='font-semibold text-gray-900 dark:text-gray-200'>
                 Schedule for{' '}
                 <time dateTime={format(selectedDay, 'yyyy-MM-dd')}>
                   {format(selectedDay, 'MMM dd, yyy')}

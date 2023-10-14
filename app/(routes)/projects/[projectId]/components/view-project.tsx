@@ -1,13 +1,27 @@
 'use client';
 import { useRemoveProjectMutation } from '@/app/redux/services/projectApi';
-import { Icons } from '@/components/icons';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { toast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 import { ProjectWithClientWithAssigneesWithTasks } from '@/types';
 import { format } from 'date-fns';
 import { Trash } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { FC } from 'react';
+import { DataTable } from '../../tasks/components/data-table';
+import { columns } from '../../tasks/components/project-tasks-columns';
 import EditProjectDialog from './edit-project-dialog';
 
 interface ViewProjectProps {
@@ -36,28 +50,105 @@ const ViewProject: FC<ViewProjectProps> = ({ project }) => {
       });
     }
   };
+
   return (
-    <div>
-      <div className='flex space-x-3'>
+    <div className='bg-white dark:bg-black/60 p-8 rounded shadow-lg'>
+      <div className='flex justify-between mb-4'>
         <EditProjectDialog project={project} />
-        <Button
+        {/* <Button
           onClick={() => handleRemoveProject(project?.id || '')}
           variant='destructive'
           size='icon'
         >
           {isRemoveProjectLoading && (
-            <Icons.spinner className='mr-2 ml-2 h-5 w-5 animate-spin' />
+            <div className='animate-spin'>
+              <div className='spinner' />
+            </div>
           )}
           <Trash />
-        </Button>
+        </Button> */}
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              // onClick={() => handleRemoveProject(project?.id || '')}
+              variant='destructive'
+              size='icon'
+            >
+              {isRemoveProjectLoading && (
+                <div className='animate-spin'>
+                  <div className='spinner' />
+                </div>
+              )}
+              <Trash />
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete
+                project and your data from our servers.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => handleRemoveProject(project?.id || '')}
+              >
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
       <div>
-        <p>name: {project?.name}</p>
-        <p>client: {project?.client.name}</p>
-        <p>status: {project?.status}</p>
-        <p>deadline: {format(project?.endDate as Date, 'dd-MM-yyyy')}</p>
-        <p>tasks: {project?.tasks.map(task => task.title)}</p>
+        <h2 className='text-2xl font-bold mb-2'>{project?.name}</h2>
+        <div className='grid grid-cols-3 gap-4'>
+          <div>
+            <p className='font-bold'>Client:</p>
+            <p className='dark:text-slate-200'>{project?.client.name}</p>
+          </div>
+          <div>
+            <p className='font-bold'>Status:</p>
+            <p
+              className={cn(
+                'text-white',
+                project?.status === 'ACTIVE' && 'text-green-500'
+              )}
+            >
+              {project?.status}
+            </p>
+          </div>
+          <div>
+            <p className='font-bold'>Assigned to:</p>
+            <p className='dark:text-slate-200'>
+              {project?.projectAssignees
+                //  @ts-ignore
+                .map((assignee: any) => assignee.employee.name)
+                .join(', ')}
+            </p>
+          </div>
+        </div>
+        <div className='mt-4'>
+          <p className='font-bold'>Deadline:</p>
+          <p className='dark:text-slate-200'>
+            {format(project?.endDate as Date, 'dd-MM-yyyy')}
+          </p>
+        </div>
+        <div className='mt-4'>
+          <p className='font-bold mb-1'>Progress:</p>
+          <Progress value={project?.progress} />
+        </div>
       </div>
+      {project?.tasks?.length && project?.tasks?.length > 0 && (
+        <div className='mt-6'>
+          <h3 className='text-xl font-bold mb-4'>Tasks</h3>
+          <div className='bg-white dark:bg-gray-900/60 p-5 rounded-lg shadow'>
+            {/* @ts-ignore */}
+            <DataTable data={project?.tasks} columns={columns} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

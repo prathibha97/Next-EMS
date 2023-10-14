@@ -14,7 +14,7 @@ const page: FC<pageProps> = async ({ params }) => {
   // @ts-ignore
   const task:Task = await getTaskById(params.taskId);
   return (
-    <div className='w-[600px]'>
+    <div className='h-full w-[600px]'>
       <TaskEditForm task={task} />
     </div>
   );

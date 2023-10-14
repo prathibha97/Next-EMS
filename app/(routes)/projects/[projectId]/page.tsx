@@ -1,6 +1,6 @@
 import useProject from '@/hooks/useProject';
 import { FC } from 'react';
-import ViewClient from './components/view-project';
+import ViewProject from './components/view-project';
 
 interface ProjectIdPageProps {
   params: {
@@ -16,7 +16,7 @@ const ProjectIdPage: FC<ProjectIdPageProps> = async ({ params }) => {
   return (
     <div>
       {/* @ts-ignore */}
-      <ViewClient project={project} />
+      <ViewProject project={project} />
     </div>
   );
 };

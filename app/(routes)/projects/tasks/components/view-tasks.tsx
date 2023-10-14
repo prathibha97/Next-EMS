@@ -10,7 +10,9 @@ export default function ViewTasks({ tasks }: ViewTasksProps) {
   return (
     <div className='space-y-5'>
       <AddTaskDialog />
-      <DataTable data={tasks} columns={columns} />
+      <div className='bg-white dark:bg-gray-900/60 p-5 rounded-lg shadow'>
+        <DataTable data={tasks} columns={columns} />
+      </div>
     </div>
   );
 }

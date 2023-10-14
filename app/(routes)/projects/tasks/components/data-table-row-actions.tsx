@@ -36,7 +36,7 @@ export function DataTableRowActions<TData>({
 }: DataTableRowActionsProps<TData>) {
   const session = useSession();
   const router = useRouter();
-  const task = taskSchema.parse(row.original);
+  const task = row.original;
   // @ts-ignore
   const projectId = row.original.projectId;
 
@@ -127,7 +127,7 @@ export function DataTableRowActions<TData>({
         {session.data?.user.role === 'ADMIN' && (
           <>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => handleRemoveTask(task.id)}>
+            <DropdownMenuItem onClick={() => handleRemoveTask(task.id as string)}>
               Delete
             </DropdownMenuItem>
           </>

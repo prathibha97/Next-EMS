@@ -16,7 +16,7 @@ const MeetingsPage = async () => {
   const userMeetings = await getUserMeetings();
 
   return (
-    <div className='w-full h-full m-auto'>
+    <div className='w-full h-full m-auto bg-white dark:bg-black/60 rounded-lg shadow p-5'>
       <GoogleLoginButton />
       <Calendar
         employees={employees}

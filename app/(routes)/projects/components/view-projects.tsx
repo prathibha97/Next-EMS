@@ -17,7 +17,9 @@ const ViewProjects: FC<ViewProjectsProps> = ({ projects }) => {
       <Button className='mb-5' onClick={() => router.push('/projects/new')}>
         Create New Project
       </Button>
+      <div className='bg-white dark:bg-gray-900/60 p-5 rounded-lg shadow'>
       <DataTable data={projects} columns={columns} />
+      </div>
     </div>
   );
 };

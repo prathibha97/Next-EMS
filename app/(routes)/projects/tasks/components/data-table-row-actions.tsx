@@ -37,6 +37,8 @@ export function DataTableRowActions<TData>({
   const session = useSession();
   const router = useRouter();
   const task = taskSchema.parse(row.original);
+  // @ts-ignore
+  const projectId = row.original.projectId;
 
   const [updateTask] = useUpdateTaskMutation();
   const [removeTask] = useRemoveTaskMutation();
@@ -47,6 +49,7 @@ export function DataTableRowActions<TData>({
         taskId: task.id,
         body: {
           status: status.value,
+          projectId: projectId,
         },
       }).unwrap();
       toast({
@@ -93,7 +96,7 @@ export function DataTableRowActions<TData>({
         {session.data?.user.role === 'ADMIN' && (
           <>
             <DropdownMenuItem
-              onClick={() => router.push(`/projects/tasks/${task.id}/edit`)}
+              onClick={() => router.push(`/tasks/${task.id}/edit`)}
             >
               Edit
             </DropdownMenuItem>

@@ -7,6 +7,7 @@ const useTasks = () => {
         project: {
           select: {
             name: true,
+            id: true
           },
         },
       },

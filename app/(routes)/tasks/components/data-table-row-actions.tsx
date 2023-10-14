@@ -37,6 +37,8 @@ export function DataTableRowActions<TData>({
   const session = useSession();
   const router = useRouter();
   const task = taskSchema.parse(row.original);
+  // @ts-ignore
+  const projectId = row.original.projectId;
 
   const [updateTask] = useUpdateTaskMutation();
   const [removeTask] = useRemoveTaskMutation();
@@ -47,6 +49,7 @@ export function DataTableRowActions<TData>({
         taskId: task.id,
         body: {
           status: status.value,
+          projectId: projectId,
         },
       }).unwrap();
       toast({

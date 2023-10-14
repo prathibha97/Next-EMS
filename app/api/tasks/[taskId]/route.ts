@@ -9,26 +9,38 @@ interface IParams {
 export async function PUT(req: Request, { params }: { params: IParams }) {
   try {
     const session = await getAuthSession();
-    if (!session ) {
+    if (!session) {
       throw new NextResponse('Unauthorized', { status: 401 });
     }
+
     const body = await req.json();
     const { title, status, project, priority, label, description } = body;
 
+    const updateData = {
+      ...(title && { title }),
+      ...(project && {
+        project: {
+          connect: {
+            id: project,
+          },
+        },
+      }),
+      ...(priority && { priority }),
+      ...(label && { label }),
+      ...(description && { description }),
+    };
+
+    if (status !== undefined) {
+      updateData.status = status;
+    }
 
     const task = await prisma.task.update({
       where: {
         id: params.taskId,
       },
-      data: {
-        title,
-        status,
-        project,
-        priority,
-        label,
-        description,
-      },
+      data: updateData,
     });
+
     return NextResponse.json(task);
   } catch (error: any) {
     console.log(error.message);

@@ -17,9 +17,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { useUpdateTaskMutation } from '@/app/redux/services/taskApi';
+import {
+  useRemoveTaskMutation,
+  useUpdateTaskMutation,
+} from '@/app/redux/services/taskApi';
 import { toast } from '@/hooks/use-toast';
-import { TaskStatus } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { statuses } from '../data/data';
@@ -37,15 +39,16 @@ export function DataTableRowActions<TData>({
   const task = taskSchema.parse(row.original);
 
   const [updateTask] = useUpdateTaskMutation();
+  const [removeTask] = useRemoveTaskMutation();
 
   const handleUpdateStatus = async (status: any) => {
     try {
       await updateTask({
         taskId: task.id,
         body: {
-          status:status.value,
+          status: status.value,
         },
-      });
+      }).unwrap();
       toast({
         title: `Task status updated as ${status.label}`,
       });
@@ -54,6 +57,22 @@ export function DataTableRowActions<TData>({
       toast({
         title: 'Something went wrong!',
         description: `Failed to update task status. Please try again.`,
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleRemoveTask = async (taskId: string) => {
+    try {
+      await removeTask(taskId).unwrap();
+      toast({
+        title: `Task removed successfully`,
+      });
+      router.refresh();
+    } catch (error) {
+      toast({
+        title: 'Something went wrong!',
+        description: `Failed to remove task status. Please try again.`,
         variant: 'destructive',
       });
     }
@@ -73,7 +92,11 @@ export function DataTableRowActions<TData>({
       <DropdownMenuContent align='end' className='w-[160px]'>
         {session.data?.user.role === 'ADMIN' && (
           <>
-            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => router.push(`/tasks/${task.id}/edit`)}
+            >
+              Edit
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
           </>
         )}
@@ -101,7 +124,9 @@ export function DataTableRowActions<TData>({
         {session.data?.user.role === 'ADMIN' && (
           <>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleRemoveTask(task.id)}>
+              Delete
+            </DropdownMenuItem>
           </>
         )}
       </DropdownMenuContent>

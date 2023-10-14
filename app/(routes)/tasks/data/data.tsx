@@ -11,15 +11,15 @@ import {
 
 export const labels = [
   {
-    value: 'Bug',
+    value: 'bug',
     label: 'Bug',
   },
   {
-    value: 'Feature',
+    value: 'feature',
     label: 'Feature',
   },
   {
-    value: 'Documentation',
+    value: 'documentation',
     label: 'Documentation',
   },
 ];

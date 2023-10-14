@@ -1,8 +1,5 @@
-'use client';
-
-import { Button } from '@/components/ui/button';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { getAuthSession } from '@/app/api/auth/[...nextauth]/options';
+import { AddTaskDialog } from './add-task-dialog';
 import { columns } from './columns';
 import { DataTable } from './data-table';
 
@@ -10,10 +7,9 @@ interface ViewTasksProps {
   tasks: any;
 }
 
-export default function ViewTasks({ tasks }: ViewTasksProps) {
-  const router = useRouter();
-  const { data } = useSession();
-  const isAdmin = data?.user.role === 'ADMIN';
+export default async function ViewTasks({ tasks }: ViewTasksProps) {
+  const session = await getAuthSession();
+  const isAdmin = session?.user.role === 'ADMIN';
 
   return (
     <>
@@ -22,14 +18,10 @@ export default function ViewTasks({ tasks }: ViewTasksProps) {
           <div>
             <h2 className='text-2xl font-bold tracking-tight'>Welcome back!</h2>
             <p className='text-muted-foreground'>
-              Here&apos;s a list of your tasks for this month!
+              Here&apos;s a list of your tasks assigned for the projects!
             </p>
           </div>
-          {isAdmin && (
-            <Button onClick={() => router.push('/tasks/new')}>
-              Create New Task
-            </Button>
-          )}
+          {isAdmin && <AddTaskDialog />}
         </div>
         <DataTable data={tasks} columns={columns} />
       </div>

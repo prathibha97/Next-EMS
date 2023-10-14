@@ -5,7 +5,7 @@ import { getAuthSession } from '../../auth/[...nextauth]/options';
 export async function GET(req: Request) {
   try {
     const session = await getAuthSession();
-    if (!session || session.user.role !== 'ADMIN') {
+    if (!session) {
       throw new NextResponse('Unauthorized', { status: 401 });
     }
 

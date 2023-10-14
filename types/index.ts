@@ -30,3 +30,7 @@ export type ProjectWithClientWithAssigneesWithTasks = Project & {
 } & {
   tasks: Task[];
 };
+
+export type TaskWithProject = Task & {
+  project: Project;
+}

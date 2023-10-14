@@ -28,6 +28,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   useEffect(() => {
     if (session?.status === 'authenticated') {
       router.push('/dashboard');
+      router.refresh();
     }
   }, [session?.status, router]);
 
@@ -91,6 +92,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             });
           }
           router.push('/dashboard');
+      router.refresh();
+
         })
         .finally(() => setIsLoading(false));
     }

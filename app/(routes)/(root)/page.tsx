@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 export default function AuthenticationPage() {
   const router = useRouter();
-  const { status, data:session} = useSession();
+  const { status, data: session } = useSession();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -18,10 +18,20 @@ export default function AuthenticationPage() {
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated && status === 'authenticated' && session?.user.role === 'ADMIN') {
+    if (
+      isAuthenticated &&
+      status === 'authenticated' &&
+      session?.user.role === 'ADMIN'
+    ) {
       router.push('/dashboard');
-    }else if(isAuthenticated && status === 'authenticated' && session?.user.role === 'USER'){
+      router.refresh()
+    } else if (
+      isAuthenticated &&
+      status === 'authenticated' &&
+      session?.user.role === 'USER'
+    ) {
       router.push('/profile');
+      router.refresh();
     }
   }, [status, router, session, isAuthenticated]);
 

@@ -54,9 +54,9 @@ const Sidebar = () => {
           <Button
             className='flex items-center p-2 space-x-3 rounded-md w-full'
             onClick={() => {
+              router.push('/');
               signOut();
               dispatch(setLogout());
-              router.push('/');
             }}
           >
             <LogOut className='h-6 w-6' />

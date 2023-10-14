@@ -65,10 +65,13 @@ export const authOptions: AuthOptions = {
     // If you want to use the role in client components
     async session({ session, token }) {
       if (session?.user) {
-        session.user.role = token.role
-        session.user.id = token.id
-      };
+        session.user.role = token.role;
+        session.user.id = token.id;
+      }
       return session;
+    },
+    async redirect({ url, baseUrl }) {
+      return baseUrl;
     },
   },
 };

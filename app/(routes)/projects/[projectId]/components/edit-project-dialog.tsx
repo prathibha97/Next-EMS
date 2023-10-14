@@ -44,7 +44,7 @@ import {
   ProjectFormSchema,
   ProjectFormValues,
 } from '@/lib/validation/project-form-validation';
-import { ProjectWithClientWithAssignees } from '@/types';
+import { ProjectWithClientWithAssigneesWithTasks } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Client, Employee } from '@prisma/client';
 import { DropdownMenuCheckboxItemProps } from '@radix-ui/react-dropdown-menu';
@@ -53,7 +53,7 @@ import { useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
 
 interface EditProjectDialogProps {
-  project: ProjectWithClientWithAssignees | null;
+  project: ProjectWithClientWithAssigneesWithTasks | null;
 }
 
 type Checked = DropdownMenuCheckboxItemProps['checked'];
@@ -501,7 +501,7 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
                   isLoading={isUpdateProjectLoading || isLoading}
                   type='submit'
                   onClick={() => onSubmit}
-                  label='Create Project'
+                  label='Edit Project'
                 />
               </div>
             </form>

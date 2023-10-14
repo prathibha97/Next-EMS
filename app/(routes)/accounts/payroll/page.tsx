@@ -14,6 +14,7 @@ import TabList from './components/tab-list';
 const PayrollsPage = async () => {
   const { getAllEmployees } = useEmployee();
   const employeeData = await getAllEmployees();
+  
 const payrollData = await prisma.payroll.findMany({
   include: {
     employee: {

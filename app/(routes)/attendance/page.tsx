@@ -58,7 +58,7 @@ const AttendancePage = () => {
   if (isAttendanceDataLoading) return <Skeleton />;
 
   return (
-    <div className='w-[810px]'>
+    <div className='w-[810px] space-y-5'>
       <div className='flex justify-end'>
         <ActionButton
           onClick={handleMarkAttendance}

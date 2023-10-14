@@ -6,6 +6,9 @@ import { Table } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
+import { Project } from '@prisma/client';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { priorities, statuses } from '../data/data';
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
 import { DataTableViewOptions } from './data-table-view-options';
@@ -17,19 +20,40 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
+  const [projects, setProjects] = useState<Project[]>([]);
   const isFiltered = table.getState().columnFilters.length > 0;
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_URL}/projects/my`
+      );
+      setProjects(data);
+    };
+    fetchProjects();
+  }, []);
 
   return (
     <div className='flex items-center justify-between'>
       <div className='flex flex-1 items-center space-x-2'>
         <Input
           placeholder='Filter tasks...'
-          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+          value={(table.getColumn('taskId')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn('title')?.setFilterValue(event.target.value)
+            table.getColumn('taskId')?.setFilterValue(event.target.value)
           }
           className='h-8 w-[150px] lg:w-[250px]'
         />
+        {table.getColumn('project_name') && (
+          <DataTableFacetedFilter
+            column={table.getColumn('project_name')}
+            title='Projects'
+            options={projects.map((project) => ({
+              label: project.name,
+              value: project.name,
+            }))}
+          />
+        )}
         {table.getColumn('status') && (
           <DataTableFacetedFilter
             column={table.getColumn('status')}

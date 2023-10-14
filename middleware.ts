@@ -33,6 +33,7 @@ export const config = {
     '/profile',
     '/leaves',
     '/attendance',
+    '/tasks',
     '/settings',
     '/meetings',
     '/organization/:path*',

@@ -193,7 +193,7 @@ const AddProjectPage: FC<AddProjectPageProps> = ({}) => {
   const selectedCategory = form.watch('category');
 
   return (
-    <div className='bg-white dark:bg-slate-700/60 p-5 rounded-lg w-[800px]'>
+    <div className='bg-white dark:bg-black/60 p-5 rounded-lg w-[800px]'>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

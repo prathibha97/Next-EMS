@@ -25,9 +25,18 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   const [variant, setVariant] = useState<Variant>('LOGIN');
 
+  // const [isMounted, setIsMounted] = useState(false);
+
+  // useEffect(() => {
+  //   if (!isMounted) {
+  //     setIsMounted(true);
+  //   }
+  // }, []);
+
   useEffect(() => {
     if (session?.status === 'authenticated') {
       router.push('/dashboard');
+      router.refresh();
     }
   }, [session?.status, router]);
 
@@ -91,10 +100,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             });
           }
           router.push('/dashboard');
+          router.refresh();
         })
         .finally(() => setIsLoading(false));
     }
   };
+
+  // if (!isMounted) {
+  //   return null;
+  // }
 
   return (
     <div className={cn('grid gap-6 mx-auto w-full', className)} {...props}>

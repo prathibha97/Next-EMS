@@ -5,12 +5,12 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 
+import { TaskWithProject } from '@/types';
 import { labels, priorities, statuses } from '../data/data';
-import { Task } from '../data/schema';
 import { DataTableColumnHeader } from './data-table-column-header';
 import { DataTableRowActions } from './data-table-row-actions';
 
-export const columns: ColumnDef<Task>[] = [
+export const columns: ColumnDef<TaskWithProject>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -33,13 +33,11 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'id',
+    accessorKey: 'taskId',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Task' />
     ),
-    cell: ({ row }) => <div className='w-[80px]'>{row.getValue('id')}</div>,
-    enableSorting: false,
-    enableHiding: false,
+    cell: ({ row }) => <div className='w-[80px]'>{row.getValue('taskId')}</div>,
   },
   {
     accessorKey: 'title',
@@ -100,8 +98,23 @@ export const columns: ColumnDef<Task>[] = [
         return null;
       }
 
+      let priorityClassName = '';
+      switch (priority.value) {
+        case 'High':
+          priorityClassName = 'text-red-600'; // Apply red color for high priority
+          break;
+        case 'Medium':
+          priorityClassName = 'text-yellow-600'; // Apply yellow color for medium priority
+          break;
+        case 'Low':
+          priorityClassName = 'text-green-600'; // Apply green color for low priority
+          break;
+        default:
+          priorityClassName = '';
+      }
+
       return (
-        <div className='flex items-center'>
+        <div className={`flex items-center ${priorityClassName}`}>
           {priority.icon && (
             <priority.icon className='mr-2 h-4 w-4 text-muted-foreground' />
           )}
@@ -109,6 +122,17 @@ export const columns: ColumnDef<Task>[] = [
         </div>
       );
     },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
+    accessorKey: 'project_name',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Project' />
+    ),
+    // cell: ({ row }) => <div className='w-[80px]'>{row.getValue('client.name')}</div>,
+    accessorFn: (row) => row.project.name,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },

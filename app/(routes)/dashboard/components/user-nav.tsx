@@ -24,8 +24,11 @@ export function UserNav() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant='ghost' className='relative h-12 w-12 rounded-full'>
-            <Avatar className='h-12 w-12'>
-              <AvatarImage src='/avatars/01.png' alt='@shadcn' />
+            <Avatar className='h-8 w-8'>
+              <AvatarImage
+                src='https://avatar.vercel.sh/personal.png'
+                alt='@shadcn'
+              />
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
           </Button>
@@ -41,11 +44,11 @@ export function UserNav() {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/profile')}>
               Profile
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/settings')}>
               Settings
               <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
             </DropdownMenuItem>

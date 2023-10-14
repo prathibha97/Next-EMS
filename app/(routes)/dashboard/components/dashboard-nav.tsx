@@ -18,17 +18,17 @@ import { cn } from '@/lib/utils';
 import React, { useEffect, useState } from 'react';
 
 export function DashboardNav({ className }: React.HTMLAttributes<HTMLElement>) {
-  const [isMounted, setIsMounted] = useState(false);
+  // const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => {
-    if (!isMounted) {
-      setIsMounted(true);
-    }
-  }, [isMounted]);
+  // useEffect(() => {
+  //   if (!isMounted) {
+  //     setIsMounted(true);
+  //   }
+  // }, [isMounted]);
 
-  if (!isMounted) {
-    return null;
-  }
+  // if (!isMounted) {
+  //   return null;
+  // }
   return (
     <div className={`flex justify-between`}>
       <NavigationMenu className={className}>

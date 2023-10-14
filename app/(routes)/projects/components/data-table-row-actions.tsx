@@ -8,20 +8,13 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { labels } from '../data/data';
-import { useRouter } from 'next/navigation';
 import { useRemoveProjectMutation } from '@/app/redux/services/projectApi';
 import { toast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -30,11 +23,10 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  const router = useRouter()
+  const router = useRouter();
   const project = row.original;
 
-  const [removeProject] =
-    useRemoveProjectMutation();
+  const [removeProject] = useRemoveProjectMutation();
 
   const handleRemoveProject = async (id: string) => {
     try {
@@ -84,7 +76,10 @@ export function DataTableRowActions<TData>({
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator /> */}
-        <DropdownMenuItem onClick={() => handleRemoveProject(project.id)}>
+        <DropdownMenuItem
+          onClick={() => handleRemoveProject(project.id)}
+          className='text-red-500'
+        >
           Delete
           {/* <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut> */}
         </DropdownMenuItem>

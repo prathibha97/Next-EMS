@@ -76,7 +76,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className='w-full bg-white dark:bg-black p-2 px-5 rounded-lg '>
+    <div className='w-full bg-white dark:bg-black/60 p-2 px-5 rounded-lg '>
       <div className='flex items-center py-4'>
         <Input
           type={inputType || 'date'}

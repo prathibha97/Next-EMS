@@ -13,33 +13,27 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
+import { useIdleSignOut } from '@/hooks/useIdleSignOut';
 import { cn } from '@/lib/utils';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
+import React from 'react';
 import { NotificationButton } from './buttons/notification-button';
 import { ModeToggle } from './buttons/theme-toggle-button';
-import React, { useEffect, useState } from 'react';
 
 export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
+
   const { data: session } = useSession();
   const homepage = pathname === '/';
-  const dashboard = pathname === '/dashboard';
 
-  // const [isMounted, setIsMounted] = useState(false);
+  useIdleSignOut();
 
-  // useEffect(() => {
-  //   if (!isMounted) {
-  //     setIsMounted(true);
-  //   }
-  // }, []);
-
-  // if (!isMounted) {
-  //   return null;
-  // }
   return (
     <div
-      className={`flex justify-between w-full mt-3 pl-8  ${homepage && 'hidden'}`}
+      className={`flex justify-between w-full mt-3 pl-8  ${
+        homepage && 'hidden'
+      }`}
     >
       {session?.user?.role === 'ADMIN' && (
         <NavigationMenu className={className}>

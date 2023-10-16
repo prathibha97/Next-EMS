@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/send-deadline-notification",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/update-leave-balance",
+      "schedule": "59 23 31 12 *"
     }
   ]
 }

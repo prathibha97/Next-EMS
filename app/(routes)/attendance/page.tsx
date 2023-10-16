@@ -1,78 +1,21 @@
-'use client';
-import {
-  useGetAttendanceByIdQuery,
-  useMarkAttendanceMutation,
-} from '@/app/redux/services/attendanceApi';
-import { useGetLoggedInEmployeeQuery } from '@/app/redux/services/employeeApi';
-import ActionButton from '@/components/buttons/action-button';
-import { DataTable } from '@/components/data-table';
-import { Skeleton } from '@/components/ui/skeleton';
-import { toast } from '@/hooks/use-toast';
-import { useRouter } from 'next/navigation';
-import { columns } from './components/columns';
+import useAttendance from '@/hooks/useAttendance';
+import useEmployee from '@/hooks/useEmployee';
+import ViewAttandance from './components/view-attandance';
 
-const AttendancePage = () => {
-  const router = useRouter();
-  const { data: loggedInEmployee } = useGetLoggedInEmployeeQuery();
-  const employeeId = loggedInEmployee?.id;
+const AttendancePage = async () => {
+  const { getLoggedInEmployee } = useEmployee();
+  const employee = await getLoggedInEmployee();
 
-  const [markAttendance, { isLoading }] = useMarkAttendanceMutation();
-
-  const {
-    data: attendanceList,
-    isLoading: isAttendanceDataLoading,
-    refetch: refetchAttendanceList,
-  } = useGetAttendanceByIdQuery(employeeId as string);
-
-  const handleMarkAttendance = async () => {
-    try {
-      const attendanceData = {
-        date: new Date(),
-        timeIn: new Date(),
-        timeOut: new Date(),
-        employeeId,
-      };
-      const response = await markAttendance(attendanceData).unwrap();
-
-      if (response.error) {
-        toast({
-          title: response.error,
-          variant: 'destructive',
-        });
-        return;
-      }
-      toast({
-        title: response.message,
-      });
-      refetchAttendanceList();
-      router.refresh();
-    } catch (err) {
-      toast({
-        title: 'Error marking attendance',
-        description: 'Please try again later',
-        variant: 'destructive',
-      });
-    }
-  };
-
-  if (isAttendanceDataLoading) return <Skeleton />;
+  const { getAttendanceByEmployeeId } = useAttendance();
+  const attendanceList = await getAttendanceByEmployeeId(employee?.id!);
 
   return (
-    <div className='w-[810px] space-y-5'>
-      <div className='flex justify-end'>
-        <ActionButton
-          onClick={handleMarkAttendance}
-          label='Mark Attendance'
-          isLoading={isLoading}
-        />
-      </div>
-      <DataTable
-        columns={columns}
-        data={attendanceList?.attendance || []}
-        searchFilter='date'
-        placeholder='Date'
+    <>
+      <ViewAttandance
+        attendanceList={attendanceList}
+        employeeId={employee?.id!}
       />
-    </div>
+    </>
   );
 };
 

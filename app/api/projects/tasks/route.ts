@@ -8,27 +8,23 @@ export async function GET(req: Request) {
     if (!session) {
       throw new NextResponse('Unauthorized', { status: 401 });
     }
+    const url = new URL(req.url);
 
-    const projects = await prisma.project.findMany({
+    const projectId = url.searchParams.get('projectId');
+
+    const tasks = await prisma.task.findMany({
       where: {
-        projectAssignees: {
-          some: {
-            employee: {
-              userId: session.user.id,
-            },
-          },
-        },
-      },
-      select: {
-        name: true,
-        id:true
+        projectId: projectId!,
       },
     });
-    return NextResponse.json(projects);
+    return NextResponse.json(tasks);
   } catch (error: any) {
     console.log(error.message);
-    return new Response(`Could not fetch projects - ${error.message}`, {
-      status: 500,
-    });
+    return new Response(
+      `Could not fetch tasks of the project - ${error.message}`,
+      {
+        status: 500,
+      }
+    );
   }
 }

@@ -7,7 +7,7 @@ const useTasks = () => {
         project: {
           select: {
             name: true,
-            id: true
+            id: true,
           },
         },
       },
@@ -53,7 +53,13 @@ const useTasks = () => {
     });
     return tasks;
   };
-  return { getAllTasks, getTaskById, getTaskByUser };
+  const getTaskByProjectId = async (projectId: string) => {
+    const tasks = await prisma.task.findMany({
+      where: { projectId },
+    });
+    return tasks;
+  };
+  return { getAllTasks, getTaskById, getTaskByUser, getTaskByProjectId };
 };
 
 export default useTasks;

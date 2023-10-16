@@ -3,6 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 
+import { useRemoveTimeLogMutation } from '@/app/redux/services/timeLogApi';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -13,17 +14,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { toast } from '@/hooks/use-toast';
+import { TaskWorkWithTaskWithProjectWithClient } from '@/types';
+import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { EditTimeLogDialog } from './edit-timelog';
+import ViewTimeLog from './view-timelog';
 
-interface TimesheetData {
-  employee_name: string;
-  client: string;
-  project: string;
-  task: string;
-  work_performed: string;
-  time_spent: number;
-}
-
-export const columns: ColumnDef<TimesheetData>[] = [
+export const columns: ColumnDef<TaskWorkWithTaskWithProjectWithClient>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -45,62 +44,128 @@ export const columns: ColumnDef<TimesheetData>[] = [
   },
   {
     accessorKey: 'date',
-    header: () => <div className='text-right'>Date</div>,
-    cell: ({ row }) => (
-      <div className='capitalize'>{row.getValue('date')}</div>
-    ),
-  },
-  {
-    accessorKey: 'employee_name',
-    header: 'Employee',
-    cell: ({ row }) => (
-      <div className='capitalize'>{row.getValue('employee_name')}</div>
-    ),
-  },
-  {
-    accessorKey: 'client',
     header: ({ column }) => {
       return (
         <Button
           variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Client
+          Date
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       );
     },
+    accessorFn: (row) => format(new Date(row?.date || ''), 'yyyy-MM-dd'),
+  },
+  // {
+  //   accessorKey: 'employee_name',
+  //   header: 'Employee',
+  //   cell: ({ row }) => (
+  //     <div className='capitalize'>{row.getValue('employee_name')}</div>
+  //   ),
+  // },
+  // {
+  //   accessorKey: 'task_project_Client_name',
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant='ghost'
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+  //       >
+  //         Client
+  //         <ArrowUpDown className='ml-2 h-4 w-4' />
+  //       </Button>
+  //     );
+  //   },
+  //   accessorFn: (row) => row.task.project.client.name,
+  // },
+  {
+    accessorKey: 'task_project_name',
+    header: () => <div>Project</div>,
+    accessorFn: (row) => row.task.project.name,
+  },
+  {
+    accessorKey: 'task_title',
+    header: () => <div>Task</div>,
+    accessorFn: (row) => row.task.title,
+  },
+  {
+    accessorKey: 'description',
+    header: () => <div>Work Performed</div>,
     cell: ({ row }) => (
-      <div className='capitalize'>{row.getValue('client')}</div>
+      <div className='truncate'>{row.getValue('description')}</div>
     ),
   },
   {
-    accessorKey: 'project',
-    header: () => <div className='text-right'>Project</div>,
-    cell: ({ row }) => (
-      <div className='capitalize'>{row.getValue('project')}</div>
-    ),
+    accessorKey: 'startTime',
+    header: () => <div>Start Time</div>,
+    cell: ({ row }) => {
+      const startTime = row.getValue('startTime');
+      const formattedTime = format(startTime as Date, 'HH:mm');
+      return <div>{`${formattedTime}`}</div>;
+    },
   },
   {
-    accessorKey: 'task',
-    header: () => <div className='text-right'>Task</div>,
-    cell: ({ row }) => <div>{row.getValue('task')}</div>,
+    accessorKey: 'endTime',
+    header: () => <div>End Time</div>,
+    cell: ({ row }) => {
+      const endTime = row.getValue('endTime');
+      const formattedTime = format(endTime as Date, 'HH:mm');
+      return <div>{`${formattedTime}`}</div>;
+    },
   },
   {
-    accessorKey: 'work_performed',
-    header: () => <div className='text-right'>Work Performed</div>,
-    cell: ({ row }) => <div>{row.getValue('work_performed')}</div>,
-  },
-  {
-    accessorKey: 'time_spent',
-    header: () => <div className='text-right'>Time Spent</div>,
-    cell: ({ row }) => <div>{row.getValue('time_spent')}</div>,
+    accessorKey: 'hoursWorked',
+    header: () => <div>Time Spent</div>,
+    cell: ({ row }) => <div>{row.getValue('hoursWorked')}</div>,
   },
   {
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
       const timeLog = row.original;
+      const router = useRouter();
+      const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+      const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+
+      const [removeTimeLog] = useRemoveTimeLogMutation();
+
+      if (isEditDialogOpen) {
+        return (
+          <EditTimeLogDialog
+            isOpen={isEditDialogOpen}
+            setIsOpen={setIsEditDialogOpen}
+            employeeId={timeLog.employeeId}
+            timeLog={timeLog}
+          />
+        );
+      }
+
+      if (isViewDialogOpen) {
+        return (
+          <ViewTimeLog
+            isOpen={isViewDialogOpen}
+            setIsOpen={setIsViewDialogOpen}
+            timeLog={timeLog}
+          />
+        );
+      }
+      const handleDelete = async () => {
+        try {
+          await removeTimeLog(timeLog.id).unwrap();
+          router.refresh();
+          toast({
+            title: 'Time record removed successfully',
+          });
+        } catch (error) {
+          toast({
+            title: 'Something went wrong!',
+            description: 'Failed to remove time record, please try again',
+            variant: 'destructive',
+          });
+          console.log(error);
+        }
+      };
 
       return (
         <DropdownMenu>
@@ -112,14 +177,14 @@ export const columns: ColumnDef<TimesheetData>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => {}}>
+            <DropdownMenuItem onClick={() => setIsViewDialogOpen(true)}>
               View Time Log
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => {}}>
+            <DropdownMenuItem onClick={() => setIsEditDialogOpen(true)}>
               Edit Time Log
             </DropdownMenuItem>
-            <DropdownMenuItem className='text-red-500' onClick={() => {}}>
+            <DropdownMenuItem className='text-red-500' onClick={handleDelete}>
               Delete Time Log
             </DropdownMenuItem>
           </DropdownMenuContent>

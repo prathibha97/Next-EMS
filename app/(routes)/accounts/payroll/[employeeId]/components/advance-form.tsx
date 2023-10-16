@@ -16,6 +16,7 @@ import {
   SalaryAdvanceFormValues,
 } from '@/lib/validation/salary-advance-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { format } from 'date-fns';
 import { useParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
@@ -27,7 +28,7 @@ const SalaryAdvanceForm = () => {
     resolver: zodResolver(SalaryAdvanceFormSchema),
     defaultValues: {
       amount: '',
-      date: new Date().toISOString().split('T')[0],
+      date: format(new Date(), 'yyyy-MM-dd'),
     },
   });
 

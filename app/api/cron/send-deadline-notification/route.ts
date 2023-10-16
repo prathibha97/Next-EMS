@@ -5,7 +5,7 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
     const twoDaysFromNow = new Date();
     twoDaysFromNow.setDate(twoDaysFromNow.getDate() + 2);
@@ -20,6 +20,13 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    if (projects.length === 0) {
+      return NextResponse.json({
+        success: true,
+        message: 'No projects found.',
+      });
+    }
+
     // Iterate through projects and send notifications
     for (const project of projects) {
       const data = await resend.emails.send({
@@ -31,8 +38,11 @@ export async function POST(request: NextRequest) {
         }),
       });
     }
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      message: 'Reminders sent successfully.',
+    });
   } catch (error: any) {
-    return NextResponse.json(error.message);
+    return NextResponse.json({ success: false, message: error.message });
   }
 }

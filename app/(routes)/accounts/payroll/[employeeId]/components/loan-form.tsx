@@ -28,6 +28,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { format } from 'date-fns';
 
 const LoanForm = () => {
   const params = useParams();
@@ -37,7 +38,7 @@ const LoanForm = () => {
     resolver: zodResolver(LoanFormSchema),
     defaultValues: {
       amount: '',
-      date: new Date().toISOString().split('T')[0],
+      date: format(new Date(), 'yyyy-MM-dd'),
       installments: '',
     },
   });

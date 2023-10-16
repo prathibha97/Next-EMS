@@ -118,6 +118,7 @@ model Employee {
   loans              Loan[]
   salaryAdvances     SalaryAdvance[]
   employeeProjects   EmployeeProject[]
+  taskWorks          TaskWork[]
 }
 
 model Attendance {
@@ -332,6 +333,27 @@ model Task {
 
   projectId String  @db.ObjectId
   project   Project @relation(fields: [projectId], references: [id])
+
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  workPerformed TaskWork[]
+}
+
+model TaskWork {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  startTime   DateTime
+  endTime     DateTime
+  hoursWorked Float
+  date        DateTime
+  description String?
+
+  taskId String @db.ObjectId
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  employeeId String   @db.ObjectId
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+   projectId String?   @db.ObjectId
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -11,6 +11,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { toast } from '@/hooks/use-toast';
@@ -23,12 +25,15 @@ import { FC } from 'react';
 import { DataTable } from '../../tasks/components/data-table';
 import { columns } from '../../tasks/components/project-tasks-columns';
 import EditProjectDialog from './edit-project-dialog';
+import { Task } from '@prisma/client';
+import ProjectInsightsChart from './project-insights-chart';
 
 interface ViewProjectProps {
   project: ProjectWithClientWithAssigneesWithTasks | null;
+  tasks:Task[]
 }
 
-const ViewProject: FC<ViewProjectProps> = ({ project }) => {
+const ViewProject: FC<ViewProjectProps> = ({ project,tasks }) => {
   const router = useRouter();
   const [removeProject, { isLoading: isRemoveProjectLoading }] =
     useRemoveProjectMutation();
@@ -140,15 +145,29 @@ const ViewProject: FC<ViewProjectProps> = ({ project }) => {
           <Progress value={project?.progress} />
         </div>
       </div>
-      {project?.tasks?.length && project?.tasks?.length > 0 && (
-        <div className='mt-6'>
-          <h3 className='text-xl font-bold mb-4'>Tasks</h3>
-          <div className='bg-white dark:bg-gray-900/60 p-5 rounded-lg shadow'>
-            {/* @ts-ignore */}
-            <DataTable data={project?.tasks} columns={columns} />
+
+      <Tabs defaultValue='tasks' className='w-full mt-6'>
+        <TabsList>
+          <TabsTrigger value='tasks'>Tasks</TabsTrigger>
+          <TabsTrigger value='insights'>Insights</TabsTrigger>
+        </TabsList>
+        <TabsContent value='tasks'>
+          {project?.tasks?.length && project?.tasks?.length > 0 && (
+            <div className='mt-6'>
+              <h3 className='text-xl font-bold mb-4'>Tasks</h3>
+              <div className='bg-white dark:bg-gray-900/60 p-5 rounded-lg shadow'>
+                {/* @ts-ignore */}
+                <DataTable data={project?.tasks} columns={columns} />
+              </div>
+            </div>
+          )}
+        </TabsContent>
+        <TabsContent value='insights'>
+          <div className='flex items-center justify-center w-full'>
+          <ProjectInsightsChart tasks={tasks}/>
           </div>
-        </div>
-      )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

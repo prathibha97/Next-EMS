@@ -97,8 +97,9 @@ export function TimeSheetTable<TData, TValue>({
               ?.setFilterValue(event.target.value)
           }
           className='max-w-sm'
+          type='date'
         />
-        <Select>
+        {/* <Select>
           <SelectTrigger className='w-[180px]'>
             <SelectValue placeholder='Select Month' />
           </SelectTrigger>
@@ -116,7 +117,7 @@ export function TimeSheetTable<TData, TValue>({
               </SelectItem>
             ))}
           </SelectContent>
-        </Select>
+        </Select> */}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

@@ -39,6 +39,7 @@ const EditClientDialog: FC<EditClientDialogProps> = ({ client }) => {
   const router = useRouter();
 
   const [isMounted, setIsMounted] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     setIsMounted(true);
@@ -71,6 +72,7 @@ const EditClientDialog: FC<EditClientDialogProps> = ({ client }) => {
         title: 'Client updated successfully',
       });
       router.refresh();
+      setIsOpen(false);
     } catch (error) {
       console.log(error);
       return toast({
@@ -85,7 +87,7 @@ const EditClientDialog: FC<EditClientDialogProps> = ({ client }) => {
 
   return (
     <div className='mb-5'>
-      <Dialog>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger>
           <Button>Edit Client</Button>
         </DialogTrigger>

@@ -1,32 +1,38 @@
+import useEmployee from '@/hooks/useEmployee';
+import prisma from '@/lib/prisma';
+import ViewTimeSheet from './components/view-time-sheet';
 
-'use client';
-import { DataTable } from '@/components/data-table';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';import React from 'react'
-import { columns } from './components/columns';
-import { timesheet_data } from '@/constants/sample/timesheet-data';
-import { TimeSheetTable } from './components/time-sheet-table';
-
-const TimeSheetPage = () => {
-const router = useRouter();
-const { data: session } = useSession({
-  required: true,
-  onUnauthenticated() {
-    router.push('/');
-  },
-});
-
+const TimeSheetPage = async () => {
+  const { getLoggedInEmployee } = useEmployee();
+  const employee = await getLoggedInEmployee();
+  const taskWork = await prisma.taskWork.findMany({
+    where: {
+      employeeId: employee?.id,
+    },
+    include: {
+      task: {
+        include: {
+          project: {
+            select:{
+              name: true,
+              client:true
+            }
+          }
+        },
+      },
+      employee:{
+        select:{
+          name:true
+        }
+      }
+    },
+  });
 
   return (
     <div>
-      <TimeSheetTable
-        columns={columns}
-        data={timesheet_data}
-        searchFilter='project'
-        placeholder='Project'
-      />
+      <ViewTimeSheet taskWork={taskWork} employeeId={employee?.id!} />
     </div>
   );
-}
+};
 
-export default TimeSheetPage
+export default TimeSheetPage;

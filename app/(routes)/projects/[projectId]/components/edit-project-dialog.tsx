@@ -62,6 +62,7 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
   const router = useRouter();
 
   const [isMounted, setIsMounted] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [clients, setClients] = useState<Client[]>([]);
   const [assignees, setAssignees] = useState<Employee[]>([]);
 
@@ -207,7 +208,7 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
         title: 'Project updated successfully',
       });
       form.reset();
-      router.push('/projects');
+      setIsOpen(false);
       router.refresh();
     } catch (error) {
       console.log(error);
@@ -234,7 +235,7 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
 
   return (
     <div className='mb-5'>
-      <Dialog>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger>
           <Button>Edit Project</Button>
         </DialogTrigger>

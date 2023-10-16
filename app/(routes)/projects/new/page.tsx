@@ -37,6 +37,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Client, Employee } from '@prisma/client';
 import { DropdownMenuCheckboxItemProps } from '@radix-ui/react-dropdown-menu';
 import axios from 'axios';
+import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -89,7 +90,7 @@ const AddProjectPage: FC<AddProjectPageProps> = ({}) => {
       clientId: '',
       designLink: '',
       employees: [],
-      endDate: new Date().toISOString().split('T')[0],
+      endDate: format(new Date(), 'yyyy-MM-dd'),
       startDate: '',
       status: 'ACTIVE',
       nftBaseDesignCount: '',

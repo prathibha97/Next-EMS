@@ -21,17 +21,11 @@ interface DepartmentCardProps {
     manager: Employee | null;
   };
   onClick: () => void;
-  refetchDepartments: () => void;
 }
 
-const DepartmentCard: FC<DepartmentCardProps> = ({
-  department,
-  onClick,
-  refetchDepartments,
-}) => {
+const DepartmentCard: FC<DepartmentCardProps> = ({ department, onClick }) => {
   const router = useRouter();
   const [removeDepartment] = useRemoveDepartmentMutation();
-  console.log(department);
   return (
     <div>
       <Card className='flex bg-white rounded-md shadow-md min-w-[100px] '>
@@ -53,13 +47,7 @@ const DepartmentCard: FC<DepartmentCardProps> = ({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      navigator.clipboard.writeText(department.id);
-                    }}
-                  >
-                    Copy department ID
-                  </DropdownMenuItem>
+
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={() => {
@@ -72,7 +60,6 @@ const DepartmentCard: FC<DepartmentCardProps> = ({
                     className='text-red-500'
                     onClick={() => {
                       removeDepartment({ departmentId: department.id });
-                      refetchDepartments();
                       router.refresh();
                     }}
                   >

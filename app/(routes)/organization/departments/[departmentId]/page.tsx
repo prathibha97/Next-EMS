@@ -12,7 +12,11 @@ interface DepartmentPageProps {
 }
 
 const DepartmentPage: FC<DepartmentPageProps> = ({ params }) => {
-  const { data: department, isLoading, refetch:refetchDepartmentEmployees } = useGetDepartmentByIdQuery({
+  const {
+    data: department,
+    isLoading,
+    refetch: refetchDepartmentEmployees,
+  } = useGetDepartmentByIdQuery({
     departmentId: params.departmentId,
   });
   // @ts-ignore
@@ -26,7 +30,7 @@ const DepartmentPage: FC<DepartmentPageProps> = ({ params }) => {
   if (isLoading) return <LoadingState />;
   return (
     <div className=' lg:w-[900px] mt-5 p-5 rounded-lg'>
-      <div className=' bg-gray-50 dark:bg-gray-800/50 p-5 rounded-lg'>
+      <div className=' bg-gray-50 dark:bg-gray-900/60 p-5 rounded-lg'>
         <div className='flex justify-between'>
           <div>
             <span className='font-semibold'>Department Name: </span>
@@ -44,7 +48,13 @@ const DepartmentPage: FC<DepartmentPageProps> = ({ params }) => {
         </div>
       </div>
       <div className='container mx-auto py-10'>
-        <DataTable columns={columns} data={data} searchFilter='name' placeholder='Name'/>
+        <DataTable
+          columns={columns}
+          data={data}
+          inputType='text'
+          searchFilter='name'
+          placeholder='Name'
+        />
       </div>
     </div>
   );

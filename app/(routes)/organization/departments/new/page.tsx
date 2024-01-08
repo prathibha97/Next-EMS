@@ -1,7 +1,10 @@
 'use client';
 import { setDepartments } from '@/app/redux/features/departmentSlice';
 import { useAppDispatch } from '@/app/redux/hooks';
-import { useAddDepartmentMutation, useGetDepartmentsQuery } from '@/app/redux/services/departmentApi';
+import {
+  useAddDepartmentMutation,
+  useGetDepartmentsQuery,
+} from '@/app/redux/services/departmentApi';
 import { useGetEmployeesQuery } from '@/app/redux/services/employeeApi';
 import ActionButton from '@/components/buttons/action-button';
 import {
@@ -45,7 +48,7 @@ const NewDepartment = () => {
 
   const { data: employees, isLoading: isEmployeesLoading } =
     useGetEmployeesQuery();
-  const { refetch:refetchDepartments} = useGetDepartmentsQuery();
+  const { refetch: refetchDepartments } = useGetDepartmentsQuery();
 
   const [addDepartment] = useAddDepartmentMutation();
 
@@ -90,9 +93,13 @@ const NewDepartment = () => {
             <FormField
               name='name'
               render={({ field }) => (
-                <FormItem>
+                <FormItem className='w-full'>
                   <FormControl>
-                    <Input {...field} className='text-sm text-gray-600' />
+                    <Input
+                      {...field}
+                      className='text-sm text-gray-600 w-full'
+                      placeholder='Enter department name'
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -104,13 +111,10 @@ const NewDepartment = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Department Manager</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Select an user email to display' />
+                        <SelectValue placeholder='Select an employee to display' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -131,7 +135,11 @@ const NewDepartment = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea {...field} className='text-sm text-gray-600' />
+                    <Textarea
+                      {...field}
+                      className='text-sm text-gray-600'
+                      placeholder='Enter description...'
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

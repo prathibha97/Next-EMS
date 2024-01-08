@@ -28,7 +28,7 @@ export default function RootLayout({
           <AuthProvider>
             <ReduxProvider>
               <div className="flex h-screen overflow-hidden  bg-[#eef5f9] dark:bg-slate-800">
-                <div className="hidden md:block">
+                <div>
                   <Sidebar />
                 </div>
                 <div className="container flex flex-col w-full overflow-x-hidden">

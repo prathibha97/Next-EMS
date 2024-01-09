@@ -19,17 +19,17 @@ const Sidebar = () => {
   // Determine whether to apply the md:flex class based on homepage
   const sidebarClass = homepage ? "hidden" : "md:flex";
 
-  // const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // useEffect(() => {
-  //   if (!isMounted) {
-  //     setIsMounted(true);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+    }
+  }, []);
 
-  // if (!isMounted) {
-  //   return null;
-  // }
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className={`${sidebarClass}`}>

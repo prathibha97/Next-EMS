@@ -25,20 +25,18 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   const [variant, setVariant] = useState<Variant>('LOGIN');
 
-  // const [isMounted, setIsMounted] = useState(false);
+useEffect(() => {
+  // Check if session is still loading
+  if (session.status === 'loading') {
+    return; // Return early if still loading
+  }
 
-  // useEffect(() => {
-  //   if (!isMounted) {
-  //     setIsMounted(true);
-  //   }
-  // }, []);
-
-  useEffect(() => {
-    if (session?.status === 'authenticated') {
-      router.push('/dashboard');
-      router.refresh();
-    }
-  }, [session?.status, router]);
+  // Check if the user is authenticated after session loading
+  if (session.status === 'authenticated') {
+    router.push('/dashboard');
+    router.refresh();
+  }
+}, [session, router]);
 
   const toggleVariant = useCallback(() => {
     if (variant === 'LOGIN') {
@@ -47,6 +45,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       setVariant('LOGIN');
     }
   }, [variant]);
+
+const dispatchUserData = (user:any) => {
+  dispatch(setAuthenticated(true));
+  dispatch(setUser(user));
+};
 
   const {
     register,
@@ -92,9 +95,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           }
 
           if (callback?.ok && !callback?.error) {
-            // Dispatch actions to update authentication state and user data
-            dispatch(setAuthenticated(true));
-            dispatch(setUser(session.data?.user));
+            dispatchUserData(session.data?.user);
             return toast({
               title: 'Logged in successfully',
             });
@@ -106,9 +107,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     }
   };
 
-  // if (!isMounted) {
-  //   return null;
-  // }
+  if (session.status === 'loading') {
+    return (
+      <div className='text-center mt-6'>
+        Loading session...
+        {/* You can replace this with a loading spinner or any other loading indicator */}
+      </div>
+    );
+  }
 
   return (
     <div className={cn('grid gap-6 mx-auto w-full', className)} {...props}>

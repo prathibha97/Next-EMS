@@ -10,15 +10,11 @@ import {
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { DashboardNav } from './components/dashboard-nav';
 import { CalendarDateRangePicker } from './components/date-range-picker';
 import { Overview } from './components/overview';
 import { RecentProjects } from './components/recent-projects';
 
 export default function DashboardPage() {
-
-
   return (
     <div>
       <div className='container flex-col md:flex'>

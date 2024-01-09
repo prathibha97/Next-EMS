@@ -1,6 +1,6 @@
-import { Separator } from '@/components/ui/separator';
-import { Employee } from '@prisma/client';
-import { FC } from 'react';
+import { Separator } from "@/components/ui/separator";
+import { Employee } from "@prisma/client";
+import { FC } from "react";
 
 interface PrivateInfoProps {
   employee: Employee | undefined;
@@ -9,13 +9,13 @@ interface PrivateInfoProps {
 const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {
   return (
     <>
-      <div className='flex justify-between'>
+      <div className="flex justify-between">
         {/* Private Contact */}
         <div>
-          <h2 className='text-lg font-semibold'>Private Contact</h2>
-          <Separator className='mt-1 mb-3' />
-          <div className='flex flex-col gap-y-4'>
-            <div className='flex gap-x-2'>
+          <h2 className="text-lg font-semibold">Private Contact</h2>
+          <Separator className="mt-1 mb-3" />
+          <div className="flex flex-col gap-y-4">
+            <div className="flex gap-x-2">
               <span>Private Address: </span>
               {/* <div className='flex flex-col'>
                 <span className='text-sm text-gray-600'>147/6 Pallewatte,</span>
@@ -29,24 +29,23 @@ const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {
                   <span>Sri Lanka</span>
                 </div>
               </div> */}
-              <span className='text-sm text-gray-600'>
+              <span className="text-sm text-gray-600">
                 {employee?.privateAddress}
               </span>
             </div>
             <span>
-              Personal Email :{' '}
-              <span className='text-sm text-gray-600'>
+              Personal Email :{" "}
+              <span className="text-sm text-gray-600">
                 {employee?.personalEmail}
               </span>
             </span>
             <span>
-              Phone : <span className='text-sm text-gray-600'>
-                {employee?.phone}
-              </span>
+              Phone :{" "}
+              <span className="text-sm text-gray-600">{employee?.phone}</span>
             </span>
             <span>
-              Bank Account Number :{' '}
-              <span className='text-sm text-gray-600'>
+              Bank Account Number :{" "}
+              <span className="text-sm text-gray-600">
                 {employee?.bankAccountNumber}
               </span>
             </span>
@@ -55,18 +54,18 @@ const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {
 
         {/* Family Status */}
         <div>
-          <h2 className='text-lg font-semibold'>Family Status</h2>
-          <Separator className='mt-1 mb-3' />
-          <div className='flex flex-col gap-y-4'>
+          <h2 className="text-lg font-semibold">Family Status</h2>
+          <Separator className="mt-1 mb-3" />
+          <div className="flex flex-col gap-y-4">
             <span>
-              Marital Status :{' '}
-              <span className='text-sm text-gray-600'>
+              Marital Status :{" "}
+              <span className="text-sm text-gray-600">
                 {employee?.maritalStatus}
               </span>
             </span>
             <span>
-              Number of dependent children :{' '}
-              <span className='text-sm text-gray-600'>
+              Number of dependent children :{" "}
+              <span className="text-sm text-gray-600">
                 {employee?.numberOfDependents}
               </span>
             </span>
@@ -75,20 +74,20 @@ const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {
       </div>
 
       {/* Emergency contacts */}
-      <div className='flex justify-between mt-5'>
+      <div className="flex justify-between mt-5">
         <div>
-          <h2 className='text-lg font-semibold'>Emergency Contact</h2>
-          <Separator className='mt-1 mb-3' />
-          <div className='flex flex-col gap-y-4'>
+          <h2 className="text-lg font-semibold">Emergency Contact</h2>
+          <Separator className="mt-1 mb-3" />
+          <div className="flex flex-col gap-y-4">
             <span>
-              Contact Name :{' '}
-              <span className='text-sm text-gray-600'>
+              Contact Name :{" "}
+              <span className="text-sm text-gray-600">
                 {employee?.emergencyContactName}
               </span>
             </span>
             <span>
-              Contact Number :{' '}
-              <span className='text-sm text-gray-600'>
+              Contact Number :{" "}
+              <span className="text-sm text-gray-600">
                 {employee?.emergencyContactPhone}
               </span>
             </span>
@@ -98,29 +97,28 @@ const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {
         {/* Citizenship*/}
 
         <div>
-          <h2 className='text-lg font-semibold'>Citizenship</h2>
-          <Separator className='mt-1 mb-3' />
-          <div className='flex flex-col gap-y-4'>
+          <h2 className="text-lg font-semibold">Citizenship</h2>
+          <Separator className="mt-1 mb-3" />
+          <div className="flex flex-col gap-y-4">
             <span>
-              Nationality :{' '}
-              <span className='text-sm text-gray-600'>
+              Nationality :{" "}
+              <span className="text-sm text-gray-600">
                 {employee?.nationality}
               </span>
             </span>
             <span>
-              Identification Number :{' '}
-              <span className='text-sm text-gray-600'>
+              Identification Number :{" "}
+              <span className="text-sm text-gray-600">
                 {employee?.idNumber}
               </span>
             </span>
             <span>
-              Gender : <span className='text-sm text-gray-600'>
-                {employee?.gender}
-              </span>
+              Gender :{" "}
+              <span className="text-sm text-gray-600">{employee?.gender}</span>
             </span>
             <span>
-              date of Birth :{' '}
-              <span className='text-sm text-gray-600'>
+              date of Birth :{" "}
+              <span className="text-sm text-gray-600">
                 {employee?.dateOfBirth}
               </span>
             </span>

@@ -31,12 +31,13 @@ const Employee: FC<EmployeeProps> = ({ params }) => {
     // Display loading skeleton while data is being fetched
     return <LoadingState />;
   }
+  console.log(employeeId);
   return (
     <div className="bg-slate-50 md:w-[850px] xl:w-[950px] p-5 rounded-lg dark:bg-gray-800/40">
-      <div>
+      <div className="border p-5 rounded-md">
         <div className="flex justify-between">
           <div className="flex flex-col">
-            <h1 className="text-3xl font-semibold">
+            <h1 className="text-2xl font-semibold">
               {employee?.name || "Employee Name"}
             </h1>
             <h2 className="mt-3 text-xl text-gray-600 dark:text-gray-300">
@@ -47,93 +48,124 @@ const Employee: FC<EmployeeProps> = ({ params }) => {
             <Image
               src={employee?.profile_photo || "/prathibha.jpg"}
               alt="Image"
-              width={80}
-              height={80}
+              width={90}
+              height={90}
               className="rounded-lg"
             />
           </div>
         </div>
       </div>
-      <div className="flex justify-between">
-        <div className="flex flex-col">
-          <span>
-            Work Mobile:{" "}
-            <span className="text-sm text-gray-600 dark:text-gray-300">
-              {employee?.workMobile || "Work Mobile not specified"}
-            </span>
-          </span>
-          <span>
-            Personal Mobile:{" "}
-            <span className="text-sm text-gray-600 dark:text-gray-300">
-              {" "}
-              {employee?.personalMobile || "Personal Mobile not specified"}
-            </span>
-          </span>
-          <span>
-            Work Email:{" "}
-            <span className="text-sm text-gray-600 dark:text-gray-300">
-              {employee?.workEmail || "prathibha@sphiriadigital.com"}
-            </span>
-          </span>
-        </div>
-        <div className="flex flex-col">
-          <span>
-            Department:{" "}
-            <span className="text-sm text-gray-600 dark:text-gray-300">
-              {(employee &&
-                // @ts-ignore
-                employee.Department.map((department) => department.name).join(
-                  " ,"
-                )) ||
-                `Department not specified`}
-            </span>
-          </span>
-          <span>
-            Job Position:{" "}
-            <span className="text-sm text-gray-600 dark:text-gray-300">
-              <span className="text-sm text-gray-600 dark:text-gray-300">
-                {employee?.jobPosition || `Job Position not specified`}
+
+      <div className="flex flex-col justify-between mt-5 border p-5 rounded-md">
+        <h1 className="text-2xl font-semibold">Personal Information</h1>
+        <div className="flex flex-wrap mt-5 justify-between">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
+            <span>
+              Name:{" "}
+              <span className="text-gray-600 dark:text-gray-300">
+                {employee?.name || "Not specified"}
               </span>
             </span>
-          </span>
-          <span>
-            Employee Type:{" "}
-            <span className="text-sm text-gray-600">
-              {employee?.employeeType || `Employee type not specified`}
+          </div>
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
+            <span>
+              Email:{" "}
+              <span className="text-gray-600 dark:text-gray-300">
+                {" "}
+                {employee?.personalEmail || "Not specified"}
+              </span>
             </span>
-          </span>
+          </div>
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
+            <span>
+              Mobile:{" "}
+              <span className="text-gray-600 dark:text-gray-300">
+                {employee?.personalMobile || "Not specified"}
+              </span>
+            </span>
+          </div>
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
+            <span>
+              Gender:{" "}
+              <span className="text-gray-600 dark:text-gray-300">
+                {employee?.gender || "Not specified"}
+              </span>
+            </span>
+          </div>
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
+            <span>
+              DOB:{" "}
+              <span className="text-gray-600 dark:text-gray-300">
+                {/* {employee?.dateOfBirth || "Not specified"} */}
+              </span>
+            </span>
+          </div>
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
+            <span>
+              Marital Status:{" "}
+              <span className="text-gray-600 dark:text-gray-300">
+                {employee?.maritalStatus || "Not specified"}
+              </span>
+            </span>
+          </div>
         </div>
       </div>
 
-      <Separator className="mt-3" />
+      {/* <Separator className="mt-3" /> */}
 
-      <div className="mt-8">
-        <Tabs defaultValue="work" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="work">Work Information</TabsTrigger>
-            <TabsTrigger value="private">Private Information</TabsTrigger>
-            {/* <TabsTrigger value="HR">HR Settings</TabsTrigger> */}
-          </TabsList>
-          <TabsContent value="work">
-            <WorkInfo employee={employee} />
-          </TabsContent>
-          <TabsContent value="private">
-            <PrivateInfo employee={employee} />
-          </TabsContent>
-          {/* <TabsContent value="HR">
-            <HRSettings employee={employee} />
-          </TabsContent> */}
-        </Tabs>
-      </div>
-
-      <div className="mt-10">
-        <Button
-          onClick={() =>
-            router.push(`/organization/employees/${params.employeeId}/edit`)
-          }
-        >
-          <Pencil className="w-4 h-4 mr-2" /> Edit
-        </Button>
+      <div className="flex flex-col justify-between mt-5 border p-5 rounded-md">
+        <h1 className="text-2xl font-semibold">Employment Details</h1>
+        <div className="flex flex-wrap mt-5 justify-between">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
+            <span>
+              Job Title:{" "}
+              <span className="text-gray-600 dark:text-gray-300">
+                {employee?.name || "Not specified"}
+              </span>
+            </span>
+          </div>
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
+            <span>
+              Work Email:{" "}
+              <span className="text-gray-600 dark:text-gray-300">
+                {" "}
+                {employee?.personalEmail || "Not specified"}
+              </span>
+            </span>
+          </div>
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
+            <span>
+              Work Mobile:{" "}
+              <span className="text-gray-600 dark:text-gray-300">
+                {employee?.personalMobile || "Not specified"}
+              </span>
+            </span>
+          </div>
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
+            <span>
+              Department:{" "}
+              <span className="text-gray-600 dark:text-gray-300">
+                {employee?.gender || "Not specified"}
+              </span>
+            </span>
+          </div>
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
+            <span>
+              Employee Type:{" "}
+              <span className="text-gray-600 dark:text-gray-300">
+                {/* {new Date(employee?.dateOfBirth) || "Not specified"} */}
+              </span>
+            </span>
+          </div>
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
+            <span>
+              Start Date:{" "}
+              <span className="text-gray-600 dark:text-gray-300">
+                {employee?.maritalStatus || "Not specified"}
+              </span>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );

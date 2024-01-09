@@ -9,7 +9,7 @@ import { useAppDispatch } from "@/app/redux/hooks";
 import { setLogout } from "@/app/redux/features/authSlice";
 import { useEffect, useState } from "react";
 
-const Sidebar = () => {
+const ResponsiveSidebar = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const pathname = usePathname();
@@ -33,7 +33,7 @@ const Sidebar = () => {
 
   return (
     <div className={`${sidebarClass}`}>
-      <div className="flex flex-col h-screen p-3 bg-gray-50 shadow w-60 dark:bg-gray-900 dark:text-gray-50">
+      <div className="flex flex-col h-screen p-3  bg-gray-50 shadow w-full dark:bg-gray-900 dark:text-gray-50">
         <div className="flex items-center">
           <h2 className="text-xl font-bold">Dashboard</h2>
         </div>
@@ -81,4 +81,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default ResponsiveSidebar;

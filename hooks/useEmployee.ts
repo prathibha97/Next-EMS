@@ -1,12 +1,11 @@
-import { getAuthSession } from '@/app/api/auth/[...nextauth]/options';
-import prisma from '@/lib/prisma';
+import { getAuthSession } from "@/app/api/auth/[...nextauth]/options";
+import prisma from "@/lib/prisma";
 
 const useEmployee = () => {
   const getAllEmployees = async () => {
     const employees = await prisma.employee.findMany({
       include: {
         employeeDepartment: true,
-        
       },
     });
     return employees;
@@ -19,6 +18,7 @@ const useEmployee = () => {
       },
       include: {
         leaveBalance: true,
+        Department: true,
       },
     });
     return employee;

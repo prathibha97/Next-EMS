@@ -1,6 +1,6 @@
-import { getAuthSession } from '@/app/api/auth/[...nextauth]/options';
-import useTasks from '@/hooks/useTasks';
-import ViewTasks from './components/view-tasks';
+import { getAuthSession } from "@/app/api/auth/[...nextauth]/options";
+import useTasks from "@/hooks/useTasks";
+import ViewTasks from "./components/view-tasks";
 
 export default async function TaskPage() {
   const session = await getAuthSession();

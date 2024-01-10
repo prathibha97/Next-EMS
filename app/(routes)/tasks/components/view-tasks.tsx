@@ -13,8 +13,8 @@ export default async function ViewTasks({ tasks }: ViewTasksProps) {
 
   return (
     <>
-      <div className="h-full flex-1 flex-col space-y-3 md:flex">
-        <div className="flex items-center justify-between space-y-2">
+      <div className="h-full flex-1 flex-col gap-3 space-y-3 md:flex">
+        <div className="flex items-center justify-between space-y-4">
           {isAdmin && <AddTaskDialog />}
         </div>
         <div className="bg-white dark:bg-gray-900/60 p-5 rounded-lg shadow">

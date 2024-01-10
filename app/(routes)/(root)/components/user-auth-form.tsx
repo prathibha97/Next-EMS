@@ -1,13 +1,12 @@
 'use client';
-import { setAuthenticated, setUser } from '@/app/redux/features/authSlice';
+import { setAuthenticated } from '@/app/redux/features/authSlice';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import axios from 'axios';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Icons } from '../../../../components/icons';
 import { Button } from '../../../../components/ui/button';
@@ -18,27 +17,10 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 type Variant = 'LOGIN' | 'REGISTER';
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const session = useSession();
-  const router = useRouter();
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [variant, setVariant] = useState<Variant>('LOGIN');
-
-  // const [isMounted, setIsMounted] = useState(false);
-
-  // useEffect(() => {
-  //   if (!isMounted) {
-  //     setIsMounted(true);
-  //   }
-  // }, []);
-
-  useEffect(() => {
-    if (session?.status === 'authenticated') {
-      router.push('/dashboard');
-      router.refresh();
-    }
-  }, [session?.status, router]);
 
   const toggleVariant = useCallback(() => {
     if (variant === 'LOGIN') {
@@ -80,9 +62,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     if (variant === 'LOGIN') {
       signIn('credentials', {
         ...data,
-        redirect: false,
+        redirect: true,
       })
         .then((callback) => {
+          console.log(callback);
           if (callback?.error) {
             return toast({
               title: 'Something went wrong!',
@@ -92,23 +75,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           }
 
           if (callback?.ok && !callback?.error) {
-            // Dispatch actions to update authentication state and user data
             dispatch(setAuthenticated(true));
-            dispatch(setUser(session.data?.user));
-            return toast({
-              title: 'Logged in successfully',
-            });
           }
-          router.push('/dashboard');
-          router.refresh();
         })
         .finally(() => setIsLoading(false));
     }
   };
-
-  // if (!isMounted) {
-  //   return null;
-  // }
 
   return (
     <div className={cn('grid gap-6 mx-auto w-full', className)} {...props}>

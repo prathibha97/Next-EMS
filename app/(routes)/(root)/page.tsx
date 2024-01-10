@@ -1,31 +1,17 @@
 'use client';
 import { UserAuthForm } from '@/app/(routes)/(root)/components/user-auth-form';
-import { useSession } from 'next-auth/react';
-import { redirect, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 export default function AuthenticationPage() {
-  const router = useRouter();
-  const { status, data: session } = useSession();
-  const [isMounted, setIsMounted] = useState(false);
+  // const router = useRouter();
+  // const { status, data: session } = useSession();
 
-  useEffect(() => {
-    if (!isMounted) {
-      setIsMounted(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (status === 'authenticated' && session?.user.role === 'ADMIN') {
-      router.push('/dashboard');
-    } else if (status === 'authenticated' && session?.user.role === 'USER') {
-      router.push('/profile');
-    }
-  }, [status, session]);
-
-  if (!isMounted) {
-    return null;
-  }
+  // useEffect(() => {
+  //   if (status === 'authenticated' && session?.user.role === 'ADMIN') {
+  //     router.push('/dashboard');
+  //   } else if (status === 'authenticated' && session?.user.role === 'USER') {
+  //     router.push('/profile');
+  //   }
+  // }, [status, session]);
 
   return (
     <div className='h-screen'>

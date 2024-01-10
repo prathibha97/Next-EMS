@@ -53,7 +53,7 @@ export default function RootLayout({
                 <div className="hidden md:block">
                   <Sidebar />
                 </div>
-                <div className="container flex flex-col w-full overflow-x-hidden">
+                <div className="md:container flex flex-col w-full overflow-x-hidden">
                   <MainNav />
                   <div className="flex-grow overflow-x-auto overflow-y-auto ">
                     {children}

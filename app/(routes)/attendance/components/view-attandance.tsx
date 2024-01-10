@@ -58,7 +58,7 @@ const ViewAttandance: FC<ViewAttandanceProps> = ({
     }
   };
   return (
-    <div className='w-[810px] space-y-5'>
+    <div className='w-full space-y-5'>
       <div className='flex justify-end'>
         <ActionButton
           onClick={handleMarkAttendance}

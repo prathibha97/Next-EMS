@@ -10,12 +10,12 @@ const AttendancePage = async () => {
   const attendanceList = await getAttendanceByEmployeeId(employee?.id!);
 
   return (
-    <>
+    <div>
       <ViewAttandance
         attendanceList={attendanceList}
         employeeId={employee?.id!}
       />
-    </>
+    </div>
   );
 };
 

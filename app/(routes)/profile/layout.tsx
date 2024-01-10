@@ -1,10 +1,10 @@
-import Sidebar from "@/components/sidebar";
-import { Separator } from "@/components/ui/separator";
-import { Metadata } from "next";
+import Sidebar from '@/components/sidebar';
+import { Separator } from '@/components/ui/separator';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Employee Profile",
-  description: "Advanced form example using react-hook-form and Zod.",
+  title: 'Employee Profile',
+  description: 'Advanced form example using react-hook-form and Zod.',
 };
 
 interface SettingsLayoutProps {

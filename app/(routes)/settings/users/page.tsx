@@ -10,14 +10,16 @@ const UsersPage: FC<UsersPageProps> = async ({}) => {
   const data = await prisma.user.findMany();
 
   return (
-    <div className="ml-4 md:ml-10 max-w-[700px] mx-auto space-y-6">
-      <div>
-        <h3 className="text-lg font-medium">Users</h3>
-        <p className="text-sm text-muted-foreground">
-          Manage your users here. You can add, edit, and delete users.
-        </p>
+    <div className="bg-slate-50 md:w-[850px] xl:w-[950px] p-5 rounded-lg dark:bg-gray-800/40">
+      <div className="container space-y-6 mb-5">
+        <div>
+          <h3 className="text-lg font-medium">Users</h3>
+          <p className="text-sm text-muted-foreground">
+            Manage your users here. You can add, edit, and delete users.
+          </p>
+        </div>
+        <Separator />
       </div>
-      <Separator />
       <DataTable
         columns={columns}
         data={data}

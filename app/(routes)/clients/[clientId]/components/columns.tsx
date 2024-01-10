@@ -5,12 +5,12 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 
-import { labels, statuses } from '@/app/(routes)/projects/data/data';
 import { DataTableColumnHeader } from '@/app/(routes)/projects/tasks/components/data-table-column-header';
-import { DataTableRowActions } from '@/app/(routes)/projects/tasks/components/data-table-row-actions';
+import { Progress } from '@/components/ui/progress';
 import { Client, Project } from '@prisma/client';
 import { format } from 'date-fns';
-import { Progress } from '@/components/ui/progress';
+import { labels, projectStatuses } from '../data/data';
+import { DataTableRowActions } from './data-table-row-actions';
 
 type ProjectWithClient = Project & {
   client: Client;
@@ -68,7 +68,7 @@ export const columns: ColumnDef<ProjectWithClient>[] = [
       <DataTableColumnHeader column={column} title='Status' />
     ),
     cell: ({ row }) => {
-      const status = statuses.find(
+      const status = projectStatuses.find(
         (status) => status.value === row.getValue('status')
       );
 

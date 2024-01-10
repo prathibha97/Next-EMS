@@ -20,7 +20,7 @@ const Employee: FC<EmployeeProps> = async ({ params }) => {
   const employee = await getLoggedInEmployee();
 
   return (
-    <div className="bg-slate-50 md:w-[850px] xl:w-[950px] p-5 rounded-lg dark:bg-gray-800/40">
+    <div className="bg-slate-50 md:w-full xl:w-full p-5 rounded-lg dark:bg-gray-800/40">
       <div className="border p-5 rounded-md">
         <div className="flex flex-col md:flex-row items-center md:items-start">
           <div className="mb-4 md:mr-8">

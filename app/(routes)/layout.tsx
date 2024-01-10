@@ -38,7 +38,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
             <ReduxProvider>
-              <div className="flex h-screen overflow-hidden  bg-[#eef5f9] dark:bg-slate-800">
+              <div className="flex flex-col md:flex-row h-screen overflow-hidden bg-[#eef5f9] dark:bg-slate-800">
                 <div className="md:hidden">
                   <Sheet>
                     <SheetTrigger>
@@ -50,12 +50,14 @@ export default function RootLayout({
                   </Sheet>
                 </div>
 
-                <div className="hidden md:block">
+                <div className="hidden md:block w-64">
+                  {/* Adjust the width of the sidebar for medium and larger screens */}
                   <Sidebar />
                 </div>
-                <div className="md:container flex flex-col w-full overflow-x-hidden">
+
+                <div className="md:container flex flex-col flex-grow overflow-x-hidden overflow-y-auto">
                   <MainNav />
-                  <div className="flex-grow overflow-x-auto overflow-y-auto ">
+                  <div className="flex-grow p-2 overflow-x-auto overflow-y-auto">
                     {children}
                   </div>
                 </div>

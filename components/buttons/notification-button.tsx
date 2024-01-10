@@ -12,9 +12,12 @@ import { BellRing } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { NotificationCard } from '../cards/notification-card';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { setCurrentEmployee } from '@/app/redux/features/employeeSlice';
 
 export function NotificationButton() {
   const router = useRouter();
+  const dispatch = useAppDispatch()
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -33,6 +36,7 @@ export function NotificationButton() {
           `${process.env.NEXT_PUBLIC_URL}/employees/me`
         );
         setEmployee(data);
+        dispatch(setCurrentEmployee(data));
       } catch (error) {
         console.error('Error fetching employee data:', error);
       }

@@ -55,17 +55,17 @@ const data = [
 ];
 
 export function Overview() {
-  // const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // useEffect(() => {
-  //   if (!isMounted) {
-  //     setIsMounted(true);
-  //   }
-  // }, [isMounted]);
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+    }
+  }, [isMounted]);
 
-  // if (!isMounted) {
-  //   return null;
-  // }
+  if (!isMounted) {
+    return null;
+  }
   return (
     <div>
       <ResponsiveContainer width="100%" height={350}>

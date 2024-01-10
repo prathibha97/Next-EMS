@@ -1,37 +1,17 @@
 'use client';
 import { UserAuthForm } from '@/app/(routes)/(root)/components/user-auth-form';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-
-const ADMIN_ROLE = 'ADMIN';
-const USER_ROLE = 'USER';
-const DASHBOARD_PATH = '/dashboard';
-const PROFILE_PATH = '/profile';
-
-const redirectToRolePage = (role: string, router: any) => {
-  switch (role) {
-    case ADMIN_ROLE:
-      router.push(DASHBOARD_PATH);
-      break;
-    case USER_ROLE:
-      router.push(PROFILE_PATH);
-      break;
-    default:
-      // Redirect to a default path or handle other cases
-      break;
-  }
-};
 
 export default function AuthenticationPage() {
-  const router = useRouter();
-  const { status, data: session } = useSession();
+  // const router = useRouter();
+  // const { status, data: session } = useSession();
 
   // useEffect(() => {
-  //   if (status === 'authenticated' && session?.user) {
-  //     redirectToRolePage(session.user.role, router);
+  //   if (status === 'authenticated' && session?.user.role === 'ADMIN') {
+  //     router.push('/dashboard');
+  //   } else if (status === 'authenticated' && session?.user.role === 'USER') {
+  //     router.push('/profile');
   //   }
-  // }, [status, session, router]);
+  // }, [status, session]);
 
   return (
     <div className='h-screen'>

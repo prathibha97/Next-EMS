@@ -3,12 +3,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type EmployeeState = {
   employee: Employee | null;
+  currentEmployee: Employee | null;
   employees: Employee[];
 };
 
 const initialState: EmployeeState = {
   employee: null,
   employees: [],
+  currentEmployee: null
 };
 
 export const employeeSlice = createSlice({
@@ -16,9 +18,12 @@ export const employeeSlice = createSlice({
   initialState,
   reducers: {
     setEmployee: (state, action: PayloadAction<Employee | null>) => {
-      if(!action.payload) return;
+      if (!action.payload) return;
       state.employee = action.payload;
-      state.employees.push(action.payload);
+    },
+    setCurrentEmployee: (state, action: PayloadAction<Employee | null>) => {
+      if (!action.payload) return;
+      state.currentEmployee = action.payload;
     },
     clearEmployee: (state) => {
       state.employee = null;
@@ -58,6 +63,7 @@ export const employeeSlice = createSlice({
 
 export const {
   setEmployee,
+  setCurrentEmployee,
   clearEmployee,
   getEmployee,
   updateEmployeeData,

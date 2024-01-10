@@ -1,13 +1,12 @@
 'use client';
-import { setAuthenticated, setUser } from '@/app/redux/features/authSlice';
+import { setAuthenticated } from '@/app/redux/features/authSlice';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import axios from 'axios';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Icons } from '../../../../components/icons';
 import { Button } from '../../../../components/ui/button';
@@ -18,25 +17,10 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 type Variant = 'LOGIN' | 'REGISTER';
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const session = useSession();
-  const router = useRouter();
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [variant, setVariant] = useState<Variant>('LOGIN');
-
-useEffect(() => {
-  // Check if session is still loading
-  if (session.status === 'loading') {
-    return; // Return early if still loading
-  }
-
-  // Check if the user is authenticated after session loading
-  if (session.status === 'authenticated') {
-    router.push('/dashboard');
-    router.refresh();
-  }
-}, [session, router]);
 
   const toggleVariant = useCallback(() => {
     if (variant === 'LOGIN') {
@@ -45,11 +29,6 @@ useEffect(() => {
       setVariant('LOGIN');
     }
   }, [variant]);
-
-const dispatchUserData = (user:any) => {
-  dispatch(setAuthenticated(true));
-  dispatch(setUser(user));
-};
 
   const {
     register,
@@ -83,9 +62,10 @@ const dispatchUserData = (user:any) => {
     if (variant === 'LOGIN') {
       signIn('credentials', {
         ...data,
-        redirect: false,
+        redirect: true,
       })
         .then((callback) => {
+          console.log(callback);
           if (callback?.error) {
             return toast({
               title: 'Something went wrong!',
@@ -95,26 +75,12 @@ const dispatchUserData = (user:any) => {
           }
 
           if (callback?.ok && !callback?.error) {
-            dispatchUserData(session.data?.user);
-            return toast({
-              title: 'Logged in successfully',
-            });
+            dispatch(setAuthenticated(true));
           }
-          router.push('/dashboard');
-          router.refresh();
         })
         .finally(() => setIsLoading(false));
     }
   };
-
-  if (session.status === 'loading') {
-    return (
-      <div className='text-center mt-6'>
-        Loading session...
-        {/* You can replace this with a loading spinner or any other loading indicator */}
-      </div>
-    );
-  }
 
   return (
     <div className={cn('grid gap-6 mx-auto w-full', className)} {...props}>

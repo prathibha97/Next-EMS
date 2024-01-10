@@ -6,9 +6,9 @@ export default withAuth({
     authorized({ req, token }) {
       const { pathname } = req.nextUrl;
       // `/admin` requires admin role
-      if (pathname === '/dashboard') {
-        return token?.role === 'ADMIN';
-      }
+      // if (pathname === '/dashboard') {
+      //   return token?.role === 'ADMIN';
+      // }
       if (pathname.startsWith('/accounts')) {
         return token?.role === 'ADMIN';
       }

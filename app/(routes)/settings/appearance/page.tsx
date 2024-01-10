@@ -2,7 +2,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
-import { AppearanceForm } from "./appearance/appearance-form";
+import { AppearanceForm } from "./appearance-form";
 
 export default function SettingsProfilePage() {
   const router = useRouter();

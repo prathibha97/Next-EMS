@@ -1,10 +1,10 @@
 export const sidebarNavItems = [
   {
-    title: 'Users',
-    href: '/settings/users',
+    title: "Appearance",
+    href: "/settings/appearance",
   },
   {
-    title: 'Appearance',
-    href: '/settings/appearance',
+    title: "Users",
+    href: "/settings/users",
   },
 ];

@@ -41,13 +41,13 @@ const TaskEditForm: FC<TaskEditFormProps> = ({ task }) => {
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(TaskFormSchema),
     defaultValues: {
-      title: task.title,
-      description: task.description ?? '',
-      project: task.projectId,
-      status: task.status ?? 'Backlog',
+      title: task?.title ?? '',
+      description: task?.description ?? '',
+      project: task?.projectId,
+      status: task?.status ?? 'Backlog',
       // @ts-ignore
-      priority: task.priority ?? 'Low',
-      label: task.label ?? '',
+      priority: task?.priority ?? 'Low',
+      label: task?.label ?? '',
     },
   });
 

@@ -1,3 +1,4 @@
+import { Toaster } from '@/components/ui/toaster';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
@@ -19,6 +20,7 @@ export default function RootLayout({
         <div className='flex-grow overflow-x-auto overflow-y-auto'>
           {children}
         </div>
+        <Toaster />
       </body>
     </html>
   );

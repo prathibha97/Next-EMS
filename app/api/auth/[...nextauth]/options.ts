@@ -52,6 +52,9 @@ export const authOptions: AuthOptions = {
   session: {
     strategy: 'jwt',
   },
+  // pages: {
+  //   signIn: '/',
+  // },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     // Ref: https://authjs.dev/guides/basics/role-based-access-control#persisting-the-role
@@ -71,7 +74,7 @@ export const authOptions: AuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      return baseUrl;
+      return `${baseUrl}/dashboard`;
     },
   },
 };

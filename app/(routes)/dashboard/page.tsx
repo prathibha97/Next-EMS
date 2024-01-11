@@ -14,6 +14,7 @@ import { Overview } from './components/overview';
 import { RecentProjects } from './components/recent-projects';
 import { TaskStatistics } from './components/task-statistics';
 import { OverviewAdmin } from './components/overview-admin';
+import { EmployeeAttendance } from './components/attendance';
 
 export default async function DashboardPage() {
   const session = await getAuthSession();
@@ -128,9 +129,7 @@ export default async function DashboardPage() {
                 <Card className="flex-1 md:w-1/2 bg-white drop-shadow-lg mb-4 md:mr-2">
                   <CardHeader>
                     <CardTitle>Recent Projects</CardTitle>
-                    <CardDescription>
-                      Ongoing projects
-                    </CardDescription>
+                    <CardDescription>Ongoing projects</CardDescription>
                   </CardHeader>
                   <CardContent className="flex-1">
                     <RecentProjects />
@@ -146,7 +145,7 @@ export default async function DashboardPage() {
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="flex-1">
-                      <TaskStatistics />
+                      <EmployeeAttendance />
                     </CardContent>
                   </Card>
                 )) || (

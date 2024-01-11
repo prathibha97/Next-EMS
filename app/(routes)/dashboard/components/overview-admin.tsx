@@ -15,55 +15,67 @@ import {
 const data = [
   {
     month: 'Jan',
-    hours: Math.floor(Math.random() * 100) + 100,
+    emp1: Math.floor(Math.random() * 100) + 100,
+    emp2: Math.floor(Math.random() * 100) + 100,
   },
   {
     month: 'Feb',
-    hours: Math.floor(Math.random() * 100) + 100,
+    emp1: Math.floor(Math.random() * 100) + 100,
+    emp2: Math.floor(Math.random() * 50) + 100,
   },
   {
     month: 'Mar',
-    hours: Math.floor(Math.random() * 100) + 100,
+    emp1: Math.floor(Math.random() * 100) + 100,
+    emp2: Math.floor(Math.random() * 50) + 100,
   },
   {
     month: 'Apr',
-    hours: Math.floor(Math.random() * 100) + 100,
+    emp1: Math.floor(Math.random() * 100) + 100,
+    emp2: Math.floor(Math.random() * 50) + 100,
   },
   {
     month: 'May',
-    hours: Math.floor(Math.random() * 100) + 100,
+    emp1: Math.floor(Math.random() * 100) + 100,
+    emp2: Math.floor(Math.random() * 50) + 100,
   },
   {
     month: 'Jun',
-    hours: Math.floor(Math.random() * 100) + 100,
+    emp1: Math.floor(Math.random() * 100) + 100,
+    emp2: Math.floor(Math.random() * 50) + 100,
   },
   {
     month: 'Jul',
-    hours: Math.floor(Math.random() * 100) + 100,
+    emp1: Math.floor(Math.random() * 100) + 100,
+    emp2: Math.floor(Math.random() * 50) + 100,
   },
   {
     month: 'Aug',
-    hours: Math.floor(Math.random() * 100) + 100,
+    emp1: Math.floor(Math.random() * 100) + 100,
+    emp2: Math.floor(Math.random() * 50) + 100,
   },
   {
     month: 'Sep',
-    hours: Math.floor(Math.random() * 100) + 100,
+    emp1: Math.floor(Math.random() * 100) + 100,
+    emp2: Math.floor(Math.random() * 50) + 100,
   },
   {
     month: 'Oct',
-    hours: Math.floor(Math.random() * 100) + 100,
+    emp1: Math.floor(Math.random() * 100) + 100,
+    emp2: Math.floor(Math.random() * 50) + 100,
   },
   {
     month: 'Nov',
-    hours: Math.floor(Math.random() * 100) + 100,
+    emp1: Math.floor(Math.random() * 100) + 100,
+    emp2: Math.floor(Math.random() * 50) + 100,
   },
   {
     month: 'Dec',
-    hours: Math.floor(Math.random() * 100) + 100,
+    emp1: Math.floor(Math.random() * 100) + 100,
+    emp2: Math.floor(Math.random() * 50) + 100,
   },
 ];
 
-export function Overview() {
+export function OverviewAdmin() {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -108,8 +120,14 @@ export function Overview() {
           <Legend />
           <Line
             type="monotone"
-            dataKey="hours"
+            dataKey="emp1"
             stroke="#8884d8"
+            activeDot={{ r: 8 }}
+          />
+          <Line
+            type="monotone"
+            dataKey="emp2"
+            stroke="#82ca9d"
             activeDot={{ r: 8 }}
           />
         </LineChart>

@@ -13,6 +13,7 @@ import { CalendarDateRangePicker } from './components/date-range-picker';
 import { Overview } from './components/overview';
 import { RecentProjects } from './components/recent-projects';
 import { TaskStatistics } from './components/task-statistics';
+import { OverviewAdmin } from './components/overview-admin';
 
 export default async function DashboardPage() {
   const session = await getAuthSession();
@@ -25,12 +26,6 @@ export default async function DashboardPage() {
             <h2 className="accc text-3xl font-bold tracking-tight">
               Dashboard
             </h2>
-            {session?.user.role === 'ADMIN' && (
-              <div className="flex items-center space-x-2">
-                <CalendarDateRangePicker />
-                <Button>Download</Button>
-              </div>
-            )}
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsContent value="overview" className="space-y-4">
@@ -52,7 +47,7 @@ export default async function DashboardPage() {
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">$45,231.89</div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground text-teal-500">
                         +20.1% from last month
                       </p>
                     </CardContent>
@@ -72,7 +67,7 @@ export default async function DashboardPage() {
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">+2350</div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground text-teal-400">
                         +180.1% from last month
                       </p>
                     </CardContent>
@@ -91,7 +86,7 @@ export default async function DashboardPage() {
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">+12,234</div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground text-teal-400">
                         +19% from last month
                       </p>
                     </CardContent>
@@ -110,7 +105,7 @@ export default async function DashboardPage() {
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">+573</div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground text-teal-400">
                         +201 since last hour
                       </p>
                     </CardContent>
@@ -123,7 +118,9 @@ export default async function DashboardPage() {
                   <CardTitle>Overview</CardTitle>
                 </CardHeader>
                 <CardContent className="pl-2">
-                  <Overview />
+                  {(session?.user.role === 'ADMIN' && <OverviewAdmin />) || (
+                    <Overview />
+                  )}
                 </CardContent>
               </Card>
 
@@ -140,17 +137,31 @@ export default async function DashboardPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="flex-1 md:w-1/2 bg-white drop-shadow-lg">
-                  <CardHeader>
-                    <CardTitle>Task Statistics</CardTitle>
-                    <CardDescription>
-                      You made 265 sales this month.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="flex-1">
-                    <TaskStatistics />
-                  </CardContent>
-                </Card>
+                {(session?.user.role === 'ADMIN' && (
+                  <Card className="flex-1 md:w-1/2 bg-white drop-shadow-lg">
+                    <CardHeader>
+                      <CardTitle>Attendance</CardTitle>
+                      <CardDescription>
+                        Todays's employee attendance
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex-1">
+                      <TaskStatistics />
+                    </CardContent>
+                  </Card>
+                )) || (
+                  <Card className="flex-1 md:w-1/2 bg-white drop-shadow-lg">
+                    <CardHeader>
+                      <CardTitle>Task Statistics</CardTitle>
+                      <CardDescription>
+                        You made 265 sales this month.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex-1">
+                      <TaskStatistics />
+                    </CardContent>
+                  </Card>
+                )}
               </div>
             </TabsContent>
           </Tabs>

@@ -129,7 +129,7 @@ export default async function DashboardPage() {
                   <CardHeader>
                     <CardTitle>Recent Projects</CardTitle>
                     <CardDescription>
-                      You made 265 sales this month.
+                      Ongoing projects
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="flex-1">

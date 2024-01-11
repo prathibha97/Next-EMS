@@ -1,87 +1,46 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+'use client';
+
+import { useEffect, useState } from 'react';
+import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer } from 'recharts';
+
+const data01 = [
+  { name: 'Group A', value: 400 },
+  { name: 'Group B', value: 300 },
+  { name: 'Group C', value: 300 },
+  { name: 'Group D', value: 200 },
+  { name: 'Group E', value: 278 },
+  { name: 'Group F', value: 189 },
+];
 
 export function TaskStatistics() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+    }
+  }, [isMounted]);
+
+  if (!isMounted) {
+    return null;
+  }
   return (
-    <div className="space-y-8">
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
+    <div>
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart width={400} height={400}>
+          <Pie
+            dataKey="value"
+            isAnimationActive={false}
+            data={data01}
+            cx="50%"
+            cy="50%"
+            outerRadius={80}
+            fill="#8884d8"
+            label
           />
-          <AvatarFallback>OM</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Olivia Martin</p>
-          <p className="text-sm text-muted-foreground">
-            olivia.martin@email.com
-          </p>
-        </div>
-        <div className="ml-auto font-medium">+$1,999.00</div>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="flex h-9 w-9 items-center justify-center space-y-0 border">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>JL</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Jackson Lee</p>
-          <p className="text-sm text-muted-foreground">jackson.lee@email.com</p>
-        </div>
-        <div className="ml-auto font-medium">+$39.00</div>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>IN</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Isabella Nguyen</p>
-          <p className="text-sm text-muted-foreground">
-            isabella.nguyen@email.com
-          </p>
-        </div>
-        <div className="ml-auto font-medium">+$299.00</div>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>WK</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">William Kim</p>
-          <p className="text-sm text-muted-foreground">will@email.com</p>
-        </div>
-        <div className="ml-auto font-medium">+$99.00</div>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage
-            // npm
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>SD</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Sofia Davis</p>
-          <p className="text-sm text-muted-foreground">sofia.davis@email.com</p>
-        </div>
-        <div className="ml-auto font-medium">+$39.00</div>
-      </div>
+          <Tooltip />
+        </PieChart>
+      </ResponsiveContainer>
     </div>
   );
 }

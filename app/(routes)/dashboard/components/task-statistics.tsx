@@ -16,7 +16,13 @@ interface taskStatisticsProps {
   tasks: Task[];
 }
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = {
+  Backlog: '#0088FE',
+  Todo: '#FF8042',
+  'In progress': '#FFBB28',
+  Done: '#00C49F',
+  Cancelled: '#888888',
+};
 
 const RADIAN = Math.PI / 180;
 
@@ -70,24 +76,23 @@ const TaskStatistics: FC<taskStatisticsProps> = ({ tasks }) => {
   return (
     <div className="w-full">
       <ResponsiveContainer width="100%" height={400}>
-        <PieChart width={400} height={400}>
+        <PieChart>
           <Pie
             data={data}
             cx="50%"
             cy="50%"
             labelLine={false}
             label={renderCustomizedLabel}
-            outerRadius={80}
+            outerRadius={150}
             fill="#8884d8"
             dataKey="value"
           >
             {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
+              // @ts-ignore
+              <Cell key={`cell-${index}`} fill={COLORS[entry.name]} />
             ))}
           </Pie>
+
           <Tooltip />
           <Legend />
         </PieChart>

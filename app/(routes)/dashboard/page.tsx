@@ -130,7 +130,7 @@ export default async function DashboardPage() {
               </Card>
 
               <div className="flex flex-col md:flex-row w-full">
-                <Card className="flex-1 md:w-1/2 bg-white drop-shadow-lg mb-4 md:mr-2">
+                <Card className="flex-1 md:w-1/2 bg-white drop-shadow-lg md:mr-2">
                   <CardHeader>
                     <CardTitle>Recent Projects</CardTitle>
                     <CardDescription>Ongoing projects</CardDescription>
@@ -157,7 +157,7 @@ export default async function DashboardPage() {
                     <CardHeader>
                       <CardTitle>Task Statistics</CardTitle>
                       <CardDescription>
-                        You made 265 sales this month.
+                        Statistics of tasks allocated to you
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="flex-1">

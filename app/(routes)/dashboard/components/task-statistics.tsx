@@ -1,14 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { Task } from '@prisma/client';
+import { FC } from 'react';
+import {
+  PieChart,
+  Pie,
+  Sector,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from 'recharts';
 
-const data = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
-  { name: 'Group D', value: 200 },
-];
+interface taskStatisticsProps {
+  tasks: Task[];
+}
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
@@ -48,63 +54,46 @@ const renderCustomizedLabel = ({
   );
 };
 
-export function TaskStatistics() {
-  const [isMounted, setIsMounted] = useState(false);
+const TaskStatistics: FC<taskStatisticsProps> = ({ tasks }) => {
+  const statusCounts = tasks.reduce((acc, task) => {
+    // @ts-ignore
+    acc[task.status] = (acc[task.status] || 0) + 1;
+    return acc;
+  }, {});
 
-  useEffect(() => {
-    if (!isMounted) {
-      setIsMounted(true);
-    }
-  }, [isMounted]);
+  const data = Object.keys(statusCounts).map((status) => ({
+    name: status,
+    // @ts-ignore
+    value: statusCounts[status],
+  }));
 
-  if (!isMounted) {
-    return null;
-  }
   return (
-    <div className='w-full'>
+    <div className="w-full">
       <ResponsiveContainer width="100%" height={400}>
-      <PieChart width={400} height={400}>
-        <Pie
-          data={data}
-          cx="50%"
-          cy="50%"
-          labelLine={false}
-          label={renderCustomizedLabel}
-          outerRadius={80}
-          fill="#8884d8"
-          dataKey="value"
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-        <Tooltip />
-          <Legend />
-      </PieChart>
-      </ResponsiveContainer>
-    </div>
-  );
-}
-
-{
-  /* <PieChart width={400} height={400}>
+        <PieChart width={400} height={400}>
           <Pie
-            dataKey='value'
             data={data}
-            nameKey='name'
-            cx='50%'
-            cy='50%'
+            cx="50%"
+            cy="50%"
+            labelLine={false}
+            label={renderCustomizedLabel}
             outerRadius={80}
-            label
+            fill="#8884d8"
+            dataKey="value"
           >
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={getStatusColor(entry.name as TaskStatus)}
+                fill={COLORS[index % COLORS.length]}
               />
             ))}
           </Pie>
           <Tooltip />
           <Legend />
-        </PieChart> */
-}
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default TaskStatistics;

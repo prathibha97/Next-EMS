@@ -25,25 +25,27 @@ const getStatusColor = (status: TaskStatus): string => {
 
 const ProjectInsightsChart: FC<ProjectInsightsChartProps> = ({ tasks }) => {
   const statusCounts = tasks.reduce((acc, task) => {
+    // @ts-ignore
     acc[task.status] = (acc[task.status] || 0) + 1;
     return acc;
   }, {});
 
   const data = Object.keys(statusCounts).map((status) => ({
     name: status,
+    // @ts-ignore
     value: statusCounts[status],
   }));
 
   return (
-    <div className='flex'>
-      <div className='mr-8'>
+    <div className="flex">
+      <div className="mr-8">
         <PieChart width={400} height={400}>
           <Pie
-            dataKey='value'
+            dataKey="value"
             data={data}
-            nameKey='name'
-            cx='50%'
-            cy='50%'
+            nameKey="name"
+            cx="50%"
+            cy="50%"
             outerRadius={80}
             label
           >
@@ -59,12 +61,12 @@ const ProjectInsightsChart: FC<ProjectInsightsChartProps> = ({ tasks }) => {
         </PieChart>
       </div>
       <div>
-        <h3 className='text-xl font-semibold mb-4'>Project Status Breakdown</h3>
+        <h3 className="text-xl font-semibold mb-4">Project Status Breakdown</h3>
         <ul>
           {data.map((item) => (
-            <li key={item.name} className='flex items-center mb-2'>
+            <li key={item.name} className="flex items-center mb-2">
               <div
-                className='w-4 h-4 mr-2 rounded-full'
+                className="w-4 h-4 mr-2 rounded-full"
                 style={{
                   backgroundColor: getStatusColor(item.name as TaskStatus),
                 }}

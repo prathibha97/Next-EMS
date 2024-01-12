@@ -12,12 +12,16 @@ import Image from 'next/image';
 import { CalendarDateRangePicker } from './components/date-range-picker';
 import { Overview } from './components/overview';
 import { RecentProjects } from './components/recent-projects';
-import { TaskStatistics } from './components/task-statistics';
 import { OverviewAdmin } from './components/overview-admin';
 import { EmployeeAttendance } from './components/attendance';
+import useTasks from '@/hooks/useTasks';
+import TaskStatistics from './components/task-statistics';
 
 export default async function DashboardPage() {
   const session = await getAuthSession();
+
+  const { getTaskByUser } = useTasks();
+  const tasks = await getTaskByUser(session?.user.id!);
 
   return (
     <div>
@@ -157,7 +161,7 @@ export default async function DashboardPage() {
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="flex-1">
-                      <TaskStatistics />
+                      <TaskStatistics tasks={tasks} />
                     </CardContent>
                   </Card>
                 )}

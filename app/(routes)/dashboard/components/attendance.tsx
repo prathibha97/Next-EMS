@@ -19,7 +19,7 @@ export async function EmployeeAttendance() {
 
         return (
           <div key={employee.id} className="flex items-center">
-            <Avatar className="h-9 w-9">
+            <Avatar className="hidden md:block h-9 w-9">
               <AvatarImage
                 src={employee?.profile_photo || '/avatar.jpeg'}
                 alt="Avatar"

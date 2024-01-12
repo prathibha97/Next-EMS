@@ -1,73 +1,34 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
+import useProject from '@/hooks/useProject';
+import { Progress } from '@/components/ui/progress';
 
-export function RecentProjects() {
+export async function RecentProjects() {
+  const { getAllProjects } = useProject();
+  const projects = await getAllProjects();
+
   return (
-    <div className="space-y-8">
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>OM</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Management System</p>
-          <p className="text-sm text-muted-foreground">Spiria Digital</p>
-        </div>
-        <div className="ml-auto font-medium">+$1,999.00</div>
-      </div>
-      <Separator />
-      <div className="flex items-center">
-        <Avatar className="flex h-9 w-9 items-center justify-center space-y-0 border">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>JL</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">ABC Project</p>
-          <p className="text-sm text-muted-foreground">ABC Company</p>
-        </div>
-        <div className="ml-auto font-medium">+$39.00</div>
-      </div>
-      <Separator />
-      <div className="flex items-center">
-        <Avatar className="flex h-9 w-9 items-center justify-center space-y-0 border">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>JL</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">ABC Project</p>
-          <p className="text-sm text-muted-foreground">ABC Company</p>
-        </div>
-        <div className="ml-auto font-medium">+$39.00</div>
-      </div>
-      <Separator />
-      <div className="flex items-center">
-        <Avatar className="flex h-9 w-9 items-center justify-center space-y-0 border">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>JL</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">ABC Project</p>
-          <p className="text-sm text-muted-foreground">ABC Company</p>
-        </div>
-        <div className="ml-auto font-medium">+$39.00</div>
-      </div>
-      <Separator />
+    <div className="space-y-8 md:min-h-[350px] max-h-screen">
+      {projects.map(async (project) => {
+        return (
+          <div
+            key={project.id}
+            className="flex items-center justify-between overflow-y-scroll"
+          >
+            <div className="ml-4 space-y-1">
+              <p className="text-sm font-medium leading-none">{project.name}</p>
+              <p className="text-sm text-muted-foreground text-gray-600">
+                {project.client.name}
+              </p>
+            </div>
+            <div className="ml-auto font-medium flex space-x-2">
+              <div className="flex space-x-2"></div>
+            </div>
+            <div className="w-1/3 md:w-1/2">
+              <Progress value={project.progress} />
+            </div>
+            <span className="ml-2">%</span>
+          </div>
+        );
+      })}
     </div>
   );
 }

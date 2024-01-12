@@ -1,77 +1,40 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
+import useAttendance from '@/hooks/useAttendance';
+import useEmployee from '@/hooks/useEmployee';
 
-export function EmployeeAttendance() {
+export async function EmployeeAttendance() {
+  const { getAllEmployees } = useEmployee();
+  const employees = await getAllEmployees();
+  const { getAttendanceByEmployeeId } = useAttendance();
+
   return (
-    <div className="space-y-8">
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>OM</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Olivia Martin</p>
-          <p className="text-sm text-muted-foreground">
-            olivia.martin@email.com
-          </p>
-        </div>
-        <div className="ml-auto font-medium text-green-500">Present</div>
-      </div>
-      <Separator />
-      <div className="flex items-center">
-        <Avatar className="flex h-9 w-9 items-center justify-center space-y-0 border">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>JL</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Jackson Lee</p>
-          <p className="text-sm text-muted-foreground">jackson.lee@email.com</p>
-        </div>
-        <div className="ml-auto font-medium text-green-500">Present</div>
-      </div>
-      <Separator />
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>IN</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Isabella Nguyen</p>
-          <p className="text-sm text-muted-foreground">
-            isabella.nguyen@email.com
-          </p>
-        </div>
-        <div className="ml-auto font-medium text-red-500">Leave</div>
-      </div>
-      <Separator />
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>WK</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">William Kim</p>
-          <p className="text-sm text-muted-foreground">will@email.com</p>
-        </div>
-        <div className="ml-auto font-medium text-red-500">Leave</div>
-      </div>
-      <Separator />
+    <div className="space-y-8 overflow-y-auto max-h-screen">
+      {employees.map(async (employee) => {
+        const attendance = await getAttendanceByEmployeeId(employee.id);
+
+        return (
+          <div key={employee.id} className="flex items-center">
+            <Avatar className="h-9 w-9">
+              <AvatarImage
+                src={employee?.profile_photo || '/avatar.jpeg'}
+                alt="Avatar"
+              />
+              <AvatarFallback>{employee.name}</AvatarFallback>
+            </Avatar>
+            <div className="ml-4 space-y-1">
+              <p className="text-sm font-medium leading-none">
+                {employee.name}
+              </p>
+              <p className="text-sm text-muted-foreground text-gray-600">
+                {employee.workEmail}
+              </p>
+            </div>
+            <div className="ml-auto font-medium text-green-500">
+              {attendance.length > 0 ? 'Present' : 'Absent'}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

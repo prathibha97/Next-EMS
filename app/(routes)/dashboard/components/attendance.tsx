@@ -7,10 +7,15 @@ export async function EmployeeAttendance() {
   const employees = await getAllEmployees();
   const { getAttendanceByEmployeeId } = useAttendance();
 
+  const currentDate = new Date().toISOString().split('T')[0];
+
   return (
-    <div className="space-y-8 overflow-y-auto max-h-screen">
+    <div className="space-y-8 overflow-y-scroll max-h-screen">
       {employees.map(async (employee) => {
         const attendance = await getAttendanceByEmployeeId(employee.id);
+        const todayAttendance = attendance.find(
+          (record) => record?.date?.toISOString().split('T')[0] === currentDate
+        );
 
         return (
           <div key={employee.id} className="flex items-center">
@@ -29,8 +34,12 @@ export async function EmployeeAttendance() {
                 {employee.workEmail}
               </p>
             </div>
-            <div className="ml-auto font-medium text-green-500">
-              {attendance.length > 0 ? 'Present' : 'Absent'}
+            <div
+              className={`ml-auto font-medium ${
+                todayAttendance ? 'text-green-500' : 'text-red-500'
+              } `}
+            >
+              {todayAttendance ? 'Present' : 'Absent'}
             </div>
           </div>
         );

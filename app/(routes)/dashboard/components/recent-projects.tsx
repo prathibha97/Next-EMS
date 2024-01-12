@@ -1,13 +1,20 @@
 import useProject from '@/hooks/useProject';
 import { Progress } from '@/components/ui/progress';
+import { getAuthSession } from '@/app/api/auth/[...nextauth]/options';
 
 export async function RecentProjects() {
-  const { getAllProjects } = useProject();
-  const projects = await getAllProjects();
+  const session = await getAuthSession()
+
+  const { getDashboardProjects, getCurrentEmployeeProjects } = useProject();
+  const projects = await getDashboardProjects();
+
+  const currentEmployeeProjects = await getCurrentEmployeeProjects();
+
+  const projectsToDisplay = session?.user.role === 'ADMIN' ? projects : currentEmployeeProjects
 
   return (
     <div className="space-y-8 md:min-h-[350px] max-h-screen">
-      {projects.map(async (project) => {
+      {projectsToDisplay.length > 0 ? projectsToDisplay.map((project) => {
         return (
           <div
             key={project.id}
@@ -28,7 +35,11 @@ export async function RecentProjects() {
             <span className="ml-2">%</span>
           </div>
         );
-      })}
+      }) : (
+        <div className='h-full my-auto'>
+          <p className='text-center'>No projects to display</p>
+        </div>
+      )}
     </div>
   );
 }

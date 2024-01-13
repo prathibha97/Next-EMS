@@ -10,18 +10,26 @@ import {
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import Image from 'next/image';
 import { CalendarDateRangePicker } from './components/date-range-picker';
-import { Overview } from './components/overview';
 import { RecentProjects } from './components/recent-projects';
 import { OverviewAdmin } from './components/overview-admin';
 import { EmployeeAttendance } from './components/attendance';
 import useTasks from '@/hooks/useTasks';
 import TaskStatistics from './components/task-statistics';
+import WorkedHoursOverview from './components/overview';
+import useWorkedHours from '@/hooks/useWorkedHours';
+import useEmployee from '@/hooks/useEmployee';
 
 export default async function DashboardPage() {
   const session = await getAuthSession();
 
   const { getTaskByUser } = useTasks();
   const tasks = await getTaskByUser(session?.user.id!);
+
+  const {getLoggedInEmployee} = useEmployee()
+  const currentEmployee = await getLoggedInEmployee()
+
+  const { getWorkedHoursByEmployeeId } = useWorkedHours();
+  const workedHours = await getWorkedHoursByEmployeeId(currentEmployee?.id!);
 
   return (
     <div>
@@ -124,7 +132,7 @@ export default async function DashboardPage() {
                 </CardHeader>
                 <CardContent className="pl-2">
                   {(session?.user.role === 'ADMIN' && <OverviewAdmin />) || (
-                    <Overview />
+                    <WorkedHoursOverview workedHours={workedHours} />
                   )}
                 </CardContent>
               </Card>

@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { TaskWork } from '@prisma/client';
+import { FC } from 'react';
 import {
   ResponsiveContainer,
   XAxis,
@@ -12,71 +13,32 @@ import {
   Legend,
 } from 'recharts';
 
-const data = [
-  {
-    month: 'Jan',
-    hours: Math.floor(Math.random() * 100) + 100,
-  },
-  {
-    month: 'Feb',
-    hours: Math.floor(Math.random() * 100) + 100,
-  },
-  {
-    month: 'Mar',
-    hours: Math.floor(Math.random() * 100) + 100,
-  },
-  {
-    month: 'Apr',
-    hours: Math.floor(Math.random() * 100) + 100,
-  },
-  {
-    month: 'May',
-    hours: Math.floor(Math.random() * 100) + 100,
-  },
-  {
-    month: 'Jun',
-    hours: Math.floor(Math.random() * 100) + 100,
-  },
-  {
-    month: 'Jul',
-    hours: Math.floor(Math.random() * 100) + 100,
-  },
-  {
-    month: 'Aug',
-    hours: Math.floor(Math.random() * 100) + 100,
-  },
-  {
-    month: 'Sep',
-    hours: Math.floor(Math.random() * 100) + 100,
-  },
-  {
-    month: 'Oct',
-    hours: Math.floor(Math.random() * 100) + 100,
-  },
-  {
-    month: 'Nov',
-    hours: Math.floor(Math.random() * 100) + 100,
-  },
-  {
-    month: 'Dec',
-    hours: Math.floor(Math.random() * 100) + 100,
-  },
-];
+interface WorkedHoursOverviewProps {
+  workedHours: TaskWork[];
+}
 
-export function Overview() {
-  const [isMounted, setIsMounted] = useState(false);
+const WorkedHoursOverview: FC<WorkedHoursOverviewProps> = ({ workedHours }) => {
+  const monthlyHours = workedHours.reduce((acc, workedHour) => {
+    const month = new Date(workedHour.date).getMonth(); // Extract the month
+    // @ts-ignore
+    const totalHours = acc[month] || 0;
+    // @ts-ignore
+    acc[month] = totalHours + workedHour.hoursWorked;
+    return acc;
+  }, {});
 
-  useEffect(() => {
-    if (!isMounted) {
-      setIsMounted(true);
-    }
-  }, [isMounted]);
+  const data = Object.keys(monthlyHours).map((month) => ({
+    name: new Date(2024, parseInt(month), 1).toLocaleString('default', {
+      month: 'short',
+    }),
+    // @ts-ignore
+    hours: monthlyHours[month],
+  }));
 
-  if (!isMounted) {
-    return null;
-  }
+  console.log(data);
+
   return (
-    <div>
+    <div className="w-full">
       <ResponsiveContainer width="100%" height={350}>
         <LineChart
           width={500}
@@ -91,7 +53,7 @@ export function Overview() {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
-            dataKey="month"
+            dataKey="name"
             stroke="#888888"
             fontSize={12}
             tickLine={false}
@@ -99,6 +61,7 @@ export function Overview() {
           />
           <YAxis
             stroke="#888888"
+            dataKey="hours"
             fontSize={12}
             tickLine={false}
             axisLine={false}
@@ -116,4 +79,6 @@ export function Overview() {
       </ResponsiveContainer>
     </div>
   );
-}
+};
+
+export default WorkedHoursOverview;

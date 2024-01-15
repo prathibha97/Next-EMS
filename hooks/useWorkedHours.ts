@@ -11,7 +11,13 @@ const useWorkedHours = () => {
   };
 
   const getWorkedHoursAllEmployees = async () => {
-    const workedHours = await prisma.taskWork.findMany({});
+    const workedHours = await prisma.taskWork.findMany({
+      include:{
+        employee:{
+          select:{id:true, name: true} 
+        }
+      }
+    });
     return workedHours;
   };
 

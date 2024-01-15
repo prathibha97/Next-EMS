@@ -1,87 +1,50 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import useProject from '@/hooks/useProject';
+import { Progress } from '@/components/ui/progress';
+import { getAuthSession } from '@/app/api/auth/[...nextauth]/options';
 
-export function RecentProjects() {
+export async function RecentProjects() {
+  const session = await getAuthSession();
+
+  const { getDashboardProjects, getCurrentEmployeeProjects } = useProject();
+  const projects = await getDashboardProjects();
+
+  const currentEmployeeProjects = await getCurrentEmployeeProjects();
+
+  const projectsToDisplay =
+    session?.user.role === 'ADMIN' ? projects : currentEmployeeProjects;
+
   return (
-    <div className="space-y-8">
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>OM</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Olivia Martin</p>
-          <p className="text-sm text-muted-foreground">
-            olivia.martin@email.com
-          </p>
+    <div className="space-y-8 md:min-h-[350px] max-h-screen">
+      {projectsToDisplay.length > 0 ? (
+        projectsToDisplay.map((project) => {
+          return (
+            <div
+              key={project.id}
+              className="flex items-center justify-between overflow-y-scroll"
+            >
+              <div className="ml-4 space-y-1">
+                <p className="text-sm font-medium leading-none">
+                  {project.name}
+                </p>
+                <p className="text-sm text-muted-foreground text-gray-600">
+                  {project.client.name}
+                </p>
+              </div>
+              <div className="ml-auto font-medium flex space-x-2">
+                <div className="flex space-x-2"></div>
+              </div>
+              <div className="w-1/3 md:w-1/2">
+                <Progress value={project.progress} />
+              </div>
+              <span className="ml-2">{project.progress} %</span>
+            </div>
+          );
+        })
+      ) : (
+        <div className="h-full my-auto">
+          <p className="text-center">No projects to display</p>
         </div>
-        <div className="ml-auto font-medium">+$1,999.00</div>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="flex h-9 w-9 items-center justify-center space-y-0 border">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>JL</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Jackson Lee</p>
-          <p className="text-sm text-muted-foreground">jackson.lee@email.com</p>
-        </div>
-        <div className="ml-auto font-medium">+$39.00</div>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>IN</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Isabella Nguyen</p>
-          <p className="text-sm text-muted-foreground">
-            isabella.nguyen@email.com
-          </p>
-        </div>
-        <div className="ml-auto font-medium">+$299.00</div>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage
-            // src="https://avatar.vercel.sh/personal.png"
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>WK</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">William Kim</p>
-          <p className="text-sm text-muted-foreground">will@email.com</p>
-        </div>
-        <div className="ml-auto font-medium">+$99.00</div>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage
-            // npm
-            src="/icons/account.png"
-            alt="Avatar"
-          />
-          <AvatarFallback>SD</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Sofia Davis</p>
-          <p className="text-sm text-muted-foreground">sofia.davis@email.com</p>
-        </div>
-        <div className="ml-auto font-medium">+$39.00</div>
-      </div>
+      )}
     </div>
   );
 }

@@ -1,75 +1,57 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { TaskWork } from '@prisma/client';
+import { FC } from 'react';
+import {
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  LineChart,
+  Line,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from 'recharts';
 
-const data = [
-  {
-    name: "Jan",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Feb",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Mar",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Apr",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "May",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Jun",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Jul",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Aug",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Sep",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Oct",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Nov",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Dec",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-];
+interface WorkedHoursOverviewProps {
+  workedHours: TaskWork[];
+}
 
-export function Overview() {
-  const [isMounted, setIsMounted] = useState(false);
+const WorkedHoursOverview: FC<WorkedHoursOverviewProps> = ({ workedHours }) => {
+  const monthlyHours = workedHours.reduce((acc, workedHour) => {
+    const month = new Date(workedHour.date).getMonth(); // Extract the month
+    // @ts-ignore
+    const totalHours = acc[month] || 0;
+    // @ts-ignore
+    acc[month] = totalHours + workedHour.hoursWorked;
+    return acc;
+  }, {});
 
-  useEffect(() => {
-    if (!isMounted) {
-      setIsMounted(true);
-    }
-  }, [isMounted]);
+  const data = Object.keys(monthlyHours).map((month) => ({
+    name: new Date(2024, parseInt(month), 1).toLocaleString('default', {
+      month: 'short',
+    }),
+    // @ts-ignore
+    hours: monthlyHours[month],
+  }));
 
-  if (!isMounted) {
-    return null;
-  }
+  console.log(data);
+
   return (
-    <div>
+    <div className="w-full">
       <ResponsiveContainer width="100%" height={350}>
-        <BarChart data={data}>
+        <LineChart
+          width={500}
+          height={300}
+          data={data}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="name"
             stroke="#888888"
@@ -79,14 +61,24 @@ export function Overview() {
           />
           <YAxis
             stroke="#888888"
+            dataKey="hours"
             fontSize={12}
             tickLine={false}
             axisLine={false}
-            tickFormatter={(value) => `$${value}`}
+            tickFormatter={(value) => `Hours ${value}`}
           />
-          <Bar dataKey="total" fill="#2ebdaa" radius={[4, 4, 0, 0]} />
-        </BarChart>
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="hours"
+            stroke="#8884d8"
+            activeDot={{ r: 8 }}
+          />
+        </LineChart>
       </ResponsiveContainer>
     </div>
   );
-}
+};
+
+export default WorkedHoursOverview;

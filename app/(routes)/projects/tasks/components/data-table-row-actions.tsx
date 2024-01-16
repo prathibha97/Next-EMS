@@ -127,7 +127,7 @@ export function DataTableRowActions<TData>({
         {session.data?.user.role === 'ADMIN' && (
           <>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => handleRemoveTask(task.id as string)}>
+            <DropdownMenuItem onClick={() => handleRemoveTask(task.id as string)} className='text-red-500'>
               Delete
             </DropdownMenuItem>
           </>

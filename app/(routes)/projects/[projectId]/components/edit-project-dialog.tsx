@@ -51,6 +51,7 @@ import { DropdownMenuCheckboxItemProps } from '@radix-ui/react-dropdown-menu';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
+import { statuses } from '../../data/data';
 
 interface EditProjectDialogProps {
   project: ProjectWithClientWithAssigneesWithTasks | null;
@@ -194,7 +195,7 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
           ),
           endDate: new Date(values.endDate),
           startDate: new Date(),
-          status: 'ACTIVE',
+          status: values.status,
           nftBaseDesignCount: parseInt(values.nftBaseDesignCount),
           nftCollectionSize: parseInt(values.nftCollectionSize),
           nftTraitCount: parseInt(values.nftTraitCount),
@@ -241,7 +242,7 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
         </DialogTrigger>
         <DialogContent className='p-5'>
           <DialogHeader>
-            <DialogTitle className='mx-48 pt-10 text-xl'>
+            <DialogTitle className='pt-5 text-xl'>
               Edit project information
             </DialogTitle>
           </DialogHeader>
@@ -335,6 +336,32 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
                     <FormItem className='w-1/2'>
                       <FormLabel>Project Deadline</FormLabel>
                       <Input {...field} type='date' className='w-full' />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='status'
+                  render={({ field }) => (
+                    <FormItem className='w-1/2'>
+                      <FormLabel>Project Status</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder='Select a status to Display' />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {statuses.map((status) => (
+                            <SelectItem key={status.value} value={status.value}>
+                              {status.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}

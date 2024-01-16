@@ -18,22 +18,22 @@ import { Progress } from '@/components/ui/progress';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { ProjectWithClientWithAssigneesWithTasks } from '@/types';
+import { Task } from '@prisma/client';
 import { format } from 'date-fns';
 import { Trash } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { FC } from 'react';
-import { DataTable } from '../../tasks/components/data-table';
 import { columns } from '../../tasks/components/project-tasks-columns';
+import { DataTable } from './data-table';
 import EditProjectDialog from './edit-project-dialog';
-import { Task } from '@prisma/client';
 import ProjectInsightsChart from './project-insights-chart';
 
 interface ViewProjectProps {
   project: ProjectWithClientWithAssigneesWithTasks | null;
-  tasks:Task[]
+  tasks: Task[];
 }
 
-const ViewProject: FC<ViewProjectProps> = ({ project,tasks }) => {
+const ViewProject: FC<ViewProjectProps> = ({ project, tasks }) => {
   const router = useRouter();
   const [removeProject, { isLoading: isRemoveProjectLoading }] =
     useRemoveProjectMutation();
@@ -55,30 +55,15 @@ const ViewProject: FC<ViewProjectProps> = ({ project,tasks }) => {
       });
     }
   };
-
+console.log(tasks);
   return (
     <div className='bg-white dark:bg-black/60 p-8 rounded shadow-lg'>
       <div className='flex justify-between mb-4'>
         <EditProjectDialog project={project} />
-        {/* <Button
-          onClick={() => handleRemoveProject(project?.id || '')}
-          variant='destructive'
-          size='icon'
-        >
-          {isRemoveProjectLoading && (
-            <div className='animate-spin'>
-              <div className='spinner' />
-            </div>
-          )}
-          <Trash />
-        </Button> */}
+
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button
-              // onClick={() => handleRemoveProject(project?.id || '')}
-              variant='destructive'
-              size='icon'
-            >
+            <Button variant='destructive' size='icon'>
               {isRemoveProjectLoading && (
                 <div className='animate-spin'>
                   <div className='spinner' />
@@ -99,6 +84,7 @@ const ViewProject: FC<ViewProjectProps> = ({ project,tasks }) => {
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
                 onClick={() => handleRemoveProject(project?.id || '')}
+                className='bg-red-500'
               >
                 Continue
               </AlertDialogAction>
@@ -117,8 +103,9 @@ const ViewProject: FC<ViewProjectProps> = ({ project,tasks }) => {
             <p className='font-bold'>Status:</p>
             <p
               className={cn(
-                'text-white',
-                project?.status === 'ACTIVE' && 'text-green-500'
+                'text-black',
+                project?.status === 'ACTIVE' && 'text-green-500',
+                project?.status === 'ON_HOLD' && 'text-yellow-500'
               )}
             >
               {project?.status}
@@ -157,14 +144,14 @@ const ViewProject: FC<ViewProjectProps> = ({ project,tasks }) => {
               <h3 className='text-xl font-bold mb-4'>Tasks</h3>
               <div className='bg-white dark:bg-gray-900/60 p-5 rounded-lg shadow'>
                 {/* @ts-ignore */}
-                <DataTable data={project?.tasks} columns={columns} />
+                <DataTable data={tasks} columns={columns} />
               </div>
             </div>
           )}
         </TabsContent>
         <TabsContent value='insights'>
           <div className='flex items-center justify-center w-full'>
-          <ProjectInsightsChart tasks={tasks}/>
+            <ProjectInsightsChart tasks={tasks} />
           </div>
         </TabsContent>
       </Tabs>

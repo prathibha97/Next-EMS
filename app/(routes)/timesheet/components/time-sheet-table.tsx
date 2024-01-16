@@ -7,14 +7,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import {
   Table,
   TableBody,
@@ -23,7 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { months } from '@/constants/months';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -76,49 +67,9 @@ export function TimeSheetTable<TData, TValue>({
     },
   });
 
-  const handleMonthChange = (month: string) => {
-    table.getColumn('date')?.setFilterValue(month);
-    console.log(month);
-  };
-
   return (
     <div className='w-full'>
       <div className='flex items-center py-4 space-x-2'>
-        <Input
-          placeholder={`Filter ${placeholder}...`}
-          value={
-            (table
-              .getColumn(searchFilter || 'emails')
-              ?.getFilterValue() as string) ?? ''
-          }
-          onChange={(event) =>
-            table
-              .getColumn(searchFilter || 'emails')
-              ?.setFilterValue(event.target.value)
-          }
-          className='max-w-sm'
-          type='date'
-        />
-        {/* <Select>
-          <SelectTrigger className='w-[180px]'>
-            <SelectValue placeholder='Select Month' />
-          </SelectTrigger>
-          <SelectContent>
-            {months.map((month) => (
-              <SelectItem
-                value={month.value}
-                key={month.value}
-                onClick={() => handleMonthChange(month.value)}
-                onChange={(event) =>
-                  table.getColumn('date')?.setFilterValue(event.target.value)
-                }
-              >
-                {month.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select> */}
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant='outline' className='ml-auto'>

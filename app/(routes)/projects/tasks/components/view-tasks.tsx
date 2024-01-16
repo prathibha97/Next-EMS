@@ -8,7 +8,7 @@ interface ViewTasksProps {
 
 export default function ViewTasks({ tasks }: ViewTasksProps) {
   return (
-    <div className='space-y-5'>
+    <div className='space-y-3'>
       <AddTaskDialog />
       <div className='bg-white dark:bg-gray-900/60 p-5 rounded-lg shadow'>
         <DataTable data={tasks} columns={columns} />

@@ -25,19 +25,16 @@ import { toast } from '@/hooks/use-toast';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { statuses } from '../data/data';
-import { taskSchema } from '../data/schema';
+import { Task } from '@prisma/client';
 
-interface DataTableRowActionsProps<TData> {
-  row: Row<TData>;
+interface DataTableRowActionsProps {
+  row: Row<Task>;
 }
 
-export function DataTableRowActions<TData>({
-  row,
-}: DataTableRowActionsProps<TData>) {
+export function DataTableRowActions<Task>({ row }: DataTableRowActionsProps) {
   const session = useSession();
   const router = useRouter();
   const task = row.original;
-  // @ts-ignore
   const projectId = row.original.projectId;
 
   const [updateTask] = useUpdateTaskMutation();
@@ -106,7 +103,7 @@ export function DataTableRowActions<TData>({
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Update Status</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={task.status}>
+            <DropdownMenuRadioGroup value={task.status!}>
               {statuses.map((status) => (
                 <DropdownMenuRadioItem
                   key={status.value}
@@ -127,7 +124,10 @@ export function DataTableRowActions<TData>({
         {session.data?.user.role === 'ADMIN' && (
           <>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => handleRemoveTask(task.id as string)}>
+            <DropdownMenuItem
+              onClick={() => handleRemoveTask(task.id as string)}
+              className='text-red-500'
+            >
               Delete
             </DropdownMenuItem>
           </>

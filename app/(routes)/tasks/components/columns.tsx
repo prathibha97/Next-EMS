@@ -101,13 +101,13 @@ export const columns: ColumnDef<TaskWithProject>[] = [
       let priorityClassName = '';
       switch (priority.value) {
         case 'High':
-          priorityClassName = 'text-red-600'; // Apply red color for high priority
+          priorityClassName = 'text-red-600'; 
           break;
         case 'Medium':
-          priorityClassName = 'text-yellow-600'; // Apply yellow color for medium priority
+          priorityClassName = 'text-yellow-600'; 
           break;
         case 'Low':
-          priorityClassName = 'text-green-600'; // Apply green color for low priority
+          priorityClassName = 'text-green-600';
           break;
         default:
           priorityClassName = '';

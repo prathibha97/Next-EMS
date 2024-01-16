@@ -40,5 +40,5 @@ export type TaskWorkWithTaskWithProjectWithClient = TaskWork & {
     project: Project & {
       client: Client;
     };
-  };
+  },
 };

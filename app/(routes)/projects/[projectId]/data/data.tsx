@@ -4,7 +4,6 @@ import {
   ArrowUpIcon,
   CheckCircledIcon,
   CircleIcon,
-  RocketIcon,
   CrossCircledIcon,
   QuestionMarkCircledIcon,
   StopwatchIcon,
@@ -12,57 +11,20 @@ import {
 
 export const labels = [
   {
-    value: 'NFT',
-    label: 'NFT',
+    value: 'bug',
+    label: 'Bug',
   },
   {
-    value: 'Digital Arts',
-    label: 'ART',
+    value: 'feature',
+    label: 'Feature',
   },
   {
-    value: 'Graphic Design',
-    label: 'GRD',
-  },
-  {
-    value: 'Web Development',
-    label: 'WEB',
-  },
-  {
-    value: 'Social Media Marketing',
-    label: 'SME',
+    value: 'documentation',
+    label: 'Documentation',
   },
 ];
-
 
 export const statuses = [
-  {
-    value: 'ACTIVE',
-    label: 'Active',
-    icon: RocketIcon,
-  },
-  {
-    value: 'INACTIVE',
-    label: 'Inactive',
-    icon: CircleIcon,
-  },
-  {
-    value: 'ON_HOLD',
-    label: 'On Hold',
-    icon: StopwatchIcon,
-  },
-  {
-    value: 'COMPLETED',
-    label: 'Completed',
-    icon: CheckCircledIcon,
-  },
-  {
-    value: 'CANCELLED',
-    label: 'Canceled',
-    icon: CrossCircledIcon,
-  },
-];
-
-export const taskStatuses = [
   {
     value: 'Backlog',
     label: 'Backlog',

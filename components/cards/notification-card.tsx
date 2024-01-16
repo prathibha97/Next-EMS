@@ -65,7 +65,7 @@ export function NotificationCard({
         </CardDescription>
       </CardHeader>
       <CardContent className='grid gap-4'>
-        <div className='flex items-center space-x-4 rounded-md border p-4'>
+        {/* <div className='flex items-center space-x-4 rounded-md border p-4'>
           <BellRing />
           <div className='flex-1 space-y-1'>
             <p className='text-sm font-medium leading-none'>
@@ -76,7 +76,7 @@ export function NotificationCard({
             </p>
           </div>
           <Switch />
-        </div>
+        </div> */}
         <ScrollArea>
           {notifications.map((notification) => (
             <div

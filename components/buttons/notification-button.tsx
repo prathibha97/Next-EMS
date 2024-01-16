@@ -62,6 +62,20 @@ export function NotificationButton() {
     }
   }, [employee]);
 
+  // useEffect(() => {
+  //   if (employee && employee.id) {
+  //     const channel = pusherClient.subscribe(employee.id);
+
+  //     channel.bind('notifications:new', (data: Notification) => {
+  //       setNotifications((prevNotifications) => [...prevNotifications, data]);
+  //     });
+
+  //     return () => {
+  //       pusherClient.unsubscribe(employee.id);
+  //     };
+  //   }
+  // }, [employee]);
+
   useEffect(() => {
     if (employee && employee.id) {
       const channel = pusherClient.subscribe(employee.id);
@@ -70,11 +84,21 @@ export function NotificationButton() {
         setNotifications((prevNotifications) => [...prevNotifications, data]);
       });
 
+      channel.bind('pusher:subscription_error', (status: any) => {
+        console.error('Pusher subscription error:', status);
+
+        if (status.error.data.code === 4201) {
+          console.error('Pusher connection limit exceeded.');
+        }
+      });
+
       return () => {
         pusherClient.unsubscribe(employee.id);
+        pusherClient.disconnect();
       };
     }
-  }, [employee]);
+  }, []);
+
 
   const unreadCount = notifications?.filter(
     (notification) => !notification.isRead

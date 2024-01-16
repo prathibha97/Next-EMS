@@ -10,7 +10,7 @@ export async function EmployeeAttendance() {
   const currentDate = new Date().toISOString().split('T')[0];
 
   return (
-    <div className="space-y-8 overflow-y-scroll max-h-screen">
+    <div className="space-y-8 overflow-y-auto max-h-screen">
       {employees.map(async (employee) => {
         const attendance = await getAttendanceByEmployeeId(employee.id);
         const todayAttendance = attendance.find(

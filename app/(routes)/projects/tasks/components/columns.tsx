@@ -6,11 +6,15 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 
 import { labels, priorities, statuses } from '../data/data';
-import { Task } from '../data/schema';
+import { Project, Task } from '@prisma/client';
 import { DataTableColumnHeader } from './data-table-column-header';
 import { DataTableRowActions } from './data-table-row-actions';
 
-export const columns: ColumnDef<Task>[] = [
+interface TaskWithProject extends Task {
+  project: Project;
+}
+
+export const columns: ColumnDef<TaskWithProject>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -51,7 +55,11 @@ export const columns: ColumnDef<Task>[] = [
 
       return (
         <div className='flex space-x-2'>
-          {label && <Badge variant='outline' className='dark:bg-purple-500/60'>{label.label}</Badge>}
+          {label && (
+            <Badge variant='outline' className='dark:bg-purple-500/60'>
+              {label.label}
+            </Badge>
+          )}
           <span className='max-w-[500px] truncate font-medium'>
             {row.getValue('title')}
           </span>
@@ -103,13 +111,13 @@ export const columns: ColumnDef<Task>[] = [
       let priorityClassName = '';
       switch (priority.value) {
         case 'High':
-          priorityClassName = 'text-red-600'; // Apply red color for high priority
+          priorityClassName = 'text-red-600';
           break;
         case 'Medium':
-          priorityClassName = 'text-yellow-600'; // Apply yellow color for medium priority
+          priorityClassName = 'text-yellow-600';
           break;
         case 'Low':
-          priorityClassName = 'text-green-600'; // Apply green color for low priority
+          priorityClassName = 'text-green-600';
           break;
         default:
           priorityClassName = '';
@@ -133,7 +141,6 @@ export const columns: ColumnDef<Task>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Project' />
     ),
-    // cell: ({ row }) => <div className='w-[80px]'>{row.getValue('client.name')}</div>,
     accessorFn: (row) => row.project.name,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));

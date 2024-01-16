@@ -38,7 +38,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { labels, priorities, statuses } from '../../data/data';
+import { labels, priorities, statuses, taskStatuses } from '../../data/data';
 
 export function AddTaskDialog() {
   const router = useRouter();
@@ -161,6 +161,7 @@ export function AddTaskDialog() {
                 <FormField
                   control={form.control}
                   name='status'
+                  defaultValue='Backlog'
                   render={({ field }) => (
                     <FormItem>
                       <Label>Status</Label>
@@ -171,7 +172,7 @@ export function AddTaskDialog() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {statuses.map((status) => (
+                          {taskStatuses.map((status) => (
                             <SelectItem key={status.value} value={status.value}>
                               <div className='flex'>
                                 {status.icon && (

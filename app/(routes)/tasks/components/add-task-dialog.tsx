@@ -238,7 +238,7 @@ export function AddTaskDialog() {
                         <SelectContent>
                           {labels.map((label) => (
                             <SelectItem key={label.value} value={label.value}>
-                              {label.label}
+                              {label.value}
                             </SelectItem>
                           ))}
                         </SelectContent>

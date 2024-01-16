@@ -62,20 +62,48 @@ export const statuses = [
   },
 ];
 
+export const taskStatuses = [
+  {
+    value: 'Backlog',
+    label: 'Backlog',
+    icon: QuestionMarkCircledIcon,
+  },
+  {
+    value: 'Todo',
+    label: 'Todo',
+    icon: CircleIcon,
+  },
+  {
+    value: 'In_Progress',
+    label: 'In Progress',
+    icon: StopwatchIcon,
+  },
+  {
+    value: 'Done',
+    label: 'Done',
+    icon: CheckCircledIcon,
+  },
+  {
+    value: 'Canceled',
+    label: 'Canceled',
+    icon: CrossCircledIcon,
+  },
+];
+
 export const priorities = [
   {
     label: 'Low',
-    value: 'low',
+    value: 'Low',
     icon: ArrowDownIcon,
   },
   {
     label: 'Medium',
-    value: 'medium',
+    value: 'Medium',
     icon: ArrowRightIcon,
   },
   {
     label: 'High',
-    value: 'high',
+    value: 'High',
     icon: ArrowUpIcon,
   },
 ];

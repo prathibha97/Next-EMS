@@ -1,4 +1,6 @@
+import { getAuthSession } from '@/app/api/auth/[...nextauth]/options';
 import prisma from '@/lib/prisma';
+import useEmployee from './useEmployee';
 
 const useProject = () => {
   const getAllProjects = async () => {
@@ -6,8 +8,8 @@ const useProject = () => {
       include: {
         client: {
           select: {
-            name: true
-          }
+            name: true,
+          },
         },
       },
     });
@@ -25,30 +27,76 @@ const useProject = () => {
             name: true,
           },
         },
-        projectAssignees:{
-          include:{
-            employee:{
-              select:{
+        projectAssignees: {
+          include: {
+            employee: {
+              select: {
                 name: true,
-              }
-            }
-          }
+              },
+            },
+          },
         },
         tasks: {
-          select:{
-            taskId:true,
-            title:true,
-            label:true,
-            description:true,
-            status:true,
-            priority:true
-          }
-        }
+          select: {
+            taskId: true,
+            title: true,
+            label: true,
+            description: true,
+            status: true,
+            priority: true,
+          },
+        },
       },
     });
     return project;
   };
-  return { getAllProjects, getProjectById };
+
+  const getDashboardProjects = async () => {
+    const projects = await prisma.project.findMany({
+      include: {
+        client: {
+          select: {
+            name: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 5,
+    });
+    return projects;
+  };
+
+  const getCurrentEmployeeProjects = async () => {
+    const { getLoggedInEmployee } = useEmployee();
+    const employee = await getLoggedInEmployee();
+    const projects = await prisma.project.findMany({
+      where: {
+        projectAssignees: {
+          some: {
+            employee: {
+              id: employee?.id,
+            },
+          },
+        },
+      },
+      include: {
+        client: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 5,
+    });
+    return projects;
+  };
+  return {
+    getAllProjects,
+    getProjectById,
+    getDashboardProjects,
+    getCurrentEmployeeProjects,
+  };
 };
 
 export default useProject;

@@ -1,14 +1,11 @@
-import { FC } from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DataTable } from '@/components/data-table';
-import { EPFEPTFColumns } from './epf-etf-columns';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { monthlyEpfEtfData } from '@/constants/sample/monthly-Epf-etf-data';
-import EPFETFChart from './epf-etf-chart';
+import { FC } from 'react';
+import EPFETFChart from './all-analytics/epf-etf-chart';
+import { EPFEPTFColumns } from './all-analytics/monthly-columns';
 
-
-interface HRAnalyticsProps {
-  
-}
+interface HRAnalyticsProps {}
 
 const HRAnalytics: FC<HRAnalyticsProps> = ({}) => {
   return (
@@ -87,6 +84,6 @@ const HRAnalytics: FC<HRAnalyticsProps> = ({}) => {
       </div>
     </div>
   );
-}
+};
 
-export default HRAnalytics
+export default HRAnalytics;

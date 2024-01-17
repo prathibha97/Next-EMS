@@ -31,8 +31,7 @@ const SalaryAdvance: FC<SalaryAdvanceProps> = async ({ employeeId }) => {
       <div className="border p-5 rounded-md">
         <div className="text-2xl font-semibold">Salary Advance History</div>
         <div className="my-4 text-slate-800">
-          When an employee requires a salary advance, the funds can be provided
-          through this section.
+          Salary Advance History of selected employee
         </div>
         <SalaryAdvanceDataTable
           columns={SalaryAdvanceColumns}

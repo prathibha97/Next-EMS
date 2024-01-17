@@ -130,7 +130,7 @@ export default async function DashboardPage() {
 
               <Card className="col-span-4 bg-white drop-shadow-lg ">
                 <CardHeader>
-                  <CardTitle>Overview</CardTitle>
+                  <CardTitle>Performance Insights</CardTitle>
                 </CardHeader>
                 <CardContent className="pl-2">
                   {(session?.user.role === 'ADMIN' && (

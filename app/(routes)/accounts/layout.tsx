@@ -1,9 +1,9 @@
-import { Separator } from "@/components/ui/separator";
-import { Metadata } from "next";
+import { Separator } from '@/components/ui/separator';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Accounts Management",
-  description: "Advanced form example using react-hook-form and Zod.",
+  title: 'Accounts Management',
+  description: 'Advanced form example using react-hook-form and Zod.',
 };
 
 interface AccountsLayoutProps {

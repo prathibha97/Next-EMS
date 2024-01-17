@@ -69,7 +69,7 @@ export function SalaryAdvanceDataTable<TData, TValue>({
   });
 
   return (
-    <div className='w-full bg-white p-2 rounded-lg '>
+    <div className='w-full bg-white  rounded-lg '>
       <div className='flex items-center py-4'>
         <Input
           type='text'

@@ -1,6 +1,5 @@
 'use client';
-import { Payroll } from '@prisma/client';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import {
   Bar,
   BarChart,
@@ -14,14 +13,9 @@ import {
 
 interface EPFETFChartProps {
   data: any;
-
-  
 }
 
 const EPFETFChart: FC<EPFETFChartProps> = ({ data }) => {
-  console.log('data', data);
-
-
   return (
     <ResponsiveContainer width='100%' height={350}>
       <BarChart
@@ -36,12 +30,12 @@ const EPFETFChart: FC<EPFETFChartProps> = ({ data }) => {
         }}
       >
         <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey='name' />
+        <XAxis dataKey='month' />
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey='EPF' fill='#8884d8' />
-        <Bar dataKey='ETF' fill='#82ca9d' />
+        <Bar dataKey='epf' fill='#8884d8' name='EPF' />
+        <Bar dataKey='etf' fill='#82ca9d' name='ETF' />
       </BarChart>
     </ResponsiveContainer>
   );

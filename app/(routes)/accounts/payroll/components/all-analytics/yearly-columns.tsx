@@ -5,14 +5,14 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Employee } from '@prisma/client';
 
-interface EPFEPTFColumns {
+interface YearlyColumns {
   month: string;
   epf: number;
   etf: number;
   total: number;
 }
 
-export const EPFEPTFColumns: ColumnDef<EPFEPTFColumns>[] = [
+export const yearlyColumns: ColumnDef<YearlyColumns>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -33,25 +33,25 @@ export const EPFEPTFColumns: ColumnDef<EPFEPTFColumns>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'month',
-    header: 'Month',
+    accessorKey: 'year',
+    header: 'Year',
     cell: ({ row }) => (
-      <div className='capitalize text-center'>{row.getValue('month')}</div>
+      <div>{row.getValue('year')}</div>
     ),
   },
   {
     accessorKey: 'epf',
     header: 'EPF',
-    cell: ({ row }) => <div className='capitalize'>{row.getValue('epf')}</div>,
+    cell: ({ row }) => <div>{row.getValue('epf')}</div>,
   },
   {
     accessorKey: 'etf',
     header: 'ETF',
-    cell: ({ row }) => <div className='capitalize'>{row.getValue('etf')}</div>,
+    cell: ({ row }) => <div>{row.getValue('etf')}</div>,
   },
   {
     accessorKey: 'total',
-    header: 'Tota',
-    cell: ({ row }) => <div className='capitalize'>{row.getValue('etf')}</div>,
+    header: 'Total',
+    cell: ({ row }) => <div>{row.getValue('total')}</div>,
   },
 ];

@@ -32,7 +32,7 @@ import { format } from 'date-fns';
 
 const LoanForm = () => {
   const params = useParams();
-  const router = useRouter()
+  const router = useRouter();
   const employeeId = params?.employeeId;
   const form = useForm<LoanFormValues>({
     resolver: zodResolver(LoanFormSchema),
@@ -68,15 +68,18 @@ const LoanForm = () => {
   };
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className='flex items-center gap-4 p-4 mb-4 w-full'>
+      <form
+        className="flex flex-row gap-8"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <div className="flex items-center gap-4">
           <FormLabel>Date</FormLabel>
           <FormField
-            name='date'
+            name="date"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input {...field} type='date' className='w-full' />
+                  <Input {...field} type="date" className="w-full" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -84,14 +87,14 @@ const LoanForm = () => {
           />
         </div>
 
-        <div className='flex items-center gap-4 p-4 mb-4 w-full'>
+        <div className="flex items-center gap-4">
           <FormLabel>Amount</FormLabel>
           <FormField
-            name='amount'
+            name="amount"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input {...field} type='number' className='w-full' />
+                  <Input {...field} type="number" className="w-full" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -99,10 +102,10 @@ const LoanForm = () => {
           />
         </div>
 
-        <div className='flex items-center gap-4 p-4 mb-4'>
+        <div className="flex items-center gap-4">
           <FormLabel>Installments</FormLabel>
           <FormField
-            name='installments'
+            name="installments"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
@@ -110,17 +113,17 @@ const LoanForm = () => {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <SelectTrigger className='w-[180px]'>
-                      <SelectValue placeholder='Select Instalment Period' />
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select Instalment Period" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Installment Period</SelectLabel>
-                        <SelectItem value='2'>2 months</SelectItem>
-                        <SelectItem value='3'>3 months</SelectItem>
-                        <SelectItem value='4'>4 months</SelectItem>
-                        <SelectItem value='5'>5 months</SelectItem>
-                        <SelectItem value='6'>6 months</SelectItem>
+                        <SelectItem value="2">2 months</SelectItem>
+                        <SelectItem value="3">3 months</SelectItem>
+                        <SelectItem value="4">4 months</SelectItem>
+                        <SelectItem value="5">5 months</SelectItem>
+                        <SelectItem value="6">6 months</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -130,12 +133,12 @@ const LoanForm = () => {
             )}
           />
         </div>
-        <div className='flex items-center justify-center mx-auto'>
+        <div className="items-center">
           <ActionButton
-            type='submit'
-            className='bg-[#2ebdaa] text-white'
-            variant='outline'
-            label='Submit'
+            type="submit"
+            className="bg-[#2ebdaa] text-white"
+            variant="outline"
+            label="Submit"
             isLoading={isLoading}
           />
         </div>

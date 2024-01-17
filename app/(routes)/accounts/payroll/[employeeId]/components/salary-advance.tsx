@@ -17,39 +17,27 @@ const SalaryAdvance: FC<SalaryAdvanceProps> = async ({ employeeId }) => {
     },
   });
   return (
-    <div className='grid grid-cols-2 gap-4'>
-      <div className='bg-gray-200 p-4'>
-        {' '}
-        <div className='bg-[#fff] m-8 rounded-lg pb-6 drop-shadow-lg'>
-          <div className='p-4'>
-            <Image
-              className='mt-6'
-              src='/icons/salary-advance.png'
-              alt='Image 2'
-              width={300}
-              height={300}
-            />
-          </div>
-          <div>
-            <div className='text-2xl text-[#2ebdaa] font-medium text-center mt-6'>
-              Salary Advance
-            </div>
-            <div className='text-center my-4 text-slate-800'>
-              When an employee requires a salary advance,<br></br> the funds can
-              be provided through this section.
-            </div>
-          </div>
-          <div>
-            <SalaryAdvanceForm />
-          </div>
+    <div className="flex flex-col gap-7">
+      <div className="border p-5 rounded-md">
+        <div className="text-2xl font-semibold">Salary Advance</div>
+        <div className="my-4 text-slate-800">
+          When an employee requires a salary advance, the funds can be provided
+          through this section.
+        </div>
+        <div>
+          <SalaryAdvanceForm />
         </div>
       </div>
-      <div className='bg-blue-200 p-4'>
+      <div className="border p-5 rounded-md">
+        <div className="text-2xl font-semibold">Salary Advance History</div>
+        <div className="my-4 text-slate-800">
+          Salary Advance History of selected employee
+        </div>
         <SalaryAdvanceDataTable
           columns={SalaryAdvanceColumns}
           data={salaryAdvanceData}
-          searchFilter='amount'
-          placeholder='Date'
+          searchFilter="amount"
+          placeholder="Date"
         />
       </div>
     </div>

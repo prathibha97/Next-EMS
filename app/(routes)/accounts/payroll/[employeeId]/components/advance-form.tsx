@@ -22,7 +22,7 @@ import { useForm } from 'react-hook-form';
 
 const SalaryAdvanceForm = () => {
   const params = useParams();
-  const router = useRouter()
+  const router = useRouter();
   const employeeId = params?.employeeId;
   const form = useForm<SalaryAdvanceFormValues>({
     resolver: zodResolver(SalaryAdvanceFormSchema),
@@ -55,20 +55,20 @@ const SalaryAdvanceForm = () => {
     }
   };
   return (
-    <div className='w-full'>
+    <div className="w-full">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className='flex items-center gap-4 p-4 mb-4'>
+        <form className="flex flex-row gap-8" onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="flex items-center gap-4 ">
             <FormLabel>Date</FormLabel>
             <FormField
-              name='date'
+              name="date"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Input
                       {...field}
-                      type='date'
-                      className='px-2 py-1 border rounded-md'
+                      type="date"
+                      className="px-2 py-1 border rounded-md"
                     />
                   </FormControl>
                   <FormMessage />
@@ -77,17 +77,17 @@ const SalaryAdvanceForm = () => {
             />
           </div>
 
-          <div className='flex items-center gap-4 p-4 mb-4'>
+          <div className="flex items-center gap-4">
             <FormLabel>Amount</FormLabel>
             <FormField
-              name='amount'
+              name="amount"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Input
                       {...field}
-                      type='number'
-                      className='px-2 py-1 border rounded-md'
+                      type="number"
+                      className="px-2 py-1 border rounded-md"
                     />
                   </FormControl>
                   <FormMessage />
@@ -96,12 +96,12 @@ const SalaryAdvanceForm = () => {
             />
           </div>
 
-          <div className='text-center'>
+          <div className="text-center">
             <ActionButton
-              type='submit'
-              className='bg-[#2ebdaa] text-white'
-              variant='outline'
-              label='Submit'
+              type="submit"
+              className="bg-[#2ebdaa] text-white"
+              variant="outline"
+              label="Submit"
               isLoading={isLoading}
             />
           </div>

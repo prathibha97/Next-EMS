@@ -17,33 +17,21 @@ const AddLoan: FC<AddLoanProps> = async ({ employeeId }) => {
     },
   });
   return (
-    <div className='grid grid-cols-2 gap-4'>
-      <div className='bg-gray-200 p-4'>
-        {' '}
-        <div className='bg-[#fff] m-8 rounded-lg pb-6 drop-shadow-lg'>
-          <div className='p-4'>
-            <Image
-              className='mt-6'
-              src='/icons/loan-image.png'
-              alt='Image 1'
-              width={300}
-              height={300}
-            />
-          </div>
-          <div>
-            <div className='text-2xl text-[#2ebdaa] font-medium text-center mt-6'>
-              Loan
-            </div>
-            <div className='text-center my-4 text-slate-800'>
-              In this section, employees can receive their <br></br>
-              requested loan amounts.
-            </div>
-          </div>
+    <div className="flex flex-col gap-7">
+      <div className="border p-5 rounded-md">
+        <div className="text-2xl font-semibold">Loans</div>
+        <div className="my-4 text-slate-800">
+          In this section, employees can receive their requested loan amounts.
+        </div>
+        <div>
           <LoanForm />
         </div>
       </div>
-      <div className='bg-blue-200 p-4'>
-        {' '}
+      <div className="border p-5 rounded-md">
+        <div className="text-2xl font-semibold">Loan History</div>
+        <div className="my-4 text-slate-800">
+          Loan history of selected employee
+        </div>
         <LoanDataTable columns={LoanColumns} data={loanData} />
       </div>
     </div>

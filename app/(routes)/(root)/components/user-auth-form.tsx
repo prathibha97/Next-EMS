@@ -13,12 +13,14 @@ import { Button } from '../../../../components/ui/button';
 import { FormInput } from '../../../../components/ui/formInput';
 import { Label } from '../../../../components/ui/label';
 import { useRouter } from 'next/navigation';
+import usePasswordResetModal from '@/hooks/usePasswordResetModal';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 type Variant = 'LOGIN' | 'REGISTER';
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const router = useRouter()
+  const passwordResetModal = usePasswordResetModal()
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -146,6 +148,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <div onClick={toggleVariant} className='underline cursor-pointer'>
             {variant === 'LOGIN' ? 'Create an Account' : 'Login'}
           </div>
+        </div>
+        <div className='text-center text-sm text-gray-500 hover:cursor-pointer hover:text-black hover:underline mt-1' onClick={passwordResetModal.onOpen}>
+          Reset Password
         </div>
       </form>
       <div className='relative'>

@@ -16,6 +16,7 @@ interface ActionButtonProps {
   label: string;
   type?: 'button' | 'submit' | 'reset';
   className?: string;
+  disabled?: boolean;
 }
 
 const ActionButton: FC<ActionButtonProps> = ({
@@ -25,10 +26,18 @@ const ActionButton: FC<ActionButtonProps> = ({
   size,
   variant,
   type,
-  className
+  className,
+  disabled,
 }) => {
   return (
-    <Button variant={variant} size={size} onClick={onClick} type={type} className={className}>
+    <Button
+      variant={variant}
+      size={size}
+      onClick={onClick}
+      type={type}
+      className={className}
+      disabled={disabled}
+    >
       {isLoading && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
       {label}
     </Button>

@@ -12,11 +12,13 @@ import { Icons } from '../../../../components/icons';
 import { Button } from '../../../../components/ui/button';
 import { FormInput } from '../../../../components/ui/formInput';
 import { Label } from '../../../../components/ui/label';
+import { useRouter } from 'next/navigation';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 type Variant = 'LOGIN' | 'REGISTER';
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+  const router = useRouter()
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -33,6 +35,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
@@ -48,7 +51,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       await axios
         .post(`/api/register`, data)
         .then(() => {
-          signIn('credentials', data);
+          toast({
+            title: 'User registered successfully!',
+            description: 'Please assoiciate the user with an employee account',
+          });
+          reset();
+          setVariant('LOGIN');
         })
         .catch(() => {
           return toast({
@@ -76,6 +84,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
           if (callback?.ok && !callback?.error) {
             dispatch(setAuthenticated(true));
+            // router.push('/dashboard');
           }
         })
         .finally(() => setIsLoading(false));

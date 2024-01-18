@@ -25,6 +25,9 @@ export const employeeSlice = createSlice({
       if (!action.payload) return;
       state.currentEmployee = action.payload;
     },
+    clearCurrentEmployee: (state) => {
+     state.currentEmployee = null;
+    },
     clearEmployee: (state) => {
       state.employee = null;
     },
@@ -64,6 +67,7 @@ export const employeeSlice = createSlice({
 export const {
   setEmployee,
   setCurrentEmployee,
+  clearCurrentEmployee,
   clearEmployee,
   getEmployee,
   updateEmployeeData,

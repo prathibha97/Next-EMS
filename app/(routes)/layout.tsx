@@ -35,7 +35,7 @@ export default function RootLayout({
                 <div className="md:hidden">
                   <Sheet>
                     <SheetTrigger>
-                      <AlignJustify className="relative top-5 left-5" />
+                      <AlignJustify className="fixed top-5 left-5" />
                     </SheetTrigger>
                     <SheetContent side="left">
                       <ResponsiveSidebar />

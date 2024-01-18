@@ -1,60 +1,18 @@
-// 'use client';
-// import { EmployeeWithPayroll } from '@/types';
-// import { Payroll } from '@prisma/client';
-// import { FC } from 'react';
-// import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+'use client';
 
-// interface PayrollAnalyticsProps {
-//   employee: EmployeeWithPayroll | undefined;
-// }
-
-// const PayrollAnalytics: FC<PayrollAnalyticsProps> = ({ employee }) => {
-//   // @ts-ignore
-//   const data = employee.Payroll.map((payroll: Payroll) => ({
-//     name: payroll.monthYear,
-//     companyEpfContribution: payroll.companyEpfContribution,
-//     companyEtfContribution: payroll.companyEtfContribution,
-//   }));
-
-//   return (
-//     <div className='flex justify-center items-center h-full w-full mx-auto'>
-//     <LineChart width={500} height={300} data={data}>
-//       <CartesianGrid stroke='#eee' strokeDasharray='5 5' />
-//       <XAxis dataKey='name' />
-//       <YAxis />
-//       <Tooltip />
-//       <Legend />
-//       <Line
-//         type='monotone'
-//         dataKey='companyEpfContribution'
-//         stroke='#8884d8'
-//         activeDot={{ r: 8 }}
-//       />
-//       <Line
-//         type='monotone'
-//         dataKey='companyEtfContribution'
-//         stroke='#82ca9d'
-//         activeDot={{ r: 8 }}
-//       />
-//     </LineChart>
-//     </div>
-//   );
-// };
-
-// export default PayrollAnalytics;
-
-'use client'
-
+import { FC } from 'react';
 import { EmployeeWithPayroll } from '@/types';
 import { Payroll } from '@prisma/client';
-import { FC } from 'react';
+
 import {
-  Radar,
-  RadarChart,
-  PolarGrid,
+  Bar,
+  BarChart,
+  CartesianGrid,
   Legend,
-  PolarAngleAxis,
-  PolarRadiusAxis,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from 'recharts';
 
 interface PayrollInsightsChartProps {
@@ -69,26 +27,27 @@ const PayrollInsightsChart: FC<PayrollInsightsChartProps> = ({ payrolls }) => {
   }));
 
   return (
-    <RadarChart outerRadius={90} width={600} height={300} data={data}>
-      <PolarGrid />
-      <PolarAngleAxis dataKey='monthYear' />
-      <PolarRadiusAxis angle={30} domain={[0, 'dataMax']} />
-      <Radar
-        name='Earnings'
-        dataKey='totalEarnings'
-        stroke='#8884d8'
-        fill='#8884d8'
-        fillOpacity={0.6}
-      />
-      <Radar
-        name='Deductions'
-        dataKey='totalDeductions'
-        stroke='#82ca9d'
-        fill='#82ca9d'
-        fillOpacity={0.6}
-      />
-      <Legend />
-    </RadarChart>
+    <ResponsiveContainer width="100%" height={350}>
+      <BarChart
+        width={500}
+        height={300}
+        data={data}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="monthYear" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="totalEarnings" fill="#8884d8" name="Total Earnings" />
+        <Bar dataKey="totalDeductions" fill="#82ca9d" name="Total Deductions" />
+      </BarChart>
+    </ResponsiveContainer>
   );
 };
 

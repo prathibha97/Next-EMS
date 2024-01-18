@@ -36,7 +36,8 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
       }`}
     >
       {session?.user?.role === "ADMIN" && (
-        <NavigationMenu className={className}>
+        <div className="hidden md:block">
+          <NavigationMenu className={className}>
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger>Organization</NavigationMenuTrigger>
@@ -166,6 +167,7 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
+        </div>
       )}
       <div
         className={cn(

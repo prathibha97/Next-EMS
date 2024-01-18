@@ -77,8 +77,8 @@ const MonthlyStatistics: FC<MonthlyStatisticsProps> = ({ payrollData }) => {
         </div>
       </div>
 
-      <div className='bg-[#fff] border rounded-lg p-2 mt-6'>
-        <div className='text-sm font-semibold my-2 text-center'>
+      <div className='bg-[#fff] border rounded-lg mt-6'>
+        <div className='text-sm font-semibold my-5 text-center'>
           ETF & EPF Contribution Graphical Visualization
         </div>
         <div>

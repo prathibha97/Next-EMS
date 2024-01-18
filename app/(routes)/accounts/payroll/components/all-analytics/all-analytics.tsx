@@ -14,7 +14,7 @@ interface AllAnalyticsProps {
 
 const AllAnalytics: FC<AllAnalyticsProps> = ({ payrollData }) => {
   return (
-    <div className='bg-slate-200 mt-10 p-4 drop-shadow-md rounded-lg '>
+    <div className='mt-10 rounded-md '>
       <div className='text-xl font-semibold text-center mb-4'>
         ETF & EPF Contribution
       </div>

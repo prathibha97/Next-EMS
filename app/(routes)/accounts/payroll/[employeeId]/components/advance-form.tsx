@@ -57,7 +57,7 @@ const SalaryAdvanceForm = () => {
   return (
     <div className="w-full">
       <Form {...form}>
-        <form className="flex flex-row gap-8" onSubmit={form.handleSubmit(onSubmit)}>
+        <form className="flex flex-col md:flex-row gap-3 md:gap-8" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex items-center gap-4 ">
             <FormLabel>Date</FormLabel>
             <FormField
@@ -68,7 +68,7 @@ const SalaryAdvanceForm = () => {
                     <Input
                       {...field}
                       type="date"
-                      className="px-2 py-1 border rounded-md"
+                      className="px-4 ml-5 md:ml-0 py-1 border rounded-md "
                     />
                   </FormControl>
                   <FormMessage />
@@ -99,7 +99,7 @@ const SalaryAdvanceForm = () => {
           <div className="text-center">
             <ActionButton
               type="submit"
-              className="bg-[#2ebdaa] text-white"
+              className="bg-[#2ebdaa] text-white w-full"
               variant="outline"
               label="Submit"
               isLoading={isLoading}

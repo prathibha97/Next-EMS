@@ -5,7 +5,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import { FC, useEffect, useState } from 'react';
 import ActionButton from '../buttons/action-button';
-import { Card, CardContent } from '../ui/card';
+import { Card, CardContent, CardHeader } from '../ui/card';
 import { Input } from '../ui/input';
 
 interface ValidateEmailProps {
@@ -28,7 +28,7 @@ const ValidateEmail: FC<ValidateEmailProps> = ({ handleNextStep }) => {
       } catch (error) {
         setIsEmailValid(false);
         setMessage('Error validating email');
-      } 
+      }
     };
 
     // Trigger API call only if the email is not empty
@@ -41,7 +41,7 @@ const ValidateEmail: FC<ValidateEmailProps> = ({ handleNextStep }) => {
   }, [email]);
 
   const handlePwResetRequest = async () => {
-      setLoading(true);
+    setLoading(true);
     try {
       const { data } = await axios.post(`/api/email/otp`, { email });
       console.log(data.message);
@@ -77,19 +77,21 @@ const ValidateEmail: FC<ValidateEmailProps> = ({ handleNextStep }) => {
 
   return (
     <>
-      <Card className='m-4 sm:mb-0 sm:w-[25rem] grid px-8 pt-8 pb-8'>
+      <Card className='m-4 sm:mb-0 sm:w-[25rem] grid'>
         <CardContent>
-          <div className='flex items-center justify-center mb-6'>
-            <Image
-              src={FORGOT_PASS_ICON}
-              alt='lock icon'
-              className='object-scale-down w-[80px]'
-            />
-          </div>
+          <CardHeader>
+            <div className='flex items-center justify-center mb-6'>
+              <Image
+                src={FORGOT_PASS_ICON}
+                alt='lock icon'
+                className='object-scale-down w-[80px]'
+              />
+            </div>
 
-          <h2 className='text-[25px] text-primary text-center mb-4'>
-            Forgot Password?
-          </h2>
+            <h2 className='text-[25px] text-primary text-center mb-4'>
+              Forgot Password?
+            </h2>
+          </CardHeader>
 
           <p className='text-primary_font_color text-center'>
             Enter your email, and we'll send you an OTP to reset your password

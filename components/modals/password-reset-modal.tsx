@@ -1,7 +1,6 @@
 'use client';
 
 import usePasswordResetModal from '@/hooks/usePasswordResetModal';
-import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
 import OtpInput from '../auth/otp-input';
 import PasswordUpdated from '../auth/password-updated';
@@ -12,16 +11,11 @@ import Modal from './modal';
 interface PasswordResetModalProps {}
 
 const PasswordResetModal: FC<PasswordResetModalProps> = ({}) => {
-  const router = useRouter();
   const loginModal = usePasswordResetModal();
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(1);
 
   const handleNextStep = () => {
     setStep((prevStep) => prevStep + 1);
-  };
-
-  const handlePrevStep = () => {
-    setStep((prevStep) => prevStep - 1);
   };
 
   const renderStepContent = () => {

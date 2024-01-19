@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { FC, useEffect, useState } from 'react';
 import OTP from '../../public/otp.png';
 import { Button } from '../ui/button';
-import { Card, CardContent } from '../ui/card';
+import { Card, CardContent, CardHeader } from '../ui/card';
 
 interface OtpInputProps {
   handleNextStep: () => void;
@@ -106,92 +106,91 @@ const OtpInput: FC<OtpInputProps> = ({ handleNextStep }) => {
   };
 
   return (
-    <div className='bg-[#f3f1fb]'>
-      <div className='flex flex-col items-center justify-center bg-[#f3f1fb]'>
-        <div>
-          <Card>
-            <CardContent>
-              <div className='flex items-center justify-center mb-6 mt-3'>
-                <Image
-                  src={OTP}
-                  alt='otp-image'
-                  className='object-scale-down w-[80px]'
-                />
-              </div>
+    <div className='flex flex-col items-center justify-center'>
+      <div>
+        <Card>
+          <CardHeader>
+            <div className='flex items-center justify-center mb-6 mt-3'>
+              <Image
+                src={OTP}
+                alt='otp-image'
+                className='object-scale-down w-[80px]'
+              />
+            </div>
 
-              <h2 className='text-[25px] text-primary text-center mb-4'>
-                Enter Verification Code
-              </h2>
-
-              <p className='text-primary_font_color text-center'>
-                Enter the 5-digit code that we have sent through your email
-              </p>
-              <form
-                className='mt-8 mb-2 w-full max-w-screen-lg '
-                onSubmit={handleSubmit}
-              >
-                <div className='flex items-center gap-3 justify-between mx-9'>
-                  {verificationCode.map((digit, index) => (
-                    <input
-                      key={index}
-                      type='text'
-                      id={`inputField${index}`}
-                      className={`bg-[#fff] border-2 p-2 w-[45px] h-[45px] border-black text-center ${
-                        message === 'Incorrect OTP'
-                          ? 'border-red-500'
-                          : message === 'OTP verified successfully'
-                          ? 'border-green-500'
-                          : 'border-black'
-                      }`}
-                      value={digit}
-                      onChange={(e) => handleInputChange(index, e.target.value)}
-                    />
-                  ))}
-                </div>
-                {message && (
-                  <p
-                    className={`text-center mt-4 ${
-                      message === 'OTP verified successfully'
-                        ? 'text-green-500'
-                        : 'text-red-500'
+            <h2 className='text-[25px] text-primary text-center mb-4'>
+              Enter Verification Code
+            </h2>
+          </CardHeader>
+          <CardContent>
+            <p className='text-primary_font_color text-center'>
+              Enter the 5-digit code that we have sent through your email
+            </p>
+            <form
+              className='mt-8 mb-2 w-full max-w-screen-lg '
+              onSubmit={handleSubmit}
+            >
+              <div className='flex items-center gap-3 justify-between mx-9'>
+                {verificationCode.map((digit, index) => (
+                  <input
+                    key={index}
+                    type='text'
+                    id={`inputField${index}`}
+                    className={`bg-[#fff] border-2 p-2 w-[45px] h-[45px] border-black text-center ${
+                      message === 'Incorrect OTP'
+                        ? 'border-red-500'
+                        : message === 'OTP verified successfully'
+                        ? 'border-green-500'
+                        : 'border-black'
                     }`}
-                  >
-                    {message}
+                    value={digit}
+                    onChange={(e) => handleInputChange(index, e.target.value)}
+                  />
+                ))}
+              </div>
+              {message && (
+                <p
+                  className={`text-center mt-4 ${
+                    message === 'OTP verified successfully'
+                      ? 'text-green-500'
+                      : 'text-red-500'
+                  }`}
+                >
+                  {message}
+                </p>
+              )}
+              {remainingTime > 0 ? (
+                <p className='text-center mt-4 text-gray-500'>
+                  Time remaining: {formatTime(remainingTime)}
+                </p>
+              ) : (
+                <p className='text-center mt-4 text-gray-500'>OPT Expired</p>
+              )}
+              <div className='flex justify-center'>
+                <Button
+                  className='mt-6 w-1/2'
+                  type='submit'
+                  disabled={!isCodeCorrect || isTimerExpired}
+                >
+                  <h6 className='normal-case'>Continue</h6>
+                </Button>
+              </div>
+              {remainingTime === 0 && (
+                <div className='flex items-center justify-center gap-2 mt-6'>
+                  <p className='text-[14px] mt-0.5'>
+                    Haven't received the code?
+                    <span
+                      className='text-[#8645FF] ml-1 cursor-pointer underline'
+                      onClick={handleResendOTP}
+                    >
+                      Resend
+                    </span>
                   </p>
-                )}
-                {remainingTime > 0 ? (
-                  <p className='text-center mt-4 text-gray-500'>
-                    Time remaining: {formatTime(remainingTime)}
-                  </p>
-                ) : (
-                  <p className='text-center mt-4 text-gray-500'>OPT Expired</p>
-                )}
-                <div className='flex justify-center'>
-                  <Button
-                    className='mt-6 w-1/2'
-                    type='submit'
-                    disabled={!isCodeCorrect || isTimerExpired}
-                  >
-                    <h6 className='normal-case'>Continue</h6>
-                  </Button>
                 </div>
-                {remainingTime === 0 && (
-                  <div className='flex items-center justify-center gap-2 mt-6'>
-                    <p className='text-[14px] mt-0.5'>
-                      Haven't received the code?
-                      <span
-                        className='text-[#8645FF] ml-1 cursor-pointer underline'
-                        onClick={handleResendOTP}
-                      >
-                        Resend
-                      </span>
-                    </p>
-                  </div>
-                )}
-              </form>
-            </CardContent>
-          </Card>
-        </div>
+              )}
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

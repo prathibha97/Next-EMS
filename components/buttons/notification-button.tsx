@@ -1,4 +1,5 @@
 'use client';
+import { useAppDispatch } from '@/app/redux/hooks';
 import { Button } from '@/components/ui/button';
 import {
   Popover,
@@ -12,22 +13,19 @@ import { BellRing } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { NotificationCard } from '../cards/notification-card';
-import { useAppDispatch } from '@/app/redux/hooks';
-import { setCurrentEmployee } from '@/app/redux/features/employeeSlice';
 
 export function NotificationButton() {
   const router = useRouter();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isMounted, setIsMounted] = useState(false);
+  const [employee, setEmployee] = useState<Employee | null>(null);
 
   useEffect(() => {
     if (!isMounted) {
       setIsMounted(true);
     }
   }, []);
-  // @ts-ignore
-  const [employee, setEmployee] = useState<Employee>({});
 
   useEffect(() => {
     const getCurrentEmployee = async () => {
@@ -36,7 +34,7 @@ export function NotificationButton() {
           `${process.env.NEXT_PUBLIC_URL}/employees/me`
         );
         setEmployee(data);
-        dispatch(setCurrentEmployee(data));
+        // dispatch(setCurrentEmployee(data));
       } catch (error) {
         console.error('Error fetching employee data:', error);
       }
@@ -62,20 +60,6 @@ export function NotificationButton() {
     }
   }, [employee]);
 
-  // useEffect(() => {
-  //   if (employee && employee.id) {
-  //     const channel = pusherClient.subscribe(employee.id);
-
-  //     channel.bind('notifications:new', (data: Notification) => {
-  //       setNotifications((prevNotifications) => [...prevNotifications, data]);
-  //     });
-
-  //     return () => {
-  //       pusherClient.unsubscribe(employee.id);
-  //     };
-  //   }
-  // }, [employee]);
-
   useEffect(() => {
     if (employee && employee.id) {
       const channel = pusherClient.subscribe(employee.id);
@@ -99,7 +83,6 @@ export function NotificationButton() {
     }
   }, []);
 
-
   const unreadCount = notifications?.filter(
     (notification) => !notification.isRead
   ).length;
@@ -108,8 +91,8 @@ export function NotificationButton() {
     return <div>Loading...</div>;
   }
 
-  if(!isMounted){
-    return null
+  if (!isMounted) {
+    return null;
   }
 
   return (

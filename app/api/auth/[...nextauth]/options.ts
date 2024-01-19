@@ -52,9 +52,10 @@ export const authOptions: AuthOptions = {
   session: {
     strategy: 'jwt',
   },
-  // pages: {
-  //   signIn: '/',
-  // },
+  pages: {
+    signIn: '/',
+    error: '/'
+  },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     // Ref: https://authjs.dev/guides/basics/role-based-access-control#persisting-the-role

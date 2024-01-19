@@ -10,6 +10,7 @@ import {
   View,
 } from 'lucide-react';
 
+import { useRemoveUserMutation, useUpdateUserMutation } from '@/app/redux/services/userApi';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -25,9 +26,9 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { User } from '@prisma/client';
+import { toast } from '@/hooks/use-toast';
+import { User, UserRole } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -48,17 +49,6 @@ export const columns: ColumnDef<User>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-  },
-  {
-    accessorKey: 'username',
-    header: 'Username',
-    cell: ({ row }) => {
-      return (
-        <div className='w-full'>
-          <div className='capitalize'>{row.getValue('username')}</div>
-        </div>
-      );
-    },
   },
   {
     accessorKey: 'email',
@@ -87,24 +77,58 @@ export const columns: ColumnDef<User>[] = [
       const router = useRouter();
       const user = row.original;
 
-      const [selectedRole, setSelectedRole] = useState(null);
+      const [updateTask] = useUpdateUserMutation();
+      const [removeUser] = useRemoveUserMutation();
 
-      const handleViewEmployee = async () => {
-        console.log(user.id);
+      const handleViewEmployee = async (employeeId: string) => {
+        router.push(`/organization/employees/${employeeId}`);
       };
 
-      const handleRoleSelect = (role: any) => {
-        setSelectedRole(role);
+      const handleUpdateUserRole = async (role: UserRole) => {
+        try {
+          if (!role) {
+            toast({
+              title: 'Please select a role',
+            });
+            return;
+          }
+
+          await updateTask({
+            userId: user.id,
+            body: {
+              role: role,
+            },
+          }).unwrap();
+
+          toast({
+            title: `User role updated successfully`,
+          });
+
+          router.refresh();
+        } catch (error) {
+          toast({
+            title: 'Something went wrong!',
+            description: `Failed to update user role. Please try again.`,
+            variant: 'destructive',
+          });
+        }
       };
 
-      const handleDelete = async () => {
-        router.refresh();
+      const handleDeleteUser = async (userId:string) => {
+        try {
+          await removeUser(userId).unwrap();
+          toast({
+            title: `User removed successfully`,
+          });
+          router.refresh();
+        } catch (error) {
+          toast({
+            title: 'Something went wrong!',
+            description: `Failed to remove user. Please try again.`,
+            variant: 'destructive',
+          });
+        }
       };
-
-      useEffect(() => {
-        // This effect will run whenever selectedRole changes
-        console.log(selectedRole);
-      }, [selectedRole]);
 
       return (
         <DropdownMenu>
@@ -123,7 +147,7 @@ export const columns: ColumnDef<User>[] = [
                 <Clipboard className='mr-2 h-4 w-4' />
                 <span>Copy user ID</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleViewEmployee(user.id)}>
                 <View className='mr-2 h-4 w-4' />
                 <span>View Employee</span>
               </DropdownMenuItem>
@@ -137,21 +161,30 @@ export const columns: ColumnDef<User>[] = [
                 </DropdownMenuSubTrigger>
                 <DropdownMenuPortal>
                   <DropdownMenuSubContent>
-                    <DropdownMenuItem onClick={() => handleRoleSelect('USER')}>
+                    <DropdownMenuItem
+                      onClick={() => handleUpdateUserRole('USER')}
+                    >
                       <span>USER</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => handleRoleSelect('MANAGER')}
+                      onClick={() => {
+                        handleUpdateUserRole('MANAGER');
+                      }}
                     >
                       <span>MANAGER</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleRoleSelect('ADMIN')}>
+                    <DropdownMenuItem
+                      onClick={() => handleUpdateUserRole('ADMIN')}
+                    >
                       <span>ADMIN</span>
                     </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuPortal>
               </DropdownMenuSub>
-              <DropdownMenuItem className='text-red-500'>
+              <DropdownMenuItem
+                className='text-red-500'
+                onClick={() => handleDeleteUser(user.id)}
+              >
                 <Trash className='mr-2 h-4 w-4' />
                 <span>Remove User</span>
               </DropdownMenuItem>

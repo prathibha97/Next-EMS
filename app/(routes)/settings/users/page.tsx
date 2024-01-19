@@ -4,9 +4,10 @@ import { FC } from "react";
 import { columns } from "./components/columns";
 import { Separator } from "@/components/ui/separator";
 
-interface UsersPageProps {}
+export const revalidate = 0;
 
-const UsersPage: FC<UsersPageProps> = async ({}) => {
+
+const UsersPage = async ({}) => {
   const data = await prisma.user.findMany();
 
   return (

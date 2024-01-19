@@ -63,13 +63,18 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
       projectAllowance: '',
       performanceAllowance: employee?.performanceAllowance?.toString(),
       holidayAllowance: '',
-      salaryAdvance: '',
       epfDeduction: '',
       otherDeductions: '',
       workingDays: '',
       paidDays: '',
     },
   });
+
+  const employeeEpfAmount =
+    (employee?.basicSalary! +
+      employee?.dataAllowance! +
+      employee?.mobileAllowance!) *
+    0.08;
 
   useEffect(() => {
     if (employeeData) {
@@ -117,22 +122,19 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
       parsedDataAllowance + parsedMobileAllowance + parsedPerformanceAllowance;
 
     const deductions =
-      parseFloat(form.getValues('salaryAdvance')) +
-      parseFloat(form.getValues('epfDeduction')) +
-      parseFloat(form.getValues('otherDeductions'));
+      employeeEpfAmount + parseFloat(form.getValues('otherDeductions'));
 
-    const total = parsedBasicSalary + additions - deductions;
+    const netSalary = parsedBasicSalary + additions - deductions;
 
     setBasicSalary(parsedBasicSalary);
     setTotalAdditions(additions);
     setTotalDeductions(deductions);
-    setNetSalary(total);
+    setNetSalary(netSalary);
   }, [
     form.getValues('basicSalary'),
     form.getValues('dataAllowance'),
     form.getValues('mobileAllowance'),
     form.getValues('performanceAllowance'),
-    form.getValues('salaryAdvance'),
     form.getValues('epfDeduction'),
     form.getValues('otherDeductions'),
   ]);
@@ -144,46 +146,33 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
       projectAllowance,
       performanceAllowance,
       holidayAllowance,
-      salaryAdvance,
-      epfDeduction,
       otherDeductions,
       basicSalary,
     } = values;
 
-    // Convert string inputs to numbers
-    const parsedDataAllowance = parseFloat(dataAllowance);
-    const parsedMobileAllowance = parseFloat(mobileAllowance);
-    const parsedProjectAllowance = parseFloat(projectAllowance);
-    const parsedPerformanceAllowance = parseFloat(performanceAllowance);
-    const parsedHolidayAllowance = parseFloat(holidayAllowance);
-    const parsedSalaryAdvance = parseFloat(salaryAdvance);
-    const parsedEpfDeduction = parseFloat(epfDeduction);
-    const parsedOtherDeductions = parseFloat(otherDeductions);
+    const parsedDataAllowance = parseFloat(dataAllowance) || 0;
+    const parsedMobileAllowance = parseFloat(mobileAllowance) || 0;
+    const parsedProjectAllowance = parseFloat(projectAllowance) || 0;
+    const parsedPerformanceAllowance = parseFloat(performanceAllowance) || 0;
+    const parsedHolidayAllowance = parseFloat(holidayAllowance) || 0;
+    const parsedEpfDeduction =
+      parseFloat(employeeEpfAmount as unknown as string) || 0;
+    const parsedOtherDeductions = parseFloat(otherDeductions) || 0;
 
-    setBasicSalary(
-      (prevBasicSalary) => prevBasicSalary + parseFloat(basicSalary)
-    );
-
-    const additions =
+    const totalAdditions =
       parsedDataAllowance +
       parsedMobileAllowance +
       parsedProjectAllowance +
       parsedPerformanceAllowance +
       parsedHolidayAllowance;
 
-    const deductions =
-      parsedSalaryAdvance + parsedEpfDeduction + parsedOtherDeductions;
+    const totalDeductions = parsedEpfDeduction + parsedOtherDeductions;
 
-    const total = Number(basicSalary) + additions - deductions;
+    const total = parseFloat(basicSalary) + totalAdditions - totalDeductions;
 
-    setBasicSalary(
-      (prevBasicSalary) => prevBasicSalary + parseFloat(basicSalary)
-    );
-    setTotalAdditions((prevTotalAdditions) => prevTotalAdditions + additions);
-    setTotalDeductions(
-      (prevTotalDeductions) => prevTotalDeductions + deductions
-    );
-    setNetSalary((prevNetSalary) => prevNetSalary + total);
+    setTotalAdditions(totalAdditions);
+    setTotalDeductions(totalDeductions);
+    setNetSalary(total);
   };
 
   const onSubmit = async (values: PayrollFormValues) => {
@@ -199,8 +188,7 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
           projectAllowance: parseFloat(values.projectAllowance),
           performanceAllowance: parseFloat(values.performanceAllowance),
           holidayAllowance: parseFloat(values.holidayAllowance),
-          salaryAdvance: parseFloat(values.salaryAdvance),
-          epfDeduction: parseFloat(values.epfDeduction),
+          epfDeduction: parseFloat(employeeEpfAmount as unknown as string),
           otherDeductions: parseFloat(values.otherDeductions),
           workingDays: parseInt(values.workingDays),
           paidDays: parseInt(values.paidDays),
@@ -224,9 +212,6 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
       console.log(error);
     }
   };
-
-  const dataAllowance = parseFloat(form.watch('dataAllowance'));
-  const mobileAllowance = parseFloat(form.watch('mobileAllowance'));
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -479,35 +464,6 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
                     <h1 className="font-semibold mt-5 text-[#2ebdaa]">
                       Deductions
                     </h1>
-
-                    <div className="my-3">
-                      <FormLabel>Salary Advance</FormLabel>
-                      <FormField
-                        name="salaryAdvance"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <Input
-                                {...field}
-                                type="number"
-                                className="md:w-96 px-2 py-1 border rounded-md"
-                                onChange={(e) => {
-                                  form.setValue(
-                                    'salaryAdvance',
-                                    e.target.value
-                                  );
-                                  calculateValues({
-                                    ...form.getValues(),
-                                    basicSalary: e.target.value,
-                                  });
-                                }}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
                     <div className="my-5">
                       <FormLabel>Other Deductions</FormLabel>
                       <FormField

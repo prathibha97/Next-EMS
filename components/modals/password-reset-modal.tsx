@@ -14,8 +14,7 @@ interface PasswordResetModalProps {}
 const PasswordResetModal: FC<PasswordResetModalProps> = ({}) => {
   const router = useRouter();
   const loginModal = usePasswordResetModal();
-  const [isLoading, setIsLoading] = useState(false);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
 
   const handleNextStep = () => {
     setStep((prevStep) => prevStep + 1);
@@ -54,7 +53,6 @@ const PasswordResetModal: FC<PasswordResetModalProps> = ({}) => {
 
   return (
     <Modal
-      disabled={isLoading}
       isOpen={loginModal.isOpen}
       onClose={loginModal.onClose}
       title='Reset Password'

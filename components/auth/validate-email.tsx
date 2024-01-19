@@ -21,7 +21,6 @@ const ValidateEmail: FC<ValidateEmailProps> = ({ handleNextStep }) => {
 
   useEffect(() => {
     const validateEmail = async () => {
-      setLoading(true);
       try {
         const { data } = await axios.get(`/api/users/validate?email=${email}`);
         setIsEmailValid(data.isValid);
@@ -29,9 +28,7 @@ const ValidateEmail: FC<ValidateEmailProps> = ({ handleNextStep }) => {
       } catch (error) {
         setIsEmailValid(false);
         setMessage('Error validating email');
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     // Trigger API call only if the email is not empty
@@ -44,6 +41,7 @@ const ValidateEmail: FC<ValidateEmailProps> = ({ handleNextStep }) => {
   }, [email]);
 
   const handlePwResetRequest = async () => {
+      setLoading(true);
     try {
       const { data } = await axios.post(`/api/email/otp`, { email });
       console.log(data.message);
@@ -72,6 +70,8 @@ const ValidateEmail: FC<ValidateEmailProps> = ({ handleNextStep }) => {
         // Handle other types of errors
         console.error('Error sending OTP:', error);
       }
+    } finally {
+      setLoading(false);
     }
   };
 

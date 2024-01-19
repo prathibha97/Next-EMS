@@ -42,8 +42,7 @@ export async function POST(req: Request) {
     }
 
     const otp = generateFiveDigitOTP();
-    const expirationTime = (Date.now() +
-      OTP_EXPIRATION_TIME * 1000) as unknown as Date;
+    const expirationTime = new Date(Date.now() + OTP_EXPIRATION_TIME * 1000);
 
     await prisma.otp.create({
       data: {
@@ -64,7 +63,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(
-      { message: 'OTP sent successfully' },
+      { message: 'OTP sent successfully'},
       { status: 200 }
     );
   } catch (error: any) {

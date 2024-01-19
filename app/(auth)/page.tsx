@@ -1,18 +1,6 @@
-'use client';
-import { UserAuthForm } from '@/app/(routes)/(root)/components/user-auth-form';
+import { UserAuthForm } from '@/app/(auth)/components/user-auth-form';
 
 export default function AuthenticationPage() {
-  // const router = useRouter();
-  // const { status, data: session } = useSession();
-
-  // useEffect(() => {
-  //   if (status === 'authenticated' && session?.user.role === 'ADMIN') {
-  //     router.push('/dashboard');
-  //   } else if (status === 'authenticated' && session?.user.role === 'USER') {
-  //     router.push('/profile');
-  //   }
-  // }, [status, session]);
-
   return (
     <div className='h-screen'>
       <div className='container relative h-full flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0'>

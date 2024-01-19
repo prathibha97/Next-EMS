@@ -12,14 +12,35 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Employee } from '@prisma/client';
+import axios from 'axios';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export function UserNav() {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [employee, setEmployee] = useState<Employee | null>(null);
 
-  const employee = useAppSelector((state) => state.employee.currentEmployee);
+  useEffect(() => {
+    const getCurrentEmployee = async () => {
+      try {
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_URL}/employees/me`
+        );
+        setEmployee(data);
+        // dispatch(setCurrentEmployee(data));
+      } catch (error) {
+        console.error('Error fetching employee data:', error);
+      }
+    };
+
+    getCurrentEmployee();
+  }, []);
+
+
+  // const employee = useAppSelector((state) => state.employee.currentEmployee);
   return (
     <div>
       <DropdownMenu>
@@ -54,6 +75,7 @@ export function UserNav() {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
+              // dispatch(clearCurrentEmployee());
               signOut();
               dispatch(setLogout());
               router.push('/');

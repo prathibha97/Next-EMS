@@ -7,6 +7,7 @@ import employeeReducer from './features/employeeSlice';
 import attendanceReducer from './features/attendanceSlice';
 import usersReducer from './features/usersSlice';
 import payrollReducer from './features/payrollSlice';
+import otpReducer from './features/otpSlice';
 import { apiSlice } from './services/api';
 import storage from './customStorage';
 
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   department: departmentReducer,
   attendance: attendanceReducer,
   payroll: payrollReducer,
+  otp: otpReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

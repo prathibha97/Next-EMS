@@ -19,6 +19,7 @@ const useEmployee = () => {
       include: {
         leaveBalance: true,
         Department: true,
+        employeeDepartment:true
       },
     });
     return employee;

@@ -132,7 +132,7 @@ const Employee: FC<EmployeeProps> = async ({ params }) => {
             <span>
               Department:{" "}
               <span className="text-gray-600 dark:text-gray-300">
-                {employee?.Department[0].name || "Not specified"}
+                {employee?.employeeDepartment?.name || "Not specified"}
               </span>
             </span>
           </div>

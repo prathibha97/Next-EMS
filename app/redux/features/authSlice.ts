@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { useAppDispatch } from '../hooks';
+import { clearCurrentEmployee } from './employeeSlice';
 
 const initialState = {
   isAuthenticated: false,
@@ -18,7 +20,16 @@ const authSlice = createSlice({
     setLogout(state) {
       state.isAuthenticated = false;
       state.user = null;
-    }
+      localStorage.removeItem('persist:root')
+    },
+  },
+  extraReducers(builder) {
+    builder.addCase(setLogout, (state) => {
+      state.isAuthenticated = false;
+      state.user = null;
+      const dispatch = useAppDispatch();
+      dispatch(clearCurrentEmployee());
+    });
   },
 });
 

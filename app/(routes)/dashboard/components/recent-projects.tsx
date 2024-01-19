@@ -10,6 +10,7 @@ export async function RecentProjects() {
 
   const currentEmployeeProjects = await getCurrentEmployeeProjects();
 
+
   const projectsToDisplay =
     session?.user.role === 'ADMIN' ? projects : currentEmployeeProjects;
 

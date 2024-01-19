@@ -1,26 +1,32 @@
 'use client';
 import { setAuthenticated } from '@/app/redux/features/authSlice';
 import { useAppDispatch } from '@/app/redux/hooks';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
+import usePasswordResetModal from '@/hooks/usePasswordResetModal';
 import { cn } from '@/lib/utils';
 import axios from 'axios';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { Icons } from '../../../../components/icons';
-import { Button } from '../../../../components/ui/button';
-import { FormInput } from '../../../../components/ui/formInput';
-import { Label } from '../../../../components/ui/label';
-import { useRouter } from 'next/navigation';
-import usePasswordResetModal from '@/hooks/usePasswordResetModal';
+import { Icons } from '../../../components/icons';
+import { Button } from '../../../components/ui/button';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 type Variant = 'LOGIN' | 'REGISTER';
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const router = useRouter()
-  const passwordResetModal = usePasswordResetModal()
+  const router = useRouter();
+  const passwordResetModal = usePasswordResetModal();
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -34,12 +40,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     }
   }, [variant]);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<FieldValues>({
+  const form = useForm<FieldValues>({
     defaultValues: {
       email: '',
       password: '',
@@ -57,7 +58,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             title: 'User registered successfully!',
             description: 'Please assoiciate the user with an employee account',
           });
-          reset();
+          form.reset();
           setVariant('LOGIN');
         })
         .catch(() => {
@@ -105,54 +106,67 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             : 'Enter your email and password below to create your account'}
         </p>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className='grid gap-2'>
-          <div className='grid gap-4'>
-            <Label className='sr-only' htmlFor='email'>
-              Email
-            </Label>
-            <FormInput
-              id='email'
-              placeholder='name@example.com'
-              type='email'
-              register={register}
-              errors={errors}
-              autoCapitalize='none'
-              autoComplete='email'
-              autoCorrect='off'
-              disabled={isLoading}
-            />
-            <Label className='sr-only' htmlFor='email'>
-              Email
-            </Label>
-            <FormInput
-              id='password'
-              register={register}
-              errors={errors}
-              placeholder='Enter your password'
-              type='password'
-              disabled={isLoading}
-            />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className='grid gap-2'>
+            <div className='grid gap-4 w-full'>
+              <FormField
+                control={form.control}
+                name='email'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='sr-only'>Email</FormLabel>
+                    <Input
+                      {...field}
+                      placeholder='name@example.com'
+                      type='email'
+                      className='w-full'
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='password'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='sr-only'>Password</FormLabel>
+                    <Input
+                      {...field}
+                      placeholder='Enter your password'
+                      type='password'
+                      className='w-full'
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <Button disabled={isLoading}>
+              {isLoading && (
+                <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />
+              )}
+              {variant === 'LOGIN' ? 'Login' : 'Continue'}
+            </Button>
           </div>
-          <Button disabled={isLoading}>
-            {isLoading && (
-              <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />
-            )}
-            {variant === 'LOGIN' ? 'Login' : 'Continue'}
-          </Button>
-        </div>
-        <div className='flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500'>
-          <div>
-            {variant === 'LOGIN' ? 'New User?' : 'Already have an account?'}
+          <div className='flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500'>
+            <div>
+              {variant === 'LOGIN' ? 'New User?' : 'Already have an account?'}
+            </div>
+            <div onClick={toggleVariant} className='underline cursor-pointer'>
+              {variant === 'LOGIN' ? 'Create an Account' : 'Login'}
+            </div>
           </div>
-          <div onClick={toggleVariant} className='underline cursor-pointer'>
-            {variant === 'LOGIN' ? 'Create an Account' : 'Login'}
+          <div
+            className='text-center text-sm text-gray-500 hover:cursor-pointer hover:text-black hover:underline mt-1'
+            onClick={passwordResetModal.onOpen}
+          >
+            Reset Password
           </div>
-        </div>
-        <div className='text-center text-sm text-gray-500 hover:cursor-pointer hover:text-black hover:underline mt-1' onClick={passwordResetModal.onOpen}>
-          Reset Password
-        </div>
-      </form>
+        </form>
+      </Form>
       <div className='relative'>
         <div className='absolute inset-0 flex items-center'>
           <span className='w-full border-t' />

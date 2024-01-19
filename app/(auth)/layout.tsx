@@ -2,6 +2,8 @@ import PasswordResetModal from '@/components/modals/password-reset-modal';
 import { Toaster } from '@/components/ui/toaster';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import ReduxProvider from '../redux/provider';
+import '../globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,11 +20,13 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body className={`${inter.className} overflow-hidden`}>
-        <div className='flex-grow overflow-x-auto overflow-y-auto'>
-          {children}
-          <PasswordResetModal />
-        </div>
-        <Toaster />
+        <ReduxProvider>
+          <div className='flex-grow overflow-x-auto overflow-y-auto'>
+            {children}
+            <PasswordResetModal />
+          </div>
+          <Toaster />
+        </ReduxProvider>
       </body>
     </html>
   );

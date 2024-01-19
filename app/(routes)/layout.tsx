@@ -9,7 +9,6 @@ import { Inter } from 'next/font/google';
 import ReduxProvider from '../redux/provider';
 
 import ResponsiveSidebar from '@/components/responsive-sidebar';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import { AlignJustify } from 'lucide-react';
 import './globals.css';
 
@@ -55,7 +54,7 @@ export default function RootLayout({
                 </div>
               </div>
               <Toaster />
-              <SpeedInsights />
+              {/* <SpeedInsights /> */}
             </ReduxProvider>
           </AuthProvider>
         </ThemeProvider>

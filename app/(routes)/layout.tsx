@@ -9,6 +9,7 @@ import { Inter } from 'next/font/google';
 import ReduxProvider from '../redux/provider';
 
 import ResponsiveSidebar from '@/components/responsive-sidebar';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { AlignJustify } from 'lucide-react';
 import './globals.css';
 
@@ -25,35 +26,36 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang='en' suppressHydrationWarning>
       <body className={`${inter.className} overflow-hidden`}>
         {/* <SocketProvider> */}
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <AuthProvider>
             <ReduxProvider>
-              <div className="flex h-screen overflow-hidden  bg-[#eef5f9] dark:bg-slate-800">
-                <div className="md:hidden">
+              <div className='flex h-screen overflow-hidden  bg-[#eef5f9] dark:bg-slate-800'>
+                <div className='md:hidden'>
                   <Sheet>
                     <SheetTrigger>
-                      <AlignJustify className="relative top-5 left-5" />
+                      <AlignJustify className='relative top-5 left-5' />
                     </SheetTrigger>
-                    <SheetContent side="left">
+                    <SheetContent side='left'>
                       <ResponsiveSidebar />
                     </SheetContent>
                   </Sheet>
                 </div>
 
-                <div className="hidden md:block">
+                <div className='hidden md:block'>
                   <Sidebar />
                 </div>
-                <div className="flex flex-col w-full overflow-x-hidden">
+                <div className='flex flex-col w-full overflow-x-hidden'>
                   <MainNav />
-                  <div className="flex-grow overflow-x-auto overflow-y-auto ">
+                  <div className='flex-grow overflow-x-auto overflow-y-auto '>
                     {children}
                   </div>
                 </div>
               </div>
               <Toaster />
+              <SpeedInsights />
             </ReduxProvider>
           </AuthProvider>
         </ThemeProvider>

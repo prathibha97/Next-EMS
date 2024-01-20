@@ -16,9 +16,9 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
     <div className="md:container flex flex-col w-full mx-auto">
       <div className="p-4 md:p-10 pb-16">
         <div className="space-y-6">
-          <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Profile</h2>
           <p className="text-muted-foreground">
-            Manage your account settings and appearance preferences.
+            View your employee profile.
           </p>
         </div>
         <Separator className="my-6" />

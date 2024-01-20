@@ -29,7 +29,7 @@ export default function OrganizationLayout({
           </p>
         </div>
         <Separator className="my-6" />
-        <div className="flex flex-col space-y-8 lg:flex-col lg:space-x-12 lg:space-y-0">
+        <div className="flex flex-col bg-white rounded-md p-5 space-y-8 lg:flex-col lg:space-x-12 lg:space-y-0">
           <aside className="w-full">
             <OrganizationSidebarNav items={organizationSidebarNavItems} />
           </aside>

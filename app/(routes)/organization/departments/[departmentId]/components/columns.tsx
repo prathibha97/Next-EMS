@@ -3,10 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 
-import {
-  useGetDepartmentByIdQuery,
-  useRemoveEmployeeFromDepartmentMutation,
-} from '@/app/redux/services/departmentApi';
+import { useRemoveEmployeeFromDepartmentMutation } from '@/app/redux/services/departmentApi';
 import { EmployeeHoverCard } from '@/components/cards/employee-hover-card';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -18,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { toast } from '@/hooks/use-toast';
 import { Employee } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 
@@ -91,15 +89,15 @@ export const columns: ColumnDef<Employee>[] = [
       const [removeEmployeeFromDepartment] =
         useRemoveEmployeeFromDepartmentMutation();
       const employee = row.original;
-      const { refetch } = useGetDepartmentByIdQuery({
-        departmentId: employee.departmentId as string,
-      });
+
       const handleDelete = async () => {
         removeEmployeeFromDepartment({
           employeeId: employee.id,
           departmentId: employee.departmentId as string,
         });
-        refetch();
+        toast({
+          title: 'Employee removed from department successfully',
+        });
         router.refresh();
       };
 

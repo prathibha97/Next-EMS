@@ -13,25 +13,27 @@ interface OrganizationLayoutProps {
   children: React.ReactNode;
 }
 
-export default function OrganizationLayout({ children }: OrganizationLayoutProps) {
+export default function OrganizationLayout({
+  children,
+}: OrganizationLayoutProps) {
   return (
-    <div className='flex'>
-      {/* <Sidebar /> */}
-      <div className='space-y-6 p-10 pb-16'>
-        <div className='space-y-0.5'>
-          <h2 className='text-2xl font-bold tracking-tight'>
+    <div className="md:container flex flex-col w-full mx-auto">
+      <div className="p-4 md:p-10 pb-16">
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold tracking-tight">
             Organization Management
           </h2>
-          <p className='text-muted-foreground'>
-            You can manage your organization departments, employees and leaves here.
+          <p className="text-muted-foreground">
+            You can manage your organization departments, employees and leaves
+            here.
           </p>
         </div>
-        <Separator className='my-6' />
-        <div className='flex flex-col justify-center items-center space-y-8 lg:space-x-12 lg:space-y-0'>
-          <aside className='-mx-4 w-full'>
+        <Separator className="my-6" />
+        <div className="flex flex-col bg-white rounded-md p-5 space-y-8 lg:flex-col lg:space-x-12 lg:space-y-0">
+          <aside className="w-full">
             <OrganizationSidebarNav items={organizationSidebarNavItems} />
           </aside>
-          <div className='flex max-w-full'>{children}</div>
+          <div className="flex-1 lg:max-w-screen-2xl">{children}</div>
         </div>
       </div>
     </div>

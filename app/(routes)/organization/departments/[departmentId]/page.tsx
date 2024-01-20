@@ -29,31 +29,31 @@ const DepartmentPage: FC<DepartmentPageProps> = ({ params }) => {
 
   if (isLoading) return <LoadingState />;
   return (
-    <div className=' lg:w-[900px] mt-5 p-5 rounded-lg'>
-      <div className=' bg-gray-50 dark:bg-gray-900/60 p-5 rounded-lg'>
-        <div className='flex justify-between'>
+    <div className="border lg:w-full mt-5 p-5 rounded-lg">
+      <div className=" bg-slate-100 dark:bg-gray-900/60 p-5 rounded-lg">
+        <div className="flex gap-3 flex-col md:flex-row justify-between">
           <div>
-            <span className='font-semibold'>Department Name: </span>
-            <span className='font-light'>{department?.name}</span>
+            <span className="font-semibold">Department Name: </span>
+            <span className="font-light">{department?.name}</span>
           </div>
           <div>
-            <span className='font-semibold'>Department Manager: </span>
+            <span className="font-semibold">Department Manager: </span>
             {/* @ts-ignore */}
-            <span className='font-light'>{department?.manager?.name}</span>
+            <span className="font-light">{department?.manager?.name}</span>
           </div>
         </div>
-        <div className='mt-3'>
-          <span className='font-semibold'>Department Description </span>
-          <span className='font-light'>{department?.description}</span>
+        <div className="mt-3">
+          <span className="font-semibold">Department Description: </span>
+          <span className="font-light">{department?.description}</span>
         </div>
       </div>
-      <div className='container mx-auto py-10'>
+      <div className="mx-auto py-6">
         <DataTable
           columns={columns}
           data={data}
-          inputType='text'
-          searchFilter='name'
-          placeholder='Name'
+          inputType="text"
+          searchFilter="name"
+          placeholder="Name"
         />
       </div>
     </div>

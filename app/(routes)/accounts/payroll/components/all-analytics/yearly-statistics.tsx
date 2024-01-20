@@ -49,8 +49,8 @@ const YearlyStatistics: FC<YearlyStatisticsProps> = ({ payrollData }) => {
 
   return (
     <div>
-      <div className='bg-[#fff]  rounded-lg p-4'>
-        <div className='text-sm font-semibold my-2 text-center'>
+      <div className='bg-[#fff] border rounded-lg'>
+        <div className='text-sm font-semibold mt-5 text-center'>
           Table of ETF and EPF Contribution History
         </div>
         <div>
@@ -64,8 +64,8 @@ const YearlyStatistics: FC<YearlyStatisticsProps> = ({ payrollData }) => {
         </div>
       </div>
 
-      <div className='bg-[#fff]  rounded-lg p-2 mt-12'>
-        <div className='text-sm font-semibold my-2 text-center'>
+      <div className='bg-[#fff] border rounded-lg mt-6'>
+        <div className='text-sm font-semibold my-5 text-center'>
           ETF & EPF Contribution Graphical Visualization
         </div>
         <div>

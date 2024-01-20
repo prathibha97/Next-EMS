@@ -8,7 +8,7 @@ export const PayrollFormSchema = z.object({
   projectAllowance: z.string(),
   performanceAllowance: z.string(),
   holidayAllowance: z.string(),
-  salaryAdvance: z.string(),
+  salaryAdvance: z.string().optional(),
   epfDeduction: z.string(),
   otherDeductions: z.string(),
   workingDays: z.string(),

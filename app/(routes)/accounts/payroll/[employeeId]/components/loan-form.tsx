@@ -69,7 +69,7 @@ const LoanForm = () => {
   return (
     <Form {...form}>
       <form
-        className="flex flex-row gap-8"
+        className="flex flex-col md:flex-row gap-3 md:gap-8"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <div className="flex items-center gap-4">
@@ -79,7 +79,11 @@ const LoanForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input {...field} type="date" className="w-full" />
+                  <Input
+                    {...field}
+                    type="date"
+                    className="ml-12 md:ml-0 w-[170px] md:w-full"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -94,7 +98,11 @@ const LoanForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input {...field} type="number" className="w-full" />
+                  <Input
+                    {...field}
+                    type="number"
+                    className="ml-7 md:ml-0 w-[170px] md:w-full"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -113,7 +121,7 @@ const LoanForm = () => {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-[170px]">
                       <SelectValue placeholder="Select Instalment Period" />
                     </SelectTrigger>
                     <SelectContent>
@@ -136,7 +144,7 @@ const LoanForm = () => {
         <div className="items-center">
           <ActionButton
             type="submit"
-            className="bg-[#2ebdaa] text-white"
+            className="bg-[#2ebdaa] text-white w-full"
             variant="outline"
             label="Submit"
             isLoading={isLoading}

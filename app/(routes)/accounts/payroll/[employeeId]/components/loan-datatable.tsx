@@ -70,7 +70,7 @@ export function LoanDataTable<TData, TValue>({
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex flex-col md:flex-row items-center gap-3 py-4">
         <Input
           type="date"
           placeholder={`Filter ${placeholder}...`}
@@ -83,11 +83,11 @@ export function LoanDataTable<TData, TValue>({
               .getColumn(searchFilter || '')
               ?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm w-full md:w-[200px]"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button variant="outline" className="ml-auto w-full md:w-[200px]">
               Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>

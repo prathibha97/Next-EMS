@@ -20,7 +20,7 @@ const ViewDepartments: FC<ViewDepartmentsProps> = ({ departments }) => {
   };
 
   return (
-    <div className='min-w-max lg:w-[850px]'>
+    <div className='md:min-w-max lg:w-[850px] '>
       <div className='flex justify-end mb-5'>
         <Button onClick={() => router.push(`departments/new`)}>
           Add Department

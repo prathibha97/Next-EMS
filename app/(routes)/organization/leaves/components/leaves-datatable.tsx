@@ -79,8 +79,8 @@ export function LeavesDataTable<TData, TValue>({
   });
 
   return (
-    <div className='w-full bg-white dark:bg-black p-2 px-5 rounded-lg overflow-clip'>
-      <div className='flex items-center py-4 px-4'>
+    <div className='w-full bg-white dark:bg-black p-5 rounded-lg overflow-clip'>
+      <div className='flex mb-4 items-center'>
         <div className='flex space-x-4'>
           <Input
             type='date'

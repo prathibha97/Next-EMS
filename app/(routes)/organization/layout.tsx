@@ -29,11 +29,11 @@ export default function OrganizationLayout({
           </p>
         </div>
         <Separator className="my-6" />
-        <div className="flex flex-col justify-center items-center space-y-8 lg:space-x-12 lg:space-y-0">
-          <aside className="-mx-4 w-full">
+        <div className="flex flex-col space-y-8 lg:flex-col lg:space-x-12 lg:space-y-0">
+          <aside className="w-full">
             <OrganizationSidebarNav items={organizationSidebarNavItems} />
           </aside>
-          <div className="flex max-w-full">{children}</div>
+          <div className="flex-1 lg:max-w-screen-2xl">{children}</div>
         </div>
       </div>
     </div>

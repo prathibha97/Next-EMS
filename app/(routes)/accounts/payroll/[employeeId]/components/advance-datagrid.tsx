@@ -69,10 +69,10 @@ export function SalaryAdvanceDataTable<TData, TValue>({
   });
 
   return (
-    <div className='w-full bg-white  rounded-lg '>
-      <div className='flex items-center py-4'>
+    <div className="w-full bg-white  rounded-lg ">
+      <div className="flex flex-col md:flex-row items-center gap-3 py-4">
         <Input
-          type='text'
+          type="text"
           placeholder={`Filter ${placeholder}...`}
           value={
             (table.getColumn(searchFilter || '')?.getFilterValue() as string) ??
@@ -83,15 +83,15 @@ export function SalaryAdvanceDataTable<TData, TValue>({
               .getColumn(searchFilter || '')
               ?.setFilterValue(event.target.value)
           }
-          className='max-w-sm'
+          className="max-w-sm w-full md:w-[200px]"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='ml-auto'>
-              Columns <ChevronDown className='ml-2 h-4 w-4' />
+            <Button variant="outline" className="ml-auto w-full md:w-[200px]">
+              Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
+          <DropdownMenuContent align="end">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -99,7 +99,7 @@ export function SalaryAdvanceDataTable<TData, TValue>({
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
-                    className='capitalize'
+                    className="capitalize"
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) =>
                       column.toggleVisibility(!!value)
@@ -112,7 +112,7 @@ export function SalaryAdvanceDataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className='rounded-md border'>
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -153,7 +153,7 @@ export function SalaryAdvanceDataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className='h-24 text-center'
+                  className="h-24 text-center"
                 >
                   No results.
                 </TableCell>
@@ -162,23 +162,23 @@ export function SalaryAdvanceDataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className='flex items-center justify-end space-x-2 py-4'>
-        <div className='flex-1 text-sm text-muted-foreground'>
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className='space-x-2'>
+        <div className="space-x-2">
           <Button
-            variant='outline'
-            size='sm'
+            variant="outline"
+            size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
             Previous
           </Button>
           <Button
-            variant='outline'
-            size='sm'
+            variant="outline"
+            size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >

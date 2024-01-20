@@ -63,16 +63,21 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
       projectAllowance: '',
       performanceAllowance: employee?.performanceAllowance?.toString(),
       holidayAllowance: '',
-      salaryAdvance: '',
       epfDeduction: '',
       otherDeductions: '',
       workingDays: '',
-      paidDays: ''
+      paidDays: '',
     },
   });
 
+  const employeeEpfAmount =
+    (employee?.basicSalary! +
+      employee?.dataAllowance! +
+      employee?.mobileAllowance!) *
+    0.08;
+
   useEffect(() => {
-    if(employeeData){
+    if (employeeData) {
       setEmployee(employeeData);
     }
 
@@ -117,22 +122,19 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
       parsedDataAllowance + parsedMobileAllowance + parsedPerformanceAllowance;
 
     const deductions =
-      parseFloat(form.getValues('salaryAdvance')) +
-      parseFloat(form.getValues('epfDeduction')) +
-      parseFloat(form.getValues('otherDeductions'));
+      employeeEpfAmount + parseFloat(form.getValues('otherDeductions'));
 
-    const total = parsedBasicSalary + additions - deductions;
+    const netSalary = parsedBasicSalary + additions - deductions;
 
     setBasicSalary(parsedBasicSalary);
     setTotalAdditions(additions);
     setTotalDeductions(deductions);
-    setNetSalary(total);
+    setNetSalary(netSalary);
   }, [
     form.getValues('basicSalary'),
     form.getValues('dataAllowance'),
     form.getValues('mobileAllowance'),
     form.getValues('performanceAllowance'),
-    form.getValues('salaryAdvance'),
     form.getValues('epfDeduction'),
     form.getValues('otherDeductions'),
   ]);
@@ -144,46 +146,33 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
       projectAllowance,
       performanceAllowance,
       holidayAllowance,
-      salaryAdvance,
-      epfDeduction,
       otherDeductions,
       basicSalary,
     } = values;
 
-    // Convert string inputs to numbers
-    const parsedDataAllowance = parseFloat(dataAllowance);
-    const parsedMobileAllowance = parseFloat(mobileAllowance);
-    const parsedProjectAllowance = parseFloat(projectAllowance);
-    const parsedPerformanceAllowance = parseFloat(performanceAllowance);
-    const parsedHolidayAllowance = parseFloat(holidayAllowance);
-    const parsedSalaryAdvance = parseFloat(salaryAdvance);
-    const parsedEpfDeduction = parseFloat(epfDeduction);
-    const parsedOtherDeductions = parseFloat(otherDeductions);
+    const parsedDataAllowance = parseFloat(dataAllowance) || 0;
+    const parsedMobileAllowance = parseFloat(mobileAllowance) || 0;
+    const parsedProjectAllowance = parseFloat(projectAllowance) || 0;
+    const parsedPerformanceAllowance = parseFloat(performanceAllowance) || 0;
+    const parsedHolidayAllowance = parseFloat(holidayAllowance) || 0;
+    const parsedEpfDeduction =
+      parseFloat(employeeEpfAmount as unknown as string) || 0;
+    const parsedOtherDeductions = parseFloat(otherDeductions) || 0;
 
-    setBasicSalary(
-      (prevBasicSalary) => prevBasicSalary + parseFloat(basicSalary)
-    );
-
-    const additions =
+    const totalAdditions =
       parsedDataAllowance +
       parsedMobileAllowance +
       parsedProjectAllowance +
       parsedPerformanceAllowance +
       parsedHolidayAllowance;
 
-    const deductions =
-      parsedSalaryAdvance + parsedEpfDeduction + parsedOtherDeductions;
+    const totalDeductions = parsedEpfDeduction + parsedOtherDeductions;
 
-    const total = Number(basicSalary) + additions - deductions;
+    const total = parseFloat(basicSalary) + totalAdditions - totalDeductions;
 
-    setBasicSalary(
-      (prevBasicSalary) => prevBasicSalary + parseFloat(basicSalary)
-    );
-    setTotalAdditions((prevTotalAdditions) => prevTotalAdditions + additions);
-    setTotalDeductions(
-      (prevTotalDeductions) => prevTotalDeductions + deductions
-    );
-    setNetSalary((prevNetSalary) => prevNetSalary + total);
+    setTotalAdditions(totalAdditions);
+    setTotalDeductions(totalDeductions);
+    setNetSalary(total);
   };
 
   const onSubmit = async (values: PayrollFormValues) => {
@@ -199,11 +188,10 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
           projectAllowance: parseFloat(values.projectAllowance),
           performanceAllowance: parseFloat(values.performanceAllowance),
           holidayAllowance: parseFloat(values.holidayAllowance),
-          salaryAdvance: parseFloat(values.salaryAdvance),
-          epfDeduction: parseFloat(values.epfDeduction),
+          epfDeduction: parseFloat(employeeEpfAmount as unknown as string),
           otherDeductions: parseFloat(values.otherDeductions),
           workingDays: parseInt(values.workingDays),
-          paidDays: parseInt(values.paidDays)
+          paidDays: parseInt(values.paidDays),
         },
       }).unwrap();
       const payroll = response; // Access the nested data
@@ -225,372 +213,380 @@ const AddPayrollPage: FC<AddPayrollPageProps> = ({ params }) => {
     }
   };
 
-  const dataAllowance = parseFloat(form.watch('dataAllowance'));
-  const mobileAllowance = parseFloat(form.watch('mobileAllowance'));
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className='space-y-3'>
-      <h1 className='text-center text-2xl font-semibold mb-8'>
-        Add Employee Salary
-      </h1>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className='flex flex-col md:flex-row gap-y-3 gap-x-10'>
-            <div>
-              <FormLabel>Month & Year </FormLabel>
-              <FormField
-                name='monthYear'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        className='md:w-96 px-2 py-1 border rounded-md'
-                        type='month'
+    <div className="space-y-3">
+      <div className="flex flex-col md:flex-row justify-center gap-x-10">
+        <div>
+          <h1 className="font-semibold mt-5 text-center">
+            Add Employee Salary
+          </h1>
+          <div className="my-3">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <div className="flex flex-col md:flex-row justify-between">
+                  <div className="my-3">
+                    <FormLabel>Month & Year</FormLabel>
+                    <FormField
+                      name="monthYear"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              className="md:w-[300px] px-2 py-1 border rounded-md"
+                              type="month"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="my-3">
+                    <FormLabel>Number of Worked Days</FormLabel>
+                    <FormField
+                      name="workingDays"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              className="md:w-[300px] px-2 py-1 border rounded-md"
+                              type="number"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="my-3">
+                    <FormLabel>Number of Paid Days</FormLabel>
+                    <FormField
+                      name="paidDays"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              className="md:w-[300px] px-2 py-1 border rounded-md"
+                              type="number"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col md:flex-row justify-center gap-x-10">
+                  <div>
+                    <h1 className="font-semibold mt-5 text-[#2ebdaa]">
+                      Earnings
+                    </h1>
+                    <div className="my-3">
+                      <FormLabel>Basic Salary </FormLabel>
+                      <FormField
+                        name="basicSalary"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                className="md:w-96 px-2 py-1 border rounded-md"
+                                type="number"
+                                onChange={(e) => {
+                                  form.setValue('basicSalary', e.target.value);
+                                  calculateValues({
+                                    ...form.getValues(),
+                                    basicSalary: e.target.value,
+                                  });
+                                }}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='space-y-3'>
-              <FormLabel>Number of Worked Days </FormLabel>
-              <FormField
-                name='workingDays'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        className='md:w-96 px-2 py-1 border rounded-md'
-                        type='number'
+                    </div>
+                    <div className="my-5">
+                      <FormLabel>Data Allowance</FormLabel>
+                      <FormField
+                        name="dataAllowance"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                className="md:w-96 px-2 py-1 border rounded-md"
+                                type="number"
+                                onChange={(e) => {
+                                  form.setValue(
+                                    'dataAllowance',
+                                    e.target.value
+                                  );
+                                  calculateValues({
+                                    ...form.getValues(),
+                                    basicSalary: e.target.value,
+                                  });
+                                }}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormLabel>Number of Paid Days</FormLabel>
-              <FormField
-                name='paidDays'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        className='md:w-96 px-2 py-1 border rounded-md'
-                        type='number'
+                    </div>
+
+                    <div className="my-5">
+                      <FormLabel>Mobile Allowance</FormLabel>
+                      <FormField
+                        name="mobileAllowance"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                type="number"
+                                className="md:w-96 px-2 py-1 border rounded-md"
+                                onChange={(e) => {
+                                  form.setValue(
+                                    'mobileAllowance',
+                                    e.target.value
+                                  );
+                                  calculateValues({
+                                    ...form.getValues(),
+                                    basicSalary: e.target.value,
+                                  });
+                                }}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
+                    </div>
 
-          <div className='flex flex-col md:flex-row justify-center gap-x-10'>
-            <div>
-              <h1 className='font-semibold mt-5 text-[#2ebdaa]'>Earnings</h1>
-              <div className='my-3'>
-                <FormLabel>Basic Salary </FormLabel>
-                <FormField
-                  name='basicSalary'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className='md:w-96 px-2 py-1 border rounded-md'
-                          type='number'
-                          onChange={(e) => {
-                            form.setValue('basicSalary', e.target.value);
-                            calculateValues({
-                              ...form.getValues(),
-                              basicSalary: e.target.value,
-                            });
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className='my-5'>
-                <FormLabel>Data Allowance</FormLabel>
-                <FormField
-                  name='dataAllowance'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className='md:w-96 px-2 py-1 border rounded-md'
-                          type='number'
-                          onChange={(e) => {
-                            form.setValue('dataAllowance', e.target.value);
-                            calculateValues({
-                              ...form.getValues(),
-                              basicSalary: e.target.value,
-                            });
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                    <div className="my-5">
+                      <FormLabel>Project Allowance </FormLabel>
+                      <FormField
+                        name="projectAllowance"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                type="number"
+                                className="md:w-96 px-2 py-1 border rounded-md"
+                                onChange={(e) => {
+                                  form.setValue(
+                                    'projectAllowance',
+                                    e.target.value
+                                  );
+                                  calculateValues({
+                                    ...form.getValues(),
+                                    basicSalary: e.target.value,
+                                  });
+                                }}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
-              <div className='my-5'>
-                <FormLabel>Mobile Allowance</FormLabel>
-                <FormField
-                  name='mobileAllowance'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type='number'
-                          className='md:w-96 px-2 py-1 border rounded-md'
-                          onChange={(e) => {
-                            form.setValue('mobileAllowance', e.target.value);
-                            calculateValues({
-                              ...form.getValues(),
-                              basicSalary: e.target.value,
-                            });
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                    <div className="my-5">
+                      <FormLabel>Performance Allowance</FormLabel>
+                      <FormField
+                        name="performanceAllowance"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                type="number"
+                                className="md:w-96 px-2 py-1 border rounded-md"
+                                onChange={(e) => {
+                                  form.setValue(
+                                    'performanceAllowance',
+                                    e.target.value
+                                  );
+                                  calculateValues({
+                                    ...form.getValues(),
+                                    basicSalary: e.target.value,
+                                  });
+                                }}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
-              <div className='my-5'>
-                <FormLabel>Project Allowance </FormLabel>
-                <FormField
-                  name='projectAllowance'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type='number'
-                          className='md:w-96 px-2 py-1 border rounded-md'
-                          onChange={(e) => {
-                            form.setValue('projectAllowance', e.target.value);
-                            calculateValues({
-                              ...form.getValues(),
-                              basicSalary: e.target.value,
-                            });
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                    <div className="my-5">
+                      <FormLabel>Holiday Allowance</FormLabel>
+                      <FormField
+                        name="holidayAllowance"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                type="number"
+                                className="md:w-96 px-2 py-1 border rounded-md"
+                                onChange={(e) => {
+                                  form.setValue(
+                                    'holidayAllowance',
+                                    e.target.value
+                                  );
+                                  calculateValues({
+                                    ...form.getValues(),
+                                    basicSalary: e.target.value,
+                                  });
+                                }}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
 
-              <div className='my-5'>
-                <FormLabel>Performance Allowance</FormLabel>
-                <FormField
-                  name='performanceAllowance'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type='number'
-                          className='md:w-96 px-2 py-1 border rounded-md'
-                          onChange={(e) => {
-                            form.setValue(
-                              'performanceAllowance',
-                              e.target.value
-                            );
-                            calculateValues({
-                              ...form.getValues(),
-                              basicSalary: e.target.value,
-                            });
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className='my-5'>
-                <FormLabel>Holiday Allowance</FormLabel>
-                <FormField
-                  name='holidayAllowance'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type='number'
-                          className='md:w-96 px-2 py-1 border rounded-md'
-                          onChange={(e) => {
-                            form.setValue('holidayAllowance', e.target.value);
-                            calculateValues({
-                              ...form.getValues(),
-                              basicSalary: e.target.value,
-                            });
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-
-            <div>
-              <h1 className='font-semibold mt-5 text-[#2ebdaa]'>Deductions</h1>
-
-              <div className='my-3'>
-                <FormLabel>Salary Advance</FormLabel>
-                <FormField
-                  name='salaryAdvance'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type='number'
-                          className='md:w-96 px-2 py-1 border rounded-md'
-                          onChange={(e) => {
-                            form.setValue('salaryAdvance', e.target.value);
-                            calculateValues({
-                              ...form.getValues(),
-                              basicSalary: e.target.value,
-                            });
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className='my-5'>
-                <FormLabel>Other Deductions</FormLabel>
-                <FormField
-                  name='otherDeductions'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type='number'
-                          className='md:w-96 px-2 py-1 border rounded-md'
-                          onChange={(e) => {
-                            form.setValue('otherDeductions', e.target.value);
-                            calculateValues({
-                              ...form.getValues(),
-                              basicSalary: e.target.value,
-                            });
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div>
-                <h1 className='font-semibold mt-8 text-[#2ebdaa]'>
-                  EPF & ETF Contribution
-                </h1>
-                <div>
-                  <div className='grid grid-cols-2 gap-4 mt-2 '>
-                    <div>
-                      <p className='font-medium'>
-                        EPF Employee Contribution :{' '}
-                        {(basicSalary * 0.08).toFixed(2)}
-                      </p>
+                  <div>
+                    <h1 className="font-semibold mt-5 text-[#2ebdaa]">
+                      Deductions
+                    </h1>
+                    <div className="my-5">
+                      <FormLabel>Other Deductions</FormLabel>
+                      <FormField
+                        name="otherDeductions"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                type="number"
+                                className="md:w-96 px-2 py-1 border rounded-md"
+                                onChange={(e) => {
+                                  form.setValue(
+                                    'otherDeductions',
+                                    e.target.value
+                                  );
+                                  calculateValues({
+                                    ...form.getValues(),
+                                    basicSalary: e.target.value,
+                                  });
+                                }}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     </div>
                     <div>
-                      <p className='text-right font-medium'>earnings* 8%</p>
+                      <h1 className="font-semibold mt-8 text-[#2ebdaa]">
+                        EPF & ETF Contribution
+                      </h1>
+                      <div>
+                        <div className="grid grid-cols-2 gap-4 mt-2 ">
+                          <div>
+                            <p className="font-medium">
+                              EPF Employee Contribution :{' '}
+                              {(basicSalary * 0.08).toFixed(2)}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-right font-medium">
+                              earnings* 8%
+                            </p>
+                          </div>
+                          <div>
+                            <p className="font-medium">
+                              EPF Company Contribution :{' '}
+                              {(basicSalary * 0.15).toFixed(2)}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-right font-medium">
+                              earnings* 15%
+                            </p>
+                          </div>
+                          <div>
+                            <p className="font-medium">
+                              ETF Company Contribution :{' '}
+                              {(basicSalary * 0.03).toFixed(2)}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-right font-medium">
+                              earnings* 3%
+                            </p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <p className='font-medium'>
-                        EPF Company Contribution :{' '}
-                        {(basicSalary * 0.15).toFixed(2)}
-                      </p>
+                    <div className="grid grid-cols-2 gap-4 mt-10">
+                      <div>
+                        <p className="font-medium">Basic Salary :</p>
+                      </div>
+                      <div>
+                        <p className="text-right font-medium">{basicSalary}</p>
+                      </div>
+                      <div>
+                        <p className="font-medium">Total Additions :</p>
+                      </div>
+                      <div>
+                        <p className="text-right font-medium">
+                          {totalAdditions}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="font-medium">Total Deductions :</p>
+                      </div>
+                      <div>
+                        <p className="text-right font-medium">
+                          {totalDeductions}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className='text-right font-medium'>earnings* 15%</p>
-                    </div>
-                    <div>
-                      <p className='font-medium'>
-                        ETF Company Contribution :{' '}
-                        {(basicSalary * 0.03).toFixed(2)}
-                      </p>
-                    </div>
-                    <div>
-                      <p className='text-right font-medium'>earnings* 3%</p>
+
+                    <hr />
+                    <div className="grid grid-cols-2 gap-4 mt-2">
+                      <div>
+                        <p className="font-semibold ml-0.5">Net Salary :</p>
+                      </div>
+                      <div>
+                        <p className="text-right font-semibold">{netSalary}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className='grid grid-cols-2 gap-4 mt-10'>
-                <div>
-                  <p className='font-medium'>Basic Salary :</p>
+                <div className="flex items-center">
+                  <Button type="button" onClick={() => router.back()}>
+                    Cancel
+                  </Button>
+                  <ActionButton
+                    label="Add Salary"
+                    type="submit"
+                    className="flex ml-auto rounded-md text-white bg-[#2ebdaa]"
+                    onClick={() => onSubmit}
+                    isLoading={isAddPayrollLoading}
+                  />
                 </div>
-                <div>
-                  <p className='text-right font-medium'>{basicSalary}</p>
-                </div>
-                <div>
-                  <p className='font-medium'>Total Additions :</p>
-                </div>
-                <div>
-                  <p className='text-right font-medium'>{totalAdditions}</p>
-                </div>
-                <div>
-                  <p className='font-medium'>Total Deductions :</p>
-                </div>
-                <div>
-                  <p className='text-right font-medium'>{totalDeductions}</p>
-                </div>
-              </div>
-
-              <hr />
-              <div className='grid grid-cols-2 gap-4 mt-2'>
-                <div>
-                  <p className='font-semibold ml-0.5'>Net Salary :</p>
-                </div>
-                <div>
-                  <p className='text-right font-semibold'>{netSalary}</p>
-                </div>
-              </div>
-            </div>
+              </form>
+            </Form>
           </div>
-          <div className='flex items-center'>
-            <Button type='button' onClick={() => router.back()}>
-              Cancel
-            </Button>
-            <ActionButton
-              label='Add Salary'
-              type='submit'
-              className='flex ml-auto rounded-md text-white bg-[#2ebdaa]'
-              onClick={() => onSubmit}
-              isLoading={isAddPayrollLoading}
-            />
-          </div>
-        </form>
-      </Form>
+        </div>
+      </div>
     </div>
   );
 };

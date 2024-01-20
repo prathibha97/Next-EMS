@@ -17,46 +17,77 @@ interface PayrollPageProps {
   };
 }
 
-
-
 const PayrollPage: FC<PayrollPageProps> = async ({ params }) => {
   const { employeeId } = params;
   const { getPayrollByEmployee } = usePayroll();
   const payrolls = await getPayrollByEmployee(employeeId);
 
-
-
   return (
-    <div>
-      <Tabs defaultValue='payroll'>
-        <TabsList>
-          <TabsTrigger value='payroll'>Payroll</TabsTrigger>
-          <TabsTrigger value='advance'>Salary Advance</TabsTrigger>
-          <TabsTrigger value='loan'>Loans</TabsTrigger>
-          <TabsTrigger value='analytics'>Analytics</TabsTrigger>
-        </TabsList>
-        <TabsContent value='payroll' className='mt-5'>
-          <h1 className='text-2xl font-semibold mb-5'>
-            Payroll of {payrolls[0]?.employee.name || 'employee is not set yet'}
-          </h1>
-          <div className='flex gap-4 rounded-md'>
-            <AddSalary employeeId={employeeId} />
-          </div>
-          <PaySheetDataTable data={payrolls} columns={columns} />
-          <LinkButton link={`/accounts/payroll`} label='Go Back' />
-        </TabsContent>
-        <TabsContent value='advance' className='mt-5'>
-          <SalaryAdvance employeeId={employeeId} />
-        </TabsContent>
-        <TabsContent value='loan' className='mt-5'>
-          <AddLoan employeeId={employeeId} />
-        </TabsContent>
-        <TabsContent value='analytics' className='mt-5'>
-          {/* <PayrollAnalyticsPage employeeId={employeeId} /> */}
-          <PayrollInsightsChart payrolls={payrolls} />
-        </TabsContent>
-      </Tabs>
-    </div>
+    <>
+      <div className="hidden md:block">
+        <Tabs defaultValue="payroll">
+          <TabsList className="">
+            <TabsTrigger value="payroll">Payroll</TabsTrigger>
+            <TabsTrigger value="advance">Salary Advance</TabsTrigger>
+            <TabsTrigger value="loan">Loans</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          </TabsList>
+          <TabsContent value="payroll" className="mt-5">
+            <h1 className="text-2xl font-semibold mb-5">
+              Payroll of{' '}
+              {payrolls[0]?.employee.name || 'employee is not set yet'}
+            </h1>
+            <div className="flex gap-4 rounded-md">
+              <AddSalary employeeId={employeeId} />
+            </div>
+            <PaySheetDataTable data={payrolls} columns={columns} />
+            <LinkButton link={`/accounts/payroll`} label="Go Back" />
+          </TabsContent>
+          <TabsContent value="advance" className="mt-5">
+            <SalaryAdvance employeeId={employeeId} />
+          </TabsContent>
+          <TabsContent value="loan" className="mt-5">
+            <AddLoan employeeId={employeeId} />
+          </TabsContent>
+          <TabsContent value="analytics" className="mt-5">
+            {/* <PayrollAnalyticsPage employeeId={employeeId} /> */}
+            <PayrollInsightsChart payrolls={payrolls} />
+          </TabsContent>
+        </Tabs>
+      </div>
+
+      <div className="md:hidden">
+        <Tabs defaultValue="payroll">
+          <TabsList className="grid grid-cols-2 bg-[#f1f5f9] h-[80px]">
+            <TabsTrigger value="payroll">Payroll</TabsTrigger>
+            <TabsTrigger value="advance">Salary Advance</TabsTrigger>
+            <TabsTrigger value="loan">Loans</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          </TabsList>
+          <TabsContent value="payroll" className="mt-8">
+            <h1 className="text-2xl text-center font-semibold mb-5">
+              Payroll of{' '}
+              {payrolls[0]?.employee.name || 'employee is not set yet'}
+            </h1>
+            <div className="flex gap-4 justify-center rounded-md">
+              <AddSalary employeeId={employeeId} />
+            </div>
+            <PaySheetDataTable data={payrolls} columns={columns} />
+            <LinkButton link={`/accounts/payroll`} label="Go Back" />
+          </TabsContent>
+          <TabsContent value="advance" className="mt-5">
+            <SalaryAdvance employeeId={employeeId} />
+          </TabsContent>
+          <TabsContent value="loan" className="mt-5">
+            <AddLoan employeeId={employeeId} />
+          </TabsContent>
+          <TabsContent value="analytics" className="mt-5">
+            {/* <PayrollAnalyticsPage employeeId={employeeId} /> */}
+            <PayrollInsightsChart payrolls={payrolls} />
+          </TabsContent>
+        </Tabs>
+      </div>
+    </>
   );
 };
 

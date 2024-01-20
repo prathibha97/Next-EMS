@@ -44,60 +44,111 @@ export function DataTableToolbar<TData>({
   }, []);
 
   return (
-    <div className='flex items-center justify-between'>
-      <div className='flex flex-1 items-center space-x-2'>
-        <Input
-          placeholder='Filter employee...'
-          value={
-            (table.getColumn('employeeNumber')?.getFilterValue() as string) ??
-            ''
-          }
-          onChange={(event) =>
-            table
-              .getColumn('employeeNumber')
-              ?.setFilterValue(event.target.value)
-          }
-          className='h-8 w-[150px] lg:w-[250px]'
-        />
-        {table.getColumn('name') && (
-          <DataTableFacetedFilter
-            column={table.getColumn('name')}
-            title='Employees'
-            options={employees.map((employee) => ({
-              label: employee.name,
-              value: employee.name,
-            }))}
+    <>
+      <div className="hidden md:flex items-center justify-between">
+        <div className="flex flex-1 items-center space-x-2">
+          <Input
+            placeholder="Filter employee..."
+            value={
+              (table.getColumn('employeeNumber')?.getFilterValue() as string) ??
+              ''
+            }
+            onChange={(event) =>
+              table
+                .getColumn('employeeNumber')
+                ?.setFilterValue(event.target.value)
+            }
+            className="h-8 w-[150px] lg:w-[250px]"
           />
-        )}
-        {table.getColumn('employeeDepartment_name') && (
-          <DataTableFacetedFilter
-            column={table.getColumn('employeeDepartment_name')}
-            title='Departments'
-            options={departments.map((department) => ({
-              label: department.name,
-              value: department.name,
-            }))}
-          />
-        )}
-        {/* {table.getColumn('priority') && (
-          <DataTableFacetedFilter
-            column={table.getColumn('priority')}
-            title='Priority'
-            options={priorities}
-          />
-        )} */}
-        {isFiltered && (
-          <Button
-            variant='ghost'
-            onClick={() => table.resetColumnFilters()}
-            className='h-8 px-2 lg:px-3'
-          >
-            Reset
-            <Cross2Icon className='ml-2 h-4 w-4' />
-          </Button>
-        )}
+          {table.getColumn('name') && (
+            <DataTableFacetedFilter
+              column={table.getColumn('name')}
+              title="Employees"
+              options={employees.map((employee) => ({
+                label: employee.name,
+                value: employee.name,
+              }))}
+            />
+          )}
+          {table.getColumn('employeeDepartment_name') && (
+            <DataTableFacetedFilter
+              column={table.getColumn('employeeDepartment_name')}
+              title="Departments"
+              options={departments.map((department) => ({
+                label: department.name,
+                value: department.name,
+              }))}
+            />
+          )}
+          {isFiltered && (
+            <Button
+              variant="ghost"
+              onClick={() => table.resetColumnFilters()}
+              className="h-8 px-2 lg:px-3"
+            >
+              Reset
+              <Cross2Icon className="ml-2 h-4 w-4" />
+            </Button>
+          )}
+        </div>
+        <DataTableViewOptions table={table} />
       </div>
-      <DataTableViewOptions table={table} />
-    </div>
+
+      <div className="md:hidden flex items-center justify-between">
+        <div className="flex flex-col items-center gap-2 w-full">
+          <Input
+            placeholder="Filter employee..."
+            value={
+              (table.getColumn('employeeNumber')?.getFilterValue() as string) ??
+              ''
+            }
+            onChange={(event) =>
+              table
+                .getColumn('employeeNumber')
+                ?.setFilterValue(event.target.value)
+            }
+            className="w-full h-8 lg:w-[250px]"
+          />
+          <div className="flex w-full justify-between">
+            <div>
+              {table.getColumn('name') && (
+                <DataTableFacetedFilter
+                  column={table.getColumn('name')}
+                  title="Employees"
+                  options={employees.map((employee) => ({
+                    label: employee.name,
+                    value: employee.name,
+                  }))}
+                />
+              )}
+            </div>
+            <div>
+              {table.getColumn('employeeDepartment_name') && (
+                <DataTableFacetedFilter
+                  column={table.getColumn('employeeDepartment_name')}
+                  title="Departments"
+                  options={departments.map((department) => ({
+                    label: department.name,
+                    value: department.name,
+                  }))}
+                />
+              )}
+            </div>
+          </div>
+
+          {isFiltered && (
+            <Button
+              variant="ghost"
+              onClick={() => table.resetColumnFilters()}
+              className="h-8 px-2 lg:px-3"
+            >
+              Reset
+              <Cross2Icon className="ml-2 h-4 w-4" />
+            </Button>
+          )}
+        </div>
+        <DataTableViewOptions table={table} />
+      </div>
+    </>
   );
 }

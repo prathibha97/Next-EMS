@@ -10,20 +10,20 @@ interface DepartmentAnalyticsProps {
 
 const DepartmentAnalytics: FC<DepartmentAnalyticsProps> = ({ payrollData }) => {
   return (
-    <div className='bg-slate-200 mt-10 p-4 drop-shadow-md rounded-lg '>
-      <div className='text-xl font-semibold text-center mb-4'>
+    <div className="mt-10 rounded-lg ">
+      <div className="text-xl font-semibold text-center mb-4">
         ETF & EPF Contribution
       </div>
-      <Tabs defaultValue='monthly'>
+      <Tabs defaultValue="monthly">
         <TabsList>
-          <TabsTrigger value='monthly'>Monthly</TabsTrigger>
-          <TabsTrigger value='yearly'>Yearly</TabsTrigger>
+          <TabsTrigger value="monthly">Monthly</TabsTrigger>
+          <TabsTrigger value="yearly">Yearly</TabsTrigger>
         </TabsList>
 
-        <TabsContent value='monthly'>
+        <TabsContent value="monthly">
           <MonthlyStatistics payrollData={payrollData} />
         </TabsContent>
-        <TabsContent value='yearly'>
+        <TabsContent value="yearly">
           <YearlyStatistics payrollData={payrollData} />
         </TabsContent>
       </Tabs>

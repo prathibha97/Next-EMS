@@ -38,7 +38,7 @@ const RecentMonths: FC<RecentMonthsProps> = ({ monthlyData }) => {
                 last4MonthsData[index - 1] || last4MonthsData[index];
 
               return (
-                <Card key={monthData.month} className='drop-shadow-lg'>
+                <Card key={monthData.month}>
                   <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                     <CardTitle className='text-sm font-semibold text-black'>
                       {monthData.month}

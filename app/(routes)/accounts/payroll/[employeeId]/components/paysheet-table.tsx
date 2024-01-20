@@ -65,26 +65,28 @@ export function PaySheetDataTable<TData, TValue>({
   });
 
   return (
-    <div className='w-full'>
-      <div className='flex items-center py-4 px-4 gap-x-2  '>
+    <div className="w-full">
+      <div className="flex flex-col md:flex-row md:items-center py-4 gap-2">
         Filter by Payroll Period
-        <Filter size={18}/>
+        <Filter size={18} />
         <Input
           placeholder={`Filter by Payroll Period`}
-          type='month'
-          value={(table.getColumn('monthYear')?.getFilterValue() as string) ?? ''}
+          type="month"
+          value={
+            (table.getColumn('monthYear')?.getFilterValue() as string) ?? ''
+          }
           onChange={(event) =>
             table.getColumn('monthYear')?.setFilterValue(event.target.value)
           }
-          className='w-[200px]'
+          className="w-full md:w-[200px] text-center"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='ml-auto'>
-              Columns <ChevronDown className='ml-2 h-4 w-4 ' />
+            <Button variant="outline" className="ml-auto w-full md:w-[200px]">
+              Columns <ChevronDown className="ml-2 h-4 w-4 " />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
+          <DropdownMenuContent align="end">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -92,7 +94,7 @@ export function PaySheetDataTable<TData, TValue>({
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
-                    className='capitalize'
+                    className="capitalize"
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) =>
                       column.toggleVisibility(!!value)
@@ -105,7 +107,7 @@ export function PaySheetDataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className='rounded-md border'>
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -146,7 +148,7 @@ export function PaySheetDataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className='h-24 text-center'
+                  className="h-24 text-center"
                 >
                   No results.
                 </TableCell>
@@ -155,23 +157,23 @@ export function PaySheetDataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className='flex items-center justify-end space-x-2 py-4'>
-        <div className='flex-1 text-sm text-muted-foreground'>
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className='space-x-2'>
+        <div className="space-x-2">
           <Button
-            variant='outline'
-            size='sm'
+            variant="outline"
+            size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
             Previous
           </Button>
           <Button
-            variant='outline'
-            size='sm'
+            variant="outline"
+            size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >

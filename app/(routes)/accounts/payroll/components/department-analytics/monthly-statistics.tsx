@@ -62,8 +62,8 @@ const MonthlyStatistics: FC<MonthlyStatisticsProps> = ({ payrollData }) => {
   return (
     <div>
       {/* grid column1 starts here */}
-      <div className='bg-[#fff]  rounded-lg p-4'>
-        <div className='text-sm font-semibold my-2 text-center'>
+      <div className='bg-[#fff] border rounded-lg p-4'>
+        <div className='text-sm font-semibold mt-5 text-center'>
           Table of ETF and EPF Contribution History
         </div>
         <div>
@@ -77,8 +77,8 @@ const MonthlyStatistics: FC<MonthlyStatisticsProps> = ({ payrollData }) => {
         </div>
       </div>
 
-      <div className='bg-[#fff]  rounded-lg p-2 mt-12'>
-        <div className='text-sm font-semibold my-2 text-center'>
+      <div className='bg-[#fff] border rounded-lg mt-6'>
+        <div className='text-sm font-semibold my-5 text-center'>
           ETF & EPF Contribution Graphical Visualization
         </div>
         <div>

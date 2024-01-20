@@ -26,30 +26,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en' suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} overflow-hidden`}>
         {/* <SocketProvider> */}
-        <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
             <ReduxProvider>
-              <div className='flex h-screen overflow-hidden  bg-[#eef5f9] dark:bg-slate-800'>
-                <div className='md:hidden'>
+              <div className="flex h-screen overflow-hidden  bg-[#eef5f9] dark:bg-slate-800">
+                <div className="md:hidden">
                   <Sheet>
                     <SheetTrigger>
                       <AlignJustify className="fixed top-5 left-5" />
                     </SheetTrigger>
-                    <SheetContent side='left'>
+                    <SheetContent side="left">
                       <ResponsiveSidebar />
                     </SheetContent>
                   </Sheet>
                 </div>
 
-                <div className='hidden md:block'>
+                <div className="hidden md:block">
                   <Sidebar />
                 </div>
-                <div className='flex flex-col w-full overflow-x-hidden'>
-                  <MainNav />
-                  <div className='flex-grow overflow-x-auto overflow-y-auto '>
+                {/* <div className='flex flex-col md:container w-full mx-auto overflow-x-hidden'> */}
+                <div className="md:container flex flex-col w-full mx-auto">
+                  <div className="md:p-10">
+                    <MainNav />
+                  </div>
+                  <div className="flex-grow overflow-x-auto overflow-y-auto ">
                     {children}
                   </div>
                 </div>

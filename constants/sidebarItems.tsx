@@ -45,9 +45,5 @@ export const sidebarItems = [
     icon: <Sparkles className='h-6 w-6' />,
     link: '/leaves',
   },
-  {
-    name: 'Settings',
-    icon: <SlidersHorizontal className='h-6 w-6' />,
-    link: '/settings',
-  },
+
 ] as const;

@@ -130,7 +130,7 @@ model Attendance {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 
-  employee   Employee @relation(fields: [employeeId], references: [id])
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   employeeId String   @db.ObjectId
 }
 
@@ -167,7 +167,7 @@ model Leave {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  employee   Employee @relation(fields: [employeeId], references: [id])
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   employeeId String   @db.ObjectId
 }
 
@@ -195,7 +195,7 @@ model Payroll {
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 
-  employee       Employee        @relation(fields: [employeeId], references: [id])
+  employee       Employee        @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   employeeId     String          @db.ObjectId
   salaryAdvances SalaryAdvance[]
   loans          Loan[]
@@ -214,7 +214,7 @@ model Deduction {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
-  employee   Employee @relation(fields: [employeeId], references: [id])
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   employeeId String   @db.ObjectId
   payroll    Payroll? @relation(fields: [payrollId], references: [id])
   payrollId  String?  @db.ObjectId
@@ -231,7 +231,7 @@ model Loan {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
-  employee   Employee @relation(fields: [employeeId], references: [id])
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   employeeId String   @db.ObjectId
   payroll    Payroll? @relation(fields: [payrollId], references: [id])
   payrollId  String?  @db.ObjectId
@@ -245,7 +245,7 @@ model SalaryAdvance {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  employee   Employee @relation(fields: [employeeId], references: [id])
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   employeeId String   @db.ObjectId
 
   payroll   Payroll? @relation(fields: [payrollId], references: [id])
@@ -262,7 +262,7 @@ model Notification {
   updatedAt DateTime @updatedAt
 
   employeeId String   @db.ObjectId
-  employee   Employee @relation(fields: [employeeId], references: [id])
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 }
 
 model Token {
@@ -313,7 +313,7 @@ model Project {
 
 model EmployeeProject {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  employee   Employee @relation(fields: [employeeId], references: [id])
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   employeeId String   @db.ObjectId
   project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId  String   @db.ObjectId

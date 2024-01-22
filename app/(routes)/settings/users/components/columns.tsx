@@ -1,16 +1,12 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import {
-  ArrowUpDown,
-  Clipboard,
-  MoreHorizontal,
-  Trash,
-  UserPlus,
-  View,
-} from 'lucide-react';
+import { ArrowUpDown, MoreHorizontal, Trash, UserPlus } from 'lucide-react';
 
-import { useRemoveUserMutation, useUpdateUserMutation } from '@/app/redux/services/userApi';
+import {
+  useRemoveUserMutation,
+  useUpdateUserMutation,
+} from '@/app/redux/services/userApi';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -80,10 +76,6 @@ export const columns: ColumnDef<User>[] = [
       const [updateTask] = useUpdateUserMutation();
       const [removeUser] = useRemoveUserMutation();
 
-      const handleViewEmployee = async (employeeId: string) => {
-        router.push(`/organization/employees/${employeeId}`);
-      };
-
       const handleUpdateUserRole = async (role: UserRole) => {
         try {
           if (!role) {
@@ -114,7 +106,7 @@ export const columns: ColumnDef<User>[] = [
         }
       };
 
-      const handleDeleteUser = async (userId:string) => {
+      const handleDeleteUser = async (userId: string) => {
         try {
           await removeUser(userId).unwrap();
           toast({
@@ -138,21 +130,7 @@ export const columns: ColumnDef<User>[] = [
           <DropdownMenuContent className='w-56'>
             <DropdownMenuLabel>Manage Users</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem
-                onClick={() => {
-                  navigator.clipboard.writeText(user.id);
-                }}
-              >
-                <Clipboard className='mr-2 h-4 w-4' />
-                <span>Copy user ID</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleViewEmployee(user.id)}>
-                <View className='mr-2 h-4 w-4' />
-                <span>View Employee</span>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+
             <DropdownMenuGroup>
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>

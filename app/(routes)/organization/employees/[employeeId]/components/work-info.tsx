@@ -3,7 +3,7 @@ import { Employee } from '@prisma/client';
 import { FC } from 'react';
 
 interface WorkInfoProps {
-  employee: Employee | undefined;
+  employee: Employee | null;
 }
 
 const WorkInfo: FC<WorkInfoProps> = ({ employee }) => {

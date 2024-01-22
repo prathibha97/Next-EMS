@@ -9,7 +9,7 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import { BadgeCheck, Banknote, Briefcase } from "lucide-react";
 
 interface HRSettingsProps {
-  employee: Employee | undefined;
+  employee: Employee | null;
 }
 
 const HRSettings: FC<HRSettingsProps> = ({ employee }) => {

@@ -30,13 +30,13 @@ export function DataTableRowActions<TData>({
     try {
       await removeEmployee(employeeId).unwrap();
       toast({
-        title: `Task removed successfully`,
+        title: `Employee removed successfully`,
       });
       router.refresh();
     } catch (error) {
       toast({
         title: 'Something went wrong!',
-        description: `Failed to remove task status. Please try again.`,
+        description: `Failed to remove employee. Please try again.`,
         variant: 'destructive',
       });
     }

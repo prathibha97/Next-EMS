@@ -29,6 +29,12 @@ export const employeeApi = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    removeEmployee: builder.mutation({
+      query: (employeeId: string) => ({
+        url: `/employees/${employeeId}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -38,4 +44,5 @@ export const {
   useGetLoggedInEmployeeQuery,
   useAddEmployeeMutation,
   useUpdateEmployeeMutation,
+  useRemoveEmployeeMutation
 } = employeeApi;

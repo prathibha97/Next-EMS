@@ -8,23 +8,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import {
-  useRemoveTaskMutation,
-  useUpdateTaskMutation,
-} from '@/app/redux/services/taskApi';
+import { useRemoveEmployeeMutation } from '@/app/redux/services/employeeApi';
 import { toast } from '@/hooks/use-toast';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -33,40 +22,13 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  const session = useSession();
   const router = useRouter();
-  // const task = taskSchema.parse(row.original);
-  // @ts-ignore
-  const projectId = row.original.projectId;
 
-  const [updateTask] = useUpdateTaskMutation();
-  const [removeTask] = useRemoveTaskMutation();
+  const [removeEmployee] = useRemoveEmployeeMutation();
 
-  // const handleUpdateStatus = async (status: any) => {
-  //   try {
-  //     await updateTask({
-  //       taskId: task.id,
-  //       body: {
-  //         status: status.value,
-  //         projectId: projectId,
-  //       },
-  //     }).unwrap();
-  //     toast({
-  //       title: `Task status updated as ${status.label}`,
-  //     });
-  //     router.refresh();
-  //   } catch (error) {
-  //     toast({
-  //       title: 'Something went wrong!',
-  //       description: `Failed to update task status. Please try again.`,
-  //       variant: 'destructive',
-  //     });
-  //   }
-  // };
-
-  const handleRemoveTask = async (taskId: string) => {
+  const handleRemoveEmployee = async (employeeId: string) => {
     try {
-      await removeTask(taskId).unwrap();
+      await removeEmployee(employeeId).unwrap();
       toast({
         title: `Task removed successfully`,
       });
@@ -92,48 +54,19 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[160px]'>
-        {session.data?.user.role === 'ADMIN' && (
-          <>
-            {/* <DropdownMenuItem
-              onClick={() => router.push(`/tasks/${task.id}/edit`)}
-            >
-              Edit
-            </DropdownMenuItem> */}
-            <DropdownMenuSeparator />
-          </>
-        )}
-        {/* <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Update Status</DropdownMenuSubTrigger>
-          <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={task.status}>
-              {statuses.map((status) => (
-                <DropdownMenuRadioItem
-                  key={status.value}
-                  value={status.value}
-                  onClick={() => handleUpdateStatus(status)}
-                >
-                  <div className='flex'>
-                    {status.icon && (
-                      <status.icon className='mr-2 h-4 w-4 text-muted-foreground' />
-                    )}
-                    {status.label}
-                  </div>
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub> */}
-        {session.data?.user.role === 'ADMIN' && (
-          <>
-            <DropdownMenuSeparator />
-            {/* <DropdownMenuItem
-              onClick={() => handleRemoveTask(task.id)}
-              className='text-red-500'
-            >
-              Delete
-            </DropdownMenuItem> */}
-          </>
-        )}
+        <DropdownMenuItem
+          onClick={() =>
+            router.push(`/organization/employees/${row.original.id}/edit`)
+          }
+        >
+          Edit
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => handleRemoveEmployee(row.original.id)}
+          className='text-red-500'
+        >
+          Delete
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

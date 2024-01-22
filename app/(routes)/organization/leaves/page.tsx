@@ -9,7 +9,7 @@ const LeavesPage = async () => {
 
   const leaves = await getAllLeaveRequests();
   return (
-    <div>
+    <div className='md:w-[1000px] 2xl:w-[1170px]'>
       <LeavesDataTable
       // @ts-ignore
         columns={columns}

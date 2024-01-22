@@ -12,8 +12,8 @@ export default async function ViewEmployees({ employees }: ViewEmployeesProps) {
   const router = useRouter();
 
   return (
-    <div className='container'>
-      <div className='flex justify-end mb-5'>
+    <div className=''>
+      <div className='flex justify-end p-4 w-full'>
         <Button onClick={() => router.push(`employees/new`)}>
           Add Employee
         </Button>

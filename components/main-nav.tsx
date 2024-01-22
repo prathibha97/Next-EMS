@@ -31,7 +31,7 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
 
   return (
     <div
-      className={`flex flex-col md:flex-row w-full mt-3 px-4 md:pl-8 ${
+      className={`flex flex-col md:flex-row w-full mt-2 px-4 md:pl-8 ${
         homepage && 'hidden'
       }`}
     >

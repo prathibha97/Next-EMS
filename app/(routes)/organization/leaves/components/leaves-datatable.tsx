@@ -79,9 +79,9 @@ export function LeavesDataTable<TData, TValue>({
   });
 
   return (
-    <div className='w-full bg-white dark:bg-black p-5 rounded-lg overflow-clip'>
-      <div className='flex mb-4 items-center'>
-        <div className='flex space-x-4'>
+    <div className='w-full bg-white dark:bg-black p-5 rounded-lg'>
+      <div className='flex flex-col md:flex-row mb-4 items-center gap-3'>
+        <div className='flex flex-col md:flex-row w-full gap-3'>
           <Input
             type='date'
             placeholder={`Filter ${placeholder}...`}
@@ -91,7 +91,7 @@ export function LeavesDataTable<TData, TValue>({
             onChange={(event) =>
               table.getColumn('createdAt')?.setFilterValue(event.target.value)
             }
-            className='max-w-sm'
+            className=' w-full md:w-fit'
           />
           <Input
             placeholder={`Filter Employee`}
@@ -105,12 +105,12 @@ export function LeavesDataTable<TData, TValue>({
                 .getColumn(searchFilter || '')
                 ?.setFilterValue(event.target.value)
             }
-            className='max-w-sm'
+            className='w-full md:w-fit'
           />
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='ml-auto'>
+            <Button variant='outline' className='ml-auto w-full md:w-[200px]'>
               Columns <ChevronDown className='ml-2 h-4 w-4' />
             </Button>
           </DropdownMenuTrigger>

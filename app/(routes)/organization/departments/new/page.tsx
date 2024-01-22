@@ -85,7 +85,7 @@ const NewDepartment = () => {
 
   if (isEmployeesLoading) return <LoadingState />;
   return (
-    <div className='bg-gray-50 p-5 mt-5 lg:w-[850px] rounded-lg'>
+    <div className=' p-5 mt-5 lg:w-full rounded-lg'>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='flex flex-col gap-3'>

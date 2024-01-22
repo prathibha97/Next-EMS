@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { FC } from 'react';
 
 interface PrivateInfoProps {
-  employee: Employee | undefined;
+  employee: Employee | null;
 }
 
 const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {

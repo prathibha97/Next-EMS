@@ -85,3 +85,32 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
   }
 
 }
+
+export async function DELETE(req: Request, { params }: { params: IParams }) {
+  try {
+    const session = await getAuthSession();
+    if (!session || session.user.role !== 'ADMIN') {
+      throw new NextResponse('Unauthorized', { status: 401 });
+    }
+    const employee = await prisma.employee.findUnique({
+      where: {
+        id: params.employeeId,
+      },
+    });
+    if (!employee) {
+      return new NextResponse('Employee not found', { status: 404 });
+    }
+
+    const removedEmployee = await prisma.employee.delete({
+      where: {
+        id: params.employeeId,
+      },
+    });
+    return NextResponse.json(removedEmployee);
+  } catch (error: any) {
+    console.log(error.message);
+    return new Response(`Could not remove employee - ${error.message}`, {
+      status: 500,
+    });
+  }
+}

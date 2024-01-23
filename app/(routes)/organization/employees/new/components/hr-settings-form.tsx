@@ -46,12 +46,12 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
 
   const { startUpload } = useUploadThing('pdfUploader');
 
-    const {
-      data: userData,
-      isLoading: isUsersLoading,
-      refetch: refetchUsers,
-    } = useGetUsersQuery();
-    
+  const {
+    data: userData,
+    isLoading: isUsersLoading,
+    refetch: refetchUsers,
+  } = useGetUsersQuery();
+
   const form = useForm<HRSettingsFormValues>({
     resolver: zodResolver(HRSettingsFormSchema),
     defaultValues: {
@@ -164,27 +164,26 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
     }
   };
 
-  if (isUsersLoading) return <LoadingState/>;
+  if (isUsersLoading) return <LoadingState />;
   return (
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className='flex justify-between'>
+          <div className="flex justify-between">
             {/* Status */}
-            <div className='w-1/2'>
-              <h2 className='text-lg font-semibold'>Status</h2>
-              <Separator className='mt-1 mb-3' />
-              <div className='flex flex-col gap-y-4'>
+            <div className="w-1/2">
+              <h2 className="text-lg font-semibold">Status</h2>
+              <Separator className="mt-1 mb-3" />
+              <div className="flex flex-col gap-y-4">
                 <FormField
                   control={form.control}
-                  name='employeeNumber'
+                  name="employeeNumber"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Employee Number</FormLabel>
                       <Input
                         {...field}
-                        placeholder='Enter employee number'
-                        type='text'
+                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
                       />
                       <FormMessage />
                     </FormItem>
@@ -193,7 +192,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
 
                 <FormField
                   control={form.control}
-                  name='userId'
+                  name="userId"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Related User</FormLabel>
@@ -202,8 +201,8 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder='Select an user email to display' />
+                          <SelectTrigger className=" bg-slate-50 w-full md:w-[500px]">
+                            <SelectValue placeholder="Select an user email to display" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -220,81 +219,88 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                 />
               </div>
             </div>
-            <div className='flex flex-col gap-y-3'>
-              <h2 className='text-lg font-semibold'>Upload Documents</h2>
-              <Separator className='mt-1 mb-3' />
-              <FormLabel>NIC Copy</FormLabel>
-              <FormField
-                control={form.control}
-                name='idCopy'
-                render={({ field }) => (
-                  <FormItem className='flex items-center gap-4'>
-                    <FormControl className='text-base-semibold text-gray-400'>
-                      <Input
-                        type='file'
-                        accept='.pdf'
-                        placeholder='Upload ID Card'
-                        onChange={(e) => handleFileUpload(e, field.onChange)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormLabel>Resume Copy</FormLabel>
-              <FormField
-                control={form.control}
-                name='resumeCopy'
-                render={({ field }) => (
-                  <FormItem className='flex items-center gap-4'>
-                    <FormControl className='text-base-semibold text-gray-400'>
-                      <Input
-                        type='file'
-                        accept='.pdf'
-                        placeholder='Upload Resume'
-                        onChange={(e) => handleFileUpload(e, field.onChange)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormLabel>Passbook Copy</FormLabel>
-              <FormField
-                control={form.control}
-                name='passbookCopy'
-                render={({ field }) => (
-                  <FormItem className='flex items-center gap-4'>
-                    <FormControl className='text-base-semibold text-gray-400'>
-                      <Input
-                        type='file'
-                        accept='.pdf'
-                        placeholder='Upload Bank Passbook'
-                        onChange={(e) => handleFileUpload(e, field.onChange)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <div className="flex flex-col">
+              <h2 className="text-lg font-semibold">Upload Documents</h2>
+              <Separator className="mt-1 mb-3" />
+              <div className="flex gap-4 flex-col">
+                <FormLabel>NIC Copy</FormLabel>
+                <FormField
+                  control={form.control}
+                  name="idCopy"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center gap-4">
+                      <FormControl className="text-base-semibold text-gray-400">
+                        <Input
+                          type="file"
+                          accept=".pdf"
+                          placeholder="Upload ID Card"
+                          onChange={(e) => handleFileUpload(e, field.onChange)}
+                          className="w-full bg-slate-50 md:w-[300px]"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormLabel>Resume Copy</FormLabel>
+                <FormField
+                  control={form.control}
+                  name="resumeCopy"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center gap-4">
+                      <FormControl className="text-base-semibold text-gray-400">
+                        <Input
+                          type="file"
+                          accept=".pdf"
+                          placeholder="Upload Resume"
+                          onChange={(e) => handleFileUpload(e, field.onChange)}
+                          className="w-full bg-slate-50 md:w-[300px]"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormLabel>Passbook Copy</FormLabel>
+                <FormField
+                  control={form.control}
+                  name="passbookCopy"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center gap-4">
+                      <FormControl className="text-base-semibold text-gray-400">
+                        <Input
+                          type="file"
+                          accept=".pdf"
+                          placeholder="Upload Bank Passbook"
+                          onChange={(e) => handleFileUpload(e, field.onChange)}
+                          className="w-full bg-slate-50 md:w-[300px]"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
           </div>
 
-          <div className='mt-5'>
-            <h2 className='text-lg font-semibold'>Salary Information</h2>
-            <Separator className='mt-1 mb-3' />
-            <div className='flex justify-between space-x-5'>
-              <div className='w-1/2 space-y-3'>
+          <div className="mt-5">
+            <h2 className="text-lg font-semibold">Salary Information</h2>
+            <Separator className="mt-1 mb-3" />
+            <div className="flex justify-between space-x-5">
+              <div className="w-1/2 space-y-3">
                 <FormField
                   control={form.control}
-                  name='basicSalary'
+                  name="basicSalary"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Basic Salary</FormLabel>
                       <Input
                         {...field}
-                        placeholder='Enter Basic Salary Amount'
-                        type='text'
+                        placeholder="Enter Basic Salary Amount"
+                        type="text"
+                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
                       />
                       <FormMessage />
                     </FormItem>
@@ -302,31 +308,33 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                 />
                 <FormField
                   control={form.control}
-                  name='performanceAllowance'
+                  name="performanceAllowance"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Performance Allowance</FormLabel>
                       <Input
                         {...field}
-                        placeholder='Enter Performance Allowance Amount'
-                        type='text'
+                        placeholder="Enter Performance Allowance Amount"
+                        type="text"
+                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
                       />
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
-              <div className='w-1/2 space-y-3'>
+              <div className="w-1/2 space-y-3">
                 <FormField
                   control={form.control}
-                  name='mobileAllowance'
+                  name="mobileAllowance"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Mobile Allowance</FormLabel>
                       <Input
                         {...field}
-                        placeholder='Enter Mobile Allowance Amount'
-                        type='text'
+                        placeholder="Enter Mobile Allowance Amount"
+                        type="text"
+                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
                       />
                       <FormMessage />
                     </FormItem>
@@ -334,14 +342,15 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                 />
                 <FormField
                   control={form.control}
-                  name='dataAllowance'
+                  name="dataAllowance"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Data Allowance</FormLabel>
                       <Input
                         {...field}
-                        placeholder='Enter Data Allowance Amount'
-                        type='text'
+                        placeholder="Enter Data Allowance Amount"
+                        type="text"
+                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
                       />
                       <FormMessage />
                     </FormItem>
@@ -350,12 +359,12 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
               </div>
             </div>
           </div>
-          <div className='mt-4'>
+          <div className="mt-4">
             <ActionButton
               isLoading={isLoading || loading}
-              type='submit'
+              type="submit"
               onClick={() => onSubmit}
-              label='Save'
+              label="Save"
             />
           </div>
         </form>

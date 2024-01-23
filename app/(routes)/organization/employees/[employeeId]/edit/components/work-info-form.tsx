@@ -28,17 +28,19 @@ interface WorkInfoFormProps {
   refetchEmployees: () => void;
 }
 
-const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee,refetchEmployees }) => {
-
-
-
+const WorkInfoForm: FC<WorkInfoFormProps> = ({
+  employeeId,
+  employee,
+  refetchEmployees,
+}) => {
   const form = useForm<WorkInfoFormValues>({
     resolver: zodResolver(WorkInfoFormSchema),
     defaultValues: {
       workAddress: employee?.workAddress ?? 'Work address not specified',
       workLocation: employee?.workLocation ?? 'Work location not specified',
       workingHours: employee?.workingHours ?? 'Working hours not specified',
-      startDate: new Date(employee?.startDate as Date) ?? 'Start date not specified',
+      startDate:
+        new Date(employee?.startDate as Date) ?? 'Start date not specified',
       timeZone: employee?.timeZone ?? 'Time Zone is not specified',
     },
   });
@@ -57,7 +59,7 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee,refetchEmplo
           workingHours: data.workingHours,
           startDate: data.startDate,
           timeZone: data.timeZone,
-        }, 
+        },
       });
       const updatedEmployee = response;
       console.log(updatedEmployee);
@@ -79,96 +81,112 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee,refetchEmplo
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className='mt-5'>
-          <h2 className='text-lg font-semibold'>Location</h2>
-          <Separator className='mt-1 mb-3' />
+        <div className="mt-5">
+          <h2 className="text-lg font-semibold">Location</h2>
+          <Separator className="mt-1 mb-3" />
 
-          <div className='flex flex-col gap-y-3'>
-            <FormLabel>Work Address</FormLabel>
-            <FormField
-              name='workAddress'
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className='text-sm text-gray-600 dark:text-gray-300'
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormLabel>Work Location</FormLabel>
-            <FormField
-              name='workLocation'
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className='text-sm text-gray-600 dark:text-gray-300'
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <div className="flex flex-col md:flex-row justify-between gap-y-3">
+            <span>
+              <FormLabel>Work Address</FormLabel>
+
+              <FormField
+                name="workAddress"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </span>
+            <span>
+              <FormLabel>Work Location</FormLabel>
+
+              <FormField
+                name="workLocation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </span>
           </div>
         </div>
-        <div className='mt-5'>
-          <h2 className='text-lg font-semibold'>Schedule</h2>
-          <Separator className='mt-1 mb-3' />
-          <div className='flex flex-col gap-y-3'>
-            <FormLabel>Start Date</FormLabel>
-            <Controller
-              name='startDate'
-              control={form.control}
-              render={({ field }) => (
-                <DatePicker
-                  value={field.value}
-                  onChange={(date) => field.onChange(date)}
-                />
-              )}
-            />
-            <FormLabel>Working Hours</FormLabel>
-            <FormField
-              name='workingHours'
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className='text-sm text-gray-600 dark:text-gray-300'
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormLabel>Time Zone</FormLabel>
-            <FormField
-              name='timeZone'
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className='text-sm text-gray-600 dark:text-gray-300'
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <div className="mt-5">
+          <h2 className="text-lg font-semibold">Schedule</h2>
+          <Separator className="mt-1 mb-3" />
+          <div className="flex flex-row justify-between gap-4">
+            <span>
+              <FormLabel>Start Date</FormLabel>
+
+              <Controller
+                name="startDate"
+                control={form.control}
+                render={({ field }) => (
+                  <DatePicker
+                    value={field.value}
+                    onChange={(date) => field.onChange(date)}
+                  />
+                )}
+              />
+            </span>
+
+            <span>
+              <FormLabel>Working hours</FormLabel>
+
+              <FormField
+                name="workingHours"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </span>
+            <span>
+              <FormLabel>TimeZone</FormLabel>
+
+              <FormField
+                name="timeZone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </span>
           </div>
         </div>
-        <div className='mt-4'>
+        <div className="mt-4">
           <ActionButton
-            type='submit'
+            type="submit"
             onClick={() => onSubmit}
             isLoading={isLoading}
-            label='Save'
+            label="Save"
           />
         </div>
       </form>

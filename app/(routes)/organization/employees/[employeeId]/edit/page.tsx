@@ -158,248 +158,6 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
   if (isLoadingEmployee || isFetching || isDepartmentsLoading) {
     return <LoadingState />;
   }
-  //   return (
-  //     <div className='bg-slate-50 w-[850px] xl:[3000px] p-5 rounded-lg dark:bg-gray-800/40'>
-  //       <Form {...form}>
-  //         <form onSubmit={form.handleSubmit(onSubmit)}>
-  //           <div>
-  //             <div className='flex justify-between'>
-  //               <div className='flex flex-col gap-y-3'>
-  //                 <FormLabel>Employee Name</FormLabel>
-  //                 <FormField
-  //                   name='name'
-  //                   render={({ field }) => (
-  //                     <FormItem>
-  //                       <FormControl>
-  //                         <Input
-  //                           {...field}
-  //                           className='text-3xl text-gray-600 dark:text-gray-300'
-  //                         />
-  //                       </FormControl>
-  //                       <FormMessage />
-  //                     </FormItem>
-  //                   )}
-  //                 />
-
-  //                 <FormLabel>Employee Position</FormLabel>
-  //                 <FormField
-  //                   name='position'
-  //                   render={({ field }) => (
-  //                     <FormItem>
-  //                       <FormControl>
-  //                         <Input
-  //                           {...field}
-  //                           className='text-xl text-gray-600 dark:text-gray-300'
-  //                         />
-  //                       </FormControl>
-  //                       <FormMessage />
-  //                     </FormItem>
-  //                   )}
-  //                 />
-  //               </div>
-  //               <div>
-  //                 <FormField
-  //                   control={form.control}
-  //                   name='profile_photo'
-  //                   render={({ field }) => (
-  //                     <FormItem className='flex items-center gap-4'>
-  //                       <FormLabel>
-  //                         {field.value ? (
-  //                           <Image
-  //                             src={field.value}
-  //                             alt='profile photo'
-  //                             width={80}
-  //                             height={80}
-  //                             priority
-  //                             className='rounded-lg object-contain'
-  //                           />
-  //                         ) : (
-  //                           <Image
-  //                             src='/assets/profile.svg'
-  //                             alt='profile photo'
-  //                             width={24}
-  //                             height={24}
-  //                             className='object-contain'
-  //                           />
-  //                         )}
-  //                       </FormLabel>
-  //                       <FormControl className='text-base-semibold text-gray-400'>
-  //                         <Input
-  //                           type='file'
-  //                           accept='image/*'
-  //                           placeholder='Upload image'
-  //                           onChange={(e) => handleImage(e, field.onChange)}
-  //                         />
-  //                       </FormControl>
-  //                       <FormMessage />
-  //                     </FormItem>
-  //                   )}
-  //                 />
-  //               </div>
-  //             </div>
-  //           </div>
-  //           <div className='mt-5 flex justify-between'>
-  //             <div className='flex flex-col gap-y-2 w-1/2'>
-  //               <FormLabel>Work Mobile</FormLabel>
-  //               <FormField
-  //                 name='workMobile'
-  //                 render={({ field }) => (
-  //                   <FormItem>
-  //                     <FormControl>
-  //                       <Input
-  //                         {...field}
-  //                         className='text-sm text-gray-600 dark:text-gray-300'
-  //                       />
-  //                     </FormControl>
-  //                     <FormMessage />
-  //                   </FormItem>
-  //                 )}
-  //               />
-  //               <FormLabel>Personal Mobile</FormLabel>
-  //               <FormField
-  //                 name='personalMobile'
-  //                 render={({ field }) => (
-  //                   <FormItem>
-  //                     <FormControl>
-  //                       <Input
-  //                         {...field}
-  //                         className='text-sm text-gray-600 dark:text-gray-300'
-  //                       />
-  //                     </FormControl>
-  //                     <FormMessage />
-  //                   </FormItem>
-  //                 )}
-  //               />
-  //               <FormLabel>Work Email</FormLabel>
-  //               <FormField
-  //                 name='workEmail'
-  //                 render={({ field }) => (
-  //                   <FormItem>
-  //                     <FormControl>
-  //                       <Input
-  //                         {...field}
-  //                         className='text-sm text-gray-600 dark:text-gray-300'
-  //                       />
-  //                     </FormControl>
-  //                     <FormMessage />
-  //                   </FormItem>
-  //                 )}
-  //               />
-  //             </div>
-  //             <div className='flex flex-col gap-y-2 w-1/3'>
-  //               <FormField
-  //                 control={form.control}
-  //                 name='department'
-  //                 render={({ field }) => (
-  //                   <FormItem>
-  //                     <FormLabel>Department</FormLabel>
-  //                     <Select
-  //                       onValueChange={field.onChange}
-  //                       defaultValue={field.value}
-  //                     >
-  //                       <FormControl>
-  //                         <SelectTrigger>
-  //                           <SelectValue placeholder='Select a department type to display' />
-  //                         </SelectTrigger>
-  //                       </FormControl>
-  //                       <SelectContent>
-  //                         {departments &&
-  //                           departments.map((department: Department) => (
-  //                             <SelectItem
-  //                               key={department.id}
-  //                               value={department.id}
-  //                             >
-  //                               {department.name}
-  //                             </SelectItem>
-  //                           ))}
-  //                       </SelectContent>
-  //                     </Select>
-  //                     <FormMessage />
-  //                   </FormItem>
-  //                 )}
-  //               />
-  //               <FormLabel>Job Position</FormLabel>
-  //               <FormField
-  //                 name='jobPosition'
-  //                 render={({ field }) => (
-  //                   <FormItem>
-  //                     <FormControl>
-  //                       <Input
-  //                         {...field}
-  //                         className='text-sm text-gray-600 dark:text-gray-300'
-  //                       />
-  //                     </FormControl>
-  //                     <FormMessage />
-  //                   </FormItem>
-  //                 )}
-  //               />
-
-  //               <FormField
-  //                 control={form.control}
-  //                 name='employeeType'
-  //                 render={({ field }) => (
-  //                   <FormItem>
-  //                     <FormLabel>Employee Type</FormLabel>
-  //                     <Select
-  //                       onValueChange={field.onChange}
-  //                       defaultValue={field.value}
-  //                     >
-  //                       <FormControl>
-  //                         <SelectTrigger>
-  //                           <SelectValue placeholder='Select an employee type to display' />
-  //                         </SelectTrigger>
-  //                       </FormControl>
-  //                       <SelectContent>
-  //                         {employeeTypeOptions.map((option) => (
-  //                           <SelectItem key={option.value} value={option.value}>
-  //                             {option.label}
-  //                           </SelectItem>
-  //                         ))}
-  //                       </SelectContent>
-  //                     </Select>
-  //                     <FormMessage />
-  //                   </FormItem>
-  //                 )}
-  //               />
-  //             </div>
-  //           </div>
-  //           <div className='mt-4'>
-  //             <ActionButton
-  //               isLoading={isLoading || loading}
-  //               type='submit'
-  //               label='Save'
-  //             />
-  //           </div>
-  //         </form>
-  //       </Form>
-
-  //       <Separator className='mt-3' />
-
-  <div className="mt-8">
-    <Tabs defaultValue="work" className="w-full">
-      <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="work">Work Information</TabsTrigger>
-        <TabsTrigger value="private">Private Information</TabsTrigger>
-        <TabsTrigger value="HR">HR Settings</TabsTrigger>
-      </TabsList>
-      <TabsContent value="work">
-        <WorkInfoForm
-          employeeId={params.employeeId}
-          employee={employee}
-          refetchEmployees={refetch}
-        />
-      </TabsContent>
-      <TabsContent value="private">
-        <PrivateInfoForm employeeId={params.employeeId} employee={employee} />
-      </TabsContent>
-      <TabsContent value="HR">
-        <HRSettingsForm employeeId={params.employeeId} employee={employee} />
-      </TabsContent>
-    </Tabs>
-  </div>;
-  //     </div>
-  //   );
-  // };
 
   return (
     <div className="w-full p-5">
@@ -561,7 +319,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className=" bg-slate-50">
+                          <SelectTrigger className=" bg-slate-50 w-[275px]">
                             <SelectValue placeholder="Select a department type to display" />
                           </SelectTrigger>
                         </FormControl>
@@ -592,7 +350,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="bg-slate-50">
+                          <SelectTrigger className="bg-slate-50 w-[275px]">
                             <SelectValue placeholder="Select an employee type to display" />
                           </SelectTrigger>
                         </FormControl>
@@ -624,7 +382,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
 
         <div className="mt-8">
           <Tabs defaultValue="work" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="flex flex-col md:grid w-full md:grid-cols-3 h-full">
               <TabsTrigger value="work">Work Information</TabsTrigger>
               <TabsTrigger value="private">Private Information</TabsTrigger>
               <TabsTrigger value="HR">HR Settings</TabsTrigger>

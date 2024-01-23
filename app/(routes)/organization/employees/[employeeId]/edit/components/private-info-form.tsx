@@ -101,9 +101,9 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex justify-between">
+          <div className="flex flex-col md:flex-row justify-between">
             {/* Private Contact */}
-            <div className="w-1/2">
+            <div className="md:w-1/2">
               <h2 className="text-lg font-semibold">Private Contact</h2>
               <Separator className="mt-1 mb-3" />
               <div className="flex flex-col gap-y-4">
@@ -199,7 +199,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
             </div>
 
             {/* Family Status */}
-            <div>
+            <div className="mt-5">
               <h2 className="text-lg font-semibold">Family Status</h2>
               <Separator className="mt-1 mb-3" />
               <div className="flex flex-col gap-y-4">
@@ -242,8 +242,8 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
           </div>
 
           {/* Emergency contacts */}
-          <div className="flex justify-between mt-5">
-            <div className="w-1/2">
+          <div className="flex flex-col ms:flex-row justify-between mt-5">
+            <div className="md:w-1/2">
               <h2 className="text-lg font-semibold">Emergency Contact</h2>
               <Separator className="mt-1 mb-3" />
               <div className="flex flex-col gap-y-4">
@@ -286,7 +286,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
 
             {/* Citizenship*/}
 
-            <div>
+            <div className="mt-5">
               <h2 className="text-lg font-semibold">Citizenship</h2>
               <Separator className="mt-1 mb-3" />
               <div className="flex flex-col gap-y-4">

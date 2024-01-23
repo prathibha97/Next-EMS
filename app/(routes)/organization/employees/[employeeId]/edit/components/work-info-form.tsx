@@ -124,10 +124,12 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({
             </span>
           </div>
         </div>
+
         <div className="mt-5">
           <h2 className="text-lg font-semibold">Schedule</h2>
           <Separator className="mt-1 mb-3" />
-          <div className="flex flex-row justify-between gap-4">
+
+          <div className="flex flex-col md:flex-row justify-between gap-4">
             <span>
               <FormLabel>Start Date</FormLabel>
 

@@ -1,12 +1,12 @@
-import { Separator } from "@/components/ui/separator";
-import { Employee } from "@prisma/client";
-import { FC } from "react";
+import { Separator } from '@/components/ui/separator';
+import { Employee } from '@prisma/client';
+import { FC } from 'react';
 
 // Import the styles
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import "@react-pdf-viewer/core/lib/styles/index.css";
-import { BadgeCheck, Banknote, Briefcase } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import { BadgeCheck, Banknote, Briefcase } from 'lucide-react';
 
 interface HRSettingsProps {
   employee: Employee | null;
@@ -20,10 +20,10 @@ const HRSettings: FC<HRSettingsProps> = ({ employee }) => {
         <Separator className="mt-1 mb-3" />
         <div className="flex justify-evenly space-x-5 mt-3">
           <Button
-            variant={"outline"}
+            variant={'outline'}
             className={cn(
-              "w-[280px] justify-start text-left font-normal",
-              !employee?.resumeCopy && "text-muted-foreground"
+              'w-[280px] justify-start text-left font-normal',
+              !employee?.resumeCopy && 'text-muted-foreground'
             )}
           >
             <div className="flex flexcol justify-center items-center mx-auto">
@@ -43,10 +43,10 @@ const HRSettings: FC<HRSettingsProps> = ({ employee }) => {
           </Button>
 
           <Button
-            variant={"outline"}
+            variant={'outline'}
             className={cn(
-              "w-[280px] justify-start text-left font-normal",
-              !employee?.passbookCopy && "text-muted-foreground"
+              'w-[280px] justify-start text-left font-normal',
+              !employee?.passbookCopy && 'text-muted-foreground'
             )}
           >
             <div className="flex flexcol justify-center items-center mx-auto">
@@ -66,10 +66,10 @@ const HRSettings: FC<HRSettingsProps> = ({ employee }) => {
           </Button>
 
           <Button
-            variant={"outline"}
+            variant={'outline'}
             className={cn(
-              "w-[280px] justify-start text-left font-normal",
-              !employee?.idCopy && "text-muted-foreground"
+              'w-[280px] justify-start text-left font-normal',
+              !employee?.idCopy && 'text-muted-foreground'
             )}
           >
             <div className="flex flexcol justify-center items-center mx-auto">
@@ -96,17 +96,17 @@ const HRSettings: FC<HRSettingsProps> = ({ employee }) => {
           <Separator className="mt-1 mb-3" />
           <div className="flex flex-col gap-y-4">
             <span>
-              Employee Number :{" "}
+              Employee Number :{' '}
               <span className="text-sm text-gray-600 dark:text-gray-300">
                 {employee?.employeeNumber}
               </span>
             </span>
 
             <span>
-              Related User:{" "}
+              Related User:{' '}
               <span className="text-sm text-gray-600 dark:text-gray-300">
                 {/* @ts-ignore */}
-                {employee?.user?.email || "No user related"}
+                {employee?.user?.email || 'No user related'}
               </span>
             </span>
           </div>
@@ -116,31 +116,52 @@ const HRSettings: FC<HRSettingsProps> = ({ employee }) => {
           <Separator className="mt-1 mb-3" />
           <div className="flex flex-col gap-y-4">
             <span>
-              Basic Salary :{" "}
+              Basic Salary :{' '}
               <span className="text-sm text-gray-600 dark:text-gray-300">
                 {employee?.basicSalary}
               </span>
             </span>
 
             <span>
-              Performance Allowance:{" "}
+              Performance Allowance:{' '}
               <span className="text-sm text-gray-600 dark:text-gray-300">
                 {employee?.performanceAllowance ||
-                  "Performance Allowance not applicable"}
+                  'Performance Allowance not applicable'}
               </span>
             </span>
 
             <span>
-              Mobile Allowance:{" "}
+              Mobile Allowance:{' '}
               <span className="text-sm text-gray-600 dark:text-gray-300">
-                {employee?.mobileAllowance || "Mobile Allowance not applicable"}
+                {employee?.mobileAllowance || 'Mobile Allowance not applicable'}
               </span>
             </span>
 
             <span>
-              Data Allowance:{" "}
+              Data Allowance:{' '}
               <span className="text-sm text-gray-600 dark:text-gray-300">
-                {employee?.dataAllowance || "Data Allowance not applicable"}
+                {employee?.dataAllowance || 'Data Allowance not applicable'}
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <h2 className="text-lg font-semibold">Leave Information</h2>
+          <Separator className="mt-1 mb-3" />
+          <div className="flex flex-col gap-y-4">
+            <span>
+              Medical Leaves :{' '}
+              <span className="text-sm text-gray-600 dark:text-gray-300">
+                {employee?.leaveBalanceId}
+              </span>
+            </span>
+
+            <span>
+              Casual Leaves:{' '}
+              <span className="text-sm text-gray-600 dark:text-gray-300">
+                {/* @ts-ignore */}
+                {employee?.leaveBalanceId}
               </span>
             </span>
           </div>

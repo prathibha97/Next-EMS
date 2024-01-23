@@ -236,7 +236,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
           </div>
 
           {/* Emergency contacts */}
-          <div className="flex flex-col ms:flex-row justify-between mt-5">
+          <div className="flex flex-col md:flex-row justify-between mt-5">
             <div className="md:w-1/2">
               <h2 className="text-lg font-semibold">Emergency Contact</h2>
               <Separator className="mt-1 mb-3" />

@@ -319,7 +319,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className=" bg-slate-50 w-[275px]">
+                          <SelectTrigger className=" bg-slate-50 w-[275px] md:w-full">
                             <SelectValue placeholder="Select a department type to display" />
                           </SelectTrigger>
                         </FormControl>
@@ -350,7 +350,7 @@ const EmployeeEditPage: FC<EmployeeEditPageProps> = ({ params }) => {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="bg-slate-50 w-[275px]">
+                          <SelectTrigger className="bg-slate-50 w-[275px] md:w-full">
                             <SelectValue placeholder="Select an employee type to display" />
                           </SelectTrigger>
                         </FormControl>

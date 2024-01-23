@@ -10,7 +10,7 @@ interface PrivateInfoProps {
 const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex flex-col md:flex-row justify-between">
         {/* Private Contact */}
         <div>
           <h2 className="text-lg font-semibold">Private Contact</h2>
@@ -45,7 +45,7 @@ const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {
         </div>
 
         {/* Family Status */}
-        <div>
+        <div className='mt-5'>
           <h2 className="text-lg font-semibold">Family Status</h2>
           <Separator className="mt-1 mb-3" />
           <div className="flex flex-col gap-y-4">
@@ -66,7 +66,7 @@ const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {
       </div>
 
       {/* Emergency contacts */}
-      <div className="flex justify-between mt-5">
+      <div className="flex flex-col md:flex-row justify-between mt-5">
         <div>
           <h2 className="text-lg font-semibold">Emergency Contact</h2>
           <Separator className="mt-1 mb-3" />
@@ -88,7 +88,7 @@ const PrivateInfo: FC<PrivateInfoProps> = ({ employee }) => {
 
         {/* Citizenship*/}
 
-        <div>
+        <div className='mt-5'>
           <h2 className="text-lg font-semibold">Citizenship</h2>
           <Separator className="mt-1 mb-3" />
           <div className="flex flex-col gap-y-4">

@@ -18,31 +18,31 @@ interface ViewEmployeeProps {
 const ViewEmployee: FC<ViewEmployeeProps> = ({ employee }) => {
   const router = useRouter();
   return (
-    <div className='p-10'>
-      <div className="flex flex-col justify-center w-full border p-5 rounded-lg dark:bg-gray-800/40">
+    <div className='p-5 md:p-10'>
+      <div className="flex flex-col w-full border p-5 rounded-lg dark:bg-gray-800/40">
         <div>
-          <div className="flex justify-between">
+          <div className="flex flex-col-reverse md:flex-row justify-center md:justify-between">
             <div className="flex flex-col">
-              <h1 className="text-3xl font-semibold">
+              <h1 className="text-2xl md:text-3xl font-semibold">
                 {employee?.name || 'Employee Name'}
               </h1>
               <h2 className="mt-2 text-xl text-gray-500 dark:text-gray-300">
                 {employee?.position || 'Position'}
               </h2>
             </div>
-            <div>
+            <div className='flex justify-center'>
               <Image
                 src={employee?.profile_photo || '/prathibha.jpg'}
                 alt="Image"
                 width={100}
                 height={100}
-                className="rounded-lg "
+                className="rounded-lg"
               />
             </div>
           </div>
         </div>
-        <div className="flex justify-between mt-5">
-          <div className="flex flex-col">
+        <div className="flex flex-col md:flex-row gap-2 justify-between mt-5">
+          <div className="flex flex-col gap-2">
             <span>
               Work Mobile:{' '}
               <span className="text-sm text-gray-600 dark:text-gray-300">
@@ -63,7 +63,7 @@ const ViewEmployee: FC<ViewEmployeeProps> = ({ employee }) => {
               </span>
             </span>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2">
             <span>
               Department:{' '}
               <span className="text-sm text-gray-600 dark:text-gray-300">
@@ -96,7 +96,7 @@ const ViewEmployee: FC<ViewEmployeeProps> = ({ employee }) => {
 
         <div className="mt-8">
           <Tabs defaultValue="work" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="md:grid w-full md:grid-cols-3 flex flex-col h-full">
               <TabsTrigger value="work">Work Information</TabsTrigger>
               <TabsTrigger value="private">Private Information</TabsTrigger>
               <TabsTrigger value="HR">HR Settings</TabsTrigger>

@@ -18,7 +18,7 @@ const HRSettings: FC<HRSettingsProps> = ({ employee }) => {
       <div className="mt-3 mb-5">
         <h2 className="text-lg font-semibold">Employee Documents</h2>
         <Separator className="mt-1 mb-3" />
-        <div className="flex justify-evenly space-x-5 mt-3">
+        <div className="flex flex-col md:flex-row justify-evenly md:space-x-5 gap-2 mt-3">
           <Button
             variant={'outline'}
             className={cn(
@@ -89,7 +89,7 @@ const HRSettings: FC<HRSettingsProps> = ({ employee }) => {
           </Button>
         </div>
       </div>
-      <div className="flex justify-between">
+      <div className="flex flex-col md:flex-row justify-between">
         {/* Status */}
         <div>
           <h2 className="text-lg font-semibold">Status</h2>
@@ -111,7 +111,7 @@ const HRSettings: FC<HRSettingsProps> = ({ employee }) => {
             </span>
           </div>
         </div>
-        <div>
+        <div className='mt-5'>
           <h2 className="text-lg font-semibold">Salary Information</h2>
           <Separator className="mt-1 mb-3" />
           <div className="flex flex-col gap-y-4">
@@ -146,7 +146,7 @@ const HRSettings: FC<HRSettingsProps> = ({ employee }) => {
           </div>
         </div>
 
-        <div>
+        <div className='mt-5'>
           <h2 className="text-lg font-semibold">Leave Information</h2>
           <Separator className="mt-1 mb-3" />
           <div className="flex flex-col gap-y-4">

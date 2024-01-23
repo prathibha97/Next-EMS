@@ -16,6 +16,8 @@ import {
   PrivateInfoFormSchema,
   PrivateInfoFormValues,
 } from '@/lib/validation/private-info-forn-validation';
+import { format } from 'date-fns';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Employee } from '@prisma/client';
 import { FC } from 'react';
@@ -99,242 +101,268 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className='flex justify-between'>
+          <div className="flex flex-col md:flex-row justify-between">
             {/* Private Contact */}
-            <div className='w-1/2'>
-              <h2 className='text-lg font-semibold'>Private Contact</h2>
-              <Separator className='mt-1 mb-3' />
-              <div className='flex flex-col gap-y-4'>
-                <div className='flex flex-col gap-x-2'>
-                  <FormLabel>Private Address</FormLabel>
+            <div className="md:w-1/2">
+              <h2 className="text-lg font-semibold">Private Contact</h2>
+              <Separator className="mt-1 mb-3" />
+              <div className="flex flex-col gap-y-4">
+                <div className="flex flex-col gap-x-2">
+                  <span>
+                    <FormLabel>Private Address</FormLabel>
+
+                    <FormField
+                      name="privateAddress"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </span>
+                </div>
+                <span>
+                  <FormLabel>Personal Email</FormLabel>
                   <FormField
-                    name='privateAddress'
+                    name="personalEmail"
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             {...field}
-                            className='text-sm text-gray-600 dark:text-gray-300'
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
                           />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                </div>
-                <FormLabel>Personal Email</FormLabel>
-                <FormField
-                  name='personalEmail'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className='text-sm text-gray-600 dark:text-gray-300'
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormLabel>Phone</FormLabel>
-                <FormField
-                  name='phone'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className='text-sm text-gray-600 dark:text-gray-300'
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormLabel>Bank Name</FormLabel>
-                <FormField
-                  name='bankName'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className='text-sm text-gray-600 dark:text-gray-300'
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormLabel>Bank Account Number</FormLabel>
-                <FormField
-                  name='bankAccountNumber'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className='text-sm text-gray-600 dark:text-gray-300'
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                </span>
+                <span>
+                  <FormLabel>Phone</FormLabel>
+                  <FormField
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </span>
+                <span>
+                  <FormLabel>Bank Name</FormLabel>
+                  <FormField
+                    name="bankName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </span>
+                <span>
+                  <FormLabel>Bank Account Number</FormLabel>
+                  <FormField
+                    name="bankAccountNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </span>
               </div>
             </div>
 
             {/* Family Status */}
-            <div>
-              <h2 className='text-lg font-semibold'>Family Status</h2>
-              <Separator className='mt-1 mb-3' />
-              <div className='flex flex-col gap-y-4'>
-                <FormLabel>Marital Status</FormLabel>
-                <FormField
-                  name='maritalStatus'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className='text-sm text-gray-600 dark:text-gray-300'
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormLabel>Number of dependent children</FormLabel>
-                <FormField
-                  name='numberOfDependents'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className='text-sm text-gray-600 dark:text-gray-300'
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+            <div className="mt-5">
+              <h2 className="text-lg font-semibold">Family Status</h2>
+              <Separator className="mt-1 mb-3" />
+              <div className="flex flex-col gap-y-4">
+                <span>
+                  <FormLabel>Marital Status</FormLabel>
+                  <FormField
+                    name="maritalStatus"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </span>
+                <span>
+                  <FormLabel>Number of dependent children</FormLabel>
+                  <FormField
+                    name="numberOfDependents"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </span>
               </div>
             </div>
           </div>
 
           {/* Emergency contacts */}
-          <div className='flex justify-between mt-5'>
-            <div className='w-1/2'>
-              <h2 className='text-lg font-semibold'>Emergency Contact</h2>
-              <Separator className='mt-1 mb-3' />
-              <div className='flex flex-col gap-y-4'>
-                <FormLabel>Contact Name</FormLabel>
-                <FormField
-                  name='emergencyContactName'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className='text-sm text-gray-600 dark:text-gray-300'
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormLabel>Contact Number</FormLabel>
-                <FormField
-                  name='emergencyContactPhone'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className='text-sm text-gray-600 dark:text-gray-300'
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+          <div className="flex flex-col md:flex-row justify-between mt-5">
+            <div className="md:w-1/2">
+              <h2 className="text-lg font-semibold">Emergency Contact</h2>
+              <Separator className="mt-1 mb-3" />
+              <div className="flex flex-col gap-y-4">
+                <span>
+                  <FormLabel>Contact Name</FormLabel>
+                  <FormField
+                    name="emergencyContactName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </span>
+                <span>
+                  <FormLabel>Contact Number</FormLabel>
+                  <FormField
+                    name="emergencyContactPhone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </span>
               </div>
             </div>
 
             {/* Citizenship*/}
 
-            <div>
-              <h2 className='text-lg font-semibold'>Citizenship</h2>
-              <Separator className='mt-1 mb-3' />
-              <div className='flex flex-col gap-y-4'>
-                <FormLabel>Nationality</FormLabel>
-                <FormField
-                  name='nationality'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className='text-sm text-gray-600 dark:text-gray-300'
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormLabel>ID Number</FormLabel>
-                <FormField
-                  name='idNumber'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className='text-sm text-gray-600 dark:text-gray-300'
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormLabel>Gender</FormLabel>
-                <FormField
-                  name='gender'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className='text-sm text-gray-600 dark:text-gray-300'
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormLabel>Date of Birth</FormLabel>
-                <Controller
-                  name='dateOfBirth'
-                  control={form.control}
-                  render={({ field }) => (
-                    <DatePicker
-                      value={field.value}
-                      onChange={(date) => field.onChange(date)}
-                    />
-                  )}
-                />
+            <div className="mt-5">
+              <h2 className="text-lg font-semibold">Citizenship</h2>
+              <Separator className="mt-1 mb-3" />
+              <div className="flex flex-col gap-y-4">
+                <span>
+                  <FormLabel>Nationality</FormLabel>
+                  <FormField
+                    name="nationality"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </span>
+                <span>
+                  <FormLabel>Identification Number</FormLabel>
+                  <FormField
+                    name="idNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </span>
+                <span>
+                  <FormLabel>Gender</FormLabel>
+                  <FormField
+                    name="gender"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </span>
+                <span className="flex flex-col gap-2 ">
+                  <FormLabel>Date of Birth</FormLabel>
+                  <Controller
+                    name="dateOfBirth"
+                    control={form.control}
+                    render={({ field }) => (
+                      <DatePicker
+                        value={field.value}
+                        onChange={(date) => field.onChange(date)}
+                      />
+                    )}
+                  />
+                </span>
               </div>
             </div>
           </div>
-          <div className='mt-4'>
+          <div className="mt-4">
             <ActionButton
-              type='submit'
+              type="submit"
               onClick={() => onSubmit}
               isLoading={isLoading}
-              label='Save'
+              label="Save"
             />
           </div>
         </form>

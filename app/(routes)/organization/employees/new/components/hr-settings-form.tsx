@@ -171,9 +171,9 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex justify-between">
+          <div className="flex flex-col md:flex-row justify-between">
             {/* Status */}
-            <div className="w-1/2">
+            <div className="md:w-1/2">
               <h2 className="text-lg font-semibold">Status</h2>
               <Separator className="mt-1 mb-3" />
               <div className="flex flex-col gap-y-4">
@@ -221,7 +221,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                 />
               </div>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col mt-5">
               <h2 className="text-lg font-semibold">Upload Documents</h2>
               <Separator className="mt-1 mb-3" />
               <div className="flex gap-4 flex-col">
@@ -290,8 +290,8 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
           <div className="mt-5">
             <h2 className="text-lg font-semibold">Salary Information</h2>
             <Separator className="mt-1 mb-3" />
-            <div className="flex justify-between space-x-5">
-              <div className="w-1/2 space-y-3">
+            <div className="flex flex-col md:flex-row justify-between md:space-x-5">
+              <div className="md:w-1/2 space-y-3">
                 <FormField
                   control={form.control}
                   name="basicSalary"
@@ -325,7 +325,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                   )}
                 />
               </div>
-              <div className="w-1/2 space-y-3">
+              <div className="md:w-1/2 space-y-3 mt-3">
                 <FormField
                   control={form.control}
                   name="mobileAllowance"
@@ -365,8 +365,8 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
           <div className="mt-5">
             <h2 className="text-lg font-semibold">Leave Allocation</h2>
             <Separator className="mt-1 mb-3" />
-            <div className="flex justify-between space-x-5">
-              <div className="w-1/2 space-y-3">
+            <div className="flex space-x-5">
+              <div className="md:w-1/2 space-y-3">
                 <FormField
                   control={form.control}
                   name="medicalLeaves"

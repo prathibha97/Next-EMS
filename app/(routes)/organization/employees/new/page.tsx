@@ -313,7 +313,7 @@ const NewEmployeePage = () => {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className=" bg-slate-50">
+                          <SelectTrigger className=" bg-slate-50 w-[275px]">
                             <SelectValue placeholder="Select a department type to display" />
                           </SelectTrigger>
                         </FormControl>
@@ -344,7 +344,7 @@ const NewEmployeePage = () => {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="bg-slate-50">
+                          <SelectTrigger className="bg-slate-50 w-[275px]">
                             <SelectValue placeholder="Select an employee type to display" />
                           </SelectTrigger>
                         </FormControl>
@@ -376,7 +376,7 @@ const NewEmployeePage = () => {
 
         <div className="mt-8">
           <Tabs defaultValue="work" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="flex flex-col md:grid w-full md:grid-cols-3 h-full">
               <TabsTrigger value="work">Work Information</TabsTrigger>
               <TabsTrigger value="private">Private Information</TabsTrigger>
               <TabsTrigger value="HR">HR Settings</TabsTrigger>

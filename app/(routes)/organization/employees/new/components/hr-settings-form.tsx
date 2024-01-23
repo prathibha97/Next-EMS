@@ -64,6 +64,8 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
       performanceAllowance: '',
       mobileAllowance: '',
       dataAllowance: '',
+      medicalLeaves: '',
+      casualLeaves: '',
     },
   });
 
@@ -359,6 +361,48 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
               </div>
             </div>
           </div>
+
+          <div className="mt-5">
+            <h2 className="text-lg font-semibold">Leave Allocation</h2>
+            <Separator className="mt-1 mb-3" />
+            <div className="flex justify-between space-x-5">
+              <div className="w-1/2 space-y-3">
+                <FormField
+                  control={form.control}
+                  name="medicalLeaves"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Medical Leaves</FormLabel>
+                      <Input
+                        {...field}
+                        placeholder="Enter Number of Medical Leaves"
+                        type="text"
+                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="casualLeaves"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Casual Leaves</FormLabel>
+                      <Input
+                        {...field}
+                        placeholder="Enter Number of Casual Leaves"
+                        type="text"
+                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          </div>
+
           <div className="mt-4">
             <ActionButton
               isLoading={isLoading || loading}

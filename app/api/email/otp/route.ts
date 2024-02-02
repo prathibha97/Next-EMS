@@ -53,7 +53,7 @@ export async function POST(req: Request) {
     });
 
     await resend.emails.send({
-      from: 'onboarding@resend.dev',
+      from: 'ems@sphiria.online',
       to: email,
       subject: 'Your OTP for Verification',
       react: OtpEmail({

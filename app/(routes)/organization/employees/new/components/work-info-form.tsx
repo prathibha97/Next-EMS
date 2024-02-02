@@ -6,6 +6,7 @@ import { DatePicker } from '@/components/inputs/date-picker';
 import {
   Form,
   FormControl,
+  FormLabel,
   FormField,
   FormItem,
   FormMessage,
@@ -74,19 +75,23 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className='mt-5'>
-          <h2 className='text-lg font-semibold'>Location</h2>
-          <Separator className='mt-1 mb-3' />
+        <div className="mt-5">
+          <h2 className="text-lg font-semibold">Location</h2>
+          <Separator className="mt-1 mb-3" />
 
-          <div className='flex flex-col gap-y-3'>
+          <div className="flex flex-col md:flex-row justify-between gap-y-3">
             <span>
-              Work Address :{' '}
+              <FormLabel>Work Address</FormLabel>
+
               <FormField
-                name='workAddress'
+                name="workAddress"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
+                      <Input
+                        {...field}
+                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -94,13 +99,17 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
               />
             </span>
             <span>
-              Work Location :{' '}
+              <FormLabel>Work Location</FormLabel>
+
               <FormField
-                name='workLocation'
+                name="workLocation"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
+                      <Input
+                        {...field}
+                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -109,14 +118,17 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
             </span>
           </div>
         </div>
-        <div className='mt-5'>
-          <h2 className='text-lg font-semibold'>Schedule</h2>
-          <Separator className='mt-1 mb-3' />
-          <div className='flex flex-col gap-y-3'>
+        
+        <div className="mt-5">
+          <h2 className="text-lg font-semibold">Schedule</h2>
+          <Separator className="mt-1 mb-3" />
+
+          <div className="flex flex-col md:flex-row justify-between gap-4">
             <span>
-              Start Date :{' '}
+              <FormLabel>Start Date</FormLabel>
+
               <Controller
-                name='startDate'
+                name="startDate"
                 control={form.control}
                 render={({ field }) => (
                   <DatePicker
@@ -126,14 +138,19 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
                 )}
               />
             </span>
+
             <span>
-              Working hours :{' '}
+              <FormLabel>Working hours</FormLabel>
+
               <FormField
-                name='workingHours'
+                name="workingHours"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
+                      <Input
+                        {...field}
+                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -141,13 +158,17 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
               />
             </span>
             <span>
-              TimeZone :{' '}
+              <FormLabel>TimeZone</FormLabel>
+
               <FormField
-                name='timeZone'
+                name="timeZone"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} className='text-sm text-gray-600' />
+                      <Input
+                        {...field}
+                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -156,12 +177,12 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
             </span>
           </div>
         </div>
-        <div className='mt-4'>
+        <div className="mt-4">
           <ActionButton
-            type='submit'
+            type="submit"
             onClick={() => onSubmit}
             isLoading={isLoading}
-            label='Save'
+            label="Save"
           />
         </div>
       </form>

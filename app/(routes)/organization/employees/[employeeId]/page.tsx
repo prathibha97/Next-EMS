@@ -2,6 +2,8 @@ import prisma from '@/lib/prisma';
 import { FC } from 'react';
 import ViewEmployee from './components/view-employee';
 
+export const revalidate = 0;
+
 interface EmployeeProps {
   params: {
     employeeId: string;

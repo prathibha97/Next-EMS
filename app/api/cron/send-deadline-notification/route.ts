@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
     // Iterate through projects and send notifications
     for (const project of projects) {
       const data = await resend.emails.send({
-        from: 'onboarding@resend.dev',
+        from: 'ems@sphiria.online',
         to: 'prsthibha@gmail.com',
         subject: 'Project Deadline Reminder',
         react: ProjectDeadlineReminderEmail({

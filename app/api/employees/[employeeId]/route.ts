@@ -50,6 +50,8 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
       annualLeaves,
       casualLeaves,
       medicalLeaves,
+      dutyLeaves,
+      unpaidLeaves,
       ...otherEmployeeData
     } = body;
 
@@ -86,12 +88,12 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
     const leaveBalance = await prisma.leaveBalance.create({
       data: {
         employeeId: employee.id,
-        annual: annualLeaves || 0,
-        casual: casualLeaves,
-        medical: medicalLeaves,
-        unpaid: 0,
+        annual: parseInt(annualLeaves) || 0,
+        casual: parseInt(casualLeaves),
+        medical: parseInt(medicalLeaves),
+        unpaid: parseInt(unpaidLeaves) || 0,
         broughtForward: 0,
-        duty: 0,
+        duty: parseInt(dutyLeaves) || 0,
       },
     });
 

@@ -36,10 +36,10 @@ const LeaveBalance: FC<LeaveBalanceProps> = ({ currentEmployee }) => {
             leaveType='Brought Forward'
           />
         )}
-      {currentEmployee?.leaveBalance?.duty >= 1 && (
+      {currentEmployee?.leaveBalance?.unpaid >= 1 && (
         <LeaveBalanceCard
           balance={currentEmployee?.leaveBalance?.unpaid}
-          entitlement={currentEmployee?.leaveBalance?.duty}
+          entitlement={currentEmployee?.leaveBalance?.unpaid}
           leaveType='Unpaid'
         />
       )}

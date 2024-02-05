@@ -25,13 +25,11 @@ import { Controller, useForm } from 'react-hook-form';
 interface WorkInfoFormProps {
   employeeId: string;
   employee: Employee | undefined;
-  refetchEmployees: () => void;
 }
 
 const WorkInfoForm: FC<WorkInfoFormProps> = ({
   employeeId,
   employee,
-  refetchEmployees,
 }) => {
   const form = useForm<WorkInfoFormValues>({
     resolver: zodResolver(WorkInfoFormSchema),

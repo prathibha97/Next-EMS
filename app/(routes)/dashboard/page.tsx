@@ -56,8 +56,8 @@ export default async function DashboardPage() {
               </Card>
 
               <div className="flex flex-col md:flex-row w-full gap-4">
-                <div>
-                  <Card className="flex-1 md:w-1/2 bg-white drop-shadow-lg md:mr-2">
+                <div className="w-full">
+                  <Card className="flex-1 bg-white drop-shadow-lg h-full">
                     <CardHeader>
                       <CardTitle>Recent Projects</CardTitle>
                       <CardDescription>Ongoing projects</CardDescription>
@@ -67,9 +67,9 @@ export default async function DashboardPage() {
                     </CardContent>
                   </Card>
                 </div>
-                <div>
+                <div className="w-full">
                   {(session?.user.role === 'ADMIN' && (
-                    <Card className="flex-1 md:w-1/2 bg-white drop-shadow-lg">
+                    <Card className="flex-1 bg-white drop-shadow-lg h-full">
                       <CardHeader>
                         <CardTitle>Attendance</CardTitle>
                         <CardDescription>
@@ -81,7 +81,7 @@ export default async function DashboardPage() {
                       </CardContent>
                     </Card>
                   )) || (
-                    <Card className="flex-1 md:w-1/2 bg-white drop-shadow-lg">
+                    <Card className="flex-1 bg-white drop-shadow-lg h-full">
                       <CardHeader>
                         <CardTitle>Task Statistics</CardTitle>
                         <CardDescription>

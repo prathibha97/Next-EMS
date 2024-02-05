@@ -19,6 +19,7 @@ const Employee: FC<EmployeeProps> = async ({ params }) => {
     },
     include:{
       user:true,
+      employeeDepartment:true
     }
   });
 

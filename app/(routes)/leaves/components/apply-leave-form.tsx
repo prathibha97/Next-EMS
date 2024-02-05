@@ -29,7 +29,6 @@ import {
 
 import { useCreateLeaveRequestMutation } from '@/app/redux/services/leaveApi';
 import ActionButton from '@/components/buttons/action-button';
-import { DatePicker } from '@/components/inputs/date-picker';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { leaveTypes } from '@/constants/leaveTypes';
@@ -43,7 +42,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Employee, LeaveBalance } from '@prisma/client';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 type EmployeeWithLeaveBalance = Employee & {
   leaveBalance: LeaveBalance;
@@ -223,16 +222,7 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
                 <div className='flex gap-x-2'>
                   <div className='flex flex-col gap-y-2 mb-2 mt-6 w-full'>
                     <FormLabel>Start Date</FormLabel>
-                    {/* <Controller
-                      name='startDate'
-                      control={form.control}
-                      render={({ field }) => (
-                        <DatePicker
-                          value={field.value}
-                          onChange={(date) => field.onChange(date)}
-                        />
-                      )}
-                    /> */}
+
                     <FormField
                       control={form.control}
                       name='startDate'
@@ -246,16 +236,7 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
                   </div>
                   <div className='flex flex-col gap-y-2 mb-2 mt-6'>
                     <FormLabel>End Date</FormLabel>
-                    {/* <Controller
-                      name='endDate'
-                      control={form.control}
-                      render={({ field }) => (
-                        <DatePicker
-                          value={field.value}
-                          onChange={(date) => field.onChange(date)}
-                        />
-                      )}
-                    /> */}
+
                     <FormField
                       control={form.control}
                       name='endDate'
@@ -267,11 +248,6 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
                       )}
                     />
                   </div>
-                </div>
-
-                <div className='flex justify-between mb-2 mt-6'>
-                  <div className='text-sm text-gray-500'>Duration in Days:</div>
-                  <div className='text-sm text-gray-500'>Remaining leaves:</div>
                 </div>
                 {selectedLeaveType === 'medical' && (
                   <div className='mb-2 mt-6'>

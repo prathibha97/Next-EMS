@@ -16,6 +16,9 @@ export const HRSettingsFormSchema = z.object({
   performanceAllowance: z.string().default('0'),
   medicalLeaves: z.string().default('0'),
   casualLeaves: z.string().default('0'),
+  annualLeaves: z.string().default('0'),
+  dutyLeaves: z.string().default('0'),
+  unpaidLeaves: z.string().default('0'),
 });
 
 export type HRSettingsFormValues = z.infer<typeof HRSettingsFormSchema>;

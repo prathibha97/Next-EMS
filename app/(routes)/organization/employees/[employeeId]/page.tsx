@@ -17,6 +17,11 @@ const Employee: FC<EmployeeProps> = async ({ params }) => {
     where: {
       id: employeeId,
     },
+    include:{
+      user:true,
+      employeeDepartment:true,
+      leaveBalance:true
+    }
   });
 
   return <ViewEmployee employee={employee} />;

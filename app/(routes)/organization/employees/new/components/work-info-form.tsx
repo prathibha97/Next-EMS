@@ -42,9 +42,9 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
     },
   });
 
-  const onSubmit = (data: WorkInfoFormValues) => {
+  const onSubmit = async(data: WorkInfoFormValues) => {
     try {
-      const response = updateEmployee({
+      const response = await updateEmployee({
         employeeId, // Pass the employeeId to the mutation
         body: {
           workAddress: data.workAddress,
@@ -55,8 +55,6 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({ employee }) => {
         },
       }).unwrap();
       const updatedEmployee = response;
-      console.log(updatedEmployee);
-      // dispatch(updateEmployeeData(updatedEmployee));
       toast({
         title: 'Employee updated successfully',
         description: 'Please update the rest of the employee information',

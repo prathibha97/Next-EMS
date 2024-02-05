@@ -8,7 +8,7 @@ import { FC } from 'react';
 import HRSettings from './hr-settings';
 import PrivateInfo from './private-info';
 import WorkInfo from './work-info';
-import { Employee } from '@prisma/client';
+import { Department, Employee } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 
 interface ViewEmployeeProps {
@@ -32,7 +32,7 @@ const ViewEmployee: FC<ViewEmployeeProps> = ({ employee }) => {
             </div>
             <div className='flex justify-center'>
               <Image
-                src={employee?.profile_photo || '/prathibha.jpg'}
+                src={employee?.profile_photo || '/avatar.jpeg'}
                 alt="Image"
                 width={100}
                 height={100}
@@ -59,7 +59,7 @@ const ViewEmployee: FC<ViewEmployeeProps> = ({ employee }) => {
             <span>
               Work Email:{' '}
               <span className="text-sm text-gray-600 dark:text-gray-300">
-                {employee?.workEmail || 'prathibha@sphiriadigital.com'}
+                {employee?.workEmail || 'example@sphiriadigital.com'}
               </span>
             </span>
           </div>
@@ -70,7 +70,7 @@ const ViewEmployee: FC<ViewEmployeeProps> = ({ employee }) => {
                 {(employee &&
                   // @ts-ignore
                   employee.Department?.map(
-                    (department) => department.name
+                    (department:Department) => department.name
                   ).join(' ,')) ||
                   `Department not specified`}
               </span>

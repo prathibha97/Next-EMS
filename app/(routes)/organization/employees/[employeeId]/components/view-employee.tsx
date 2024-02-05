@@ -76,7 +76,7 @@ const ViewEmployee: FC<ViewEmployeeProps> = ({ employee }) => {
               Job Position:{' '}
               <span className='text-sm text-gray-600 dark:text-gray-300'>
                 <span className='text-sm text-gray-600 dark:text-gray-300'>
-                  {employee?.jobPosition || `Job Position not specified`}
+                  {employee?.position || `Job Position not specified`}
                 </span>
               </span>
             </span>

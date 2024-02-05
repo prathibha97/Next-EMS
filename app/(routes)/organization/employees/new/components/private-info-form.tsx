@@ -1,5 +1,3 @@
-import { updateEmployeeData } from '@/app/redux/features/employeeSlice';
-import { useAppDispatch } from '@/app/redux/hooks';
 import { useUpdateEmployeeMutation } from '@/app/redux/services/employeeApi';
 import ActionButton from '@/components/buttons/action-button';
 import { DatePicker } from '@/components/inputs/date-picker';
@@ -8,8 +6,8 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormMessage,
   FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
@@ -28,8 +26,6 @@ interface PrivateInfoFormProps {
 }
 
 const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
-  const dispatch = useAppDispatch();
-
   const employeeId = employee?.id;
 
   const [updateEmployee, { isLoading }] = useUpdateEmployeeMutation();
@@ -53,9 +49,9 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
     },
   });
 
-  const onSubmit = (data: PrivateInfoFormValues) => {
+  const onSubmit = async (data: PrivateInfoFormValues) => {
     try {
-      const response = updateEmployee({
+      const response = await updateEmployee({
         employeeId, // Pass the employeeId to the mutation
         body: {
           privateAddress: data.privateAddress,
@@ -73,10 +69,6 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
           dateOfBirth: data.dateOfBirth,
         },
       });
-      const updatedEmployee = response; // Access the nested data
-      console.log(updatedEmployee);
-      // dispatch(updateEmployeeData(updatedEmployee));
-
       toast({
         title: 'Employee updated successfully',
         description: 'Please update the rest of the employee information',
@@ -95,24 +87,24 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex flex-col md:flex-row justify-between">
+          <div className='flex flex-col md:flex-row justify-between'>
             {/* Private Contact */}
-            <div className="md:w-1/2">
-              <h2 className="text-lg font-semibold">Private Contact</h2>
-              <Separator className="mt-1 mb-3" />
-              <div className="flex flex-col gap-y-4">
-                <div className="flex flex-col gap-x-2">
+            <div className='md:w-1/2'>
+              <h2 className='text-lg font-semibold'>Private Contact</h2>
+              <Separator className='mt-1 mb-3' />
+              <div className='flex flex-col gap-y-4'>
+                <div className='flex flex-col gap-x-2'>
                   <span>
                     <FormLabel>Private Address</FormLabel>
 
                     <FormField
-                      name="privateAddress"
+                      name='privateAddress'
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
                             <Input
                               {...field}
-                              className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                              className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
                             />
                           </FormControl>
                           <FormMessage />
@@ -124,13 +116,13 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
                 <span>
                   <FormLabel>Personal Email</FormLabel>
                   <FormField
-                    name="personalEmail"
+                    name='personalEmail'
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -141,13 +133,13 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
                 <span>
                   <FormLabel>Phone</FormLabel>
                   <FormField
-                    name="phone"
+                    name='phone'
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -158,13 +150,13 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
                 <span>
                   <FormLabel>Bank Name</FormLabel>
                   <FormField
-                    name="bankName"
+                    name='bankName'
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -175,13 +167,13 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
                 <span>
                   <FormLabel>Bank Account Number</FormLabel>
                   <FormField
-                    name="bankAccountNumber"
+                    name='bankAccountNumber'
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -194,19 +186,19 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
 
             {/* Family Status */}
             <div className='mt-5'>
-              <h2 className="text-lg font-semibold">Family Status</h2>
-              <Separator className="mt-1 mb-3" />
-              <div className="flex flex-col gap-y-4">
+              <h2 className='text-lg font-semibold'>Family Status</h2>
+              <Separator className='mt-1 mb-3' />
+              <div className='flex flex-col gap-y-4'>
                 <span>
                   <FormLabel>Marital Status</FormLabel>
                   <FormField
-                    name="maritalStatus"
+                    name='maritalStatus'
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -217,13 +209,13 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
                 <span>
                   <FormLabel>Number of dependent children</FormLabel>
                   <FormField
-                    name="numberOfDependents"
+                    name='numberOfDependents'
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -236,21 +228,21 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
           </div>
 
           {/* Emergency contacts */}
-          <div className="flex flex-col md:flex-row justify-between mt-5">
-            <div className="md:w-1/2">
-              <h2 className="text-lg font-semibold">Emergency Contact</h2>
-              <Separator className="mt-1 mb-3" />
-              <div className="flex flex-col gap-y-4">
+          <div className='flex flex-col md:flex-row justify-between mt-5'>
+            <div className='md:w-1/2'>
+              <h2 className='text-lg font-semibold'>Emergency Contact</h2>
+              <Separator className='mt-1 mb-3' />
+              <div className='flex flex-col gap-y-4'>
                 <span>
                   <FormLabel>Contact Name</FormLabel>
                   <FormField
-                    name="emergencyContactName"
+                    name='emergencyContactName'
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -261,13 +253,13 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
                 <span>
                   <FormLabel>Contact Number</FormLabel>
                   <FormField
-                    name="emergencyContactPhone"
+                    name='emergencyContactPhone'
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -281,19 +273,19 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
             {/* Citizenship*/}
 
             <div className='mt-5'>
-              <h2 className="text-lg font-semibold">Citizenship</h2>
-              <Separator className="mt-1 mb-3" />
-              <div className="flex flex-col gap-y-4">
+              <h2 className='text-lg font-semibold'>Citizenship</h2>
+              <Separator className='mt-1 mb-3' />
+              <div className='flex flex-col gap-y-4'>
                 <span>
                   <FormLabel>Nationality</FormLabel>
                   <FormField
-                    name="nationality"
+                    name='nationality'
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -304,13 +296,13 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
                 <span>
                   <FormLabel>Identification Number</FormLabel>
                   <FormField
-                    name="idNumber"
+                    name='idNumber'
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -321,13 +313,13 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
                 <span>
                   <FormLabel>Gender</FormLabel>
                   <FormField
-                    name="gender"
+                    name='gender'
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -335,10 +327,10 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
                     )}
                   />
                 </span>
-                <span className="flex flex-col gap-2 ">
+                <span className='flex flex-col gap-2 '>
                   <FormLabel>Date of Birth</FormLabel>
                   <Controller
-                    name="dateOfBirth"
+                    name='dateOfBirth'
                     control={form.control}
                     render={({ field }) => (
                       <DatePicker
@@ -351,12 +343,12 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({ employee }) => {
               </div>
             </div>
           </div>
-          <div className="mt-4">
+          <div className='mt-4'>
             <ActionButton
-              type="submit"
+              type='submit'
               onClick={() => onSubmit}
               isLoading={isLoading}
-              label="Save"
+              label='Save'
             />
           </div>
         </form>

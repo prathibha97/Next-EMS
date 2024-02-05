@@ -19,7 +19,7 @@ import {
 } from '@/lib/validation/work-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Employee } from '@prisma/client';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface WorkInfoFormProps {
@@ -44,8 +44,6 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({
       timeZone: employee?.timeZone ?? 'Time Zone is not specified',
     },
   });
-
-  console.log(employee);
 
   const [updateEmployee, { isLoading }] = useUpdateEmployeeMutation();
 
@@ -81,22 +79,22 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="mt-5">
-          <h2 className="text-lg font-semibold">Location</h2>
-          <Separator className="mt-1 mb-3" />
+        <div className='mt-5'>
+          <h2 className='text-lg font-semibold'>Location</h2>
+          <Separator className='mt-1 mb-3' />
 
-          <div className="flex flex-col md:flex-row justify-between gap-y-3">
+          <div className='flex flex-col md:flex-row justify-between gap-y-3'>
             <span>
               <FormLabel>Work Address</FormLabel>
 
               <FormField
-                name="workAddress"
+                name='workAddress'
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         {...field}
-                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
                       />
                     </FormControl>
                     <FormMessage />
@@ -108,13 +106,13 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({
               <FormLabel>Work Location</FormLabel>
 
               <FormField
-                name="workLocation"
+                name='workLocation'
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         {...field}
-                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
                       />
                     </FormControl>
                     <FormMessage />
@@ -125,16 +123,16 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({
           </div>
         </div>
 
-        <div className="mt-5">
-          <h2 className="text-lg font-semibold">Schedule</h2>
-          <Separator className="mt-1 mb-3" />
+        <div className='mt-5'>
+          <h2 className='text-lg font-semibold'>Schedule</h2>
+          <Separator className='mt-1 mb-3' />
 
-          <div className="flex flex-col md:flex-row justify-between gap-4">
+          <div className='flex flex-col md:flex-row justify-between gap-4'>
             <span>
               <FormLabel>Start Date</FormLabel>
 
               <Controller
-                name="startDate"
+                name='startDate'
                 control={form.control}
                 render={({ field }) => (
                   <DatePicker
@@ -149,13 +147,13 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({
               <FormLabel>Working hours</FormLabel>
 
               <FormField
-                name="workingHours"
+                name='workingHours'
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         {...field}
-                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                     </FormControl>
                     <FormMessage />
@@ -167,13 +165,13 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({
               <FormLabel>TimeZone</FormLabel>
 
               <FormField
-                name="timeZone"
+                name='timeZone'
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         {...field}
-                        className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                     </FormControl>
                     <FormMessage />
@@ -183,12 +181,12 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({
             </span>
           </div>
         </div>
-        <div className="mt-4">
+        <div className='mt-4'>
           <ActionButton
-            type="submit"
+            type='submit'
             onClick={() => onSubmit}
             isLoading={isLoading}
-            label="Save"
+            label='Save'
           />
         </div>
       </form>

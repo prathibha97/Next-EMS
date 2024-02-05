@@ -115,7 +115,6 @@ const NewEmployeePage = () => {
       setLoading(false);
       const response = await addEmployee({
         departmentId: values.department,
-        jobPosition: values.jobPosition,
         name: values.name,
         personalMobile: values.personalMobile,
         position: values.position,

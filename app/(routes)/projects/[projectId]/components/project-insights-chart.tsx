@@ -37,7 +37,7 @@ const ProjectInsightsChart: FC<ProjectInsightsChartProps> = ({ tasks }) => {
   }));
 
   return (
-    <div className="flex">
+    <div className="flex flex-col md:flex-row justify-center items-center">
       <div className="mr-8">
         <PieChart width={400} height={400}>
           <Pie
@@ -60,7 +60,7 @@ const ProjectInsightsChart: FC<ProjectInsightsChartProps> = ({ tasks }) => {
           <Legend />
         </PieChart>
       </div>
-      <div>
+      <div className="mt-5">
         <h3 className="text-xl font-semibold mb-4">Project Status Breakdown</h3>
         <ul>
           {data.map((item) => (

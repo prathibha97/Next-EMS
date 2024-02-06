@@ -60,22 +60,22 @@ const AddClient: FC<AddClientProps> = ({}) => {
   };
 
   return (
-    <div className='bg-white dark:bg-slate-700/60 p-5 rounded-lg w-[800px]'>
+    <div className="bg-white dark:bg-slate-700/60 p-5 rounded-lg w-full">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className='w-full space-y-3'
+          className="w-full space-y-3"
         >
           <FormField
             control={form.control}
-            name='name'
+            name="name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Client Name</FormLabel>
                 <Input
                   {...field}
-                  placeholder='Enter Client Name'
-                  className='w-full'
+                  placeholder="Enter Client Name"
+                  className="w-full"
                 />
                 <FormMessage />
               </FormItem>
@@ -84,15 +84,15 @@ const AddClient: FC<AddClientProps> = ({}) => {
 
           <FormField
             control={form.control}
-            name='email'
+            name="email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Client Email</FormLabel>
                 <Input
                   {...field}
-                  placeholder='Enter Client Email'
-                  className='w-full'
-                  type='email'
+                  placeholder="Enter Client Email"
+                  className="w-full"
+                  type="email"
                 />
                 <FormMessage />
               </FormItem>
@@ -101,14 +101,14 @@ const AddClient: FC<AddClientProps> = ({}) => {
 
           <FormField
             control={form.control}
-            name='address'
+            name="address"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Client Address</FormLabel>
                 <Input
                   {...field}
-                  placeholder='Enter Client Address'
-                  className='w-full'
+                  placeholder="Enter Client Address"
+                  className="w-full"
                 />
                 <FormMessage />
               </FormItem>
@@ -117,26 +117,26 @@ const AddClient: FC<AddClientProps> = ({}) => {
 
           <FormField
             control={form.control}
-            name='phone'
+            name="phone"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Client Contact Number</FormLabel>
                 <Input
                   {...field}
-                  placeholder='Enter Client Contact Number'
-                  className='w-full'
+                  placeholder="Enter Client Contact Number"
+                  className="w-full"
                 />
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <div className='mt-4'>
+          <div className="mt-4">
             <ActionButton
               isLoading={isCreateClientLoading}
-              type='submit'
+              type="submit"
               onClick={() => onSubmit}
-              label='Add new client'
+              label="Add new client"
             />
           </div>
         </form>

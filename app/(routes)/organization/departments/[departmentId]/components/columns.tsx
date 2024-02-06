@@ -70,10 +70,10 @@ export const columns: ColumnDef<Employee>[] = [
     ),
   },
   {
-    accessorKey: 'jobPosition',
+    accessorKey: 'position',
     header: () => <div className='text-right'>Designation</div>,
     cell: ({ row }) => (
-      <div className='capitalize'>{row.getValue('jobPosition')}</div>
+      <div className='capitalize'>{row.getValue('position')}</div>
     ),
   },
   {

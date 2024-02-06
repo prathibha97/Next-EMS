@@ -29,7 +29,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} overflow-hidden`}>
         {/* <SocketProvider> */}
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <AuthProvider>
             <ReduxProvider>
               <div className="flex h-screen overflow-hidden  bg-[#eef5f9] dark:bg-slate-800">

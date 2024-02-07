@@ -181,7 +181,7 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
         )}
       >
         <NotificationButton />
-        <ModeToggle />
+        {/* <ModeToggle /> */}
         <UserNav />
       </div>
     </div>

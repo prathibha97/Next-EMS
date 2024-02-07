@@ -156,27 +156,27 @@ export function EditTimeLogDialog({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button>
-          <AlarmPlus className='h-4 w-4 mr-2' />
-          Add Time Record
+          <AlarmPlus className="h-4 w-4 mr-2" />
+          Edit Time Record
         </Button>
       </DialogTrigger>
-      <DialogContent className='sm:max-w-[525px] p-5'>
+      <DialogContent className="sm:max-w-[525px] p-5">
         <DialogHeader>
-          <DialogTitle>Add Time Record</DialogTitle>
+          <DialogTitle>Edit Time Record</DialogTitle>
           <DialogDescription>
-            Add a time record for the task you worked for.
+            Edit a time record for the task you worked for.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className='flex flex-col w-full gap-y-3'>
+            <div className="flex flex-col w-full gap-y-3">
               <FormField
                 control={form.control}
-                name='date'
+                name="date"
                 render={({ field }) => (
-                  <FormItem className='w-full'>
+                  <FormItem className="w-full">
                     <FormLabel>Date</FormLabel>
-                    <Input {...field} className='w-full' type='date' />
+                    <Input {...field} className="w-full" type="date" />
                     <FormMessage />
                   </FormItem>
                 )}
@@ -184,16 +184,16 @@ export function EditTimeLogDialog({
 
               <FormField
                 control={form.control}
-                name='projectId'
+                name="projectId"
                 render={({ field }) => (
-                  <FormItem className='w-full'>
+                  <FormItem className="w-full">
                     <FormLabel>Project</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder='Select a project to display' />
+                        <SelectValue placeholder="Select a project to display" />
                       </SelectTrigger>
                       <SelectContent>
                         {projects.map((project) => (
@@ -210,16 +210,16 @@ export function EditTimeLogDialog({
 
               <FormField
                 control={form.control}
-                name='taskId'
+                name="taskId"
                 render={({ field }) => (
-                  <FormItem className='w-full'>
+                  <FormItem className="w-full">
                     <FormLabel>Task</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder='Select a task to display' />
+                        <SelectValue placeholder="Select a task to display" />
                       </SelectTrigger>
                       <SelectContent>
                         {tasks.map((task) => (
@@ -233,17 +233,17 @@ export function EditTimeLogDialog({
                   </FormItem>
                 )}
               />
-              <div className='flex gap-x-3'>
+              <div className="flex flex-col md:flex-row gap-x-3">
                 <FormField
                   control={form.control}
-                  name='startTime'
+                  name="startTime"
                   render={({ field }) => (
-                    <FormItem className='w-1/2'>
+                    <FormItem className="md:w-1/2">
                       <FormLabel>Start Time</FormLabel>
                       <Input
                         {...field}
-                        className='w-full'
-                        type='datetime-local'
+                        className="w-full"
+                        type="datetime-local"
                       />
                       <FormMessage />
                     </FormItem>
@@ -251,14 +251,14 @@ export function EditTimeLogDialog({
                 />
                 <FormField
                   control={form.control}
-                  name='endTime'
+                  name="endTime"
                   render={({ field }) => (
-                    <FormItem className='w-1/2'>
+                    <FormItem className="md:w-1/2">
                       <FormLabel>End Time</FormLabel>
                       <Input
                         {...field}
-                        className='w-full'
-                        type='datetime-local'
+                        className="w-full"
+                        type="datetime-local"
                       />
                       <FormMessage />
                     </FormItem>
@@ -267,20 +267,20 @@ export function EditTimeLogDialog({
               </div>
               <FormField
                 control={form.control}
-                name='description'
+                name="description"
                 render={({ field }) => (
-                  <FormItem className='w-full'>
+                  <FormItem className="w-full">
                     <FormLabel>Work Performed</FormLabel>
-                    <Textarea {...field} className='w-full' />
+                    <Textarea {...field} className="w-full" />
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <DialogFooter className='mt-5'>
+            <DialogFooter className="mt-5 gap-2">
               <Button
-                type='button'
-                variant='outline'
+                type="button"
+                variant="outline"
                 onClick={() => {
                   setIsOpen(false);
                   form.reset();
@@ -289,8 +289,8 @@ export function EditTimeLogDialog({
                 Cancel
               </Button>
               <ActionButton
-                type='submit'
-                label='Edit Time Record'
+                type="submit"
+                label="Edit Time Record"
                 isLoading={isEditTimeLogLoading}
               />
             </DialogFooter>

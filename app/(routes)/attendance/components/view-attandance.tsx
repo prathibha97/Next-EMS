@@ -58,34 +58,38 @@ const ViewAttandance: FC<ViewAttandanceProps> = ({
     }
   };
   return (
-    <div className='w-full space-y-5'>
-      <div className='flex justify-end'>
-        <ActionButton
-          onClick={handleMarkAttendance}
-          label='Mark Attendance'
-          isLoading={isLoading}
-        />
+    <div className="w-full space-y-5">
+      <div className="flex flex-row justify-between">
+        <div className="flex justify-between">
+          <ActionButton
+            onClick={handleMarkAttendance}
+            label="Mark Attendance"
+            isLoading={isLoading}
+          />
+        </div>
+        <div>
+          <select
+            value={selectedMonth || ''}
+            onChange={(e) => setSelectedMonth(Number(e.target.value) || null)}
+            className="p-2 px-4 rounded-lg text-sm focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+          >
+            <option value="">All Months</option>
+            {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
+              <option key={month} value={month}>
+                {new Date(2023, month - 1, 1).toLocaleString('default', {
+                  month: 'long',
+                })}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-      <select
-        value={selectedMonth || ''}
-        onChange={(e) => setSelectedMonth(Number(e.target.value) || null)}
-        className='p-2 px-4 rounded-lg focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0'
-      >
-        <option value=''>All Months</option>
-        {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
-          <option key={month} value={month}>
-            {new Date(2023, month - 1, 1).toLocaleString('default', {
-              month: 'long',
-            })}
-          </option>
-        ))}
-      </select>
 
       <DataTable
         columns={columns}
         data={filteredAttendance}
-        searchFilter='date'
-        placeholder='Date'
+        searchFilter="date"
+        placeholder="Date"
       />
     </div>
   );

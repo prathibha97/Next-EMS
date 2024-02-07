@@ -45,16 +45,16 @@ const ViewTimeSheet: FC<ViewTimeSheetProps> = ({ taskWork, employeeId }) => {
   );
 
   return (
-    <div className='bg-white dark:bg-gray-900/60 p-5 rounded-lg shadow'>
-      <div className='flex justify-between'>
+    <div className="bg-white dark:bg-gray-900/60 p-5 rounded-lg shadow">
+      <div className="flex flex-col md:flex-row justify-between gap-3">
         <div>
-          <label>Sort By Year</label>
+          <label className="text-sm">Sort By Year</label>
           <select
             value={selectedYear || ''}
             onChange={(e) => setSelectedYear(Number(e.target.value) || null)}
-            className='p-2 px-4 rounded-lg focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-slate-100 dark:bg-slate-400/60 text-sm ml-2'
+            className="p-2 px-4 w-full rounded-md focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-slate-100 dark:bg-slate-400/60 text-sm"
           >
-            <option value=''>All Years</option>
+            <option value="">All Years</option>
             {uniqueYears.map((year) => (
               <option key={year} value={year}>
                 {year}
@@ -64,12 +64,12 @@ const ViewTimeSheet: FC<ViewTimeSheetProps> = ({ taskWork, employeeId }) => {
         </div>
 
         <div>
-          <label>Sort By Date</label>
+          <label className="text-sm">Sort By Date</label>
           <input
-            type='date'
+            type="date"
             value={selectedDate ? selectedDate.toISOString().split('T')[0] : ''}
             onChange={(e) => setSelectedDate(new Date(e.target.value))}
-            className='p-2 px-4 rounded-lg focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-slate-100 dark:bg-slate-400/60 text-sm ml-2'
+            className="p-2 px-4 w-full rounded-md focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-slate-100 dark:bg-slate-400/60 text-sm"
           />
         </div>
 
@@ -79,11 +79,11 @@ const ViewTimeSheet: FC<ViewTimeSheetProps> = ({ taskWork, employeeId }) => {
       <TimeSheetTable
         columns={columns}
         data={filteredTaskWork}
-        searchFilter='date'
-        placeholder='Date'
+        searchFilter="date"
+        placeholder="Date"
       />
 
-      <div className='mt-4 text-xl font-bold'>
+      <div className="mt-4 text-xl font-bold">
         Total Hours Worked: {totalHours} hours
       </div>
     </div>

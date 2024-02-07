@@ -55,18 +55,18 @@ const ViewProject: FC<ViewProjectProps> = ({ project, tasks }) => {
       });
     }
   };
-console.log(tasks);
+  console.log(tasks);
   return (
-    <div className='bg-white dark:bg-black/60 p-8 rounded shadow-lg'>
-      <div className='flex justify-between mb-4'>
+    <div className="bg-white dark:bg-black/60 p-8 rounded shadow-lg">
+      <div className="flex justify-between mb-4">
         <EditProjectDialog project={project} />
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant='destructive' size='icon'>
+            <Button variant="destructive" size="icon">
               {isRemoveProjectLoading && (
-                <div className='animate-spin'>
-                  <div className='spinner' />
+                <div className="animate-spin">
+                  <div className="spinner" />
                 </div>
               )}
               <Trash />
@@ -84,7 +84,7 @@ console.log(tasks);
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
                 onClick={() => handleRemoveProject(project?.id || '')}
-                className='bg-red-500'
+                className="bg-red-500"
               >
                 Continue
               </AlertDialogAction>
@@ -93,14 +93,14 @@ console.log(tasks);
         </AlertDialog>
       </div>
       <div>
-        <h2 className='text-2xl font-bold mb-2'>{project?.name}</h2>
-        <div className='grid grid-cols-3 gap-4'>
+        <h2 className="text-2xl font-bold mb-2">{project?.name}</h2>
+        <div className="flex flex-col md:grid md:grid-cols-2 gap-4">
           <div>
-            <p className='font-bold'>Client:</p>
-            <p className='dark:text-slate-200'>{project?.client.name}</p>
+            <p className="font-bold">Client:</p>
+            <p className="dark:text-slate-200">{project?.client.name}</p>
           </div>
           <div>
-            <p className='font-bold'>Status:</p>
+            <p className="font-bold">Status:</p>
             <p
               className={cn(
                 'text-black',
@@ -112,8 +112,8 @@ console.log(tasks);
             </p>
           </div>
           <div>
-            <p className='font-bold'>Assigned to:</p>
-            <p className='dark:text-slate-200'>
+            <p className="font-bold">Assigned to:</p>
+            <p className="dark:text-slate-200">
               {project?.projectAssignees
                 //  @ts-ignore
                 .map((assignee: any) => assignee.employee.name)
@@ -121,36 +121,36 @@ console.log(tasks);
             </p>
           </div>
         </div>
-        <div className='mt-4'>
-          <p className='font-bold'>Deadline:</p>
-          <p className='dark:text-slate-200'>
+        <div className="mt-4">
+          <p className="font-bold">Deadline:</p>
+          <p className="dark:text-slate-200">
             {format(project?.endDate as Date, 'dd-MM-yyyy')}
           </p>
         </div>
-        <div className='mt-4'>
-          <p className='font-bold mb-1'>Progress:</p>
+        <div className="mt-4">
+          <p className="font-bold mb-1">Progress:</p>
           <Progress value={project?.progress} />
         </div>
       </div>
 
-      <Tabs defaultValue='tasks' className='w-full mt-6'>
+      <Tabs defaultValue="tasks" className="w-full mt-6">
         <TabsList>
-          <TabsTrigger value='tasks'>Tasks</TabsTrigger>
-          <TabsTrigger value='insights'>Insights</TabsTrigger>
+          <TabsTrigger value="tasks">Tasks</TabsTrigger>
+          <TabsTrigger value="insights">Insights</TabsTrigger>
         </TabsList>
-        <TabsContent value='tasks'>
+        <TabsContent value="tasks">
           {project?.tasks?.length && project?.tasks?.length > 0 && (
-            <div className='mt-6'>
-              <h3 className='text-xl font-bold mb-4'>Tasks</h3>
-              <div className='bg-white dark:bg-gray-900/60 p-5 rounded-lg shadow'>
+            <div className="mt-6">
+              <h3 className="text-xl font-bold mb-4">Tasks</h3>
+              <div>
                 {/* @ts-ignore */}
                 <DataTable data={tasks} columns={columns} />
               </div>
             </div>
           )}
         </TabsContent>
-        <TabsContent value='insights'>
-          <div className='flex items-center justify-center w-full'>
+        <TabsContent value="insights">
+          <div className="flex items-center justify-center w-full">
             <ProjectInsightsChart tasks={tasks} />
           </div>
         </TabsContent>

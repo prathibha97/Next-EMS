@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { FC } from 'react';
 import { Trash } from 'lucide-react';
 import { useRemoveClientMutation } from '@/app/redux/services/clientApi';
@@ -49,10 +49,10 @@ const ViewClient: FC<ViewClientProps> = ({ client }) => {
   };
 
   return (
-    <div className='bg-white dark:bg-black/60 p-8 rounded-lg shadow-lg'>
-      <div className='flex justify-between items-center mb-4'>
-        <h2 className='text-2xl font-bold'>Client Details</h2>
-        <div className='flex space-x-3'>
+    <div className="bg-white dark:bg-black/60 p-8 rounded-lg shadow-lg">
+      <div className="flex flex-col md:flex-row justify-between md:items-center mb-4">
+        <h2 className="text-2xl font-bold">Client Details</h2>
+        <div className="flex space-x-3 mt-4">
           <EditClientDialog client={client} />
           {/* <Button
             onClick={() => handleRemoveClient(client?.id || '')}
@@ -70,12 +70,12 @@ const ViewClient: FC<ViewClientProps> = ({ client }) => {
             <AlertDialogTrigger asChild>
               <Button
                 // onClick={() => handleRemoveProject(project?.id || '')}
-                variant='destructive'
-                size='icon'
+                variant="destructive"
+                size="icon"
               >
                 {isRemoveClientLoading && (
-                  <div className='animate-spin'>
-                    <div className='spinner' />
+                  <div className="animate-spin">
+                    <div className="spinner" />
                   </div>
                 )}
                 <Trash />
@@ -101,27 +101,27 @@ const ViewClient: FC<ViewClientProps> = ({ client }) => {
           </AlertDialog>
         </div>
       </div>
-      <div className='grid grid-cols-2 gap-4'>
+      <div className="grid grid-cols-2 gap-4">
         <div>
-          <p className='font-bold'>Name:</p>
+          <p className="font-bold">Name:</p>
           <p>{client?.name}</p>
         </div>
         <div>
-          <p className='font-bold'>Email:</p>
+          <p className="font-bold">Email:</p>
           <p>{client?.email}</p>
         </div>
         <div>
-          <p className='font-bold'>Address:</p>
+          <p className="font-bold">Address:</p>
           <p>{client?.address}</p>
         </div>
         <div>
-          <p className='font-bold'>Contact Number:</p>
+          <p className="font-bold">Contact Number:</p>
           <p>{client?.phone}</p>
         </div>
       </div>
-      <div className='mt-6'>
-        <h3 className='text-xl font-bold mb-4'>Projects</h3>
-        <div className='bg-white dark:bg-gray-900/60 p-5 rounded-lg shadow'>
+      <div className="mt-6">
+        <h3 className="text-xl font-bold mb-4">Projects</h3>
+        <div className="border rounded-md p-3">
           {/* @ts-ignore */}
           <DataTable data={client?.projects} columns={columns} />
         </div>

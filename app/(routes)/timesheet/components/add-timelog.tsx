@@ -47,7 +47,7 @@ interface AddTimeLogDialogProps {
 }
 
 export function AddTimeLogDialog({ employeeId }: AddTimeLogDialogProps) {
-  const router = useRouter()
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -125,16 +125,16 @@ export function AddTimeLogDialog({ employeeId }: AddTimeLogDialogProps) {
         hoursWorked: parseFloat(hoursWorked),
       }).unwrap();
       toast({
-        title: 'Time record added successfully'
-      })
-      router.refresh()
+        title: 'Time record added successfully',
+      });
+      router.refresh();
       setIsOpen(false);
       form.reset();
     } catch (error) {
       toast({
         title: 'Something went wrong!',
         description: 'Failed to create the time record, please try again',
-        variant: 'destructive'
+        variant: 'destructive',
       });
       console.log(error);
     }
@@ -144,11 +144,11 @@ export function AddTimeLogDialog({ employeeId }: AddTimeLogDialogProps) {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button>
-          <AlarmPlus className='h-4 w-4 mr-2' />
+          <AlarmPlus className="h-4 w-4 mr-2" />
           Add Time Record
         </Button>
       </DialogTrigger>
-      <DialogContent className='sm:max-w-[525px] p-5'>
+      <DialogContent className="w-full p-5 justify-center items-center">
         <DialogHeader>
           <DialogTitle>Add Time Record</DialogTitle>
           <DialogDescription>
@@ -157,14 +157,14 @@ export function AddTimeLogDialog({ employeeId }: AddTimeLogDialogProps) {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className='flex flex-col w-full gap-y-3'>
+            <div className="flex flex-col gap-y-3 md:gap-x-3">
               <FormField
                 control={form.control}
-                name='date'
+                name="date"
                 render={({ field }) => (
-                  <FormItem className='w-full'>
+                  <FormItem className="w-full">
                     <FormLabel>Date</FormLabel>
-                    <Input {...field} className='w-full' type='date' />
+                    <Input {...field} className="w-full" type="date" />
                     <FormMessage />
                   </FormItem>
                 )}
@@ -172,13 +172,13 @@ export function AddTimeLogDialog({ employeeId }: AddTimeLogDialogProps) {
 
               <FormField
                 control={form.control}
-                name='projectId'
+                name="projectId"
                 render={({ field }) => (
-                  <FormItem className='w-full'>
+                  <FormItem className="w-full">
                     <FormLabel>Project</FormLabel>
                     <Select onValueChange={field.onChange}>
-                      <SelectTrigger>
-                        <SelectValue placeholder='Select a project to display' />
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a project to display" />
                       </SelectTrigger>
                       <SelectContent>
                         {projects.map((project) => (
@@ -195,13 +195,13 @@ export function AddTimeLogDialog({ employeeId }: AddTimeLogDialogProps) {
 
               <FormField
                 control={form.control}
-                name='taskId'
+                name="taskId"
                 render={({ field }) => (
-                  <FormItem className='w-full'>
+                  <FormItem className="w-full">
                     <FormLabel>Task</FormLabel>
                     <Select onValueChange={field.onChange}>
-                      <SelectTrigger>
-                        <SelectValue placeholder='Select a task to display' />
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a task to display" />
                       </SelectTrigger>
                       <SelectContent>
                         {tasks.map((task) => (
@@ -215,17 +215,17 @@ export function AddTimeLogDialog({ employeeId }: AddTimeLogDialogProps) {
                   </FormItem>
                 )}
               />
-              <div className='flex gap-x-3'>
+              <div className="flex flex-col md:flex-row gap-x-3">
                 <FormField
                   control={form.control}
-                  name='startTime'
+                  name="startTime"
                   render={({ field }) => (
-                    <FormItem className='w-1/2'>
+                    <FormItem className="md:w-1/2">
                       <FormLabel>Start Time</FormLabel>
                       <Input
                         {...field}
-                        className='w-full'
-                        type='datetime-local'
+                        className="w-full"
+                        type="datetime-local"
                       />
                       <FormMessage />
                     </FormItem>
@@ -233,14 +233,14 @@ export function AddTimeLogDialog({ employeeId }: AddTimeLogDialogProps) {
                 />
                 <FormField
                   control={form.control}
-                  name='endTime'
+                  name="endTime"
                   render={({ field }) => (
-                    <FormItem className='w-1/2'>
+                    <FormItem className="md:w-1/2">
                       <FormLabel>End Time</FormLabel>
                       <Input
                         {...field}
-                        className='w-full'
-                        type='datetime-local'
+                        className="w-full"
+                        type="datetime-local"
                       />
                       <FormMessage />
                     </FormItem>
@@ -249,20 +249,20 @@ export function AddTimeLogDialog({ employeeId }: AddTimeLogDialogProps) {
               </div>
               <FormField
                 control={form.control}
-                name='description'
+                name="description"
                 render={({ field }) => (
-                  <FormItem className='w-full'>
+                  <FormItem className="w-full">
                     <FormLabel>Work Performed</FormLabel>
-                    <Textarea {...field} className='w-full' />
+                    <Textarea {...field} className="w-full" />
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <DialogFooter className='mt-5'>
+            <DialogFooter className="mt-5 gap-2">
               <Button
-                type='button'
-                variant='outline'
+                type="button"
+                variant="outline"
                 onClick={() => {
                   setIsOpen(false);
                   form.reset();
@@ -271,8 +271,8 @@ export function AddTimeLogDialog({ employeeId }: AddTimeLogDialogProps) {
                 Cancel
               </Button>
               <ActionButton
-                type='submit'
-                label='Create Time Record'
+                type="submit"
+                label="Create Time Record"
                 isLoading={isCreateTimeLogLoading}
               />
             </DialogFooter>

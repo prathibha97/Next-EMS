@@ -14,12 +14,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Employee } from '@prisma/client';
 import axios from 'axios';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export function UserNav() {
   const router = useRouter();
+  const session = useSession()
   const dispatch = useAppDispatch();
   const [employee, setEmployee] = useState<Employee | null>(null);
 
@@ -68,9 +69,11 @@ export function UserNav() {
             <DropdownMenuItem onClick={() => router.push('/profile')}>
               Profile
             </DropdownMenuItem>
+            {session.data?.user.role === 'ADMIN' && (
             <DropdownMenuItem onClick={() => router.push('/settings')}>
               Settings
             </DropdownMenuItem>
+            )}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem

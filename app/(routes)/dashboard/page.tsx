@@ -1,5 +1,4 @@
 import { getAuthSession } from '@/app/api/auth/[...nextauth]/options';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -8,8 +7,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
-import Image from 'next/image';
-import { CalendarDateRangePicker } from './components/date-range-picker';
 import { RecentProjects } from './components/recent-projects';
 import { EmployeeAttendance } from './components/attendance';
 import useTasks from '@/hooks/useTasks';
@@ -37,11 +34,6 @@ export default async function DashboardPage() {
     <div>
       <div className="md:container flex-col md:flex">
         <div className=" flex-1 space-y-4 p-8 pt-6">
-          <div className="flex items-center justify-between space-y-2">
-            <h2 className="accc text-3xl font-bold tracking-tight">
-              Dashboard
-            </h2>
-          </div>
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsContent value="overview" className="space-y-4">
               <Card className="col-span-4 bg-white drop-shadow-lg ">

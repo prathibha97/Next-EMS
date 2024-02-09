@@ -9,6 +9,7 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import { setLogout } from '@/app/redux/features/authSlice';
 import { useEffect, useState } from 'react';
 import MainNavResponsive from './main-nav-responsive';
+import { SheetClose } from './ui/sheet';
 
 const ResponsiveSidebar = () => {
   const { data: session } = useSession();
@@ -36,28 +37,32 @@ const ResponsiveSidebar = () => {
                   }`}
                   key={item.name}
                 >
-                  <Link
-                    href={item.link}
-                    className={`flex items-center p-2 space-x-3 rounded-md ${
-                      pathname === item.link
-                        ? 'bg-gray-300 font-semibold'
-                        : 'hover:bg-gray-200 hover:dark:bg-gray-700'
-                    }`}
-                  >
-                    {item.icon}
-                    <span>{item.name}</span>
-                  </Link>
+                  <SheetClose asChild>
+                    <Link
+                      href={item.link}
+                      className={`flex items-center p-2 space-x-3 rounded-md ${
+                        pathname === item.link
+                          ? 'bg-gray-300 font-semibold'
+                          : 'hover:bg-gray-200 hover:dark:bg-gray-700'
+                      }`}
+                    >
+                      {item.icon}
+                      <span>{item.name}</span>
+                    </Link>
+                  </SheetClose>
                 </li>
               )
             )}
             <MainNavResponsive />
             <li>
-              <Link
-                className="flex items-center p-3 -mt-5 gap-2 space-x-3 rounded-md"
-                href={'/settings'}
-              >
-                <SlidersHorizontal className="h-6 w-6" /> Settings
-              </Link>
+              <SheetClose asChild>
+                <Link
+                  className="flex items-center p-3 -mt-5 gap-2 space-x-3 rounded-md"
+                  href={'/settings'}
+                >
+                  <SlidersHorizontal className="h-6 w-6" /> Settings
+                </Link>
+              </SheetClose>
             </li>
           </ul>
         </div>

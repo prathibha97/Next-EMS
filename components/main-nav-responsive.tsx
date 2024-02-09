@@ -15,7 +15,22 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { BadgeDollarSign, Building2, FolderGit, Users } from 'lucide-react';
+import {
+  BadgeDollarSign,
+  Building2,
+  FolderGit,
+  Users,
+  UserCog,
+  LayoutPanelTop,
+  CableCar,
+  FolderOpenDot,
+  FolderKanban,
+  FileCheck2,
+  UserPlus,
+  Eye,
+  Coins,
+  WalletCards,
+} from 'lucide-react';
 
 export const MainNavResponsive = ({
   className,
@@ -39,19 +54,22 @@ export const MainNavResponsive = ({
                   Organization
                 </AccordionTrigger>
                 <AccordionContent>
-                  <ul className="grid gap-3 p-4 md:w-[400px] md:grid-cols-1 lg:w-[500px] ">
+                  <ul className="grid gap-2 md:w-[400px] md:grid-cols-1 lg:w-[500px] ">
                     <ListItem
                       href="/organization/employees"
+                      icon={<UserCog />}
                       title="Employees"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     ></ListItem>
                     <ListItem
                       href="/organization/departments"
+                      icon={<LayoutPanelTop />}
                       title="Departments"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     ></ListItem>
                     <ListItem
                       href="/organization/leaves"
+                      icon={<CableCar />}
                       title="Leaves"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     ></ListItem>
@@ -65,19 +83,22 @@ export const MainNavResponsive = ({
                   Projects
                 </AccordionTrigger>
                 <AccordionContent>
-                  <ul className="grid gap-3 p-4 md:w-[400px] md:grid-cols-1 lg:w-[500px] ">
+                  <ul className="grid gap-2 md:w-[400px] md:grid-cols-1 lg:w-[500px] ">
                     <ListItem
                       href="/projects/new"
+                      icon={<FolderOpenDot />}
                       title="Create New Project"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     ></ListItem>
                     <ListItem
                       href="/projects"
+                      icon={<FolderKanban />}
                       title="View Projects"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     ></ListItem>
                     <ListItem
                       href="/projects/tasks"
+                      icon={<FileCheck2 />}
                       title="Manage Tasks"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     ></ListItem>
@@ -91,14 +112,16 @@ export const MainNavResponsive = ({
                   Clients
                 </AccordionTrigger>
                 <AccordionContent>
-                  <ul className="grid gap-3 p-4 md:w-[400px] md:grid-cols-1 lg:w-[500px] ">
+                  <ul className="grid gap-2 md:w-[400px] md:grid-cols-1 lg:w-[500px] ">
                     <ListItem
                       href="/clients/new"
+                      icon={<UserPlus />}
                       title="Add New Client"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     ></ListItem>
                     <ListItem
                       href="/clients"
+                      icon={<Eye />}
                       title="View Clients"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     ></ListItem>
@@ -112,14 +135,16 @@ export const MainNavResponsive = ({
                   Accounts & Finance
                 </AccordionTrigger>
                 <AccordionContent>
-                  <ul className="grid gap-3 p-4 md:w-[400px] md:grid-cols-1 lg:w-[500px] ">
+                  <ul className="grid gap-2 md:w-[400px] md:grid-cols-1 lg:w-[500px] ">
                     <ListItem
                       href="/accounts/payroll"
+                      icon={<Coins />}
                       title="Manage Payroll"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     ></ListItem>
                     <ListItem
                       href="/accounts/invoices"
+                      icon={<WalletCards />}
                       title="Manage Invoices"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     ></ListItem>
@@ -136,20 +161,23 @@ export const MainNavResponsive = ({
 
 const ListItem = React.forwardRef<
   React.ElementRef<'a'>,
-  React.ComponentPropsWithoutRef<'a'>
->(({ className, title, children, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<'a'> & { icon: React.ReactNode }
+>(({ className, title, children, icon, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink className="overflow-y-auto" asChild>
         <a
           ref={ref}
           className={cn(
-            'block select-none ml-5 p-2 rounded-md leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+            'block select-none ml-4 p-1 rounded-md leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
             className
           )}
           {...props}
         >
-          <div className="text-sm text-slate-600 leading-none">{title}</div>
+          <div className="flex items-center">
+            <div className="mr-2 text-slate-600">{icon}</div>
+            <div className="text-sm text-slate-600 leading-none">{title}</div>
+          </div>
           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>

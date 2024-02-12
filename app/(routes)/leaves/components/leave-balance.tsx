@@ -10,7 +10,7 @@ interface LeaveBalanceProps {
 
 const LeaveBalance: FC<LeaveBalanceProps> = ({ currentEmployee }) => {
   return (
-    <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 mb-5'>
+    <div className='grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 mb-5'>
       {currentEmployee?.leaveBalance?.annual >= 1 && (
         <LeaveBalanceCard
           balance={currentEmployee?.leaveBalance?.annual}

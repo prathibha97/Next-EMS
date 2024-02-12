@@ -73,12 +73,15 @@ const WorkedHoursOverviewAdmin: FC<WorkedHoursOverviewAdminProps> = ({
 
   return (
     <div className="w-full">
-      <div className="flex justify-end">
-        <label htmlFor="employee">Select Employee:</label>
+      <div className="ml-4 w-fit border p-2 rounded-md">
+        <label htmlFor="employee" className="text-sm text-gray-600">
+          Select Employee:
+        </label>
         <select
           id="employee"
           value={selectedEmployee}
           onChange={handleEmployeeChange}
+          className="font-medium"
         >
           {employees.map((employee) => (
             <option key={employee.id} value={employee.id}>

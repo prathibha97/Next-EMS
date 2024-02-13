@@ -53,7 +53,7 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
                           <div className="mb-2 mt-4 text-lg font-medium">
                             Sphiria Digital Studio
                           </div>
-                          <p className="text-sm leading-tight text-muted-foreground">
+                          <p className="text-xs text-gray-600 leading-tight text-muted-foreground ">
                             View and Manage Organization Details.
                           </p>
                         </a>
@@ -62,23 +62,29 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
                     <ListItem
                       href="/organization/employees"
                       title="Employees"
-                      className="hover:bg-slate-50 dark:hover:bg-gray-700"
+                      className="hover:bg-slate-50 dark:hover:bg-gray-700 "
                     >
-                      Add, View and Manage Organization Employees.
+                      <p className="text-xs text-gray-600">
+                        Add, View and Manage Organization Employees.
+                      </p>
                     </ListItem>
                     <ListItem
                       href="/organization/departments"
                       title="Departments"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     >
-                      Add, View and Manage Organization Departments.
+                      <p className="text-xs text-gray-600">
+                        Add, View and Manage Organization Departments.
+                      </p>
                     </ListItem>
                     <ListItem
                       href="/organization/leaves"
                       title="Leaves"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     >
-                      View, approve and Manage Employee Leave request.
+                      <p className="text-xs text-gray-600">
+                        View, approve and Manage Employee Leave request.
+                      </p>
                     </ListItem>
                   </ul>
                 </NavigationMenuContent>
@@ -91,25 +97,31 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
                     <ListItem
                       href="/projects/new"
                       title="Create New Project"
-                      className="hover:bg-slate-50 dark:hover:bg-gray-700"
+                      className="hover:bg-slate-50 dark:hover:bg-gray-700 "
                     >
-                      Create a new project and add employees, departments and
-                      tasks.
+                      <p className="text-xs text-gray-600">
+                        Create a new project and add employees, departments and
+                        tasks.
+                      </p>
                     </ListItem>
                     <ListItem
                       href="/projects"
                       title="View Projects"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     >
-                      View all projects that are currently active and in
-                      progress.
+                      <p className="text-xs text-gray-600">
+                        View all projects that are currently active and in
+                        progress.
+                      </p>
                     </ListItem>
                     <ListItem
                       href="/projects/tasks"
                       title="Manage Tasks"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     >
-                      Manage tasks related to projects.
+                      <p className="text-xs text-gray-600">
+                        Manage tasks related to projects.
+                      </p>
                     </ListItem>
                   </ul>
                 </NavigationMenuContent>
@@ -124,14 +136,18 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
                       title="Add New Client"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     >
-                      Add a new client to the organization.
+                      <p className="text-xs text-gray-600">
+                        Add a new client to the organization.
+                      </p>
                     </ListItem>
                     <ListItem
                       href="/clients"
                       title="View Clients"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     >
-                      View all clients and manage their details.
+                      <p className="text-xs text-gray-600">
+                        View all clients and manage their details.
+                      </p>
                     </ListItem>
                   </ul>
                 </NavigationMenuContent>
@@ -148,14 +164,18 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
                       title="Manage Payroll"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     >
-                      Manage Payroll and salary information for all employees.
+                      <p className="text-xs text-gray-600">
+                        Manage Payroll and salary information for all employees.
+                      </p>
                     </ListItem>
                     <ListItem
                       href="/accounts/invoices"
                       title="Manage Invoices"
                       className="hover:bg-slate-50 dark:hover:bg-gray-700"
                     >
-                      Manage Invoices and billing information for all clients.
+                      <p className="text-xs text-gray-600">
+                        Manage Invoices and billing information for all clients.
+                      </p>
                     </ListItem>
                   </ul>
                 </NavigationMenuContent>

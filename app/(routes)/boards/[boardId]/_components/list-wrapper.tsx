@@ -1,0 +1,9 @@
+import { FC } from 'react'
+
+interface ListWrapperProps {
+  children: React.ReactNode
+}
+
+export const ListWrapper: FC<ListWrapperProps> = ({children}) => {
+  return <li className='shrink-0 h-full w-[272px] select-none'>{children}</li>;
+}

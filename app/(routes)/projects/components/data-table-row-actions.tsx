@@ -62,6 +62,11 @@ export function DataTableRowActions<TData>({
         >
           View
         </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => router.push(`/projects/${project.id}/boards`)}
+        >
+          View Kanban Board
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => handleRemoveProject(project.id)}

@@ -307,6 +307,8 @@ model Project {
   tasks    Task[]
   progress Int?   @default(0)
 
+  board Board[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -364,4 +366,78 @@ model Otp {
   email          String   @unique
   otp            String
   expirationTime DateTime
+}
+
+model Board {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  imageId       String
+  imageThumbUrl String
+  imageFullUrl  String
+  imageUserName String
+  imageLinkHTML String
+
+  lists     List[]
+  projectId String  @db.ObjectId
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model List {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  title   String
+  order   Int
+  boardId String @db.ObjectId
+  board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  cards Card[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([boardId])
+}
+
+model Card {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  order       Int
+  description String?
+
+  listId String @db.ObjectId
+  list   List   @relation(fields: [listId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([listId])
+}
+
+enum ACTION {
+  CREATE
+  UPDATE
+  DELETE
+}
+
+enum ENTITY_TYPE {
+  BOARD
+  CARD
+  LIST
+}
+
+model AuditLog {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  projectId   String      @db.ObjectId
+  action      ACTION
+  entityId    String
+  entityType  ENTITY_TYPE
+  entityTitle String
+  userId      String
+  userImage   String
+  userName    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -307,7 +307,7 @@ model Project {
   tasks    Task[]
   progress Int?   @default(0)
 
-  board Board?
+  board Board[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -370,7 +370,6 @@ model Otp {
 
 model Board {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
-  orgId         String
   title         String
   imageId       String
   imageThumbUrl String
@@ -379,7 +378,7 @@ model Board {
   imageLinkHTML String
 
   lists     List[]
-  projectId String  @unique @db.ObjectId
+  projectId String  @db.ObjectId
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
@@ -430,7 +429,6 @@ enum ENTITY_TYPE {
 
 model AuditLog {
   id          String      @id @default(auto()) @map("_id") @db.ObjectId
-  orgId       String
   projectId   String      @db.ObjectId
   action      ACTION
   entityId    String

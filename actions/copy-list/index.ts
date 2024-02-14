@@ -1,8 +1,8 @@
 'use server';
 
 import { createSafeAction } from '@/lib/create-safe-action';
-import { db } from '@/lib/db';
-import { auth } from '@clerk/nextjs';
+import prisma from '@/lib/prisma';
+
 import { revalidatePath } from 'next/cache';
 import { CopyList } from './schema';
 import { InputType, ReturnType } from './types';
@@ -10,25 +10,25 @@ import { createAuditLog } from '@/lib/create-audit-log';
 import { ACTION, ENTITY_TYPE } from '@prisma/client';
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId, orgId } = auth();
+  // const { userId, orgId } = auth();
 
-  if (!userId || !orgId) {
-    return {
-      error: 'Unauthorized',
-    };
-  }
+  // if (!userId || !orgId) {
+  //   return {
+  //     error: 'Unauthorized',
+  //   };
+  // }
 
-  const { id, boardId } = data;
+  const { id, boardId,projectId } = data;
   let list;
 
   try {
-    const listToCopy = await db.list.findUnique({
+    const listToCopy = await prisma.list.findUnique({
       where: {
         id,
         boardId,
-        board: {
-          orgId,
-        },
+        // board: {
+        //   orgId,
+        // },
       },
       include: {
         cards: true,
@@ -41,7 +41,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       };
     }
 
-    const lastList = await db.list.findFirst({
+    const lastList = await prisma.list.findFirst({
       where: {
         boardId,
       },
@@ -55,7 +55,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
     const newOrder = lastList ? lastList.order + 1 : 1;
 
-    list = await db.list.create({
+    list = await prisma.list.create({
       data: {
         boardId: listToCopy.boardId,
         title: `${listToCopy.title} - Copy`,
@@ -79,13 +79,14 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       entityId: list.id,
       entityType: ENTITY_TYPE.LIST,
       action: ACTION.CREATE,
+      projectId,
     });
   } catch {
     return {
       error: 'Failed to copy.',
     };
   }
-  revalidatePath(`/board/${boardId}`);
+  revalidatePath(`/boards/${boardId}`);
   return {
     data: list,
   };

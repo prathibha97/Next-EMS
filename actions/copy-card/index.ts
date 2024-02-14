@@ -1,39 +1,35 @@
 'use server';
 
-import { auth } from '@clerk/nextjs';
-import { revalidatePath } from 'next/cache';
-// import { ACTION, ENTITY_TYPE } from '@prisma/client';
-
-import { db } from '@/lib/db';
-// import { createAuditLog } from '@/lib/create-audit-log';
 import { createSafeAction } from '@/lib/create-safe-action';
+import { revalidatePath } from 'next/cache';
 
+import { createAuditLog } from '@/lib/create-audit-log';
+import prisma from '@/lib/prisma';
+import { ACTION, ENTITY_TYPE } from '@prisma/client';
 import { CopyCard } from './schema';
 import { InputType, ReturnType } from './types';
-import { createAuditLog } from '@/lib/create-audit-log';
-import { ACTION, ENTITY_TYPE } from '@prisma/client';
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId, orgId } = auth();
+  // const { userId, orgId } = auth();
 
-  if (!userId || !orgId) {
-    return {
-      error: 'Unauthorized',
-    };
-  }
+  // if (!userId || !orgId) {
+  //   return {
+  //     error: 'Unauthorized',
+  //   };
+  // }
 
-  const { id, boardId } = data;
+  const { id, boardId, projectId } = data;
   let card;
 
   try {
-    const cardToCopy = await db.card.findUnique({
+    const cardToCopy = await prisma.card.findUnique({
       where: {
         id,
-        list: {
-          board: {
-            orgId,
-          },
-        },
+        // list: {
+        //   board: {
+        //     orgId,
+        //   },
+        // },
       },
     });
 
@@ -41,7 +37,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       return { error: 'Card not found' };
     }
 
-    const lastCard = await db.card.findFirst({
+    const lastCard = await prisma.card.findFirst({
       where: { listId: cardToCopy.listId },
       orderBy: { order: 'desc' },
       select: { order: true },
@@ -49,7 +45,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
     const newOrder = lastCard ? lastCard.order + 1 : 1;
 
-    card = await db.card.create({
+    card = await prisma.card.create({
       data: {
         title: `${cardToCopy.title} - Copy`,
         description: cardToCopy.description,
@@ -63,6 +59,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       entityId: card.id,
       entityType: ENTITY_TYPE.CARD,
       action: ACTION.CREATE,
+      projectId,
     });
   } catch (error) {
     return {
@@ -70,7 +67,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  revalidatePath(`/board/${boardId}`);
+  revalidatePath(`/boards/${boardId}`);
   return { data: card };
 };
 

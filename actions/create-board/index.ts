@@ -1,24 +1,24 @@
 'use server';
 
 import { createSafeAction } from '@/lib/create-safe-action';
-import { db } from '@/lib/db';
-import { auth } from '@clerk/nextjs';
+import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { CreateBoard } from './schema';
 import { InputType, ReturnType } from './types';
 import { createAuditLog } from '@/lib/create-audit-log';
 import { ACTION, ENTITY_TYPE } from '@prisma/client';
+import { getAuthSession } from '@/app/api/auth/[...nextauth]/options';
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId, orgId } = auth();
+  const session = await getAuthSession();
 
-  if (!userId || !orgId) {
+  if (!session) {
     return {
       error: 'Unauthorized',
     };
   }
 
-  const { title, image } = data;
+  const { title, image,projectId} = data;
 
   const [imageId, imageThumbUrl, imageFullUrl, imageLinkHTML, imageUserName] =
     image.split('|');
@@ -38,15 +38,15 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   let board;
 
   try {
-    board = await db.board.create({
+    board = await prisma.board.create({
       data: {
         title,
-        orgId,
         imageId,
         imageThumbUrl,
         imageFullUrl,
         imageUserName,
         imageLinkHTML,
+        projectId
       },
     });
     await createAuditLog({
@@ -54,6 +54,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       entityId: board.id,
       entityType: ENTITY_TYPE.BOARD,
       action: ACTION.CREATE,
+      projectId
     });
   } catch (error) {
     return {
@@ -61,7 +62,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  revalidatePath(`/board/${board.id}`);
+  revalidatePath(`/boards/${board.id}`);
   return {
     data: board,
   };

@@ -10,4 +10,5 @@ export const CreateList = z.object({
       message: 'Title os too short',
     }),
   boardId: z.string(),
+  projectId: z.string(),
 });

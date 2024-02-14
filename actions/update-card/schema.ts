@@ -23,4 +23,5 @@ export const UpdateCard = z.object({
       })
   ),
   id: z.string(),
+  projectId: z.string(),
 });

@@ -10,4 +10,5 @@ export const UpdateBoard = z.object({
       message: 'Title os too short',
     }),
   id: z.string(),
+  projectId: z.string(),
 });

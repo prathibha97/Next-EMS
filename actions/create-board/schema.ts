@@ -13,4 +13,5 @@ export const CreateBoard = z.object({
     required_error: 'Image is required',
     invalid_type_error: 'Image is required',
   }),
+  projectId: z.string()
 });

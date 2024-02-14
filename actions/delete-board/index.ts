@@ -1,8 +1,9 @@
 'use server';
 
 import { createSafeAction } from '@/lib/create-safe-action';
-import { db } from '@/lib/db';
-import { auth } from '@clerk/nextjs';
+import prisma from '@/lib/prisma';
+
+// import { auth } from '@clerk/nextjs';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { DeleteBoard } from './schema';
@@ -11,22 +12,22 @@ import { createAuditLog } from '@/lib/create-audit-log';
 import { ACTION, ENTITY_TYPE } from '@prisma/client';
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId, orgId } = auth();
+  // const { userId, orgId } = auth();
 
-  if (!userId || !orgId) {
-    return {
-      error: 'Unauthorized',
-    };
-  }
+  // if (!userId || !orgId) {
+  //   return {
+  //     error: 'Unauthorized',
+  //   };
+  // }
 
-  const { id } = data;
+  const { id ,projectId} = data;
   let board;
 
   try {
-    board = await db.board.delete({
+    board = await prisma.board.delete({
       where: {
         id,
-        orgId,
+        // orgId,
       },
     });
     await createAuditLog({
@@ -34,6 +35,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       entityId: board.id,
       entityType: ENTITY_TYPE.BOARD,
       action: ACTION.DELETE,
+      projectId,
     });
   } catch {
     return {

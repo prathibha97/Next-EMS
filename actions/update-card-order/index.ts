@@ -1,36 +1,37 @@
 'use server';
 
-import { auth } from '@clerk/nextjs';
+// import { auth } from '@clerk/nextjs';
 import { revalidatePath } from 'next/cache';
 
-import { db } from '@/lib/db';
+import prisma from '@/lib/prisma';
+
 import { createSafeAction } from '@/lib/create-safe-action';
 
 import { UpdateCardOrder } from './schema';
 import { InputType, ReturnType } from './types';
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId, orgId } = auth();
+  // const { userId, orgId } = auth();
 
-  if (!userId || !orgId) {
-    return {
-      error: 'Unauthorized',
-    };
-  }
+  // if (!userId || !orgId) {
+  //   return {
+  //     error: 'Unauthorized',
+  //   };
+  // }
 
   const { items, boardId } = data;
   let updatedCards;
 
   try {
     const transaction = items.map((card) =>
-      db.card.update({
+      prisma.card.update({
         where: {
           id: card.id,
-          list: {
-            board: {
-              orgId,
-            },
-          },
+          // list: {
+          //   board: {
+          //     orgId,
+          //   },
+          // },
         },
         data: {
           order: card.order,
@@ -39,14 +40,14 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       })
     );
 
-    updatedCards = await db.$transaction(transaction);
+    updatedCards = await prisma.$transaction(transaction);
   } catch (error) {
     return {
       error: 'Failed to reorder.',
     };
   }
 
-  revalidatePath(`/board/${boardId}`);
+  revalidatePath(`/boards/${boardId}`);
   return { data: updatedCards };
 };
 

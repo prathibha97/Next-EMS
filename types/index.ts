@@ -1,4 +1,4 @@
-import { Client, Department, Employee, EmployeeProject, LeaveBalance, Payroll, Project, Task, TaskWork } from '@prisma/client';
+import { Card, Client, Department, Employee, EmployeeProject, LeaveBalance, List, Payroll, Project, Task, TaskWork } from '@prisma/client';
 import { Server as NetServer, Socket } from 'net';
 import { NextApiResponse } from 'next';
 import { Server as SocketIOServer } from 'socket.io';
@@ -43,3 +43,10 @@ export type TaskWorkWithTaskWithProjectWithClient = TaskWork & {
   },
 };
 
+export type LIstWithCards = List & {
+  cards: Card[];
+};
+
+export type CardWithList = Card & {
+  list: List;
+};

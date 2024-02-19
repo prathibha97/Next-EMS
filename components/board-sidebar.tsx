@@ -13,10 +13,13 @@ import { useParams } from 'next/navigation';
 
 interface SidebarProps {
   storageKey?: string;
-  projects: Project[]
+  projects: Project[];
 }
-export const BoardSidebar = ({ storageKey = 't-sidebar-state',projects }: SidebarProps) => {
-  const params = useParams()
+export const BoardSidebar = ({
+  storageKey = 't-sidebar-state',
+  projects,
+}: SidebarProps) => {
+  const params = useParams();
   const [expanded, setExpanded] = useLocalStorage<Record<string, any>>(
     storageKey,
     {}
@@ -63,24 +66,24 @@ export const BoardSidebar = ({ storageKey = 't-sidebar-state',projects }: Sideba
   // }
   return (
     <>
-      <div className='font-medium text-xs flex items-center mb-1 bg-white rounded-lg'>
-        <span className='pl-4'>Projects</span>
+      <div className="font-medium text-md flex items-center mb-1 bg-white rounded-md p-2">
+        <span className="pl-4">Projects</span>
         <Button
           asChild
-          type='button'
-          size='icon'
-          variant='ghost'
-          className='ml-auto'
+          type="button"
+          size="icon"
+          variant="ghost"
+          className="ml-auto"
         >
-          <Link href='/projects/new'>
-            <Plus className='h-4 w-4' />
+          <Link href="/projects/new">
+            <Plus className="h-4 w-4" />
           </Link>
         </Button>
       </div>
       <Accordion
-        type='multiple'
+        type="multiple"
         defaultValue={defaultAccordianValue}
-        className='space-y-2 bg-white p-3 rounded-lg'
+        className="space-y-5 bg-white p-5 rounded-md"
       >
         {projects.map((project) => (
           <NavItem

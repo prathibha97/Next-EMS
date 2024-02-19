@@ -91,11 +91,31 @@ const useProject = () => {
     });
     return projects;
   };
+  const getProjectBoards = async () => {
+    const { getLoggedInEmployee } = useEmployee();
+    const employee = await getLoggedInEmployee();
+    const projects = await prisma.project.findMany({
+      where: {
+        projectAssignees: {
+          some: {
+            employee: {
+              id: employee?.id,
+            },
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    return projects;
+  };
   return {
     getAllProjects,
     getProjectById,
     getDashboardProjects,
     getCurrentEmployeeProjects,
+    getProjectBoards,
   };
 };
 

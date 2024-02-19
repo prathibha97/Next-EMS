@@ -11,6 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useCardModal } from '@/hooks/use-card-modal';
 import { copyCard } from '@/actions/copy-card';
 import { deleteCard } from '@/actions/delete-card';
+import { useSession } from 'next-auth/react';
 
 interface ActionsProps {
   data: CardWithList;
@@ -18,6 +19,7 @@ interface ActionsProps {
 
 export const Actions = ({ data }: ActionsProps) => {
   const params = useParams();
+  const session = useSession()
   const cardModal = useCardModal();
 
   const searchParams = useSearchParams();
@@ -68,6 +70,8 @@ export const Actions = ({ data }: ActionsProps) => {
       projectId,
     });
   };
+
+  if (session?.data?.user.role !== 'ADMIN') return;
 
   return (
     <div className='space-y-2 mt-2'>

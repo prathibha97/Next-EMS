@@ -13,12 +13,14 @@ import { toast } from 'sonner';
 import { MoreHorizontal, X } from 'lucide-react';
 import { deleteBoard } from '@/actions/delete-board';
 import { useSearchParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 interface BoardOptionsProps {
   id: string;
 }
 
 const BoardOptions: FC<BoardOptionsProps> = ({id}) => {
+  const session = useSession()
   const searchParams = useSearchParams();
   const projectId = searchParams?.get('projectId') as string;
 
@@ -31,10 +33,12 @@ const BoardOptions: FC<BoardOptionsProps> = ({id}) => {
   const onDelete = () => {
     execute({ id, projectId });
   };
+
+  if(session?.data?.user.role !== 'ADMIN') return
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button className='h-auto w-auto p-2' variant='transparent'>
+        <Button className='h-auto w-auto p-2' variant='transparent' >
           <MoreHorizontal className='h-4 w-4' />
         </Button>
       </PopoverTrigger>

@@ -4,6 +4,7 @@ import { FormInput } from '@/components/form/form-input';
 import { Button } from '@/components/ui/button';
 import { useAction } from '@/hooks/use-action';
 import { Board } from '@prisma/client';
+import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { ElementRef, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -13,6 +14,7 @@ interface BoardTitleFormProps {
 }
 
 export const BoardTitleForm = ({ data }: BoardTitleFormProps) => {
+  const session = useSession()
   const searchParams = useSearchParams();
 
   const projectId = searchParams?.get('projectId') as string;
@@ -73,6 +75,7 @@ export const BoardTitleForm = ({ data }: BoardTitleFormProps) => {
           onBlur={onBlur}
           defaultValue={title}
           className='text-lg font-bold px-[7px] py-1 h-7 bg-transparent focus-visible:outline-none focus-visible:ring-transparent border-none'
+          disabled={session?.data?.user.role !== 'ADMIN'}
         />
       </form>
     );

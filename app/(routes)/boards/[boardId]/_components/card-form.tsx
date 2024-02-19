@@ -6,6 +6,7 @@ import { FormTextarea } from '@/components/form/form-textarea';
 import { Button } from '@/components/ui/button';
 import { useAction } from '@/hooks/use-action';
 import { Plus, X } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import { useParams, useSearchParams } from 'next/navigation';
 import { ElementRef, KeyboardEventHandler, forwardRef, useRef } from 'react';
 import { toast } from 'sonner';
@@ -22,6 +23,8 @@ export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
   ({ listId, enableEditing, disableEditing, isEditing }, ref) => {
     const params = useParams();
     const searchParams = useSearchParams();
+    const session = useSession()
+
     const projectId = searchParams?.get('projectId') as string;
 
     const formRef = useRef<ElementRef<'form'>>(null);
@@ -86,6 +89,8 @@ export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
         </form>
       );
     }
+
+    if (session?.data?.user.role !== 'ADMIN') return;
 
     return (
       <div className='pt-2 px-2'>

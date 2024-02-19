@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 import { useEventListener } from 'usehooks-ts'
 import { ListOptions } from './list-options'
 import { useSearchParams } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 interface ListHeaderProps {
   data: List
@@ -15,6 +16,7 @@ interface ListHeaderProps {
 }
 
 export const ListHeader: FC<ListHeaderProps> = ({data,onAddCard}) => {
+  const session = useSession()
   const [title, setTitle] = useState(data.title);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -89,8 +91,13 @@ export const ListHeader: FC<ListHeaderProps> = ({data,onAddCard}) => {
             placeholder='Enter list title..'
             defaultValue={title}
             className='text-sm px-[7px] py-1 h-7 font-medium border-transparent hover:border-input focus:border-input transition truncate bg-transparent focus:bg-white'
+            disabled={session?.data?.user.role !== 'ADMIN'}
           />
-          <button type='submit' hidden />
+          <button
+            type='submit'
+            hidden
+            disabled={session?.data?.user.role !== 'ADMIN'}
+          />
         </form>
       ) : (
         <div

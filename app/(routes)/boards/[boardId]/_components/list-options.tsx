@@ -15,6 +15,7 @@ import { deleteList } from '@/actions/delete-list';
 import { toast } from 'sonner';
 import { copyList } from '@/actions/copy-list';
 import { useSearchParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 interface ListOptionsProps {
   data: List;
@@ -22,6 +23,7 @@ interface ListOptionsProps {
 }
 
 export const ListOptions: FC<ListOptionsProps> = ({ data, onAddCard }) => {
+  const session = useSession()
   const closeRef = useRef<ElementRef<'button'>>(null);
 
   const searchParams = useSearchParams();
@@ -60,6 +62,8 @@ export const ListOptions: FC<ListOptionsProps> = ({ data, onAddCard }) => {
 
     executeCopy({ id, boardId, projectId });
   };
+
+  if (session?.data?.user.role !== 'ADMIN') return;
 
   return (
     <Popover>

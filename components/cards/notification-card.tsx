@@ -57,14 +57,14 @@ export function NotificationCard({
   };
 
   return (
-    <Card className={cn('w-fit', className)} {...props}>
+    <Card className={cn('w-full', className)} {...props}>
       <CardHeader>
         <CardTitle>Notifications</CardTitle>
         <CardDescription>
           You have {unreadCount} unread messages.
         </CardDescription>
       </CardHeader>
-      <CardContent className='grid gap-4'>
+      <CardContent className="grid gap-4">
         {/* <div className='flex items-center space-x-4 rounded-md border p-4'>
           <BellRing />
           <div className='flex-1 space-y-1'>
@@ -80,13 +80,13 @@ export function NotificationCard({
         <ScrollArea>
           {notifications.map((notification) => (
             <div
-              className='flex items-start bg-gray-100 dark:bg-gray-800/30 rounded-md p-2 space-x-4 pb-2 last:pb-1 mt-2 first:mt-0'
+              className="flex items-start bg-gray-100 dark:bg-gray-800/30 rounded-md p-2 space-x-4 pb-2 last:pb-1 mt-2 first:mt-0"
               key={notification.id}
             >
               {notification.isRead === false && (
-                <span className='w-2 h-2 bg-sky-500 rounded-full' />
+                <span className="w-2 h-2 bg-sky-500 rounded-full" />
               )}
-              <div className='flex-1 space-y-1'>
+              <div className="flex-1 space-y-1">
                 <p
                   className={cn(
                     'text-sm font-medium leading-none',
@@ -96,7 +96,7 @@ export function NotificationCard({
                   {notification?.message}
                 </p>
                 {notification?.createdAt && (
-                  <p className='text-sm text-muted-foreground'>
+                  <p className="text-sm text-muted-foreground">
                     {formatDistance(
                       new Date(notification?.createdAt),
                       new Date(),
@@ -115,19 +115,19 @@ export function NotificationCard({
       <CardFooter>
         {unreadCount > 0 && (
           <ActionButton
-            className='w-full'
+            className="w-full"
             onClick={hanldeMarkAsRead}
-            label=' Mark all as read'
+            label=" Mark all as read"
             isLoading={isMarkAsReadLoading}
           />
         )}
 
         {unreadCount === 0 && notifications.length > 0 && (
-          <Button className='w-full' onClick={hanldeClearNotifications}>
+          <Button className="w-full" onClick={hanldeClearNotifications}>
             {isClearNotificationsLoading ? (
-              <Loader2 className='h-4 w-4 mr-2 animate-spin' />
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
             ) : (
-              <Check className='h-4 w-4 mr-2' />
+              <Check className="h-4 w-4 mr-2" />
             )}
             Clear notifications
           </Button>

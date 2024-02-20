@@ -66,7 +66,7 @@ export const BoardSidebar = ({
   // }
   return (
     <>
-      <div className="font-medium text-md flex items-center mb-1 bg-white rounded-md p-2">
+      <div className="font-medium text-md flex items-center mb-3 bg-white rounded-md p-2">
         <span className="pl-4">Projects</span>
         <Button
           asChild

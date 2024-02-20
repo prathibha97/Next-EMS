@@ -25,12 +25,12 @@ export const BoardList = async ({ projectId }: BoardListProps) => {
     },
   });
   return (
-    <div className="h-full space-y-4 bg-white md:w-[930px] md:h-[700px] p-5 rounded-lg">
+    <div className="h-full md:space-y-4 bg-white md:w-[930px] md:h-[700px] p-5 rounded-lg">
       <div className="flex items-center font-semibold text-md text-neutral-700">
         <User2 className="h-6 w-6 mr-3" />
         Your Boards
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 gap-3 mt-3">
         {boards.map((board) => (
           <Link
             key={board.id}
@@ -42,7 +42,7 @@ export const BoardList = async ({ projectId }: BoardListProps) => {
             <p className="relative font-semibold text-white">{board.title}</p>
           </Link>
         ))}
-        <FormPopover side="right" sideOffset={10}>
+        <FormPopover side="bottom" sideOffset={10}>
           <div
             role="button"
             className="aspect-video relative h-full w-full rounded-md flex flex-col gap-y-1 items-center justify-center hover:opacity-75 transition"

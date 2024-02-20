@@ -6,8 +6,8 @@ const BoardLayout = async ({ children }: { children: React.ReactNode }) => {
   const projects = await getCurrentEmployeeProjects();
   return (
     <main className="2xl:max-w-screen-xl mx-auto">
-      <div className="flex">
-        <div className="w-64 shrink-0 hidden md:block">
+      <div className="flex flex-col gap-3 md:flex-row">
+        <div className="w-full md:w-64 shrink-0">
           <BoardSidebar projects={projects} />
         </div>
         {children}

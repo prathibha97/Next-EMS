@@ -68,7 +68,7 @@ export const Header = ({ data }: HeaderProps) => {
   };
 
   return (
-    <div className="flex items-start ml-7 gap-x-6 w-full">
+    <div className="flex items-start ml-3 md:ml-7 gap-x-6 w-full">
       <Layout className="h-5 w-5 mt-1 text-neutral-700" />
       <div className="w-full">
         <form action={onSubmit}>

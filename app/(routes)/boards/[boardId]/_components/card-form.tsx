@@ -23,7 +23,7 @@ export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
   ({ listId, enableEditing, disableEditing, isEditing }, ref) => {
     const params = useParams();
     const searchParams = useSearchParams();
-    const session = useSession()
+    const session = useSession();
 
     const projectId = searchParams?.get('projectId') as string;
 
@@ -70,20 +70,20 @@ export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
         <form
           ref={formRef}
           action={onSubmit}
-          className='m-1 py-0.5 px-1 space-y-4'
+          className="m-1 py-0.5 px-1 space-y-4"
         >
           <FormTextarea
-            id='title'
+            id="title"
             onKeyDown={onTextareakeyDown}
             ref={ref}
-            placeholder='Enter a title for this card...'
+            placeholder="Enter a title for this card..."
             errors={fieldErrors}
           />
-          <input hidden id='listId' name='listId' value={listId} />
-          <div className='flex items-center gap-x-1'>
-            <FormSubmit>Add card</FormSubmit>
-            <Button onClick={disableEditing} size='sm' variant='ghost'>
-              <X className='h-5 w-5' />
+          <input hidden id="listId" name="listId" value={listId} />
+          <div className="flex items-center gap-x-1">
+            <FormSubmit variant="default">Add card</FormSubmit>
+            <Button onClick={disableEditing} size="sm" variant="ghost">
+              <X className="h-5 w-5" />
             </Button>
           </div>
         </form>
@@ -93,14 +93,14 @@ export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
     if (session?.data?.user.role !== 'ADMIN') return;
 
     return (
-      <div className='pt-2 px-2'>
+      <div className="pt-2 px-2">
         <Button
           onClick={enableEditing}
-          className='h-auto px-2 py-1.5 w-full justify-start text-muted-foreground text-sm'
-          size='sm'
-          variant='ghost'
+          className="h-auto px-2 py-1.5 w-full justify-start text-muted-foreground text-white text-sm"
+          size="sm"
+          variant="default"
         >
-          <Plus className='h-4 w-4 mr-2' />
+          <Plus className="h-4 w-4 mr-2" />
           Add a card
         </Button>
       </div>

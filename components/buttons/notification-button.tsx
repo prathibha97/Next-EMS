@@ -98,14 +98,14 @@ export function NotificationButton() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant='outline' className='relative'>
+        <Button variant="outline" className="relative">
           <BellRing />
           {unreadCount > 0 && (
-            <span className='animate-ping absolute h-3 w-3 top-0 right-0 rounded-full bg-sky-400 opacity-75'></span>
+            <span className="animate-ping absolute h-3 w-3 top-0 right-0 rounded-full bg-sky-400 opacity-75"></span>
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-[410px]'>
+      <PopoverContent className="w-[370px] md:w-[410px]">
         <NotificationCard
           notifications={notifications}
           employee={employee}

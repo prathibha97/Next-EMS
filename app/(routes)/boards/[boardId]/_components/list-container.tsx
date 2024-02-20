@@ -20,7 +20,7 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
   result.splice(endIndex, 0, removed);
 
   return result;
-};
+}
 
 export const ListContainer: FC<ListContainerProps> = ({ boardId, data }) => {
   const [orderedData, setOrderedData] = useState(data);
@@ -148,19 +148,19 @@ export const ListContainer: FC<ListContainerProps> = ({ boardId, data }) => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId='lists' type='list' direction='horizontal'>
+      <Droppable droppableId="lists" type="list" direction="horizontal">
         {(provided) => (
           <ol
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className='flex gap-x-3 h-full'
+            className="flex gap-x-4 h-full"
           >
             {orderedData.map((list, index) => {
               return <ListItem key={list.id} index={index} data={list} />;
             })}
             {provided.placeholder}
             <ListForm />
-            <div className='flex-shrink-0 w-1' />
+            <div className="flex-shrink-0 w-1" />
           </ol>
         )}
       </Droppable>

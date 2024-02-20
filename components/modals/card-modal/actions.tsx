@@ -19,7 +19,7 @@ interface ActionsProps {
 
 export const Actions = ({ data }: ActionsProps) => {
   const params = useParams();
-  const session = useSession()
+  const session = useSession();
   const cardModal = useCardModal();
 
   const searchParams = useSearchParams();
@@ -74,26 +74,26 @@ export const Actions = ({ data }: ActionsProps) => {
   if (session?.data?.user.role !== 'ADMIN') return;
 
   return (
-    <div className='space-y-2 mt-2'>
-      <p className='text-xs font-semibold'>Actions</p>
+    <div className="space-y-2 mt-2">
+      <p className="text-xs font-semibold">Actions</p>
       <Button
         onClick={onCopy}
         disabled={isLoadingCopy}
-        variant='gray'
-        className='w-full justify-start'
-        size='inline'
+        variant="outline"
+        className="w-full justify-start"
+        size="inline"
       >
-        <Copy className='h-4 w-4 mr-2' />
+        <Copy className="h-4 w-4 mr-2" />
         Copy
       </Button>
       <Button
         onClick={onDelete}
         disabled={isLoadingDelete}
-        variant='gray'
-        className='w-full justify-start'
-        size='inline'
+        variant="destructive"
+        className="w-full justify-start"
+        size="inline"
       >
-        <Trash className='h-4 w-4 mr-2' />
+        <Trash className="h-4 w-4 mr-2" />
         Delete
       </Button>
     </div>
@@ -102,10 +102,10 @@ export const Actions = ({ data }: ActionsProps) => {
 
 Actions.Skeleton = function ActionsSkeleton() {
   return (
-    <div className='space-y-2 mt-2'>
-      <Skeleton className='w-20 h-4 bg-neutral-200' />
-      <Skeleton className='w-full h-8 bg-neutral-200' />
-      <Skeleton className='w-full h-8 bg-neutral-200' />
+    <div className="space-y-2 mt-2">
+      <Skeleton className="w-20 h-4 bg-neutral-200" />
+      <Skeleton className="w-full h-8 bg-neutral-200" />
+      <Skeleton className="w-full h-8 bg-neutral-200" />
     </div>
   );
 };

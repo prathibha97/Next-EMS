@@ -4,8 +4,8 @@ import {
   CalendarIcon,
   ClockIcon,
   HomeIcon,
+  Layout,
   RocketIcon,
-  SlidersHorizontal,
   Sparkles,
 } from 'lucide-react';
 
@@ -24,6 +24,11 @@ export const sidebarItems = [
     name: 'Tasks',
     icon: <RocketIcon className='h-6 w-6' />,
     link: '/tasks',
+  },
+  {
+    name: 'Boards',
+    icon: <Layout className='h-6 w-6' />,
+    link: '/boards',
   },
   {
     name: 'TimeSheet',
@@ -45,5 +50,4 @@ export const sidebarItems = [
     icon: <Sparkles className='h-6 w-6' />,
     link: '/leaves',
   },
-
 ] as const;

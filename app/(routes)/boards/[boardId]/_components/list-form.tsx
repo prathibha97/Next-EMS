@@ -11,10 +11,12 @@ import { FormSubmit } from '@/components/form/form-submit';
 import { useAction } from '@/hooks/use-action';
 import { createList } from '@/actions/create-list';
 import { toast } from 'sonner';
+import { useSession } from 'next-auth/react';
 
 export const ListForm = () => {
   const router = useRouter();
   const params = useParams();
+  const session = useSession()
 
   const formRef = useRef<ElementRef<'form'>>(null);
   const inputRef = useRef<ElementRef<'input'>>(null);
@@ -65,6 +67,8 @@ export const ListForm = () => {
       projectId
     });
   };
+
+  if (session?.data?.user.role !== 'ADMIN') return;
 
   if (isEditing) {
     return (

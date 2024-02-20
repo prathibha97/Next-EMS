@@ -14,6 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { FormTextarea } from '@/components/form/form-textarea';
 import { FormSubmit } from '@/components/form/form-submit';
 import { Button } from '@/components/ui/button';
+import { useSession } from 'next-auth/react';
 
 interface DescriptionProps {
   data: CardWithList;
@@ -21,6 +22,7 @@ interface DescriptionProps {
 
 export const Description = ({ data }: DescriptionProps) => {
   const params = useParams();
+  const session = useSession()
   const queryClient = useQueryClient();
 
   const searchParams = useSearchParams();
@@ -95,7 +97,9 @@ export const Description = ({ data }: DescriptionProps) => {
               ref={textareaRef}
             />
             <div className='flex items-center gap-x-2'>
-              <FormSubmit>Save</FormSubmit>
+              <FormSubmit disabled={session?.data?.user.role !== 'ADMIN'}>
+                Save
+              </FormSubmit>
               <Button
                 type='button'
                 onClick={disableEditing}

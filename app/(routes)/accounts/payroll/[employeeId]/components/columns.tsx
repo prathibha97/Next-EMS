@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal } from 'lucide-react';
+import { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontal } from "lucide-react";
 
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 
 import {
   DropdownMenu,
@@ -13,7 +13,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 
 import {
   Dialog,
@@ -21,45 +21,45 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 
 import {
   useGetPayrollByEmployeeIdQuery,
   useRemovePayrollMutation,
-} from '@/app/redux/services/payrollApi';
-import { Payroll } from '@prisma/client';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+} from "@/app/redux/services/payrollApi";
+import { Payroll } from "@prisma/client";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-import { selectPayroll } from '@/app/redux/features/payrollSlice';
-import { useAppDispatch } from '@/app/redux/hooks';
-import { addDays, isAfter } from 'date-fns';
+import { selectPayroll } from "@/app/redux/features/payrollSlice";
+import { useAppDispatch } from "@/app/redux/hooks";
+import { addDays, isAfter } from "date-fns";
 
 export const columns: ColumnDef<Payroll>[] = [
   {
-    id: 'select',
+    id: "select",
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Select all'
+        aria-label="Select all"
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label='Select row'
+        aria-label="Select row"
       />
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: 'monthYear',
-    header: 'Payroll Period',
+    accessorKey: "monthYear",
+    header: "Payroll Period",
     cell: ({ row }) => (
-      <div className='capitalize'>{row.getValue('monthYear')}</div>
+      <div className="capitalize">{row.getValue("monthYear")}</div>
     ),
   },
   // {
@@ -70,19 +70,19 @@ export const columns: ColumnDef<Payroll>[] = [
   //   ),
   // },
   {
-    accessorKey: 'basicSalary',
-    header: () => <div className='text-left -ml-3'>Basic Salary</div>,
+    accessorKey: "basicSalary",
+    header: () => <div className="text-left -ml-3">Basic Salary</div>,
     cell: ({ row }) => (
-      <div className='capitalize'>{row.getValue('basicSalary')}</div>
+      <div className="capitalize">{row.getValue("basicSalary")}</div>
     ),
   },
   {
-    accessorKey: 'netSalary',
-    header: () => <div className='text-left -ml-3'>Net Salary</div>,
-    cell: ({ row }) => <div>{row.getValue('netSalary')}</div>,
+    accessorKey: "netSalary",
+    header: () => <div className="text-left -ml-3">Net Salary</div>,
+    cell: ({ row }) => <div>{row.getValue("netSalary")}</div>,
   },
   {
-    id: 'actions',
+    id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
       const router = useRouter();
@@ -94,53 +94,53 @@ export const columns: ColumnDef<Payroll>[] = [
 
       function EmployeeDetails() {
         return (
-          <table className='border-2 border-[#2ebdaa]'>
+          <table className="border-2 border-[#2ebdaa]">
             <tbody>
               <tr>
-                <td className='p-2 font-semibold'>Employee Name</td>
-                <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
+                <td className="p-2 font-semibold">Employee Name</td>
+                <td className="p-2 font-normal border-r-2 border-[#2ebdaa]">
                   {/* @ts-ignore */}
                   {paysheet.employee.name}
                 </td>
-                <td className='p-2 font-semibold'>Department</td>
-                <td className='p-2 font-normal'>
+                <td className="p-2 font-semibold">Department</td>
+                <td className="p-2 font-normal">
                   {/* @ts-ignore */}
                   {paysheet.employee.employeeDepartment.name}
                 </td>
               </tr>
-              <tr className='border-2 border-[#2ebdaa]'>
-                <td className='p-2 font-semibold'>Employee ID</td>
-                <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
+              <tr className="border-2 border-[#2ebdaa]">
+                <td className="p-2 font-semibold">Employee ID</td>
+                <td className="p-2 font-normal border-r-2 border-[#2ebdaa]">
                   {/* @ts-ignore */}
                   {paysheet.employee.employeeNumber}
                 </td>
-                <td className='p-2 font-semibold'>Bank</td>
-                <td className='p-2 font-normal'>
-                  {' '}
+                <td className="p-2 font-semibold">Bank</td>
+                <td className="p-2 font-normal">
+                  {" "}
                   {/* @ts-ignore */}
                   {paysheet.employee.bankName}
                 </td>
               </tr>
               <tr>
-                <td className='p-2 font-semibold'>Designation</td>
-                <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
+                <td className="p-2 font-semibold">Designation</td>
+                <td className="p-2 font-normal border-r-2 border-[#2ebdaa]">
                   {/* @ts-ignore */}
                   {paysheet.employee.jobPosition}
                 </td>
-                <td className='p-2 font-semibold'>Account Number</td>
-                <td className='p-2 font-normal'>
+                <td className="p-2 font-semibold">Account Number</td>
+                <td className="p-2 font-normal">
                   {/* @ts-ignore */}
                   {paysheet.employee.bankAccountNumber}
                 </td>
               </tr>
-              <tr className='border-2 border-[#2ebdaa]'>
-                <td className='p-2 font-semibold'>Worked Days</td>
-                <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
+              <tr className="border-2 border-[#2ebdaa]">
+                <td className="p-2 font-semibold">Worked Days</td>
+                <td className="p-2 font-normal border-r-2 border-[#2ebdaa]">
                   {/* @ts-ignore */}
                   {paysheet.workingDays}
                 </td>
-                <td className='p-2 font-semibold'>Paid Days</td>
-                <td className='p-2 font-normal'>
+                <td className="p-2 font-semibold">Paid Days</td>
+                <td className="p-2 font-normal">
                   {/* @ts-ignore */}
                   {paysheet.paidDays}
                 </td>
@@ -152,152 +152,332 @@ export const columns: ColumnDef<Payroll>[] = [
 
       function SalaryDetails() {
         return (
-          <table className='border-2 border-[#2ebdaa]'>
-            <tbody>
-              <tr className=''>
-                <td className='p-2 font-semibold border-b-2  border-[#2ebdaa]  '>
-                  Earnings
-                </td>
-                <td className='p-2 font-normal  border-b-2 border-r-2 border-[#2ebdaa] '></td>
-                <td className='p-2 font-semibold border-b-2  border-[#2ebdaa] '>
-                  Deductions
-                </td>
-                <td className='p-2 font-normal border-b-2 border-r-2 border-[#2ebdaa]'></td>
-              </tr>
-              <tr>
-                <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
-                  Basic Wage
-                </td>
-                <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
-                  {paysheet.basicSalary}
-                </td>
-                <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
-                  EPF
-                </td>
-                <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
-                  {paysheet.epfDeduction}
-                </td>
-              </tr>
-              <tr>
-                {paysheet.mobileAllowance !== 0 &&
-                  paysheet.mobileAllowance !== null &&(
+          <div>
+            <table className="border-2 border-[#2ebdaa] mb-12">
+              <tbody>
+                <tr className="">
+                  <td className="p-2 font-semibold border-b-2  border-[#2ebdaa] h-8 ">
+                    Earnings
+                  </td>
+                  <td className="p-2 font-normal  border-b-2 border-r-2 border-[#2ebdaa] "></td>
+                  <td className="p-2 font-semibold border-b-2  border-[#2ebdaa] ">
+                    Deductions
+                  </td>
+                  <td className="p-2 font-normal border-b-2 border-r-2 border-[#2ebdaa]"></td>
+                </tr>
+                <tr>
+                  <td className="p-2 font-normal border-r-2 border-[#2ebdaa]">
+                    Basic Wage
+                  </td>
+                  <td className="p-2 font-normal border-r-2 border-[#2ebdaa] text-right">
+                    {paysheet.basicSalary}
+                  </td>
+                  <td className="p-2 font-normal border-r-2 border-[#2ebdaa]">
+                    EPF
+                  </td>
+                  <td className="p-2 font-normal border-r-2 border-[#2ebdaa] text-right">
+                    {paysheet.epfDeduction}
+                  </td>
+                </tr>
+                <tr>
+                  {paysheet.mobileAllowance !== 0 &&
+                    paysheet.mobileAllowance !== null && (
+                      <>
+                        <td className="p-2 font-normal border-r-2 border-[#2ebdaa]">
+                          Mobile Allowance
+                        </td>
+                        <td className="p-2 font-normal border-r-2 border-[#2ebdaa] text-right">
+                          {paysheet.mobileAllowance}
+                        </td>
+                      </>
+                    )}
+
+                  {paysheet.salaryAdvance !== 0 && (
                     <>
-                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
-                        Mobile Allowance
+                      <td className="p-2 font-normal border-r-2 border-[#2ebdaa] ">
+                        Salary Advance
                       </td>
-                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
-                        {paysheet.mobileAllowance}
+                      <td className="p-2 font-normal text-right ">
+                        {paysheet.salaryAdvance}
                       </td>
                     </>
                   )}
-                {paysheet.salaryAdvance !== 0 && (
-                  <>
-                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa] '>
-                      Salary Advance
-                    </td>
-                    <td className='p-2 font-normal text-right '>
-                      {paysheet.salaryAdvance}
-                    </td>
-                  </>
-                )}
-              </tr>
-              <tr>
+                </tr>
+                <tr>
+                  {paysheet.dataAllowance !== 0 &&
+                    paysheet.dataAllowance !== null && (
+                      <>
+                        <td className="p-2 font-normal border-r-2 border-[#2ebdaa]">
+                          Data Allowance
+                        </td>
+                        <td className="p-2 font-normal border-r-2 border-[#2ebdaa] text-right">
+                          {paysheet.dataAllowance}
+                        </td>
+                      </>
+                    )}
+                  {paysheet.otherDeductions !== 0 &&
+                    paysheet.otherDeductions !== null && (
+                      <>
+                        <td className="p-2 font-normal border-r-2 border-[#2ebdaa]">
+                          Other Deductions
+                        </td>
+                        <td className="p-2 font-normal text-right">
+                          {paysheet.otherDeductions}
+                        </td>
+                      </>
+                    )}
+                </tr>
+
+                <tr>
+                  {paysheet.projectAllowance !== 0 &&
+                    paysheet.projectAllowance !== null && (
+                      <>
+                        <td className="p-2 font-normal border-r-2 border-[#2ebdaa]">
+                          Project Allowance
+                        </td>
+                        <td className="p-2 font-normal border-r-2 border-[#2ebdaa] text-right">
+                          {paysheet.projectAllowance}
+                        </td>
+                      </>
+                    )}
+                </tr>
+
+                <tr>
+                  {paysheet.performanceAllowance !== 0 && (
+                    <>
+                      <td className="p-2 font-normal border-r-2 border-[#2ebdaa]">
+                        Performace Allowance
+                      </td>
+                      <td className="p-2 font-normal border-r-2 border-[#2ebdaa] text-right">
+                        {paysheet.performanceAllowance}
+                      </td>
+                    </>
+                  )}
+                  <td className="p-2 font-semibold border-r-2 border-[#2ebdaa]"></td>
+                  <td className="p-2 font-normal"></td>
+                </tr>
+
+                <tr>
+                  {paysheet.holidayAllowance !== 0 &&
+                    paysheet.holidayAllowance !== null && (
+                      <>
+                        <td className="p-2 font-normal border-r-2 border-[#2ebdaa]">
+                          Holiday Allowance
+                        </td>
+                        <td className="p-2 font-normal border-r-2 border-[#2ebdaa] text-right">
+                          {paysheet.holidayAllowance}
+                        </td>
+                      </>
+                    )}
+                  <td className="p-2 font-semibold border-r-2 border-[#2ebdaa]"></td>
+                  <td className="p-2 font-normal"></td>
+                </tr>
+
+                {paysheet.loanDeduction !== 0 &&
+                  paysheet.loanDeduction !== null && (
+                    <>
+                      <td className="p-2 font-normal border-r-2 border-[#2ebdaa]">
+                        Loan Deduction
+                      </td>
+                      <td className="p-2 font-normal border-r-2 border-[#2ebdaa] text-right">
+                        {paysheet.loanDeduction}
+                      </td>
+                    </>
+                  )}
+                <tr>
+                  <td className="p-2 font-semibold border-2 border-[#2ebdaa]">
+                    Total Earnings
+                  </td>
+                  <td className="p-2 font-normal border-2 border-[#2ebdaa] text-right">
+                    {paysheet.totalEarnings}
+                  </td>
+                  <td className="p-2 font-semibold border-2 border-[#2ebdaa]">
+                    Total Deductions
+                  </td>
+                  <td className="p-2 font-normal border-2 border-[#2ebdaa] text-right ">
+                    {paysheet.totalDeductions}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div className="grid grid-cols-2 border-2 border-[#2ebdaa]">
+              <div className="grid grid-cols-2 border-r-2 border-[#2ebdaa]">
+                <div className="  border-b-2 border-[#2ebdaa]">
+                  <p>Earnings</p>
+                </div>
+                <div className="border-b-2 border-[#2ebdaa]"></div>
+                <div className="">
+                  <p className="font-normal my-2">Basic Wage</p>
+                </div>
+                <div className="justify-self-end ">
+                  <p className="my-2">{paysheet.basicSalary}</p>
+                </div>
+
+                {paysheet.mobileAllowance !== 0 &&
+                  paysheet.mobileAllowance !== null && (
+                    <>
+                      <div className="">
+                        <p className="font-normal my-2">Mobile Allowance</p>
+                      </div>
+                      <div className="justify-self-end ">
+                        <p className="my-2"> {paysheet.mobileAllowance}</p>
+                      </div>
+                    </>
+                  )}
+
                 {paysheet.dataAllowance !== 0 &&
                   paysheet.dataAllowance !== null && (
                     <>
-                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
-                        Data Allowance
-                      </td>
-                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
-                        {paysheet.dataAllowance}
-                      </td>
+                      <div className="">
+                        <p className="font-normal my-2">Data Allowance</p>
+                      </div>
+                      <div className="justify-self-end ">
+                        <p className="my-2"> {paysheet.dataAllowance}</p>
+                      </div>
                     </>
                   )}
-                {paysheet.otherDeductions !== 0 &&
-                  paysheet.otherDeductions !== null && (
-                    <>
-                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
-                        Other Deductions
-                      </td>
-                      <td className='p-2 font-normal text-right'>
-                        {paysheet.otherDeductions}
-                      </td>
-                    </>
-                  )}
-              </tr>
 
-              <tr>
                 {paysheet.projectAllowance !== 0 &&
                   paysheet.projectAllowance !== null && (
                     <>
-                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
-                        Project Allowance
-                      </td>
-                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
-                        {paysheet.projectAllowance}
-                      </td>
+                      <div className="">
+                        <p className="font-normal my-2">Project Allowance</p>
+                      </div>
+                      <div className="justify-self-end ">
+                        <p className="my-2">{paysheet.projectAllowance}</p>
+                      </div>
                     </>
                   )}
-              </tr>
 
-              <tr>
                 {paysheet.performanceAllowance !== 0 && (
                   <>
-                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
-                      Performace Allowance
-                    </td>
-                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
-                      {paysheet.performanceAllowance}
-                    </td>
+                    <div className="">
+                      <p className="font-normal my-2">Performance Allowance</p>
+                    </div>
+                    <div className="justify-self-end ">
+                      <p className="my-2"> {paysheet.performanceAllowance}</p>
+                    </div>
                   </>
                 )}
-                <td className='p-2 font-semibold border-r-2 border-[#2ebdaa]'></td>
-                <td className='p-2 font-normal'></td>
-              </tr>
 
-              <tr>
                 {paysheet.holidayAllowance !== 0 &&
                   paysheet.holidayAllowance !== null && (
                     <>
-                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
-                        Holiday Allowance
-                      </td>
-                      <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
-                        {paysheet.holidayAllowance}
-                      </td>
+                      <div className="">
+                        <p className="font-normal my-2">Holiday Allowance</p>
+                      </div>
+                      <div className="justify-self-end ">
+                        <p className="my-2"> {paysheet.holidayAllowance}</p>
+                      </div>
                     </>
                   )}
-                <td className='p-2 font-semibold border-r-2 border-[#2ebdaa]'></td>
-                <td className='p-2 font-normal'></td>
-              </tr>
 
-              {paysheet.loanDeduction !== 0 &&
-                paysheet.loanDeduction !== null && (
+                {/* <div className="border-t-2 border-[#2ebdaa] ">
+                  Total Earnings
+                </div>
+                <div className="border-t-2 border-[#2ebdaa] ">
+                  <p className="text-right "> {paysheet.totalEarnings}</p>
+                </div> */}
+              </div>
+
+              <div className="grid grid-cols-2 border-r-2 border-[#2ebdaa]">
+                <div className="   border-b-2 border-[#2ebdaa]">
+                  <p>Deductions</p>
+                </div>
+                <div className="border-b-2 border-[#2ebdaa]"></div>
+                <div className="">
+                  <p className="font-normal my-2">EPF</p>
+                </div>
+                <div className="justify-self-end ">
+                  <p className="my-2">{paysheet.epfDeduction}</p>
+                </div>
+
+                {paysheet.salaryAdvance !== 0 && (
                   <>
-                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa]'>
-                      Loan Deduction
-                    </td>
-                    <td className='p-2 font-normal border-r-2 border-[#2ebdaa] text-right'>
-                      {paysheet.loanDeduction}
-                    </td>
+                    <div className="">
+                      <p className="font-normal my-2">Salary Advance</p>
+                    </div>
+                    <div className="justify-self-end ">
+                      <p className="my-2">{paysheet.salaryAdvance}</p>
+                    </div>
                   </>
                 )}
-              <tr>
-                <td className='p-2 font-semibold border-2 border-[#2ebdaa]'>
+
+                {paysheet.otherDeductions !== 0 &&
+                  paysheet.otherDeductions !== null && (
+                    <>
+                      <div className="">
+                        <p className="font-normal my-2">Other Deductions</p>
+                      </div>
+                      <div className="justify-self-end ">
+                        <p className="my-2">{paysheet.otherDeductions}</p>
+                      </div>
+                    </>
+                  )}
+
+                {paysheet.loanDeduction !== 0 &&
+                  paysheet.loanDeduction !== null && (
+                    <>
+                      <div className="">
+                        <p className="font-normal my-2"> Loan Deduction</p>
+                      </div>
+                      <div className="justify-self-end ">
+                        <p className="my-2"> {paysheet.loanDeduction}</p>
+                      </div>
+                    </>
+                  )}
+
+                {paysheet.performanceAllowance !== 0 && (
+                  <>
+                    <div className="">
+                      <p className="font-normal my-2">Performance Allowance</p>
+                    </div>
+                    <div className="justify-self-end ">
+                      <p className="my-2"> {paysheet.performanceAllowance}</p>
+                    </div>
+                  </>
+                )}
+
+                {paysheet.holidayAllowance !== 0 &&
+                  paysheet.holidayAllowance !== null && (
+                    <>
+                      <div className="">
+                        <p className="font-normal my-2">Holiday Allowance</p>
+                      </div>
+                      <div className="justify-self-end ">
+                        {paysheet.holidayAllowance}
+                      </div>
+                    </>
+                  )}
+
+                {/* <div className="border-t-2 border-[#2ebdaa] ">
                   Total Earnings
-                </td>
-                <td className='p-2 font-normal border-2 border-[#2ebdaa] text-right'>
-                  {paysheet.totalEarnings}
-                </td>
-                <td className='p-2 font-semibold border-2 border-[#2ebdaa]'>
+                </div>
+                <div className="border-t-2 border-[#2ebdaa] ">
+                  <p className="text-right "> {paysheet.totalEarnings}</p>
+                </div> */}
+              </div>
+
+              <div className="grid grid-cols-2">
+                <div className="border-t-2 border-[#2ebdaa]">
+                  Total Earnings
+                </div>
+                <div className="border-t-2 border-[#2ebdaa]">
+                  <p className="text-right "> {paysheet.totalEarnings}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2">
+                <div className="border-t-2 border-[#2ebdaa]">
                   Total Deductions
-                </td>
-                <td className='p-2 font-normal border-2 border-[#2ebdaa] text-right '>
-                  {paysheet.totalDeductions}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                </div>
+                <div className="border-t-2 border-[#2ebdaa] ">
+                  <p className="text-right "> {paysheet.totalDeductions}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         );
       }
 
@@ -314,47 +494,47 @@ export const columns: ColumnDef<Payroll>[] = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='ghost' className='h-8 w-8 p-0'>
-              <span className='sr-only'>Open menu</span>
-              <MoreHorizontal className='h-4 w-4' />
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
+          <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem asChild>
               <Dialog>
-                <DialogTrigger className='text-sm text-center mx-auto w-full'>
+                <DialogTrigger className="text-sm text-center mx-auto w-full">
                   View PaySheet
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>
-                      <div className='flex gap-60 content-center bg-[#2ebdaa] p-4'>
+                      <div className="flex gap-60 content-center bg-[#2ebdaa] p-4">
                         <div>
-                          <div className='text-white font-bold text-2xl'>
+                          <div className="text-white font-bold text-2xl">
                             Sphiria Digital Studio
                           </div>
-                          <div className='mt-2 text-white font-normal text-base'>
+                          <div className="mt-2 text-white font-normal text-base">
                             71/2, Sri Dharmapala Mawatha,Kandy
                           </div>
-                          <div className='text-white font-normal text-base'>
+                          <div className="text-white font-normal text-base">
                             076 322 0666
                           </div>
                         </div>
 
-                        <div className='m-auto'>
+                        <div className="m-auto">
                           <Image
-                            src={'/Dark BG-03.png'}
-                            alt='Image'
+                            src={"/Dark BG-03.png"}
+                            alt="Image"
                             width={180}
                             height={180}
-                            className='rounded-lg'
+                            className="rounded-lg"
                           />
                         </div>
                       </div>
-                      <div className='p-4 flex justify-center flex-col gap-y-8'>
+                      <div className="p-4 flex justify-center flex-col gap-y-8">
                         <div
-                          className='flex justify-center flex-col gap-y-4'
+                          className="flex justify-center flex-col gap-y-4"
                           gap-y-8
                         >
                           Pay sheet for {paysheet.monthYear}
@@ -363,21 +543,21 @@ export const columns: ColumnDef<Payroll>[] = [
 
                         <SalaryDetails />
                       </div>
-                      <div className='p-4 w-2/4 '>
-                        <div className='grid grid-cols-2 gap-2 pl-2 border-b-2 border-[#2ebdaa]'>
+                      <div className="p-4 w-2/4 ">
+                        <div className="grid grid-cols-2 gap-2 pl-2 border-b-2 border-[#2ebdaa]">
                           <div>Total Earnings : </div>
-                          <div className='text-right'>
+                          <div className="text-right">
                             {paysheet.totalEarnings}
                           </div>
-                          <div className='mb-2'>Total Deductions :</div>
+                          <div className="mb-2">Total Deductions :</div>
 
-                          <div className='text-right'>
+                          <div className="text-right">
                             {paysheet.totalDeductions}
                           </div>
                         </div>
-                        <div className='grid grid-cols-2 gap-2 mt-2 pl-2'>
-                          <div className=''>Net Salary :</div>
-                          <div className='text-right'>{paysheet.netSalary}</div>
+                        <div className="grid grid-cols-2 gap-2 mt-2 pl-2">
+                          <div className="">Net Salary :</div>
+                          <div className="text-right">{paysheet.netSalary}</div>
                         </div>
                       </div>
                     </DialogTitle>
@@ -398,7 +578,7 @@ export const columns: ColumnDef<Payroll>[] = [
               Edit PaySlip
             </DropdownMenuItem>
             <DropdownMenuItem
-              className='text-red-500'
+              className="text-red-500"
               onClick={() => {
                 if (!isPastGracePeriod) {
                   removePayroll(paysheet.id);

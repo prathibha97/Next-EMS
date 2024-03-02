@@ -12,6 +12,9 @@ const useLeaves = () => {
           },
         },
       },
+      orderBy:{
+        createdAt: 'desc'
+      }
     });
     return leaves;
   };

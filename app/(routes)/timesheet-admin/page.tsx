@@ -1,14 +1,8 @@
-import useEmployee from '@/hooks/useEmployee';
 import prisma from '@/lib/prisma';
 import ViewTimeSheet from './components/view-time-sheet';
 
-const TimeSheetPage = async () => {
-  const { getLoggedInEmployee } = useEmployee();
-  const employee = await getLoggedInEmployee();
+const TimeSheetAdminPage = async () => {
   const taskWork = await prisma.taskWork.findMany({
-    where: {
-      employeeId: employee?.id,
-    },
     include: {
       task: {
         include: {
@@ -33,9 +27,9 @@ const TimeSheetPage = async () => {
 
   return (
     <div>
-      <ViewTimeSheet taskWork={taskWork} employeeId={employee?.id!} />
+      <ViewTimeSheet taskWork={taskWork} />
     </div>
   );
 };
 
-export default TimeSheetPage;
+export default TimeSheetAdminPage;

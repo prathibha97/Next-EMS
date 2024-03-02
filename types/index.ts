@@ -41,6 +41,7 @@ export type TaskWorkWithTaskWithProjectWithClient = TaskWork & {
       client: Client;
     };
   },
+  employee: Employee
 };
 
 export type LIstWithCards = List & {

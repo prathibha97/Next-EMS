@@ -159,7 +159,7 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
         employeeId,
         ...values,
       });
-    } catch (err) {
+    } catch (err:any) {
       setIsLoading(false);
       toast({
         title: 'Error',
@@ -316,7 +316,7 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
                     className='bg-[#2ebdaa] w-20 text-center'
                     type='submit'
                     label='Submit'
-                    isLoading={isLoading}
+                    isLoading={leaveRequestLoading}
                   />
                 </div>
               </div>

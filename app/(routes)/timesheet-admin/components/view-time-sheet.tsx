@@ -1,26 +1,26 @@
 'use client';
 import { TaskWorkWithTaskWithProjectWithClient } from '@/types';
 import { FC, useState } from 'react';
-import { AddTimeLogDialog } from './add-timelog';
 import { columns } from './columns';
 import { TimeSheetTable } from './time-sheet-table';
 
 interface ViewTimeSheetProps {
   taskWork: TaskWorkWithTaskWithProjectWithClient[];
-  employeeId: string;
 }
 
-const ViewTimeSheet: FC<ViewTimeSheetProps> = ({ taskWork, employeeId }) => {
+const ViewTimeSheet: FC<ViewTimeSheetProps> = ({ taskWork }) => {
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<string | null>(null);
 
   const filteredTaskWork = taskWork.filter((task) => {
     if (
       (selectedMonth === null || task.date.getMonth() + 1 === selectedMonth) &&
       (selectedYear === null || task.date.getFullYear() === selectedYear) &&
       (selectedDate === null ||
-        task.date.toDateString() === selectedDate.toDateString())
+        task.date.toDateString() === selectedDate.toDateString()) &&
+      (selectedEmployee === null || task.employee.name === selectedEmployee)
     ) {
       return true;
     }
@@ -36,55 +36,41 @@ const ViewTimeSheet: FC<ViewTimeSheetProps> = ({ taskWork, employeeId }) => {
     return uniqueYears;
   };
 
-  // const getUniqueMonths = (
-  //   taskWork: TaskWorkWithTaskWithProjectWithClient[],
-  //   selectedYear: number | null
-  // ) => {
-  //   const filteredMonths = taskWork
-  //     .filter(
-  //       (task) =>
-  //         selectedYear === null || task.date.getFullYear() === selectedYear
-  //     )
-  //     .map((task) => task.date.getMonth() + 1);
+  const getUniqueMonths = (
+    taskWork: TaskWorkWithTaskWithProjectWithClient[],
+    selectedYear: number | null
+  ) => {
+    const filteredMonths = taskWork
+      .filter(
+        (task) =>
+          selectedYear === null || task.date.getFullYear() === selectedYear
+      )
+      .map((task) =>
+        new Date(task.date).toLocaleString('default', { month: 'long' })
+      );
 
-  //   const uniqueMonths = Array.from(new Set(filteredMonths));
-  //   return uniqueMonths;
-  // };
+    const uniqueMonths = Array.from(new Set(filteredMonths));
+    return uniqueMonths;
+  };
 
-  // const uniqueYears = getUniqueYears(taskWork);
-  // const uniqueMonths = getUniqueMonths(taskWork, selectedYear);
+  const getUniqueEmployees = (
+    taskWork: TaskWorkWithTaskWithProjectWithClient[]
+  ) => {
+    const uniqueEmployees = Array.from(
+      new Set(taskWork.map((task) => task.employee.name))
+    );
+    return uniqueEmployees;
+  };
 
-  // // Calculate total hours
-  // const totalHours = filteredTaskWork.reduce(
-  //   (acc, task) => acc + task.hoursWorked,
-  //   0
-  // );
+  const uniqueYears = getUniqueYears(taskWork);
+  const uniqueMonths = getUniqueMonths(taskWork, selectedYear);
+  const uniqueEmployees = getUniqueEmployees(taskWork);
 
-   const getUniqueMonths = (
-     taskWork: TaskWorkWithTaskWithProjectWithClient[],
-     selectedYear: number | null
-   ) => {
-     const filteredMonths = taskWork
-       .filter(
-         (task) =>
-           selectedYear === null || task.date.getFullYear() === selectedYear
-       )
-       .map((task) =>
-         new Date(task.date).toLocaleString('default', { month: 'long' })
-       );
-
-     const uniqueMonths = Array.from(new Set(filteredMonths));
-     return uniqueMonths;
-   };
-
-   const uniqueYears = getUniqueYears(taskWork);
-   const uniqueMonths = getUniqueMonths(taskWork, selectedYear);
-
-   // Calculate total hours
-   const totalHours = filteredTaskWork.reduce(
-     (acc, task) => acc + task.hoursWorked,
-     0
-   );
+  // Calculate total hours
+  const totalHours = filteredTaskWork.reduce(
+    (acc, task) => acc + task.hoursWorked,
+    0
+  );
 
   return (
     <div className='bg-white dark:bg-gray-900/60 p-5 rounded-lg shadow'>
@@ -131,9 +117,21 @@ const ViewTimeSheet: FC<ViewTimeSheetProps> = ({ taskWork, employeeId }) => {
           />
         </div>
 
-      <div className=''>
-        <AddTimeLogDialog employeeId={employeeId} />
-      </div>
+        <div>
+          <label className='text-sm'>Sort By Employee</label>
+          <select
+            value={selectedEmployee || ''}
+            onChange={(e) => setSelectedEmployee(e.target.value || null)}
+            className='p-2 px-4 w-full rounded-md focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-slate-100 dark:bg-slate-400/60 text-sm'
+          >
+            <option value=''>All Employees</option>
+            {uniqueEmployees.map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <TimeSheetTable

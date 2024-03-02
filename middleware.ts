@@ -21,6 +21,9 @@ export default withAuth({
       if (pathname.startsWith('/clients')) {
         return token?.role === 'ADMIN';
       }
+      if (pathname.startsWith('/timesheet-admin')) {
+        return token?.role === 'ADMIN';
+      }
       // other routes only requires the user to be logged in
       return !!token;
     },
@@ -37,6 +40,7 @@ export const config = {
     '/timesheet',
     '/settings',
     '/meetings',
+    '/timesheet-admin',
     '/organization/:path*',
     '/projects/:path*',
     '/clients/:path*',

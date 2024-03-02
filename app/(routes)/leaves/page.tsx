@@ -6,6 +6,8 @@ import ApplyLeaveForm from './components/apply-leave-form';
 import LeaveBalance from './components/leave-balance';
 import { Employee, LeaveBalance as LeaveBalanceType } from '@prisma/client';
 
+export const revalidate = 0;
+
 type EmployeeWithLeaveBalance = Employee & {
   leaveBalance: LeaveBalanceType;
 };
@@ -18,6 +20,9 @@ const ApplyLeavePage = async () => {
     where: {
       employeeId: currentEmployee?.id,
     },
+    orderBy:{
+      createdAt: 'desc'
+    }
   });
 
   return (

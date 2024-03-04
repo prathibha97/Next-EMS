@@ -153,7 +153,7 @@ export const columns: ColumnDef<Payroll>[] = [
       function SalaryDetails() {
         return (
           <div>
-            <table className="border-2 border-[#2ebdaa] mb-12">
+            {/* <table className="border-2 border-[#2ebdaa] mb-12">
               <tbody>
                 <tr className="">
                   <td className="p-2 font-semibold border-b-2  border-[#2ebdaa] h-8 ">
@@ -215,6 +215,7 @@ export const columns: ColumnDef<Payroll>[] = [
                         </td>
                       </>
                     )}
+
                   {paysheet.otherDeductions !== 0 &&
                     paysheet.otherDeductions !== null && (
                       <>
@@ -299,9 +300,9 @@ export const columns: ColumnDef<Payroll>[] = [
                   </td>
                 </tr>
               </tbody>
-            </table>
+            </table> */}
 
-            <div className="grid grid-cols-2 border-2 border-[#2ebdaa]">
+            {/* <div className="grid grid-cols-2 border-2 border-[#2ebdaa] mb-16">
               <div className="grid grid-cols-2 border-r-2 border-[#2ebdaa]">
                 <div className="  border-b-2 border-[#2ebdaa]">
                   <p>Earnings</p>
@@ -372,13 +373,6 @@ export const columns: ColumnDef<Payroll>[] = [
                       </div>
                     </>
                   )}
-
-                {/* <div className="border-t-2 border-[#2ebdaa] ">
-                  Total Earnings
-                </div>
-                <div className="border-t-2 border-[#2ebdaa] ">
-                  <p className="text-right "> {paysheet.totalEarnings}</p>
-                </div> */}
               </div>
 
               <div className="grid grid-cols-2 border-r-2 border-[#2ebdaa]">
@@ -450,13 +444,6 @@ export const columns: ColumnDef<Payroll>[] = [
                       </div>
                     </>
                   )}
-
-                {/* <div className="border-t-2 border-[#2ebdaa] ">
-                  Total Earnings
-                </div>
-                <div className="border-t-2 border-[#2ebdaa] ">
-                  <p className="text-right "> {paysheet.totalEarnings}</p>
-                </div> */}
               </div>
 
               <div className="grid grid-cols-2">
@@ -476,6 +463,166 @@ export const columns: ColumnDef<Payroll>[] = [
                   <p className="text-right "> {paysheet.totalDeductions}</p>
                 </div>
               </div>
+            </div> */}
+            <div className="w-full mx-auto mt-2">
+              <p className="text-18px font-semibold mb-4">
+                Earnings and Deductions
+              </p>
+
+              <table className="w-full border">
+                <thead>
+                  <tr className="bg-[#2ebdaa]">
+                    <th className="border py-2 px-4">Earnings</th>
+                    <th className="border py-2 px-4">Earned (LKR)</th>
+                    <th className="border py-2 px-4">Deductions</th>
+                    <th className="border py-2 px-4">Deducted (LKR)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* Example Row 1 */}
+                  <tr className="border">
+                    <td className="border py-2 px-4">Basic Wage</td>
+                    <td className="border py-2 px-4">
+                      {" "}
+                      {paysheet.basicSalary}
+                    </td>
+                    <td className="border py-2 px-4">EPF</td>
+                    <td className="border py-2 px-4">
+                      {" "}
+                      {paysheet.epfDeduction}
+                    </td>
+                  </tr>
+
+                  {/* Example Row 2 */}
+                  <tr className="border">
+                    {paysheet.mobileAllowance !== 0 &&
+                      paysheet.mobileAllowance !== null && (
+                        <>
+                          <td className="border py-2 px-4">Mobile Allowance</td>
+                          <td className="border py-2 px-4">
+                            {" "}
+                            {paysheet.mobileAllowance}
+                          </td>
+                        </>
+                      )}
+
+                    {paysheet.salaryAdvance !== 0 && (
+                      <>
+                        <td className="border py-2 px-4">Salary Advance</td>
+                        <td className="border py-2 px-4">
+                          {" "}
+                          {paysheet.salaryAdvance}
+                        </td>
+                      </>
+                    )}
+                  </tr>
+
+                  {/* Example Row 3 */}
+                  <tr className="border">
+                    {paysheet.dataAllowance !== 0 &&
+                      paysheet.dataAllowance !== null && (
+                        <>
+                          <td className="border py-2 px-4">Data Allowance</td>
+                          <td className="border py-2 px-4">
+                            {" "}
+                            {paysheet.dataAllowance}
+                          </td>
+                        </>
+                      )}
+
+                    {paysheet.loanDeduction !== 0 &&
+                      paysheet.loanDeduction !== null && (
+                        <>
+                          <td className="border py-2 px-4">Loan Deduction</td>
+                          <td className="border py-2 px-4">
+                            {" "}
+                            {paysheet.loanDeduction}
+                          </td>{" "}
+                        </>
+                      )}
+                  </tr>
+
+                  {/* Example Row 4 */}
+                  <tr className="border">
+                    {paysheet.projectAllowance !== 0 &&
+                      paysheet.projectAllowance !== null && (
+                        <>
+                          <td className="border py-2 px-4">
+                            Project Allowance
+                          </td>
+                          <td className="border py-2 px-4">
+                            {" "}
+                            {paysheet.projectAllowance}
+                          </td>
+                        </>
+                      )}
+
+                    {paysheet.otherDeductions !== 0 &&
+                      paysheet.otherDeductions !== null && (
+                        <>
+                          <td className="border py-2 px-4">Other Deductions</td>
+                          <td className="border py-2 px-4">
+                            {" "}
+                            {paysheet.otherDeductions}
+                          </td>
+                        </>
+                      )}
+                  </tr>
+
+                  {/* Example Row 5 */}
+
+                  <tr className="border">
+                    {paysheet.performanceAllowance !== 0 && (
+                      <>
+                        <td className="border py-2 px-4">
+                          Performance Allowance
+                        </td>
+                        <td className="border py-2 px-4">
+                          {" "}
+                          {paysheet.performanceAllowance}
+                        </td>
+                      </>
+                    )}
+                    <td className="border py-2 px-4"></td>
+                    <td className="border py-2 px-4"></td>
+                  </tr>
+
+                  {/* Example Row 6 */}
+                  <tr className="border">
+                    {paysheet.holidayAllowance !== 0 &&
+                      paysheet.holidayAllowance !== null && (
+                        <>
+                          <td className="border py-2 px-4">
+                            Holiday Allowance
+                          </td>
+                          <td className="border py-2 px-4">
+                            {" "}
+                            {paysheet.holidayAllowance}
+                          </td>
+                        </>
+                      )}
+
+                    <td className="border py-2 px-4"></td>
+                    <td className="border py-2 px-4"></td>
+                  </tr>
+
+                  {/* Example Row 4 */}
+                  <tr className="border">
+                    <td className="border py-2 px-4">Total Earnings</td>
+                    <td className="border py-2 px-4">
+                      {" "}
+                      {paysheet.totalEarnings}
+                    </td>
+                    <td className="border py-2 px-4">Total Deductions</td>
+                    <td className="border py-2 px-4">
+                      {" "}
+                      {paysheet.totalDeductions}
+                    </td>
+                  </tr>
+
+                  {/* Add more rows as needed */}
+                </tbody>
+              </table>
             </div>
           </div>
         );
@@ -537,7 +684,10 @@ export const columns: ColumnDef<Payroll>[] = [
                           className="flex justify-center flex-col gap-y-4"
                           gap-y-8
                         >
-                          Pay sheet for {paysheet.monthYear}
+                          <p className="text-18px font-semibold">
+                            Pay sheet for {paysheet.monthYear}
+                          </p>
+
                           <EmployeeDetails />
                         </div>
 

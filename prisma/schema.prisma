@@ -371,7 +371,7 @@ model Otp {
 model Board {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   title         String
-  imageId       String
+  imageId       String?
   imageThumbUrl String
   imageFullUrl  String
   imageUserName String

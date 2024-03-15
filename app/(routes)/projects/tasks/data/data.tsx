@@ -22,6 +22,26 @@ export const labels = [
     value: 'documentation',
     label: 'Documentation',
   },
+  {
+    value: 'NFT',
+    label: 'NFT',
+  },
+  {
+    value: 'Digital Arts',
+    label: 'ART',
+  },
+  {
+    value: 'Graphic Design',
+    label: 'GRD',
+  },
+  {
+    value: 'Web Development',
+    label: 'WEB',
+  },
+  {
+    value: 'Social Media Marketing',
+    label: 'SME',
+  },
 ];
 
 export const statuses = [

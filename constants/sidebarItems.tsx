@@ -35,11 +35,11 @@ export const sidebarItems = [
     icon: <ClockIcon className='h-6 w-6' />,
     link: '/timesheet',
   },
-  {
-    name: 'Meetings',
-    icon: <CalendarIcon className='h-6 w-6' />,
-    link: '/meetings',
-  },
+  // {
+  //   name: 'Meetings',
+  //   icon: <CalendarIcon className='h-6 w-6' />,
+  //   link: '/meetings',
+  // },
   {
     name: 'Attendance Sheet',
     icon: <Briefcase className='h-6 w-6' />,

@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 import { FormInput } from './form-input';
 import { FormPicker } from './form-picker';
 import { FormSubmit } from './form-submit';
+import { useSearchParams } from 'next/navigation';
 
 interface FormPopoverProps {
   children: React.ReactNode;
@@ -31,9 +32,9 @@ const FormPopover: FC<FormPopoverProps> = ({
   sideOffset = 0,
 }) => {
   const router = useRouter();
-  const params = useParams();
+  const searchParams = useSearchParams();
 
-  const projectId = params?.projectId as string;
+  const projectId = searchParams?.get('projectId') as string;
 
   const closeRef = useRef<ElementRef<'button'>>(null);
   const { execute, fieldErrors } = useAction(createBoard, {

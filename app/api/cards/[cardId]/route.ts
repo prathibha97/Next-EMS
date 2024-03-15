@@ -1,7 +1,6 @@
+import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { getAuthSession } from '../../auth/[...nextauth]/options';
-import prisma from '@/lib/prisma';
-
 
 export async function GET(
   req: Request,
@@ -16,11 +15,6 @@ export async function GET(
     const card = await prisma.card.findUnique({
       where: {
         id: params.cardId,
-        // list: {
-        //   board: {
-        //     orgId,
-        //   },
-        // },
       },
       include: {
         list: {

@@ -157,9 +157,16 @@ const AddPayrollForm: FC<AddPayrollFormProps> = ({ employee }) => {
 
   const onSubmit = async (values: PayrollFormValues) => {
     try {
-      calculateValues(values);
+      // Check if any of the form values are negative
+      const negativeValues = Object.values(values).filter(
+        (value) => parseFloat(value) < 0
+      );
+      if (negativeValues.length > 0) {
+        throw new Error('Form contains negative values');
+      }
+
       const response = await addPayroll({
-        employeeId: employee.id, // Pass the employeeId to the mutation
+        employeeId: employee.id,
         body: {
           monthYear: values.monthYear,
           basicSalary: parseFloat(values.basicSalary),
@@ -168,13 +175,14 @@ const AddPayrollForm: FC<AddPayrollFormProps> = ({ employee }) => {
           projectAllowance: parseFloat(values.projectAllowance),
           performanceAllowance: parseFloat(values.performanceAllowance),
           holidayAllowance: parseFloat(values.holidayAllowance),
-          epfDeduction: parseFloat(employeeEpfAmount as unknown as string),
+          epfDeduction: parseFloat(values.epfDeduction),
           otherDeductions: parseFloat(values.otherDeductions),
           workingDays: parseInt(values.workingDays),
           paidDays: parseInt(values.paidDays),
         },
       }).unwrap();
-      const payroll = response; // Access the nested data
+
+      const payroll = response;
       dispatch(addPayrollData(payroll));
       toast({
         title: 'Success',
@@ -183,19 +191,15 @@ const AddPayrollForm: FC<AddPayrollFormProps> = ({ employee }) => {
       form.reset();
       router.push(`/accounts/payroll/${employee.id}`);
       router.refresh();
-    } catch (error) {
+    } catch (error:any) {
       toast({
         title: 'Error',
-        description: 'Something went wrong, Please try again',
+        description: error.message || 'Something went wrong, Please try again',
         variant: 'destructive',
       });
       console.log(error);
     }
   };
-
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
 
   return (
     <div className='space-y-3'>

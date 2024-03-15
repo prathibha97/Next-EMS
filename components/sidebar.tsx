@@ -3,13 +3,12 @@ import { setLogout } from '@/app/redux/features/authSlice';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { sidebarItems } from '@/constants/sidebarItems';
 import { LogOut } from 'lucide-react';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from './ui/button';
 
 const Sidebar = () => {
-  const { data: session } = useSession();
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();

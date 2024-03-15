@@ -2,6 +2,7 @@ import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { getAuthSession } from '../auth/[...nextauth]/options';
 
+
 export async function POST(req: Request) {
   try {
     const session = await getAuthSession();
@@ -45,6 +46,34 @@ export async function POST(req: Request) {
         description,
       },
     });
+
+    // Fetch the ID of the "TODO" list associated with the project board
+    const todoList = await prisma.list.findFirst({
+      where: {
+        board: {
+          projectId: project,
+        },
+        title: 'TODO', // Assuming the title of the list is 'TODO'
+      },
+      select: { id: true },
+    });
+
+    if (!todoList) {
+      throw new Error('TODO list not found for the project');
+    }
+
+    // Create a card for the task in the project board's "TODO" list
+    const card = await prisma.card.create({
+      data: {
+        title: task.title,
+        description: task.description,
+        order: 0, // Set the order as needed
+        listId: todoList.id,
+        projectId: task.projectId,
+        taskId: task.id
+      },
+    });
+
     return NextResponse.json(task);
   } catch (error: any) {
     console.log(error.message);
@@ -53,6 +82,7 @@ export async function POST(req: Request) {
     });
   }
 }
+
 
 export async function GET(req: Request) {
   try {

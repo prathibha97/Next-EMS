@@ -18,6 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Employee, Leave } from '@prisma/client';
 import {
@@ -28,8 +29,6 @@ import {
 import { FilterFn, SortingFn, sortingFns } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { toast } from '@/hooks/use-toast';
 
 declare module '@tanstack/table-core' {
   interface FilterFns {
@@ -148,11 +147,6 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
       return <div className={textColor}>{row.getValue('status')}</div>;
     },
   },
-  // {
-  //   accessorKey: 'remarks',
-  //   header: () => <div>Remarks</div>,
-  //   cell: ({ row }) => <div>{row.getValue('remarks')}</div>,
-  // },
   {
     id: 'actions',
     enableHiding: false,
@@ -160,11 +154,8 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
       const router = useRouter();
       const leave = row.original;
 
-
       const [removeLeaveRequest] = useRemoveLeaveRequestMutation();
       const [updateLeaveRequest] = useUpdateLeaveRequestMutation();
-
-   
 
       const handleApprove = async () => {
         try {
@@ -183,7 +174,7 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
           toast({
             title: 'Failed',
             description: `Failed to approve ${row.original.employee.name}'s leave request. Please try again`,
-            variant: 'destructive'
+            variant: 'destructive',
           });
           console.log(error);
         }
@@ -201,8 +192,8 @@ export const columns: ColumnDef<LeaveWithEmployee>[] = [
           router.refresh();
           toast({
             title: 'Success',
-            description: `${row.original.employee.name}'s leave rejected successfully`
-          })
+            description: `${row.original.employee.name}'s leave rejected successfully`,
+          });
         } catch (error) {
           toast({
             title: 'Failed',

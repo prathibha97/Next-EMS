@@ -12,6 +12,9 @@ const useProject = () => {
           },
         },
       },
+      orderBy:{
+        createdAt: 'desc'
+      }
     });
     return projects;
   };

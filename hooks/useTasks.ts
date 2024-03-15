@@ -11,6 +11,9 @@ const useTasks = () => {
           },
         },
       },
+      orderBy:{
+        createdAt: 'desc'
+      }
     });
     return tasks;
   };

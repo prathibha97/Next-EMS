@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { getAuthSession } from '../auth/[...nextauth]/options';
+import { generateBoardAndLists } from '@/lib/generate-boards-and-lists';
 
 export async function POST(req: Request) {
   try {
@@ -35,7 +36,6 @@ export async function POST(req: Request) {
       },
     });
 
-
     // Extract employee IDs
     const employeeIds = employeeRecords.map((employee) => employee.id);
 
@@ -68,6 +68,10 @@ export async function POST(req: Request) {
         },
       },
     });
+
+    // Generate board and lists for the project
+    await generateBoardAndLists(project.id, project.name);
+
     return NextResponse.json(project);
   } catch (error: any) {
     console.log(error.message);

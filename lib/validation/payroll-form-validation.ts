@@ -11,8 +11,12 @@ export const PayrollFormSchema = z.object({
   salaryAdvance: z.string().optional(),
   epfDeduction: z.string(),
   otherDeductions: z.string(),
-  workingDays: z.string(),
-  paidDays: z.string(),
+  workingDays: z.string().min(1, {
+    message: 'Please select the number of days worked',
+  }),
+  paidDays: z.string().min(1, {
+    message: 'Please select the number of days paid',
+  }),
 });
 
 export type PayrollFormValues = z.infer<typeof PayrollFormSchema>;

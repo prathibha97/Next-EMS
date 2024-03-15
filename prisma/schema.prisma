@@ -308,6 +308,7 @@ model Project {
   progress Int?   @default(0)
 
   board Board[]
+  cards Card[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -334,8 +335,9 @@ model Task {
   priority    TaskPriority? @default(Low)
 
   projectId String  @db.ObjectId
-  project   Project @relation(fields: [projectId], references: [id])
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
+  cards         Card[]
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
   workPerformed TaskWork[]
@@ -369,9 +371,9 @@ model Otp {
 }
 
 model Board {
-  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
   title         String
-  imageId       String
+  imageId       String?
   imageThumbUrl String
   imageFullUrl  String
   imageUserName String
@@ -408,6 +410,11 @@ model Card {
 
   listId String @db.ObjectId
   list   List   @relation(fields: [listId], references: [id], onDelete: Cascade)
+
+  taskId    String?  @db.ObjectId
+  task      Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  projectId String?  @db.ObjectId
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

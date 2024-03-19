@@ -49,9 +49,19 @@ export const generateFiveDigitOTP = () => {
   return otp.toString();
 };
 
-// Function to get the initials from the name
-  export const getInitials = (name: string): string => {
-    const words = name.split(' ');
-    const initials = words.map((word) => word.charAt(0).toUpperCase());
-    return initials.join('');
-  };
+export const getInitials = (name: string | undefined): string => {
+  if (!name || name.trim() === '') {
+    // If name is not provided or empty, return a default value
+    return 'NA';
+  }
+
+  // Split the name into words
+  const words = name.split(' ');
+
+  // Map each word to its first character (initial) and capitalize it
+  const initials = words.map((word) => word.charAt(0).toUpperCase());
+
+  // Return the concatenated initials
+  return initials.join('');
+};
+

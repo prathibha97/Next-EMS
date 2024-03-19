@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { getInitials } from '@/lib/utils';
 import { Employee } from '@prisma/client';
 import axios from 'axios';
 import { signOut, useSession } from 'next-auth/react';
@@ -49,7 +50,7 @@ export function UserNav() {
           <Button variant='ghost' className='relative h-12 w-12 rounded-full'>
             <Avatar className='h-8 w-8'>
               <AvatarImage src={employee?.profile_photo} alt='avatar' />
-              <AvatarFallback>SC</AvatarFallback>
+              <AvatarFallback>{getInitials(employee?.name!)}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
@@ -70,9 +71,9 @@ export function UserNav() {
               Profile
             </DropdownMenuItem>
             {session.data?.user.role === 'ADMIN' && (
-            <DropdownMenuItem onClick={() => router.push('/settings')}>
-              Settings
-            </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push('/settings')}>
+                Settings
+              </DropdownMenuItem>
             )}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />

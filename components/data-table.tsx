@@ -32,6 +32,7 @@ import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { FormLabel } from './ui/form';
 import { fuzzyFilter } from '@/app/(routes)/organization/leaves/components/columns';
+import { DataTablePagination } from './data-table-pagination';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -77,8 +78,8 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="w-full bg-white rounded-md dark:bg-black/60 p-3">
-        <div className="flex py-4">
+      <div className='w-full bg-white rounded-md dark:bg-black/60 p-3'>
+        <div className='flex py-4'>
           <Input
             type={inputType || 'date'}
             placeholder={`Filter ${placeholder}...`}
@@ -92,15 +93,15 @@ export function DataTable<TData, TValue>({
                 .getColumn(searchFilter || '')
                 ?.setFilterValue(event.target.value)
             }
-            className="max-w-sm"
+            className='max-w-sm'
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Columns <ChevronDown className="ml-2 h-4 w-4" />
+              <Button variant='outline' className='ml-auto'>
+                Columns <ChevronDown className='ml-2 h-4 w-4' />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align='end'>
               {table
                 .getAllColumns()
                 .filter((column) => column.getCanHide())
@@ -108,7 +109,7 @@ export function DataTable<TData, TValue>({
                   return (
                     <DropdownMenuCheckboxItem
                       key={column.id}
-                      className="capitalize"
+                      className='capitalize'
                       checked={column.getIsVisible()}
                       onCheckedChange={(value) =>
                         column.toggleVisibility(!!value)
@@ -121,7 +122,7 @@ export function DataTable<TData, TValue>({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="rounded-md border">
+        <div className='rounded-md border'>
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -162,7 +163,7 @@ export function DataTable<TData, TValue>({
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center"
+                    className='h-24 text-center'
                   >
                     No results.
                   </TableCell>
@@ -171,29 +172,8 @@ export function DataTable<TData, TValue>({
             </TableBody>
           </Table>
         </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{' '}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div>
-          <div className="space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Next
-            </Button>
-          </div>
+        <div className='mt-5'>
+          <DataTablePagination table={table} />
         </div>
       </div>
     </>

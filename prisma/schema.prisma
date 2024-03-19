@@ -70,7 +70,6 @@ model Employee {
   position              String
   workMobile            String
   personalMobile        String
-  jobPosition           String
   profile_photo         String
   workAddress           String?
   workLocation          String?

@@ -88,7 +88,7 @@ export function NotificationButton() {
   ).length;
 
   if (!employee) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   if (!isMounted) {

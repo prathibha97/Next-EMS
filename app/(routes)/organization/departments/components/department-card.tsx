@@ -57,6 +57,13 @@ const DepartmentCard: FC<DepartmentCardProps> = ({ department, onClick }) => {
                     View department
                   </DropdownMenuItem>
                   <DropdownMenuItem
+                    onClick={() => {
+                      router.push(`/organization/departments/${department.id}/edit`);
+                    }}
+                  >
+                    Edit department
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
                     className='text-red-500'
                     onClick={() => {
                       removeDepartment({ departmentId: department.id });

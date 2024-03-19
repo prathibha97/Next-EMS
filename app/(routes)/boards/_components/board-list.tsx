@@ -17,6 +17,11 @@ export const BoardList = async ({
   userProjects,
 }: BoardListProps) => {
   const session = await getAuthSession();
+
+  if (!projectId) {
+    return <div>No projects have been assigned yet.</div>;
+  }
+
   const boards = await prisma.board.findMany({
     where: {
       projectId: projectId as string,
@@ -25,6 +30,11 @@ export const BoardList = async ({
       createdAt: 'desc',
     },
   });
+
+   if (boards.length === 0) {
+     return <div className='text-center'>No boards available.</div>;
+   }
+
   return (
     <div className="h-full space-y-4 bg-white p-2 rounded-lg">
       <div className="flex items-center justify-between">

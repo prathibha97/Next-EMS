@@ -89,8 +89,8 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
       data: {
         employeeId: employee.id,
         annual: parseInt(annualLeaves) || 0,
-        casual: parseInt(casualLeaves),
-        medical: parseInt(medicalLeaves),
+        casual: parseInt(casualLeaves) || 0,
+        medical: parseInt(medicalLeaves) || 0,
         unpaid: parseInt(unpaidLeaves) || 0,
         broughtForward: 0,
         duty: parseInt(dutyLeaves) || 0,

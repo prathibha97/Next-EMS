@@ -1,4 +1,3 @@
-// import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import { ListContainer } from './_components/list-container';
 import prisma from '@/lib/prisma';
@@ -9,21 +8,20 @@ interface BoardIdPageProps {
   };
 }
 const BoardIdPage = async ({ params }: BoardIdPageProps) => {
-  // const { orgId } = auth();
-
-  // if (!orgId) {
-  //   redirect('/select-org');
-  // }
 
   const lists = await prisma.list.findMany({
     where: {
       boardId: params.boardId,
-      // board: {
-      //   orgId,
-      // },
     },
     include: {
       cards: {
+        include:{
+          task: {
+            include:{
+              employee: true
+            }
+          },
+        },
         orderBy: {
           order: 'asc',
         },

@@ -88,7 +88,11 @@ export async function GET(req: Request) {
       throw new NextResponse('Unauthorized', { status: 401 });
     }
 
-    const projects = await prisma.project.findMany({});
+    const projects = await prisma.project.findMany({
+      orderBy:{
+        createdAt: 'desc'
+      }
+    });
     return NextResponse.json(projects);
   } catch (error: any) {
     console.log(error.message);

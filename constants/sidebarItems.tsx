@@ -20,11 +20,11 @@ export const sidebarItems = [
     icon: <IdCardIcon className='h-6 w-6' />,
     link: '/profile',
   },
-  {
-    name: 'Tasks',
-    icon: <RocketIcon className='h-6 w-6' />,
-    link: '/tasks',
-  },
+  // {
+  //   name: 'Tasks',
+  //   icon: <RocketIcon className='h-6 w-6' />,
+  //   link: '/tasks',
+  // },
   {
     name: 'Boards',
     icon: <Layout className='h-6 w-6' />,

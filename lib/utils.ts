@@ -48,3 +48,10 @@ export const generateFiveDigitOTP = () => {
   const otp = Math.floor(10000 + Math.random() * 90000);
   return otp.toString();
 };
+
+// Function to get the initials from the name
+  export const getInitials = (name: string): string => {
+    const words = name.split(' ');
+    const initials = words.map((word) => word.charAt(0).toUpperCase());
+    return initials.join('');
+  };

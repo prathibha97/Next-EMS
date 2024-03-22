@@ -18,7 +18,7 @@ const BoardsPage = async ({ searchParams }: BoardPageProps) => {
   }
 
   return (
-    <div className='px-2 md:px-4 h-full'>
+    <div className='px-2 md:px-4 p-5 h-full'>
       <Suspense fallback={<BoardList.Skeleton />}>
         <BoardList
           projectId={searchParams.projectId || ''}

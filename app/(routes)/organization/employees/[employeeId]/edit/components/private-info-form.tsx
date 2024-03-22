@@ -118,7 +118,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                           <FormControl>
                             <Input
                               {...field}
-                              className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                              className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
                             />
                           </FormControl>
                           <FormMessage />
@@ -136,7 +136,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
                           />
                         </FormControl>
                         <FormMessage />
@@ -153,7 +153,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
                           />
                         </FormControl>
                         <FormMessage />
@@ -170,7 +170,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
                           />
                         </FormControl>
                         <FormMessage />
@@ -187,7 +187,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
                           />
                         </FormControl>
                         <FormMessage />
@@ -212,7 +212,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
                           />
                         </FormControl>
                         <FormMessage />
@@ -229,7 +229,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
                           />
                         </FormControl>
                         <FormMessage />
@@ -256,7 +256,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
                           />
                         </FormControl>
                         <FormMessage />
@@ -273,7 +273,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
                           />
                         </FormControl>
                         <FormMessage />
@@ -299,7 +299,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
                           />
                         </FormControl>
                         <FormMessage />
@@ -316,7 +316,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
                           />
                         </FormControl>
                         <FormMessage />
@@ -333,7 +333,7 @@ const PrivateInfoForm: FC<PrivateInfoFormProps> = ({
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]"
                           />
                         </FormControl>
                         <FormMessage />

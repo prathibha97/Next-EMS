@@ -45,7 +45,10 @@ interface EmployeeEditFormProps {
   departments: Department[];
 }
 
-const EmployeeEditForm: FC<EmployeeEditFormProps> = ({ employee ,departments}) => {
+const EmployeeEditForm: FC<EmployeeEditFormProps> = ({
+  employee,
+  departments,
+}) => {
   const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -63,7 +66,6 @@ const EmployeeEditForm: FC<EmployeeEditFormProps> = ({ employee ,departments}) =
       personalMobile: employee?.personalMobile,
       workEmail: employee?.workEmail,
       department: employee?.departmentId || '',
-      jobPosition: employee?.jobPosition,
       profile_photo: employee?.profile_photo,
       employeeType: employee?.employeeType || '',
     },
@@ -117,7 +119,6 @@ const EmployeeEditForm: FC<EmployeeEditFormProps> = ({ employee ,departments}) =
           personalMobile: values.personalMobile,
           workEmail: values.workEmail,
           departmentId: values.department,
-          jobPosition: values.jobPosition,
           profile_photo: values.profile_photo,
           employeeType: values.employeeType,
         },
@@ -144,7 +145,7 @@ const EmployeeEditForm: FC<EmployeeEditFormProps> = ({ employee ,departments}) =
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div>
-              <div className='flex flex-col-reverse md:flex-row justify-between'>
+              <div className='flex flex-col-reverse md:flex-row md:gap-28 2xl:justify-between'>
                 <div className='flex flex-col'>
                   <h1 className='text-3xl font-semibold'>
                     <span>
@@ -157,7 +158,7 @@ const EmployeeEditForm: FC<EmployeeEditFormProps> = ({ employee ,departments}) =
                             <FormControl>
                               <Input
                                 {...field}
-                                className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                                className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                               />
                             </FormControl>
                             <FormMessage />
@@ -177,7 +178,7 @@ const EmployeeEditForm: FC<EmployeeEditFormProps> = ({ employee ,departments}) =
                             <FormControl>
                               <Input
                                 {...field}
-                                className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                                className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                               />
                             </FormControl>
                             <FormMessage />
@@ -229,8 +230,8 @@ const EmployeeEditForm: FC<EmployeeEditFormProps> = ({ employee ,departments}) =
                 </div>
               </div>
             </div>
-            <div className='mt-5 flex flex-col md:flex-row justify-between'>
-              <div className='flex gap-4 flex-col'>
+            <div className='flex flex-col md:flex-row md:gap-20 2xl:justify-between'>
+              <div className='flex gap-4 flex-col w-full'>
                 <span>
                   <FormLabel>Work Mobile</FormLabel>
 
@@ -241,7 +242,7 @@ const EmployeeEditForm: FC<EmployeeEditFormProps> = ({ employee ,departments}) =
                         <FormControl>
                           <Input
                             {...field}
-                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -259,7 +260,7 @@ const EmployeeEditForm: FC<EmployeeEditFormProps> = ({ employee ,departments}) =
                         <FormControl>
                           <Input
                             {...field}
-                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -277,7 +278,7 @@ const EmployeeEditForm: FC<EmployeeEditFormProps> = ({ employee ,departments}) =
                         <FormControl>
                           <Input
                             {...field}
-                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -286,7 +287,7 @@ const EmployeeEditForm: FC<EmployeeEditFormProps> = ({ employee ,departments}) =
                   />
                 </span>
               </div>
-              <div className='flex flex-col gap-4 mt-5 md:mt-[68px] w-1/2'>
+              <div className='flex flex-col gap-4 mt-5 md:mt-[68px] w-full'>
                 <FormField
                   control={form.control}
                   name='department'
@@ -298,7 +299,7 @@ const EmployeeEditForm: FC<EmployeeEditFormProps> = ({ employee ,departments}) =
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className=' bg-slate-50 w-[275px] md:w-full'>
+                          <SelectTrigger className=' bg-slate-50 w-[275px] md:w-[400px]'>
                             <SelectValue placeholder='Select a department type to display' />
                           </SelectTrigger>
                         </FormControl>
@@ -329,7 +330,7 @@ const EmployeeEditForm: FC<EmployeeEditFormProps> = ({ employee ,departments}) =
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className='bg-slate-50 w-[275px] md:w-full'>
+                          <SelectTrigger className='bg-slate-50 w-[275px] md:w-[400px]'>
                             <SelectValue placeholder='Select an employee type to display' />
                           </SelectTrigger>
                         </FormControl>
@@ -367,10 +368,7 @@ const EmployeeEditForm: FC<EmployeeEditFormProps> = ({ employee ,departments}) =
               <TabsTrigger value='HR'>HR Settings</TabsTrigger>
             </TabsList>
             <TabsContent value='work'>
-              <WorkInfoForm
-                employeeId={employee.id}
-                employee={employee}
-              />
+              <WorkInfoForm employeeId={employee.id} employee={employee} />
             </TabsContent>
             <TabsContent value='private'>
               <PrivateInfoForm employeeId={employee.id} employee={employee} />

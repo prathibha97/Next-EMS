@@ -99,7 +99,7 @@ const TaskEditForm: FC<TaskEditFormProps> = ({ task }) => {
   };
 
   return (
-    <div className='bg-white rounded-md p-4 w-[360px] md:w-full'>
+    <div className='bg-white rounded-md p-5 w-[360px] md:w-full'>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='grid gap-4 py-4'>

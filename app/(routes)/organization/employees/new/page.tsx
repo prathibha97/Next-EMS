@@ -17,22 +17,14 @@ import {
 } from '@/lib/validation/employee-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { setEmployee } from '@/app/redux/features/employeeSlice';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
+import { useGetDepartmentsQuery } from '@/app/redux/services/departmentApi';
 import { useAddEmployeeMutation } from '@/app/redux/services/employeeApi';
 import ActionButton from '@/components/buttons/action-button';
-import { toast } from '@/hooks/use-toast';
-import { useUploadThing } from '@/lib/uploadthing';
-import { isBase64Image } from '@/lib/utils';
-import { Department, Employee } from '@prisma/client';
-import HRSettingsForm from './components/hr-settings-form';
-import PrivateInfoForm from './components/private-info-form';
-import WorkInfoForm from './components/work-info-form';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import {
   Select,
   SelectContent,
@@ -40,9 +32,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useGetDepartmentsQuery } from '@/app/redux/services/departmentApi';
-import LoadingState from './components/loading-state';
 import { employeeTypeOptions } from '@/constants/employees';
+import { toast } from '@/hooks/use-toast';
+import { useUploadThing } from '@/lib/uploadthing';
+import { isBase64Image } from '@/lib/utils';
+import { Department, Employee } from '@prisma/client';
+import HRSettingsForm from './components/hr-settings-form';
+import LoadingState from './components/loading-state';
+import PrivateInfoForm from './components/private-info-form';
+import WorkInfoForm from './components/work-info-form';
 
 const NewEmployeePage = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -153,25 +151,25 @@ const NewEmployeePage = () => {
   if (isDepartmentsLoading) return <LoadingState />;
 
   return (
-    <div className="w-full p-5">
-      <div className="p-5 border rounded-md">
+    <div className='w-full p-5'>
+      <div className='p-5 border rounded-md'>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div>
-              <div className="flex flex-col-reverse md:flex-row justify-between">
-                <div className="flex flex-col">
-                  <h1 className="text-3xl font-semibold">
+              <div className='flex flex-col-reverse md:flex-row md:gap-20 2xl:justify-between'>
+                <div className='flex flex-col'>
+                  <h1 className='text-3xl font-semibold'>
                     <span>
                       <FormLabel>Name</FormLabel>
 
                       <FormField
-                        name="name"
+                        name='name'
                         render={({ field }) => (
                           <FormItem>
                             <FormControl>
                               <Input
                                 {...field}
-                                className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                                className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                               />
                             </FormControl>
                             <FormMessage />
@@ -180,18 +178,18 @@ const NewEmployeePage = () => {
                       />
                     </span>
                   </h1>
-                  <h1 className="text-3xl font-semibold">
+                  <h1 className='text-3xl font-semibold'>
                     <span>
                       <FormLabel>Position</FormLabel>
 
                       <FormField
-                        name="position"
+                        name='position'
                         render={({ field }) => (
                           <FormItem>
                             <FormControl>
                               <Input
                                 {...field}
-                                className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                                className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                               />
                             </FormControl>
                             <FormMessage />
@@ -204,36 +202,36 @@ const NewEmployeePage = () => {
                 <div>
                   <FormField
                     control={form.control}
-                    name="profile_photo"
+                    name='profile_photo'
                     render={({ field }) => (
-                      <FormItem className="flex flex-col items-center gap-4">
+                      <FormItem className='flex flex-col items-center gap-4'>
                         <FormLabel>
                           {field.value ? (
                             <Image
                               src={field.value}
-                              alt="profile photo"
+                              alt='profile photo'
                               width={100}
                               height={100}
                               priority
-                              className="rounded-lg object-contain"
+                              className='rounded-lg object-contain'
                             />
                           ) : (
                             <Image
-                              src="/avatar.jpeg"
-                              alt="profile photo"
+                              src='/avatar.jpeg'
+                              alt='profile photo'
                               width={100}
                               height={100}
-                              className="object-contain"
+                              className='object-contain'
                             />
                           )}
                         </FormLabel>
-                        <FormControl className="text-base-semibold text-gray-400">
+                        <FormControl className='text-base-semibold text-gray-400'>
                           <Input
-                            type="file"
-                            accept="image/*"
-                            placeholder="Upload image"
+                            type='file'
+                            accept='image/*'
+                            placeholder='Upload image'
                             onChange={(e) => handleImage(e, field.onChange)}
-                            className="w-full bg-slate-50 md:w-[300px]"
+                            className='w-full bg-slate-50 md:w-[300px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -243,19 +241,19 @@ const NewEmployeePage = () => {
                 </div>
               </div>
             </div>
-            <div className="mt-5 flex flex-col md:flex-row justify-between">
-              <div className="flex gap-4 flex-col">
+            <div className='mt-5 flex flex-col md:flex-row md:gap-20 2xl:justify-between'>
+              <div className='flex gap-4 flex-col'>
                 <span>
                   <FormLabel>Work Mobile</FormLabel>
 
                   <FormField
-                    name="workMobile"
+                    name='workMobile'
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -267,13 +265,13 @@ const NewEmployeePage = () => {
                   <FormLabel>Personal Mobile</FormLabel>
 
                   <FormField
-                    name="personalMobile"
+                    name='personalMobile'
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -285,13 +283,13 @@ const NewEmployeePage = () => {
                   <FormLabel>Work Email</FormLabel>
 
                   <FormField
-                    name="workEmail"
+                    name='workEmail'
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]"
+                            className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                           />
                         </FormControl>
                         <FormMessage />
@@ -300,10 +298,10 @@ const NewEmployeePage = () => {
                   />
                 </span>
               </div>
-              <div className="flex flex-col gap-4 mt-5 md:mt-[68px] w-1/2">
+              <div className='flex flex-col gap-4 mt-5 md:mt-[68px] md:w-[400px]'>
                 <FormField
                   control={form.control}
-                  name="department"
+                  name='department'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Department</FormLabel>
@@ -312,8 +310,8 @@ const NewEmployeePage = () => {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className=" bg-slate-50 w-[275px] md:w-full">
-                            <SelectValue placeholder="Select a department type to display" />
+                          <SelectTrigger className=' bg-slate-50 w-[275px] md:w-full'>
+                            <SelectValue placeholder='Select a department type to display' />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -334,7 +332,7 @@ const NewEmployeePage = () => {
                 />
                 <FormField
                   control={form.control}
-                  name="employeeType"
+                  name='employeeType'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Employee Type</FormLabel>
@@ -343,8 +341,8 @@ const NewEmployeePage = () => {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="bg-slate-50 w-[275px] md:w-full">
-                            <SelectValue placeholder="Select an employee type to display" />
+                          <SelectTrigger className='bg-slate-50 w-[275px] md:w-full'>
+                            <SelectValue placeholder='Select an employee type to display' />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -361,32 +359,32 @@ const NewEmployeePage = () => {
                 />
               </div>
             </div>
-            <div className="mt-4">
+            <div className='mt-4'>
               <ActionButton
-                type="submit"
-                label="Create Employee"
+                type='submit'
+                label='Create Employee'
                 isLoading={isLoading || loading}
               />
             </div>
           </form>
         </Form>
 
-        <Separator className="mt-3" />
+        <Separator className='mt-3' />
 
-        <div className="mt-8">
-          <Tabs defaultValue="work" className="w-full">
-            <TabsList className="flex flex-col md:grid w-full md:grid-cols-3 h-full">
-              <TabsTrigger value="work">Work Information</TabsTrigger>
-              <TabsTrigger value="private">Private Information</TabsTrigger>
-              <TabsTrigger value="HR">HR Settings</TabsTrigger>
+        <div className='mt-8'>
+          <Tabs defaultValue='work' className='w-full'>
+            <TabsList className='flex flex-col md:grid  w-full md:grid-cols-3 h-full'>
+              <TabsTrigger value='work'>Work Information</TabsTrigger>
+              <TabsTrigger value='private'>Private Information</TabsTrigger>
+              <TabsTrigger value='HR'>HR Settings</TabsTrigger>
             </TabsList>
-            <TabsContent value="work">
+            <TabsContent value='work'>
               <WorkInfoForm employee={employee} />
             </TabsContent>
-            <TabsContent value="private">
+            <TabsContent value='private'>
               <PrivateInfoForm employee={employee} />
             </TabsContent>
-            <TabsContent value="HR">
+            <TabsContent value='HR'>
               <HRSettingsForm employee={employee} />
             </TabsContent>
           </Tabs>

@@ -27,10 +27,7 @@ interface WorkInfoFormProps {
   employee: Employee | undefined;
 }
 
-const WorkInfoForm: FC<WorkInfoFormProps> = ({
-  employeeId,
-  employee,
-}) => {
+const WorkInfoForm: FC<WorkInfoFormProps> = ({ employeeId, employee }) => {
   const form = useForm<WorkInfoFormValues>({
     resolver: zodResolver(WorkInfoFormSchema),
     defaultValues: {
@@ -92,7 +89,7 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({
                     <FormControl>
                       <Input
                         {...field}
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                     </FormControl>
                     <FormMessage />
@@ -110,7 +107,7 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({
                     <FormControl>
                       <Input
                         {...field}
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                     </FormControl>
                     <FormMessage />
@@ -126,7 +123,7 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({
           <Separator className='mt-1 mb-3' />
 
           <div className='flex flex-col md:flex-row justify-between gap-4'>
-            <span>
+            <span className='flex flex-col gap-2'>
               <FormLabel>Start Date</FormLabel>
 
               <Controller
@@ -151,7 +148,7 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({
                     <FormControl>
                       <Input
                         {...field}
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[200px]'
                       />
                     </FormControl>
                     <FormMessage />
@@ -169,7 +166,7 @@ const WorkInfoForm: FC<WorkInfoFormProps> = ({
                     <FormControl>
                       <Input
                         {...field}
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[200px]'
                       />
                     </FormControl>
                     <FormMessage />

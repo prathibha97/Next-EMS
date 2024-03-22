@@ -16,7 +16,7 @@ const usePayroll = () => {
               },
             },
             employeeNumber: true,
-            jobPosition: true,
+            position: true,
             bankName: true,
             bankAccountNumber: true,
           },

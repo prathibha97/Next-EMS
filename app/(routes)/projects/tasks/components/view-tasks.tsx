@@ -2,6 +2,8 @@ import { AddTaskDialog } from './add-task-dialog';
 import { columns } from './columns';
 import { DataTable } from './data-table';
 
+export const revalidate = 0;
+
 interface ViewTasksProps {
   tasks: any;
 }

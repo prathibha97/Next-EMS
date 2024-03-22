@@ -212,7 +212,7 @@ export function AddTimeLogDialog({ employeeId }: AddTimeLogDialogProps) {
                       <SelectContent>
                         {tasks.map((task) => (
                           <SelectItem key={task.id} value={task.id}>
-                            {task.taskId}
+                            {task.title}
                           </SelectItem>
                         ))}
                       </SelectContent>

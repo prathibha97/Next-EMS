@@ -10,9 +10,9 @@ export async function POST(req: Request) {
       throw new NextResponse('Unauthorized', { status: 401 });
     }
     const body = await req.json();
-    const { title, status, project, priority, label, description } = body;
+    const { title, project, priority, label, description , assignee} = body;
 
-    if (!title || !status || !project || !priority) {
+    if (!title || !project || !priority || !assignee) {
       return new Response(`Required fields are missing`, {
         status: 400,
       });
@@ -35,7 +35,6 @@ export async function POST(req: Request) {
       data: {
         title,
         taskId: newTaskId,
-        status,
         project: {
           connect: {
             id: project,
@@ -44,6 +43,11 @@ export async function POST(req: Request) {
         priority,
         label,
         description,
+        employee: {
+          connect: {
+            id: assignee,
+          },
+        },
       },
     });
 
@@ -74,7 +78,7 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json(task);
+    return NextResponse.json({task, message: 'Task created successfully!'});
   } catch (error: any) {
     console.log(error.message);
     return new Response(`Could not create task - ${error.message}`, {

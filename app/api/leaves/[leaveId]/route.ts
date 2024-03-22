@@ -86,7 +86,6 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
           employeeId: leave.employeeId,
         },
       });
-      console.log("🚀 ~ PUT ~ leaveBalance:", leaveBalance)
 
       const requestedDuration = getNumberOfDays(
         leave.startDate as Date,
@@ -109,7 +108,6 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
         return new Response('Insufficient leave balance', { status: 400 });
       }
 
-      console.log("🚀 ~ PUT ~ requestedDuration:", requestedDuration)
       // Deduct the requested duration from the appropriate leave balance category
       const updatedLeaveBalance = await prisma.leaveBalance.update({
         where: {
@@ -121,7 +119,6 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
           },
         },
       });
-      console.log("🚀 ~ PUT ~ updatedLeaveBalance:", updatedLeaveBalance)
 
       // Now that the leave balance is successfully updated, update the leave status
       updatedLeave = await prisma.leave.update({
@@ -132,7 +129,6 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
           status,
         },
       });
-      console.log("🚀 ~ PUT ~ updatedLeave:", updatedLeave)
 
       const notification = `Your leave from ${updatedLeave.startDate?.toLocaleDateString()} to ${updatedLeave.endDate?.toLocaleDateString()} has been ${status.toLowerCase()}.`;
 

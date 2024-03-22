@@ -23,6 +23,9 @@ export async function GET(req: Request) {
         name: true,
         id:true
       },
+      orderBy:{
+        createdAt: 'desc'
+      }
     });
     return NextResponse.json(projects);
   } catch (error: any) {

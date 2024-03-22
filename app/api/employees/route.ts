@@ -18,7 +18,6 @@ export async function POST(req: Request) {
       departmentId,
       workMobile,
       personalMobile,
-      jobPosition,
       profile_photo,
       employeeType,
     } = body;
@@ -42,7 +41,6 @@ export async function POST(req: Request) {
         position,
         workMobile,
         personalMobile,
-        jobPosition,
         profile_photo,
         employeeType,
         employeeDepartment: {
@@ -53,30 +51,6 @@ export async function POST(req: Request) {
       },
     });
 
-    // // Create leave balance for the employee
-    // const leaveBalance = await prisma.leaveBalance.create({
-    //   data: {
-    //     employeeId: employee.id,
-    //     annual: employeeType === 'fullTime' ? 7 : 0,
-    //     casual: employeeType === 'fullTime' ? 7 : 1,
-    //     medical: employeeType === 'fullTime' ? 7 : 1,
-    //     unpaid: 0,
-    //     broughtForward: 0,
-    //     duty: 0,
-    //   },
-    // });
-
-    // // Associate leaveBalance with employee
-    // await prisma.employee.update({
-    //   where: { id: employee.id },
-    //   data: {
-    //     leaveBalance: {
-    //       connect: {
-    //         id: leaveBalance.id,
-    //       },
-    //     },
-    //   },
-    // });
 
     // Update the department's employees list
     await prisma.department.update({

@@ -1,25 +1,30 @@
 'use client';
-import { useAppDispatch } from '@/app/redux/hooks';
 import { Button } from '@/components/ui/button';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { useCurrentEmployee } from '@/hooks/useCurrentEmployee';
+import { fetcher } from '@/lib/fetcher';
 import { pusherClient } from '@/lib/pusher';
-import { Employee, Notification } from '@prisma/client';
-import axios from 'axios';
+import { Notification } from '@prisma/client';
+import { useQuery } from '@tanstack/react-query';
 import { BellRing } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { NotificationCard } from '../cards/notification-card';
 
 export function NotificationButton() {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isMounted, setIsMounted] = useState(false);
-  const [employee, setEmployee] = useState<Employee | null>(null);
+  const { employee, loading, error } = useCurrentEmployee();
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  const { data: notificationData } = useQuery<Notification[]>({
+    queryKey: ['notifications', employee?.id],
+    queryFn: () => fetcher(`/api/notifications/employee/${employee?.id}`),
+    enabled: !!employee?.id,
+    refetchInterval: 10000, // Poll for new notifications every 10 seconds
+  });
 
   useEffect(() => {
     if (!isMounted) {
@@ -28,84 +33,66 @@ export function NotificationButton() {
   }, []);
 
   useEffect(() => {
-    const getCurrentEmployee = async () => {
-      try {
-        const { data } = await axios.get(
-          `${process.env.NEXT_PUBLIC_URL}/employees/me`
-        );
-        setEmployee(data);
-        // dispatch(setCurrentEmployee(data));
-      } catch (error) {
-        console.error('Error fetching employee data:', error);
-      }
-    };
-
-    getCurrentEmployee();
-  }, []);
-
-  useEffect(() => {
-    const getEmployeeNotifications = async () => {
-      try {
-        const { data } = await axios.get(
-          `${process.env.NEXT_PUBLIC_URL}/notifications/employee/${employee?.id}`
-        );
-        setNotifications(data);
-        router.refresh();
-      } catch (error) {
-        console.error('Error fetching employee notification data:', error);
-      }
-    };
-    if (employee?.id) {
-      getEmployeeNotifications();
+    if (notificationData) {
+      setNotifications(notificationData);
     }
-  }, [employee]);
+  }, [notificationData]);
 
   useEffect(() => {
     if (employee && employee.id) {
       const channel = pusherClient.subscribe(employee.id);
 
-      channel.bind('notifications:new', (data: Notification) => {
+      const handleNewNotification = (data: Notification) => {
         setNotifications((prevNotifications) => [...prevNotifications, data]);
-      });
+      };
 
-      channel.bind('pusher:subscription_error', (status: any) => {
+      const handleSubscriptionError = (status: any) => {
         console.error('Pusher subscription error:', status);
 
-        if (status.error.data.code === 4201) {
+        if (status.error?.data?.code === 4201) {
           console.error('Pusher connection limit exceeded.');
         }
-      });
+      };
+
+      channel.bind('notifications:new', handleNewNotification);
+      channel.bind('pusher:subscription_error', handleSubscriptionError);
 
       return () => {
+        channel.unbind('notifications:new', handleNewNotification);
+        channel.unbind('pusher:subscription_error', handleSubscriptionError);
         pusherClient.unsubscribe(employee.id);
         pusherClient.disconnect();
       };
     }
-  }, []);
+  }, [employee]);
 
   const unreadCount = notifications?.filter(
     (notification) => !notification.isRead
   ).length;
 
-  if (!employee) {
+  if (!employee || !isMounted) {
+    return null;
+  }
+
+  if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (!isMounted) {
-    return null;
+  if (error) {
+    return <div>Error: {error}</div>;
   }
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="relative">
+        <Button variant='outline' className='relative'>
           <BellRing />
           {unreadCount > 0 && (
-            <span className="animate-ping absolute h-3 w-3 top-0 right-0 rounded-full bg-sky-400 opacity-75"></span>
+            <span className='animate-ping absolute h-3 w-3 top-0 right-0 rounded-full bg-sky-400 opacity-75'></span>
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[370px] md:w-[410px]">
+      <PopoverContent className='w-[370px] md:w-[410px]'>
         <NotificationCard
           notifications={notifications}
           employee={employee}

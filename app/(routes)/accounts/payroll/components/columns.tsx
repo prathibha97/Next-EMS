@@ -62,7 +62,7 @@ export const columns: ColumnDef<EmployeeWithDepartment>[] = [
     },
   },
   {
-    accessorKey: 'jobPosition',
+    accessorKey: 'position',
     header: ({ column }) => {
       return (
         <Button
@@ -76,7 +76,7 @@ export const columns: ColumnDef<EmployeeWithDepartment>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className='capitalize'>{row.getValue('jobPosition')}</div>
+      <div className='capitalize'>{row.getValue('position')}</div>
     ),
   },
   {

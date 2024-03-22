@@ -12,12 +12,19 @@ export async function POST(req: Request) {
       return new NextResponse('Missing info', { status: 400 });
     }
 
+    // Check if there are any users in the database
+    const usersCount = await prisma.user.count();
+
+    // Determine the role of the new user
+    const role = usersCount === 0 ? 'ADMIN' : 'USER';
+
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await prisma.user.create({
       data: {
         email,
         hashedPassword,
+        role,
       },
     });
 

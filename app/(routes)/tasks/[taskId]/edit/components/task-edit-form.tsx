@@ -24,12 +24,12 @@ import {
   TaskFormValues,
 } from '@/lib/validation/task-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Project, Task } from '@prisma/client';
+import { Employee, Project, Task } from '@prisma/client';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { labels, priorities, statuses } from '../../../data/data';
+import { labels, priorities } from '../../../data/data';
 
 interface TaskEditFormProps {
   task: Task;
@@ -38,16 +38,17 @@ interface TaskEditFormProps {
 const TaskEditForm: FC<TaskEditFormProps> = ({ task }) => {
   const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(TaskFormSchema),
     defaultValues: {
       title: task?.title ?? '',
       description: task?.description ?? '',
       project: task?.projectId,
-      status: task?.status ?? 'Backlog',
-      // @ts-ignore
       priority: task?.priority ?? 'Low',
       label: task?.label ?? '',
+      assignee: task?.assignee ?? '',
     },
   });
 
@@ -59,6 +60,16 @@ const TaskEditForm: FC<TaskEditFormProps> = ({ task }) => {
       setProjects(data);
     };
     fetchProjects();
+  }, []);
+
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_URL}/employees`
+      );
+      setEmployees(data);
+    };
+    fetchEmployees();
   }, []);
 
   const [updateTask, { isLoading: isEditTaskLoading }] =
@@ -88,40 +99,40 @@ const TaskEditForm: FC<TaskEditFormProps> = ({ task }) => {
   };
 
   return (
-    <div className="bg-white rounded-md p-4 w-[360px] md:w-full">
+    <div className='bg-white rounded-md p-4 w-[360px] md:w-full'>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid gap-4 py-4">
-            <div className="w-full">
+          <div className='grid gap-4 py-4'>
+            <div className='w-full'>
               <Label>Title</Label>
               <FormField
                 control={form.control}
-                name="title"
+                name='title'
                 render={({ field }) => (
                   <FormItem>
-                    <Input className="w-[325px] md:w-full" {...field} />
+                    <Input className='w-[325px] md:w-full' {...field} />
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <div className="w-full">
+            <div className='w-full'>
               <Label>Description</Label>
               <FormField
                 control={form.control}
-                name="description"
+                name='description'
                 render={({ field }) => (
                   <FormItem>
-                    <Textarea className="w-[325px] md:w-full" {...field} />
+                    <Textarea className='w-[325px] md:w-full' {...field} />
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <div className="w-full">
+            <div className='w-full'>
               <FormField
                 control={form.control}
-                name="project"
+                name='project'
                 render={({ field }) => (
                   <FormItem>
                     <Label>Project</Label>
@@ -130,8 +141,8 @@ const TaskEditForm: FC<TaskEditFormProps> = ({ task }) => {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="w-[325px] md:w-full">
-                          <SelectValue placeholder="Select a project to display" />
+                        <SelectTrigger className='w-[325px] md:w-full'>
+                          <SelectValue placeholder='Select a project to display' />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -147,31 +158,26 @@ const TaskEditForm: FC<TaskEditFormProps> = ({ task }) => {
                 )}
               />
             </div>
-            <div className="w-full">
+            <div className='w-full'>
               <FormField
                 control={form.control}
-                name="status"
+                name='assignee'
                 render={({ field }) => (
                   <FormItem>
-                    <Label>Status</Label>
+                    <Label>Assignee</Label>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="w-[325px] md:w-full">
-                          <SelectValue placeholder="Select a status to display" />
+                        <SelectTrigger className='w-[325px] md:w-full'>
+                          <SelectValue placeholder='Select an employee to display' />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {statuses.map((status) => (
-                          <SelectItem key={status.value} value={status.value}>
-                            <div className="flex">
-                              {status.icon && (
-                                <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-                              )}
-                              {status.label}
-                            </div>
+                        {employees.map((employee) => (
+                          <SelectItem key={employee.id} value={employee.id}>
+                            <div className='flex'>{employee.name}</div>
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -181,10 +187,10 @@ const TaskEditForm: FC<TaskEditFormProps> = ({ task }) => {
                 )}
               />
             </div>
-            <div className="w-full">
+            <div className='w-full'>
               <FormField
                 control={form.control}
-                name="priority"
+                name='priority'
                 render={({ field }) => (
                   <FormItem>
                     <Label>Priority</Label>
@@ -193,8 +199,8 @@ const TaskEditForm: FC<TaskEditFormProps> = ({ task }) => {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="w-[325px] md:w-full">
-                          <SelectValue placeholder="Select a priority to display" />
+                        <SelectTrigger className='w-[325px] md:w-full'>
+                          <SelectValue placeholder='Select a priority to display' />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -203,9 +209,9 @@ const TaskEditForm: FC<TaskEditFormProps> = ({ task }) => {
                             key={priority.value}
                             value={priority.value}
                           >
-                            <div className="flex">
+                            <div className='flex'>
                               {priority.icon && (
-                                <priority.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                                <priority.icon className='mr-2 h-4 w-4 text-muted-foreground' />
                               )}
                               {priority.label}
                             </div>
@@ -218,10 +224,10 @@ const TaskEditForm: FC<TaskEditFormProps> = ({ task }) => {
                 )}
               />
             </div>
-            <div className="w-full">
+            <div className='w-full'>
               <FormField
                 control={form.control}
-                name="label"
+                name='label'
                 render={({ field }) => (
                   <FormItem>
                     <Label>Label</Label>
@@ -230,8 +236,8 @@ const TaskEditForm: FC<TaskEditFormProps> = ({ task }) => {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="w-[325px] md:w-full">
-                          <SelectValue placeholder="Select a label to display" />
+                        <SelectTrigger className='w-[325px] md:w-full'>
+                          <SelectValue placeholder='Select a label to display' />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -249,8 +255,8 @@ const TaskEditForm: FC<TaskEditFormProps> = ({ task }) => {
             </div>
           </div>
           <ActionButton
-            type="submit"
-            label="Edit Task"
+            type='submit'
+            label='Edit Task'
             isLoading={isEditTaskLoading}
           />
         </form>

@@ -33,17 +33,18 @@ import {
   TaskFormValues,
 } from '@/lib/validation/task-form-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Project } from '@prisma/client';
+import { Employee, Project } from '@prisma/client';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { labels, priorities, statuses, taskStatuses } from '../../data/data';
+import { labels, priorities } from '../../data/data';
 
 export function AddTaskDialog() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
 
   const [createTask, { isLoading: isCreateTaskLoading }] =
     useCreateTaskMutation();
@@ -54,9 +55,9 @@ export function AddTaskDialog() {
       title: '',
       description: '',
       project: '',
-      status: 'Backlog',
       priority: 'Low',
       label: '',
+      assignee: '',
     },
   });
 
@@ -70,15 +71,25 @@ export function AddTaskDialog() {
     fetchProjects();
   }, []);
 
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_URL}/employees`
+      );
+      setEmployees(data);
+    };
+    fetchEmployees();
+  }, []);
+
   const onSubmit = async (values: TaskFormValues) => {
     try {
-      await createTask({
+      const res = await createTask({
         ...values,
-      });
+      }).unwrap();
       toast({
-        title: 'Task created successfully',
+        title: res.message,
       });
-      router.refresh()
+      router.refresh();
       setIsOpen(false);
     } catch (error) {
       console.log(error);
@@ -160,26 +171,20 @@ export function AddTaskDialog() {
               <div className='w-full'>
                 <FormField
                   control={form.control}
-                  name='status'
-                  defaultValue='Backlog'
+                  name='assignee'
                   render={({ field }) => (
                     <FormItem>
-                      <Label>Status</Label>
+                      <Label>Assignee</Label>
                       <Select onValueChange={field.onChange}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder='Select a status to display' />
+                            <SelectValue placeholder='Select an employee to display' />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {taskStatuses.map((status) => (
-                            <SelectItem key={status.value} value={status.value}>
-                              <div className='flex'>
-                                {status.icon && (
-                                  <status.icon className='mr-2 h-4 w-4 text-muted-foreground' />
-                                )}
-                                {status.label}
-                              </div>
+                          {employees.map((employee) => (
+                            <SelectItem key={employee.id} value={employee.id}>
+                              <div className='flex'>{employee.name}</div>
                             </SelectItem>
                           ))}
                         </SelectContent>

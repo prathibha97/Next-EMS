@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma';
+import { updateProjectProgress } from '@/lib/updateProjectProgress';
 import { NextResponse } from 'next/server';
 import { getAuthSession } from '../../auth/[...nextauth]/options';
-import { updateProjectProgress } from '@/lib/updateProjectProgress';
 
 interface IParams {
   taskId: string;
@@ -15,8 +15,16 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
     }
 
     const body = await req.json();
-    const { title, status, project, priority, label, description, projectId } =
-      body;
+    const {
+      title,
+      status,
+      project,
+      priority,
+      label,
+      description,
+      projectId,
+      assignee,
+    } = body;
 
     const updateData = {
       ...(title && { title }),
@@ -24,6 +32,11 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
         project: {
           connect: {
             id: project,
+          },
+        },
+        employee: {
+          connect: {
+            id: assignee,
           },
         },
       }),
@@ -43,7 +56,7 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
       data: updateData,
     });
 
-    if(status === 'Done'){
+    if (status === 'Done') {
       await updateProjectProgress(projectId);
     }
 

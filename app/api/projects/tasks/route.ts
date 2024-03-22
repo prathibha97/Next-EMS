@@ -16,6 +16,9 @@ export async function GET(req: Request) {
       where: {
         projectId: projectId!,
       },
+      orderBy:{
+        createdAt: 'desc'
+      }
     });
     return NextResponse.json(tasks);
   } catch (error: any) {

@@ -78,7 +78,7 @@ export function NotificationCard({
           <Switch />
         </div> */}
         <ScrollArea>
-          {notifications.map((notification) => (
+          {notifications?.map((notification) => (
             <div
               className="flex items-start bg-gray-100 dark:bg-gray-800/30 rounded-md p-2 space-x-4 pb-2 last:pb-1 mt-2 first:mt-0"
               key={notification.id}

@@ -32,8 +32,8 @@ import { useForm } from 'react-hook-form';
 import LoadingState from '../../components/loading-state';
 
 type EmployeeWithLeaveBalance = Employee & {
-  leaveBalance: LeaveBalance
-}
+  leaveBalance: LeaveBalance;
+};
 
 interface HRSettingsFormProps {
   employeeId: string;
@@ -72,7 +72,6 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
       unpaidLeaves: employee?.leaveBalance?.unpaid.toString() ?? '0',
     },
   });
-
 
   const handleFileUpload = (
     e: ChangeEvent<HTMLInputElement>,
@@ -182,7 +181,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
                       <FormLabel>Employee Number</FormLabel>
                       <Input
                         {...field}
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                       <FormMessage />
                     </FormItem>
@@ -200,7 +199,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className=' bg-slate-50 w-full md:w-[500px]'>
+                          <SelectTrigger className=' bg-slate-50 w-full md:w-[400px]'>
                             <SelectValue placeholder='Select an user email to display' />
                           </SelectTrigger>
                         </FormControl>
@@ -299,7 +298,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
                         {...field}
                         placeholder='Enter Basic Salary Amount'
                         type='text'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                       <FormMessage />
                     </FormItem>
@@ -315,7 +314,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
                         {...field}
                         placeholder='Enter Performance Allowance Amount'
                         type='text'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                       <FormMessage />
                     </FormItem>
@@ -333,7 +332,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
                         {...field}
                         placeholder='Enter Mobile Allowance Amount'
                         type='text'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                       <FormMessage />
                     </FormItem>
@@ -349,7 +348,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
                         {...field}
                         placeholder='Enter Data Allowance Amount'
                         type='text'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                       <FormMessage />
                     </FormItem>
@@ -374,7 +373,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
                         {...field}
                         placeholder='Enter Number of Annual Leaves'
                         type='number'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                       <FormMessage />
                     </FormItem>
@@ -390,7 +389,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
                         {...field}
                         placeholder='Enter Number of Casual Leaves'
                         type='number'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                       <FormMessage />
                     </FormItem>
@@ -406,7 +405,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
                         {...field}
                         placeholder='Enter Number of Medical Leaves'
                         type='number'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                       <FormMessage />
                     </FormItem>
@@ -422,7 +421,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
                         {...field}
                         placeholder='Enter Number of Duty Leaves'
                         type='number'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                       <FormMessage />
                     </FormItem>
@@ -438,7 +437,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employeeId, employee }) => {
                         {...field}
                         placeholder='Enter Number of Unpaid Leaves'
                         type='number'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                       <FormMessage />
                     </FormItem>

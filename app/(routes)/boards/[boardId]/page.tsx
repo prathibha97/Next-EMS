@@ -1,6 +1,5 @@
-import { redirect } from 'next/navigation';
-import { ListContainer } from './_components/list-container';
 import prisma from '@/lib/prisma';
+import { ListContainer } from './_components/list-container';
 
 interface BoardIdPageProps {
   params: {
@@ -8,18 +7,17 @@ interface BoardIdPageProps {
   };
 }
 const BoardIdPage = async ({ params }: BoardIdPageProps) => {
-
   const lists = await prisma.list.findMany({
     where: {
       boardId: params.boardId,
     },
     include: {
       cards: {
-        include:{
+        include: {
           task: {
-            include:{
-              employee: true
-            }
+            include: {
+              employee: true,
+            },
           },
         },
         orderBy: {
@@ -27,13 +25,13 @@ const BoardIdPage = async ({ params }: BoardIdPageProps) => {
         },
       },
     },
-    orderBy:{
-      order: 'asc'
-    }
+    orderBy: {
+      order: 'asc',
+    },
   });
 
   return (
-    <div className='p-4 h-full overflow-x-auto'>
+    <div className='p-4 overflow-x-auto h-full'>
       <ListContainer boardId={params.boardId} data={lists} />
     </div>
   );

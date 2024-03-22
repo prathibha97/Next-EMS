@@ -60,6 +60,7 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { startUpload } = useUploadThing('pdfUploader');
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     setIsMounted(true);
@@ -152,6 +153,7 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
         description: 'Leave request submitted successfully',
       });
 
+      setOpen(false);
       form.reset();
       router.refresh();
 
@@ -176,7 +178,7 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
 
   return (
     <div className='mb-5'>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger>
           <Button className='bg-[#2ebdaa]'>Apply Leave</Button>
         </DialogTrigger>
@@ -316,7 +318,7 @@ const ApplyLeaveForm: FC<ApplyLeaveFormProps> = ({ currentEmployee }) => {
                     className='bg-[#2ebdaa] w-20 text-center'
                     type='submit'
                     label='Submit'
-                    isLoading={leaveRequestLoading}
+                    isLoading={isLoading}
                   />
                 </div>
               </div>

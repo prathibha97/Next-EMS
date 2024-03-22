@@ -166,7 +166,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
         description: 'Something went wrong. Please try again later.',
         variant: 'destructive',
       });
-    }finally{
+    } finally {
       setIsLoading(false);
     }
   };
@@ -190,7 +190,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                       <FormLabel>Employee Number</FormLabel>
                       <Input
                         {...field}
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                       <FormMessage />
                     </FormItem>
@@ -208,7 +208,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className=' bg-slate-50 w-full md:w-[500px]'>
+                          <SelectTrigger className=' bg-slate-50 w-full md:w-[400px]'>
                             <SelectValue placeholder='Select an user email to display' />
                           </SelectTrigger>
                         </FormControl>
@@ -296,7 +296,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
             <h2 className='text-lg font-semibold'>Salary Information</h2>
             <Separator className='mt-1 mb-3' />
             <div className='flex flex-col md:flex-row justify-between md:space-x-5'>
-              <div className='md:w-1/2 space-y-3'>
+              <div className='md:w-full space-y-3'>
                 <FormField
                   control={form.control}
                   name='basicSalary'
@@ -307,7 +307,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                         {...field}
                         placeholder='Enter Basic Salary Amount'
                         type='text'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                       <FormMessage />
                     </FormItem>
@@ -323,14 +323,14 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                         {...field}
                         placeholder='Enter Performance Allowance Amount'
                         type='text'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
-              <div className='md:w-1/2 space-y-3 mt-3'>
+              <div className='md:w-full space-y-3 mt-3'>
                 <FormField
                   control={form.control}
                   name='mobileAllowance'
@@ -341,7 +341,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                         {...field}
                         placeholder='Enter Mobile Allowance Amount'
                         type='text'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                       <FormMessage />
                     </FormItem>
@@ -357,7 +357,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                         {...field}
                         placeholder='Enter Data Allowance Amount'
                         type='text'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[500px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[400px]'
                       />
                       <FormMessage />
                     </FormItem>
@@ -382,7 +382,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                         {...field}
                         placeholder='Enter Number of Annual Leaves'
                         type='text'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[350px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[250px]'
                       />
                       <FormMessage />
                     </FormItem>
@@ -398,7 +398,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                         {...field}
                         placeholder='Enter Number of Casual Leaves'
                         type='text'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[350px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[250px]'
                       />
                       <FormMessage />
                     </FormItem>
@@ -414,7 +414,7 @@ const HRSettingsForm: FC<HRSettingsFormProps> = ({ employee }) => {
                         {...field}
                         placeholder='Enter Number of Medical Leaves'
                         type='text'
-                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[350px]'
+                        className='text-sm text-gray-600 bg-slate-50 w-full md:w-[250px]'
                       />
                       <FormMessage />
                     </FormItem>

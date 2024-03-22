@@ -1,13 +1,12 @@
 'use client';
+import { updateCardOrder } from '@/actions/update-card-order';
+import { updateListOrder } from '@/actions/update-list-order';
+import { useAction } from '@/hooks/use-action';
 import { LIstWithCards } from '@/types';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { FC, useEffect, useState } from 'react';
-import { ListForm } from './list-form';
-import { ListItem } from './list-item';
-import { useAction } from '@/hooks/use-action';
-import { updateListOrder } from '@/actions/update-list-order';
 import { toast } from 'sonner';
-import { updateCardOrder } from '@/actions/update-card-order';
+import { ListItem } from './list-item';
 
 interface ListContainerProps {
   data: LIstWithCards[];
@@ -147,23 +146,25 @@ export const ListContainer: FC<ListContainerProps> = ({ boardId, data }) => {
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="lists" type="list" direction="horizontal">
-        {(provided) => (
-          <ol
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            className="flex gap-x-4 h-full"
-          >
-            {orderedData.map((list, index) => {
-              return <ListItem key={list.id} index={index} data={list} />;
-            })}
-            {provided.placeholder}
-            <ListForm />
-            <div className="flex-shrink-0 w-1" />
-          </ol>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <div className='w-full h-full'>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId='lists' type='list' direction='horizontal'>
+          {(provided) => (
+            <ol
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className='flex gap-x-4 h-full'
+            >
+              {orderedData.map((list, index) => {
+                return <ListItem key={list.id} index={index} data={list} />;
+              })}
+              {provided.placeholder}
+              {/* <ListForm /> */}
+              <div className='flex-shrink-0 w-1' />
+            </ol>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </div>
   );
 };

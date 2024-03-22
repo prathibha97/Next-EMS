@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma';
+import { pusherServer } from '@/lib/pusher';
 import { NextResponse } from 'next/server';
 import { getAuthSession } from '../auth/[...nextauth]/options';
-
 
 export async function POST(req: Request) {
   try {
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
       throw new NextResponse('Unauthorized', { status: 401 });
     }
     const body = await req.json();
-    const { title, project, priority, label, description , assignee} = body;
+    const { title, project, priority, label, description, assignee } = body;
 
     if (!title || !project || !priority || !assignee) {
       return new Response(`Required fields are missing`, {
@@ -74,11 +74,44 @@ export async function POST(req: Request) {
         order: 0, // Set the order as needed
         listId: todoList.id,
         projectId: task.projectId,
-        taskId: task.id
+        taskId: task.id,
       },
     });
 
-    return NextResponse.json({task, message: 'Task created successfully!'});
+    const projectToNotify = await prisma.project.findUnique({
+      where: {
+        id: project,
+      },
+      select: {
+        name: true,
+      },
+    });
+
+    if (!project) {
+      throw new Error('Project not found');
+    }
+
+    const notification = `You have been assigned a new task: "${task.title}" in project "${projectToNotify?.name}".`;
+
+    await pusherServer.trigger(
+      task.assignee,
+      'notifications:new',
+      notification
+    );
+
+    await prisma.notification.create({
+      data: {
+        message: notification,
+        type: 'task-allocation-notification',
+        employee: {
+          connect: {
+            id: task.assignee,
+          },
+        },
+      },
+    });
+
+    return NextResponse.json({ task, message: 'Task created successfully!' });
   } catch (error: any) {
     console.log(error.message);
     return new Response(`Could not create task - ${error.message}`, {
@@ -86,7 +119,6 @@ export async function POST(req: Request) {
     });
   }
 }
-
 
 export async function GET(req: Request) {
   try {

@@ -235,34 +235,34 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
   if (!isMounted) return null;
 
   return (
-    <div className="mb-5">
+    <div className='mb-5'>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger>
           <Button>Edit Project</Button>
         </DialogTrigger>
-        <DialogContent className="p-5 h-[800px]">
+        <DialogContent className='p-5 w-full'>
           <DialogHeader>
-            <DialogTitle className="pt-5 text-xl">
+            <DialogTitle className='pt-5 text-xl'>
               Edit project information
             </DialogTitle>
           </DialogHeader>
           <Form {...form}>
-            <div className="h-auto overflow-y-scroll">
+            <div className=''>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="w-full space-y-3"
+                className='w-full space-y-3'
               >
-                <div className="flex flex-col md:flex-row justify-between w-full md:space-x-8 gap-2">
+                <div className='flex flex-col md:flex-row justify-between w-full md:space-x-8 gap-2'>
                   <FormField
                     control={form.control}
-                    name="name"
+                    name='name'
                     render={({ field }) => (
-                      <FormItem className="md:w-1/2">
+                      <FormItem className='md:w-1/2'>
                         <FormLabel>Project Name</FormLabel>
                         <Input
                           {...field}
-                          placeholder="Enter Project Name"
-                          className="w-full"
+                          placeholder='Enter Project Name'
+                          className='w-full'
                         />
                         <FormMessage />
                       </FormItem>
@@ -271,29 +271,29 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
 
                   <FormField
                     control={form.control}
-                    name="category"
+                    name='category'
                     render={({ field }) => (
-                      <FormItem className="md:w-1/2">
+                      <FormItem className='md:w-1/2'>
                         <FormLabel>Project Category</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Select a project category to display" />
+                            <SelectValue placeholder='Select a project category to display' />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="NFT">NFT</SelectItem>
-                            <SelectItem value="Digital Arts">
+                            <SelectItem value='NFT'>NFT</SelectItem>
+                            <SelectItem value='Digital Arts'>
                               Digital Arts
                             </SelectItem>
-                            <SelectItem value="Graphic Design">
+                            <SelectItem value='Graphic Design'>
                               Graphic Design
                             </SelectItem>
-                            <SelectItem value="Web Development">
+                            <SelectItem value='Web Development'>
                               Web Development
                             </SelectItem>
-                            <SelectItem value="Social Media Marketing">
+                            <SelectItem value='Social Media Marketing'>
                               Social Media Marketing
                             </SelectItem>
                           </SelectContent>
@@ -304,19 +304,19 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
                   />
                 </div>
 
-                <div className="flex flex-col md:flex-row justify-between w-full md:space-x-8 gap-2">
+                <div className='flex flex-col md:flex-row justify-between w-full md:space-x-8 gap-2'>
                   <FormField
                     control={form.control}
-                    name="clientId"
+                    name='clientId'
                     render={({ field }) => (
-                      <FormItem className="md:w-1/2">
+                      <FormItem className='md:w-1/2'>
                         <FormLabel>Client</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Select a Client to Display" />
+                            <SelectValue placeholder='Select a Client to Display' />
                           </SelectTrigger>
                           <SelectContent>
                             {clients.map((client) => (
@@ -332,11 +332,11 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
                   />
                   <FormField
                     control={form.control}
-                    name="endDate"
+                    name='endDate'
                     render={({ field }) => (
-                      <FormItem className="md:w-1/2">
+                      <FormItem className='md:w-1/2'>
                         <FormLabel>Project Deadline</FormLabel>
-                        <Input {...field} type="date" className="w-full" />
+                        <Input {...field} type='date' className='w-full' />
                         <FormMessage />
                       </FormItem>
                     )}
@@ -344,16 +344,16 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
 
                   <FormField
                     control={form.control}
-                    name="status"
+                    name='status'
                     render={({ field }) => (
-                      <FormItem className="md:w-1/2">
+                      <FormItem className='md:w-1/2'>
                         <FormLabel>Project Status</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Select a status to Display" />
+                            <SelectValue placeholder='Select a status to Display' />
                           </SelectTrigger>
                           <SelectContent>
                             {statuses.map((status) => (
@@ -373,17 +373,17 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
                 </div>
 
                 {selectedCategory === 'NFT' && (
-                  <div className="flex justify-between w-full space-x-8">
+                  <div className='flex justify-between w-full space-x-8'>
                     <FormField
                       control={form.control}
-                      name="nftBaseDesignCount"
+                      name='nftBaseDesignCount'
                       render={({ field }) => (
-                        <FormItem className="w-1/2">
+                        <FormItem className='w-1/2'>
                           <FormLabel>NFT Base Design Count</FormLabel>
                           <Input
                             {...field}
-                            placeholder="Enter NFT Base Design Count"
-                            className="w-full"
+                            placeholder='Enter NFT Base Design Count'
+                            className='w-full'
                           />
                           <FormMessage />
                         </FormItem>
@@ -392,14 +392,14 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
 
                     <FormField
                       control={form.control}
-                      name="nftTraitCount"
+                      name='nftTraitCount'
                       render={({ field }) => (
-                        <FormItem className="w-1/2">
+                        <FormItem className='w-1/2'>
                           <FormLabel>NFT Trait Count</FormLabel>
                           <Input
                             {...field}
-                            placeholder="Enter NFT Trait Count"
-                            className="w-full"
+                            placeholder='Enter NFT Trait Count'
+                            className='w-full'
                           />
                           <FormMessage />
                         </FormItem>
@@ -408,18 +408,18 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
                   </div>
                 )}
 
-                <div className="flex justify-between w-full space-x-8">
+                <div className='flex justify-between w-full space-x-8'>
                   {selectedCategory === 'NFT' && (
                     <FormField
                       control={form.control}
-                      name="nftCollectionSize"
+                      name='nftCollectionSize'
                       render={({ field }) => (
-                        <FormItem className="w-1/2">
+                        <FormItem className='w-1/2'>
                           <FormLabel>NFT Collection Size</FormLabel>
                           <Input
                             {...field}
-                            placeholder="Enter NFT Collection Size"
-                            className="w-full"
+                            placeholder='Enter NFT Collection Size'
+                            className='w-full'
                           />
                           <FormMessage />
                         </FormItem>
@@ -429,7 +429,7 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
 
                   <Controller
                     control={form.control}
-                    name="employees"
+                    name='employees'
                     render={({ field }) => (
                       <FormItem
                         className={cn(
@@ -441,14 +441,14 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Input
-                              placeholder="Select a Client to Display"
-                              className="w-full"
+                              placeholder='Select a Client to Display'
+                              className='w-full'
                               value={Object.keys(checkedEmployees).filter(
                                 (key) => checkedEmployees[key]
                               )}
                             />
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent className="w-56">
+                          <DropdownMenuContent className='w-56'>
                             <DropdownMenuLabel>
                               Select Employee
                             </DropdownMenuLabel>
@@ -475,14 +475,14 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
 
                 <FormField
                   control={form.control}
-                  name="designLink"
+                  name='designLink'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Design Link</FormLabel>
                       <Input
                         {...field}
-                        placeholder="https://figma.com/design"
-                        className="w-full"
+                        placeholder='https://figma.com/design'
+                        className='w-full'
                       />
                       <FormMessage />
                     </FormItem>
@@ -491,16 +491,16 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
 
                 <FormField
                   control={form.control}
-                  name="projectScope"
+                  name='projectScope'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Upload Project Scope</FormLabel>
                       <Input
-                        type="file"
-                        accept=".pdf"
-                        placeholder="Upload project Scope"
+                        type='file'
+                        accept='.pdf'
+                        placeholder='Upload project Scope'
                         onChange={(e) => handleFileUpload(e, field.onChange)}
-                        className="w-full"
+                        className='w-full'
                       />
                       <FormMessage />
                     </FormItem>
@@ -509,33 +509,33 @@ const EditProjectDialog: FC<EditProjectDialogProps> = ({ project }) => {
 
                 <FormField
                   control={form.control}
-                  name="specialNotes"
+                  name='specialNotes'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Special Notes</FormLabel>
                       <Textarea
                         {...field}
-                        placeholder="Enter any special notes here..."
-                        className="w-full"
+                        placeholder='Enter any special notes here...'
+                        className='w-full'
                       />
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                <div className="mt-4 flex justify-between">
+                <div className='mt-4 flex justify-between'>
                   <Button
-                    type="button"
-                    variant="outline"
+                    type='button'
+                    variant='outline'
                     onClick={() => router.back()}
                   >
                     Cancel
                   </Button>
                   <ActionButton
                     isLoading={isUpdateProjectLoading || isLoading}
-                    type="submit"
+                    type='submit'
                     onClick={() => onSubmit}
-                    label="Edit Project"
+                    label='Edit Project'
                   />
                 </div>
               </form>

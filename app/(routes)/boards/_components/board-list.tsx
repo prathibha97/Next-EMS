@@ -19,7 +19,11 @@ export const BoardList = async ({
   const session = await getAuthSession();
 
   if (!projectId) {
-    return <div>No projects have been assigned yet.</div>;
+    return (
+      <div className='w-full h-full m-auto flex items-center justify-center text-gray-500'>
+        No projects have been assigned yet.
+      </div>
+    );
   }
 
   const boards = await prisma.board.findMany({

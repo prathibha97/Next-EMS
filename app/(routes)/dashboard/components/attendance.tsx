@@ -9,6 +9,19 @@ export async function EmployeeAttendance() {
 
   const currentDate = new Date().toISOString().split('T')[0];
 
+   const hasAttendanceRecords = employees.some(async (employee) => {
+     const attendance = await getAttendanceByEmployeeId(employee.id);
+     return attendance.length > 0;
+   });
+
+   if (!hasAttendanceRecords) {
+     return (
+       <div className='text-center text-gray-600'>
+         No attendance records available.
+       </div>
+     );
+   }
+
   return (
     <div className="space-y-8 overflow-y-auto max-h-screen">
       {employees.map(async (employee) => {

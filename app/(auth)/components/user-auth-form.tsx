@@ -1,6 +1,6 @@
 'use client';
-import { setAuthenticated } from '@/app/redux/features/authSlice';
-import { useAppDispatch } from '@/app/redux/hooks';
+
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormField,
@@ -11,91 +11,75 @@ import {
 import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
 import usePasswordResetModal from '@/hooks/usePasswordResetModal';
-import { cn } from '@/lib/utils';
 import axios from 'axios';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { Icons } from '../../../components/icons';
-import { Button } from '../../../components/ui/button';
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
-type Variant = 'LOGIN' | 'REGISTER';
+interface UserAuthFormProps {
+  className?: string;
+}
 
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+export function UserAuthForm({ className }: UserAuthFormProps) {
   const router = useRouter();
   const passwordResetModal = usePasswordResetModal();
-  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const [variant, setVariant] = useState<Variant>('LOGIN');
+  const [variant, setVariant] = useState<'LOGIN' | 'REGISTER'>('LOGIN');
 
-  const toggleVariant = useCallback(() => {
-    if (variant === 'LOGIN') {
-      setVariant('REGISTER');
-    } else {
-      setVariant('LOGIN');
-    }
-  }, [variant]);
-
-  const form = useForm<FieldValues>({
+  const form = useForm({
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit = async (data: { email: string; password: string }) => {
     setIsLoading(true);
 
-    if (variant === 'REGISTER') {
-      await axios
-        .post(`/api/register`, data)
-        .then(() => {
-          toast({
-            title: 'User registered successfully!',
-            description: 'Please assoiciate the user with an employee account',
-          });
-          form.reset();
-          setVariant('LOGIN');
-        })
-        .catch(() => {
-          return toast({
-            title: 'Something went wrong!',
-            description: 'Could not register, please try again',
-            variant: 'destructive',
-          });
-        })
-        .finally(() => setIsLoading(false));
-    }
-    if (variant === 'LOGIN') {
-      signIn('credentials', {
-        ...data,
-        redirect: true,
-      })
-        .then((callback) => {
-          console.log(callback);
-          if (callback?.error) {
-            return toast({
-              title: 'Something went wrong!',
-              description: 'Could not sign in, please try again',
-              variant: 'destructive',
-            });
-          }
+    try {
+      if (variant === 'REGISTER') {
+        await axios.post(`/api/register`, data);
+        toast({
+          title: 'User registered successfully!',
+          description: 'Please associate the user with an employee account',
+        });
+        form.reset();
+        setVariant('LOGIN');
+      } else {
+        const signInResponse = await signIn('credentials', {
+          ...data,
+          redirect: false,
+        });
 
-          if (callback?.ok && !callback?.error) {
-            dispatch(setAuthenticated(true));
-            // router.push('/dashboard');
-          }
-        })
-        .finally(() => setIsLoading(false));
+        if (signInResponse && signInResponse.error) {
+          setError('Invalid email or password');
+        } else if (signInResponse && signInResponse.ok) {
+          router.push('/dashboard');
+        }
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  const toggleVariant = () => {
+    setVariant(variant === 'LOGIN' ? 'REGISTER' : 'LOGIN');
+    setError(null);
+  };
+
   return (
-    <div className={cn('grid gap-6 mx-auto w-full', className)} {...props}>
+    <div className={className}>
       <div className='flex flex-col space-y-2 text-center mt-10 sm:mt-0'>
         <h1 className='text-2xl font-semibold tracking-tight'>
           {variant === 'LOGIN' ? 'Login to your account' : 'Create an account'}
@@ -150,6 +134,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               )}
               {variant === 'LOGIN' ? 'Login' : 'Continue'}
             </Button>
+            {error && <div className='text-red-500 text-center'>{error}</div>}
           </div>
           <div className='flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500'>
             <div>
@@ -172,7 +157,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <span className='w-full border-t' />
         </div>
       </div>
-      <p className='px-8 text-center text-sm text-muted-foreground'>
+      <p className='px-8 text-center text-sm text-muted-foreground mt-3'>
         By clicking {variant === 'LOGIN' ? 'Login' : 'continue'}, you agree to
         our{' '}
         <Link

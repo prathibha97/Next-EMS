@@ -183,6 +183,12 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
           unpaid: parseInt(unpaidLeaves) || 0,
           broughtForward: 0,
           duty: parseInt(dutyLeaves) || 0,
+          annualEntitlement: parseInt(annualLeaves) || 0,
+          casualEntitlement: parseInt(casualLeaves) || 0,
+          medicalEntitlement: parseInt(medicalLeaves) || 0,
+          unpaidEntitlement: parseInt(unpaidLeaves) || 0,
+          broughtForwardEntitlement: 0,
+          dutyEntitlement: parseInt(dutyLeaves) || 0,
         },
       });
     } else {
@@ -196,6 +202,11 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
           medical: parseInt(medicalLeaves) || leaveBalance.medical,
           unpaid: parseInt(unpaidLeaves) || leaveBalance.unpaid,
           duty: parseInt(dutyLeaves) || leaveBalance.duty,
+          annualEntitlement: parseInt(annualLeaves) || leaveBalance.annual,
+          casualEntitlement: parseInt(casualLeaves) || leaveBalance.casual,
+          medicalEntitlement: parseInt(medicalLeaves) || leaveBalance.medical,
+          unpaidEntitlement: parseInt(unpaidLeaves) || leaveBalance.unpaid,
+          dutyEntitlement: parseInt(dutyLeaves) || leaveBalance.duty,
         },
       });
     }

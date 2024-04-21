@@ -9,7 +9,7 @@ interface ProjectBoardPageProps {
 
 const ProjectBoardsPage = ({ params }: ProjectBoardPageProps) => {
   return (
-    <div className="md:px-4 h-full">
+    <div className='md:px-4 w-full h-full'>
       <Suspense fallback={<BoardList.Skeleton />}>
         <BoardList projectId={params.projectId} />
       </Suspense>

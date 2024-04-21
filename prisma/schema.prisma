@@ -135,15 +135,21 @@ model Attendance {
 }
 
 model LeaveBalance {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  annual         Int      @default(0)
-  casual         Int      @default(0)
-  medical        Int      @default(0)
-  unpaid         Int      @default(0)
-  broughtForward Int      @default(0)
-  duty           Int      @default(0)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id                        String   @id @default(auto()) @map("_id") @db.ObjectId
+  annual                    Int      @default(0)
+  casual                    Int      @default(0)
+  medical                   Int      @default(0)
+  unpaid                    Int      @default(0)
+  broughtForward            Int      @default(0)
+  duty                      Int      @default(0)
+  annualEntitlement         Int      @default(0)
+  casualEntitlement         Int      @default(0)
+  medicalEntitlement        Int      @default(0)
+  unpaidEntitlement         Int      @default(0)
+  broughtForwardEntitlement Int      @default(0)
+  dutyEntitlement           Int      @default(0)
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
 
   employeeId String     @db.ObjectId
   Employee   Employee[]

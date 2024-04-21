@@ -92,8 +92,8 @@ export function UserAuthForm({ className }: UserAuthFormProps) {
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className='grid gap-2'>
-            <div className='grid gap-4 w-full'>
+          <div className='grid gap-4'>
+            <div className='grid gap-3 w-full'>
               <FormField
                 control={form.control}
                 name='email'

@@ -7,8 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { Project } from '@prisma/client';
-import { Activity, Briefcase, CreditCard, Layout, Settings } from 'lucide-react';
-import Image from 'next/image';
+import { Activity, Briefcase, Layout } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 
 export type Organization = {
@@ -25,7 +24,12 @@ interface NavItemProps {
   onExpand: (id: string) => void;
 }
 
-export const NavItem = ({ isActive, isExpanded, onExpand, project }: NavItemProps) => {
+export const NavItem = ({
+  isActive,
+  isExpanded,
+  onExpand,
+  project,
+}: NavItemProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -56,23 +60,17 @@ export const NavItem = ({ isActive, isExpanded, onExpand, project }: NavItemProp
     // },
   ];
   return (
-    <AccordionItem value={project.id} className='border-none'>
+    <AccordionItem value={project.id} className='border-none w-full'>
       <AccordionTrigger
         onClick={() => onExpand(project.id)}
         className={cn(
-          'flex items-center gap-x-2 p-1.5 text-neutral-700 rounded-md hover:bg-neutral-500/10 transition text-start no-underline hover:no-underline',
+          'flex items-center mt-1 gap-x-2 p-1.5 text-neutral-700 rounded-md justify-between w-full hover:bg-neutral-500/10 transition text-start no-underline hover:no-underline',
           isActive && !isExpanded && 'bg-sky-500/10 text-sky-700'
         )}
       >
-        <div className='flex items-center gap-x-2'>
+        <div className='flex items-center justify-between gap-x-2'>
           <div className='w-7 h-7 relative'>
-            {/* <Image
-              fill
-              src={organization.imageUrl}
-              alt='Organization'
-              className='rounded-sm object-cover'
-            /> */}
-            <Briefcase/>
+            <Briefcase />
           </div>
           <span className='font-medium text-sm'>{project.name}</span>
         </div>

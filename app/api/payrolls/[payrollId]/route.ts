@@ -49,6 +49,8 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
     holidayAllowance,
     salaryAdvance,
     otherDeductions,
+    paidDays,
+    workingDays,
   } = body;
 
   try {
@@ -89,6 +91,8 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
         companyEtfContribution,
         otherDeductions,
         netSalary,
+        paidDays,
+        workingDays,
       },
     });
 

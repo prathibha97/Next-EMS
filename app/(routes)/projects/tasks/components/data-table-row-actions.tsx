@@ -8,12 +8,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
@@ -22,10 +17,9 @@ import {
   useUpdateTaskMutation,
 } from '@/app/redux/services/taskApi';
 import { toast } from '@/hooks/use-toast';
+import { Task } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { statuses } from '../data/data';
-import { Task } from '@prisma/client';
 
 interface DataTableRowActionsProps {
   row: Row<Task>;
@@ -100,7 +94,7 @@ export function DataTableRowActions<Task>({ row }: DataTableRowActionsProps) {
             <DropdownMenuSeparator />
           </>
         )}
-        <DropdownMenuSub>
+        {/* <DropdownMenuSub>
           <DropdownMenuSubTrigger>Update Status</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
             <DropdownMenuRadioGroup value={task.status!}>
@@ -120,7 +114,7 @@ export function DataTableRowActions<Task>({ row }: DataTableRowActionsProps) {
               ))}
             </DropdownMenuRadioGroup>
           </DropdownMenuSubContent>
-        </DropdownMenuSub>
+        </DropdownMenuSub> */}
         {session.data?.user.role === 'ADMIN' && (
           <>
             <DropdownMenuSeparator />

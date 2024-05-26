@@ -1,10 +1,9 @@
-import { Separator } from '@/components/ui/separator';
 import { organizationSidebarNavItems } from '@/constants/organizationsidebarNavItems';
 import { Metadata } from 'next';
 import { OrganizationSidebarNav } from './components/organization-sidebar-nav';
 
 export const metadata: Metadata = {
-  title: 'Sphiria Digital Studio | Organization Management',
+  title: ' Organization Management',
   description: 'Manage your organization departments and employees here',
 };
 

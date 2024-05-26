@@ -51,7 +51,7 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
                         >
                           <Icons.logo className='h-6 w-6' />
                           <div className='mb-2 mt-4 text-lg font-medium'>
-                            Sphiria Digital Studio
+                            Organization Management System
                           </div>
                           <p className='text-xs text-gray-600 leading-tight text-muted-foreground '>
                             View and Manage Organization Details.

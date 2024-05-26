@@ -348,13 +348,13 @@ export const columns: ColumnDef<Payroll>[] = [
                       <div className='flex gap-60 content-center bg-[#2ebdaa] p-4'>
                         <div>
                           <div className='text-white font-bold text-2xl'>
-                            Sphiria Digital Studio
+                            XYZ Company
                           </div>
                           <div className='mt-2 text-white font-normal text-base'>
-                            71/2, Sri Dharmapala Mawatha,Kandy
+                            123, Main Street, NY
                           </div>
                           <div className='text-white font-normal text-base'>
-                            076 322 0666
+                            0712345678
                           </div>
                         </div>
 

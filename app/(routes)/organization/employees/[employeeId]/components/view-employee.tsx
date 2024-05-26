@@ -59,7 +59,7 @@ const ViewEmployee: FC<ViewEmployeeProps> = ({ employee }) => {
             <span>
               Work Email:{' '}
               <span className='text-sm text-gray-600 dark:text-gray-300'>
-                {employee?.workEmail || 'example@sphiriadigital.com'}
+                {employee?.workEmail || 'example@example.com'}
               </span>
             </span>
           </div>
